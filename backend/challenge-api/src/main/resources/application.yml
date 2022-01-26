@@ -1,0 +1,15 @@
+# set active profile
+spring:
+  profiles:
+    active:
+    - default
+    
+# default
+profile:
+  message: This is default profile.
+  
+service:
+  message: Hello, API
+  
+server:
+  port: 7002

@@ -1,0 +1,13 @@
+# set active profile
+spring:
+  profiles:
+    active:
+    - default
+    
+# default
+profile:
+  message: This is default profile.
+  
+server:
+  port: 7001
+  

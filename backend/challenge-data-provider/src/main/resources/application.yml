@@ -9,10 +9,10 @@ profile:
   message: This is default profile.
   
 service:
-  message: Hello, Data Provider
+  message: Hello, Data Provider!
   
 server:
-  port: 7004
+  port: 8084
   
 logging:
   level:

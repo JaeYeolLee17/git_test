@@ -9,10 +9,10 @@ profile:
   message: This is default profile.
   
 service:
-  message: Hello, Data Collector
+  message: Hello, Data Collector!
   
 server:
-  port: 7003
+  port: 8083
   
 logging:
   level:

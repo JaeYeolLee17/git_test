@@ -1,7 +1,5 @@
 # prod with docker, kubernetes
 profile:
   message: This is prod profile.
-      
-server:
-  port: 8080
+  
   

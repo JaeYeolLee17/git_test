@@ -1,7 +1,0 @@
-# local with docker
-profile:
-  message: This is local profile.
-  
-server:
-  port: 8080
-  

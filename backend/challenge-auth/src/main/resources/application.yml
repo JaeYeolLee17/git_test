@@ -8,8 +8,11 @@ spring:
 profile:
   message: This is default profile.
   
+service:
+  message: Hello, Auth!
+  
 server:
-  port: 7001
+  port: 8081
   
 logging:
   level:

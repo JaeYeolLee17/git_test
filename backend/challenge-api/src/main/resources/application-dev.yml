@@ -1,6 +1,4 @@
-# dev with docker, kubernetes
+# dev
 profile:
   message: This is dev profile.
-      
-server:
-  port: 8080
+  

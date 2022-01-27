@@ -9,10 +9,10 @@ profile:
   message: This is default profile.
   
 service:
-  message: Hello, API
+  message: Hello, API!
   
 server:
-  port: 7002
+  port: 8082
 
 logging:
   level:

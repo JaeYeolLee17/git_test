@@ -20,7 +20,7 @@ public class UserController {
     
 	@GetMapping("/user")
 	public String user() {
-		User user = new User(1, 1, "userId", "name");
+		User user = User.builder().userId("userId").name("name").build();
 		UserDto userDto = mapper.toDto(user);
 		return userDto.toString();
 	}

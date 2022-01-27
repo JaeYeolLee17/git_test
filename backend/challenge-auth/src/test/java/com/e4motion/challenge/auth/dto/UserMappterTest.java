@@ -11,8 +11,8 @@ class UserMappterTest {
 
 	@Test
 	void testToDto() {
-		User user = new User(1, 1, "userId111", "name111");
-		
+		User user =  User.builder().userId("userId111").name("name111").build();
+				
 		UserMapper mapper = Mappers.getMapper(UserMapper.class);
 		UserDto userDto = mapper.toDto(user);
 		
@@ -23,7 +23,7 @@ class UserMappterTest {
 	
 	@Test
 	void testToEntity() {
-		UserDto userDto = new UserDto("userId222", "name222");
+		UserDto userDto = UserDto.builder().userId("userId222").name("name222").build(); 
 		
 		UserMapper mapper = Mappers.getMapper(UserMapper.class);
 		User user = mapper.toEntity(userDto);

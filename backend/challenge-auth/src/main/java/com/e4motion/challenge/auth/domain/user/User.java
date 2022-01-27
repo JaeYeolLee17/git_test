@@ -1,14 +1,13 @@
 package com.e4motion.challenge.auth.domain.user;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@Setter
 @ToString
-@AllArgsConstructor
+@NoArgsConstructor
 //@Entity
 public class User {
 
@@ -22,5 +21,11 @@ public class User {
 	private String userId;
 	
 	private String name;
+	
+	@Builder
+	public User(String userId, String name) {
+		this.userId = userId;
+		this.name = name;
+	}
 
 }

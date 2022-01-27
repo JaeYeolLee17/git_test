@@ -1,14 +1,15 @@
 package com.e4motion.challenge.auth.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
 	private String userId;
@@ -28,6 +29,12 @@ public class UserDto {
 	}
 
 	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Builder
+	public UserDto(String userId, String name) {
+		this.userId = userId;
 		this.name = name;
 	}
 	

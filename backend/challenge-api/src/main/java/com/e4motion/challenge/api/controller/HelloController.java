@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api;
+package com.e4motion.challenge.api.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +14,7 @@ public class HelloController {
 		this.myService = myService;
 	}
 
-	@GetMapping("/")
+	@GetMapping("/hello")
 	public String hello() {
 		return myService.message();
 	}

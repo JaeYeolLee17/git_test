@@ -1,4 +1,4 @@
-package com.e4motion.challenge.auth;
+package com.e4motion.challenge.auth.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

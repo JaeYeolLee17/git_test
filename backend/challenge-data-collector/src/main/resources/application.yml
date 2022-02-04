@@ -1,5 +1,7 @@
 # set active profile
 spring:
+  application:
+    name: Challenge Data Collector
   profiles:
     active:
     - default
@@ -14,6 +16,16 @@ service:
 server:
   port: 8083
   
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+    operations-sorter: alpha
+    disable-swagger-default-url: true
+
 logging:
   level:
     root: INFO

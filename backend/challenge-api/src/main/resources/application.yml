@@ -1,10 +1,7 @@
-# set active profile
 spring:
-  profiles:
-    active:
-    - default
+  application:
+    name: Challenge API
     
-# default
 profile:
   message: This is default profile.
   
@@ -14,14 +11,24 @@ service:
 server:
   port: 8082
   
-app:
-  auth-server: localhost:8081
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}/.well-known/jwks.json
+jwt:
+  header: Authorization
+  secret: jwt secret smart city challenge
+  token-validity-in-seconds: 86400
+  
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+    operations-sorter: alpha
+    disable-swagger-default-url: true
 
 logging:
   level:
     root: INFO
     web: DEBUG
     org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
-    org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
+    org.springframework.web.cors: DEBUG

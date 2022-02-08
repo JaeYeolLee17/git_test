@@ -1,7 +1,8 @@
 package com.e4motion.challenge.api.controller;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,52 +12,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e4motion.challenge.api.domain.User;
-import com.e4motion.challenge.api.domain.UserRepository;
 import com.e4motion.challenge.api.dto.UserDto;
-import com.e4motion.challenge.api.dto.UserMapper;
+import com.e4motion.challenge.api.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "Author")
+@Tag(name = "2. »ç¿ëÀÚ")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v1/")
 public class UserController {
-
-    private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
     
-	@PreAuthorize("hasRole('ROLE_USER')")
-	@GetMapping("user/{id}")
-    public String get(@PathVariable String id) {
-        return "get user " + id;
-    }
+	private final UserService userService;
 	
+    @PostMapping("signup")
+    public UserDto signup(@RequestBody UserDto userDto) {
+    	return userService.create(userDto);	// TODO: delete after test.
+    }
+    
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("user")
     public UserDto create(@RequestBody UserDto userDto) {
-    	User user =  new User(userDto.getUserId(), 
-    			passwordEncoder.encode(userDto.getPassword()),
-    			userDto.getUsername(),
-    			userDto.getEmail(),
-    			userDto.getAuthorities());
-        userRepository.save(user);
-        return userMapper.toUserDto(user);
+    	return userService.create(userDto);	// TODO: return just ok after test.
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("user/{id}")
-    public String update(@PathVariable String id) {
-        return "user " + id + " updated";
+    @PutMapping("user/{userId}")
+    public String update(@PathVariable String userId) {
+        return "user " + userId + " updated";
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("user/{id}")
-    public String delete(@PathVariable String id) {
-        return "user " + id + " deleted";
+    @DeleteMapping("user/{userId}")
+    public String delete(@PathVariable String userId) {
+        return "user " + userId + " deleted";
     }
-    
+	
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping("user")
+    public List<UserDto> getList() {
+        return userService.getList();
+    }
+	
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@GetMapping("user/{userId}")
+    public UserDto get(@PathVariable String userId) {
+		return userService.get(userId);
+    }
 }

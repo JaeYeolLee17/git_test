@@ -29,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenFilter jwtTokenFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+    @Value("${management.endpoints.web.base-path}")
+    private String actuatorPath;
     @Value("${springdoc.api-docs.path}")
     private String apiDocsPath;
     @Value("${springdoc.swagger-ui.path}")
@@ -74,10 +76,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         	.and()
         	.authorizeRequests()
-            .antMatchers(format("%s/**", apiDocsPath)).permitAll()
-            .antMatchers(format("%s/**", swaggerPath)).permitAll()
+        	.antMatchers(format("%s/**", actuatorPath)).permitAll()	// TODO: apply secure.
+            .antMatchers(format("%s/**", apiDocsPath)).permitAll()	// TODO: apply secure.
+            .antMatchers(format("%s/**", swaggerPath)).permitAll()	// TODO: apply secure.
             .antMatchers("/v1/login").permitAll()
-        	.antMatchers("/hello").permitAll()
+        	.antMatchers("/v1/signup").permitAll()
         	.anyRequest().authenticated()
 
         	.and()

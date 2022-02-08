@@ -2,11 +2,25 @@ spring:
   application:
     name: Challenge API
     
-profile:
-  message: This is default profile.
-  
-service:
-  message: Hello, API!
+  h2:
+    console:
+      enabled: true
+
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
   
 server:
   port: 8082
@@ -15,7 +29,16 @@ jwt:
   header: Authorization
   secret: jwt secret smart city challenge
   token-validity-in-seconds: 86400
-  
+ 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: '/actuator'
+    health:
+      show-details: always
+
 springdoc:
   api-docs:
     enabled: true

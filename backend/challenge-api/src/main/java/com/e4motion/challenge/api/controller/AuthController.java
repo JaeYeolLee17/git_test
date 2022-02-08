@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.dto.LoginDto;
 import com.e4motion.challenge.api.dto.UserDto;
+import com.e4motion.challenge.api.entity.Authority;
 import com.e4motion.challenge.api.security.JwtTokenProvider;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "인증")
+@Tag(name = "1. 인증")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v1/")
@@ -47,12 +47,18 @@ public class AuthController {
 
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         Set<Authority> authorities = userDetails.getAuthorities().stream()
-        		.map(authority -> new Authority(authority.getAuthority()))
+        		.map(authority -> Authority.builder().authorityName(authority.getAuthority()).build())
                 .collect(Collectors.toSet());
         
+        // TODO: make CustomUser to contain all user info.
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, token)
-                .body(new UserDto(userDetails.getUsername(), null, "aaa", "emailbbb", authorities));
+                .body(UserDto.builder()
+                		.userId(userDetails.getUsername())
+                		.username("aaa")
+                		.email("bbb")
+                		.authorities(authorities)
+                		.build());
     }
     
 }

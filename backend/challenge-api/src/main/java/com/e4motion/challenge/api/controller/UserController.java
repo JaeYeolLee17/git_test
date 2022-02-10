@@ -29,30 +29,37 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("user")
     public UserDto create(@RequestBody UserDto userDto) {
-    	return userService.create(userDto);	// TODO: return just ok after test.
+    	
+    	return userService.create(userDto);
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("user/{userId}")
-    public String update(@PathVariable String userId) {
-        return "user " + userId + " updated";
+    public UserDto update(@PathVariable String userId, @RequestBody UserDto userDto) {
+		
+		return userService.update(userId, userDto);
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("user/{userId}")
     public String delete(@PathVariable String userId) {
-        return "user " + userId + " deleted";
+		
+		userService.delete(userId);
+		
+        return "delete ok";
     }
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	@GetMapping("user")
     public List<UserDto> getList() {
+		
         return userService.getList();
     }
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	@GetMapping("user/{userId}")
     public UserDto get(@PathVariable String userId) {
+		
 		return userService.get(userId);
     }
 }

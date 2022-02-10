@@ -1,7 +1,9 @@
 package com.e4motion.challenge.api.service;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class UserService {
     @Transactional
     public UserDto create(UserDto userDto) {
 
+    	// TODO: duplicate
         User user = User.builder()
                 .userId(userDto.getUserId())
                 .password(passwordEncoder.encode(userDto.getPassword()))
@@ -37,6 +40,43 @@ public class UserService {
                 .build();
 
         return userMapper.toUserDto(userRepository.save(user));
+    }
+    
+    @Transactional
+    public UserDto update(String userId, UserDto userDto) {
+    	
+    	User user = userRepository.findByUserId(userId).orElse(null);
+    	if (user != null) {
+    		if (userDto.getPassword() != null) {
+        		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        	}
+    		if (userDto.getUsername() != null) {
+        		user.setUsername(userDto.getUsername());
+        	}
+    		if (userDto.getEmail() != null) {
+        		user.setEmail(userDto.getEmail());
+        	}
+    		if (userDto.getPhone() != null) {
+        		user.setPhone(userDto.getPhone());
+        	}
+    		if (userDto.getAuthority() != null) {
+    			Set<Authority> authorities = new HashSet<>();
+    			authorities.add(new Authority(userDto.getAuthority()));
+        		user.setAuthorities(authorities);
+        	}
+    		return userMapper.toUserDto(userRepository.save(user));
+    	}
+    	
+        return null;
+    }
+
+    @Transactional
+    public void delete(String userId) {
+    	
+    	User user = userRepository.findByUserId(userId).orElse(null);
+    	if (user != null) {
+    		userRepository.delete(user);
+    	}
     }
     
     @Transactional(readOnly = true)

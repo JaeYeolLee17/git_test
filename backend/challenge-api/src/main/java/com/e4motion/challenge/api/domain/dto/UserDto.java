@@ -16,8 +16,9 @@ public class UserDto {
     private String authority;
 
     @Builder
-    public UserDto(String userId, String username, String email, String phone, String authority) {
+    public UserDto(String userId, String password, String username, String email, String phone, String authority) {
     	this.userId = userId;
+    	this.password = password;
     	this.username = username;
     	this.email = email;
     	this.phone = phone;

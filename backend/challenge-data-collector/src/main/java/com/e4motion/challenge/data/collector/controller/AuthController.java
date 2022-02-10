@@ -21,7 +21,6 @@ import com.e4motion.challenge.data.collector.dto.AuthRequest;
 import com.e4motion.challenge.data.collector.dto.UserView;
 import com.e4motion.challenge.data.collector.dto.UserViewMapper;
 import com.e4motion.challenge.data.collector.security.JwtTokenUtil;
-import com.e4motion.challenge.data.collector.security.SecurityConfig;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(path = "api/public")
 public class AuthController {
 	
-	private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+	private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 	
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;

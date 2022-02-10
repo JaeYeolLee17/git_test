@@ -1,12 +1,7 @@
-# set active profile
 spring:
   application:
     name: Challenge Data Collector
-  profiles:
-    active:
-    - default
     
-# default
 profile:
   message: This is default profile.
   
@@ -30,4 +25,5 @@ logging:
   level:
     root: INFO
     web: DEBUG
-
+    org.springframework.security: DEBUG
+    org.springframework.web.cors: DEBUG

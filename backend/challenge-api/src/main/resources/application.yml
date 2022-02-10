@@ -1,27 +1,57 @@
-# set active profile
 spring:
-  profiles:
-    active:
-    - default
+  application:
+    name: Challenge API
     
-# default
-profile:
-  message: This is default profile.
-  
-service:
-  message: Hello, API!
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
   
 server:
   port: 8082
   
-app:
-  auth-server: localhost:8081
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri: http://${app.auth-server}/.well-known/jwks.json
+jwt:
+  header: Authorization
+  secret: jwt secret smart city challenge
+  token-validity-in-seconds: 86400
+ 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: '/actuator'
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+    operations-sorter: alpha
+    disable-swagger-default-url: true
 
 logging:
   level:
     root: INFO
     web: DEBUG
     org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
-    org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
+    org.springframework.web.cors: DEBUG

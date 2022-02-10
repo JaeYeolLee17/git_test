@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "authority")
+@Table(name = "nt_authority")
 public class Authority {
 
 	public static final String ROLE_USER = "ROLE_USER";

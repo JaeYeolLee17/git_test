@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "nt_user")
 public class User {
 	
 	@Id
@@ -41,7 +41,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-    	name = "user_authority",
+    	name = "nt_user_authority",
     	joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
       	inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;

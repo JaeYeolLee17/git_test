@@ -1,29 +1,24 @@
+server:
+  port: 8082
+  
 spring:
   application:
     name: Challenge API
     
-  h2:
-    console:
-      enabled: true
-
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: postgres
+    password: postgres
+    initialization-mode: never  # never, always - only when we want to insert test data using data.sql
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate: 
+      ddl-auto: none            # none, create, update... - only when we want to make tables using Entity classes.
+    properties: 
         format_sql: true
-        show_sql: true
-    defer-datasource-initialization: true
-  
-server:
-  port: 8082
+    show-sql: true
+    defer-datasource-initialization: true 
   
 jwt:
   header: Authorization

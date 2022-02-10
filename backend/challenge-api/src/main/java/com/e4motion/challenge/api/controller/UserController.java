@@ -25,11 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     
 	private final UserService userService;
-	
-    @PostMapping("signup")
-    public UserDto signup(@RequestBody UserDto userDto) {
-    	return userService.create(userDto);	// TODO: delete after test.
-    }
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("user")

@@ -35,14 +35,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 						));
 	}
 
-	private org.springframework.security.core.userdetails.User createUser(User user) {
+	private UserDetails createUser(User user) {
 		
 		List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
 				.map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
 				.collect(Collectors.toList());
 		
-		return new org.springframework.security.core.userdetails.User(user.getUserId(),
+		return new CustomUser(user.getUserId(), 
 				user.getPassword(),
+				user.getUsername(),
+				user.getEmail(),
+				user.getPhone(),
 				grantedAuthorities);
    }
 	

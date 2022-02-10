@@ -23,12 +23,12 @@ public class User {
 	@Id
 	@Column(name = "user_id", length = 20)
 	private String userId;
-   
-	@Column(name = "username", length = 20)
-	private String username;
 
 	@Column(name = "password", length = 128)
 	private String password;
+	
+	@Column(name = "username", length = 20)
+	private String username;
 
 	@Column(name = "email", length = 128)
 	private String email;
@@ -47,13 +47,14 @@ public class User {
     private Set<Authority> authorities;
    
     @Builder
-    public User(String userId, String password, String username, String email, Set<Authority> authorities, boolean activated) {
+    public User(String userId, String password, String username, String email, String phone, boolean activated, Set<Authority> authorities) {
     	this.userId = userId;
     	this.password = password;
     	this.username = username;
     	this.email = email;
-    	this.authorities = authorities;
+    	this.phone = phone;
     	this.activated = activated;
+    	this.authorities = authorities;
     }
    
 }

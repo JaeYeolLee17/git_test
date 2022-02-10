@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.api.entity.User;
+import com.e4motion.challenge.api.domain.entity.User;
 import com.e4motion.challenge.api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;

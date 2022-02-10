@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e4motion.challenge.api.dto.UserDto;
+import com.e4motion.challenge.api.domain.dto.UserDto;
 import com.e4motion.challenge.api.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,13 +49,13 @@ public class UserController {
         return "user " + userId + " deleted";
     }
 	
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	@GetMapping("user")
     public List<UserDto> getList() {
         return userService.getList();
     }
 	
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	@GetMapping("user/{userId}")
     public UserDto get(@PathVariable String userId) {
 		return userService.get(userId);

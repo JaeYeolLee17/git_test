@@ -1,12 +1,9 @@
-package com.e4motion.challenge.api.entity;
+package com.e4motion.challenge.api.domain.entity;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,23 +18,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
-
+public class User {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(name = "user_id", length = 50, unique = true)
+	@Column(name = "user_id", length = 20)
 	private String userId;
    
-	@Column(name = "username", length = 50)
+	@Column(name = "username", length = 20)
 	private String username;
 
-	@Column(name = "password", length = 100)
+	@Column(name = "password", length = 128)
 	private String password;
 
-	@Column(name = "email", length = 100)
+	@Column(name = "email", length = 128)
 	private String email;
+	
+	@Column(name = "phone", length = 20)
+	private String phone;
    
    	@Column(name = "activated")
    	private boolean activated;

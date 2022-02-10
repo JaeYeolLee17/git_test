@@ -1,8 +1,4 @@
-package com.e4motion.challenge.api.dto;
-
-import java.util.Set;
-
-import com.e4motion.challenge.api.entity.Authority;
+package com.e4motion.challenge.api.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +12,13 @@ public class UserDto {
     private String password;
     private String username;
     private String email;
-    private Set<Authority> authorities;
+    private String authority;
 
     @Builder
-    public UserDto(String userId, String username, String email, Set<Authority> authorities) {
+    public UserDto(String userId, String username, String email, String authority) {
     	this.userId = userId;
     	this.username = username;
     	this.email = email;
-    	this.authorities = authorities;
+    	this.authority = authority;
     }
 }

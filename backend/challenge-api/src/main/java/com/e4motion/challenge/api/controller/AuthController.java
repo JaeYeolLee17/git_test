@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e4motion.challenge.api.dto.LoginDto;
-import com.e4motion.challenge.api.dto.UserDto;
-import com.e4motion.challenge.api.entity.Authority;
+import com.e4motion.challenge.api.domain.dto.LoginDto;
+import com.e4motion.challenge.api.domain.dto.UserDto;
+import com.e4motion.challenge.api.domain.entity.Authority;
 import com.e4motion.challenge.api.security.JwtTokenProvider;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,10 +46,11 @@ public class AuthController {
         httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
 
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-        Set<Authority> authorities = userDetails.getAuthorities().stream()
-        		.map(authority -> Authority.builder().authorityName(authority.getAuthority()).build())
-                .collect(Collectors.toSet());
         
+        Set<Authority> authorities = userDetails.getAuthorities().stream()
+        		.map(authority -> new Authority(authority.getAuthority()))
+                .collect(Collectors.toSet());
+
         // TODO: make CustomUser to contain all user info.
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, token)
@@ -57,7 +58,7 @@ public class AuthController {
                 		.userId(userDetails.getUsername())
                 		.username("aaa")
                 		.email("bbb")
-                		.authorities(authorities)
+                		.authority(authorities.isEmpty() ? null : authorities.iterator().next().getAuthorityName())
                 		.build());
     }
     

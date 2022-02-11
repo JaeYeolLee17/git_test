@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api.security;
+package com.e4motion.challenge.common.security;
 
 import java.util.Arrays;
 import java.util.Base64;

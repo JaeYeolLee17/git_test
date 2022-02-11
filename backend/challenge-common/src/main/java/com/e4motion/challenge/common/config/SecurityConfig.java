@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api.config;
+package com.e4motion.challenge.common.config;
 
 import static java.lang.String.format;
 
@@ -19,9 +19,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.e4motion.challenge.api.security.JwtAccessDeniedHandler;
-import com.e4motion.challenge.api.security.JwtAuthenticationEntryPoint;
-import com.e4motion.challenge.api.security.JwtTokenFilter;
+import com.e4motion.challenge.common.security.JwtAccessDeniedHandler;
+import com.e4motion.challenge.common.security.JwtAuthenticationEntryPoint;
+import com.e4motion.challenge.common.security.JwtTokenFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

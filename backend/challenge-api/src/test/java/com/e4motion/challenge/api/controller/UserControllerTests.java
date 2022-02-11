@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e4motion.challenge.api.domain.dto.UserDto;
 import com.e4motion.challenge.api.domain.entity.Authority;
-import com.e4motion.challenge.api.security.JwtAccessDeniedHandler;
+import com.e4motion.challenge.common.security.JwtAccessDeniedHandler;
 import com.e4motion.common.Response;
 import com.e4motion.common.exception.customexception.UnauthorizedException;
 import com.fasterxml.jackson.core.JsonProcessingException;

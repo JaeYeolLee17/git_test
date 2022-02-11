@@ -44,6 +44,10 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
     disable-swagger-default-url: true
+    info:
+      title: Challenge API
+      description: Rest API for Challenge API
+      version: 1.0.0
 
 logging:
   level:

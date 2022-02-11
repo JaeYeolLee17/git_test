@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api.config;
+package com.e4motion.challenge.common.config;
 
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +14,12 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 public class SwaggerConfig {
 	
-	@Value("${spring.application.name}")
-    private String appName;
+	@Value("${springdoc.swagger-ui.info.title}")
+    private String title;
+	@Value("${springdoc.swagger-ui.info.description}")
+    private String description;
+	@Value("${springdoc.swagger-ui.info.version}")
+    private String version;
 	
     @Bean
     public GroupedOpenApi apiGroup() {
@@ -43,9 +47,9 @@ public class SwaggerConfig {
                 )
                 .info(
                         new Info()
-                                .title(appName)
-                                .description("Rest API for " + appName)
-                                .version("1.0.0")
+                                .title(title)
+                                .description(description)
+                                .version(version)
                 );
     }
 

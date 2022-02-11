@@ -16,7 +16,7 @@ import com.e4motion.challenge.api.domain.dto.LoginDto;
 import com.e4motion.challenge.api.domain.dto.UserDto;
 import com.e4motion.challenge.api.domain.entity.Authority;
 import com.e4motion.challenge.api.security.CustomUser;
-import com.e4motion.challenge.api.security.JwtTokenProvider;
+import com.e4motion.challenge.common.security.JwtTokenProvider;
 import com.e4motion.common.Response;
 
 import io.swagger.v3.oas.annotations.tags.Tag;

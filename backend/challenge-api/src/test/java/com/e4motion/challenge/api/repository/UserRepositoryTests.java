@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e4motion.challenge.api.domain.entity.Authority;
 import com.e4motion.challenge.api.domain.entity.User;
 
-@ActiveProfiles("unittest")
 @DataJpaTest
+@ActiveProfiles("unittest")
 @Transactional(propagation = NOT_SUPPORTED)
 public class UserRepositoryTests {
 

@@ -28,7 +28,7 @@ public class ResponseFail extends Response {
 		try {
 			return mapper.writeValueAsString(this);
 		} catch (JsonProcessingException e) {
-			return "ResponseFail []";
+			return "{}";
 		}
 	}
 	

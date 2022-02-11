@@ -17,7 +17,7 @@ import com.e4motion.common.ResponseFail;
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	
-	private static final String CODE = "INACCCESSIBLE_DATA";
+	public static final String CODE = "INACCCESSIBLE_DATA";
 	
     @Override
     public void handle(HttpServletRequest request, 

@@ -20,27 +20,27 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "2. User")
 @RequiredArgsConstructor
 @RestController 
-@RequestMapping(path = "v1/user")
+@RequestMapping(path = "v1")
 public class UserController {
     
 	private final UserService userService;
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/")
+    @PostMapping("/user")
     public Response create(@RequestBody UserDto userDto) {
     	
     	return new Response("user", userService.create(userDto));
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{userId}")
+    @PutMapping("/user/{userId}")
     public Response update(@PathVariable String userId, @RequestBody UserDto userDto) {
 		
 		return new Response("user", userService.update(userId, userDto));
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/user/{userId}")
     public Response delete(@PathVariable String userId) {
 		
 		userService.delete(userId);
@@ -48,15 +48,15 @@ public class UserController {
         return new Response();
     }
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
-	@GetMapping("/")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
+	@GetMapping("/users")
     public Response getList() {
 		
         return new Response("users", userService.getList());
     }
 	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
-	@GetMapping("/{userId}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
+	@GetMapping("/user/{userId}")
     public Response get(@PathVariable String userId) {
 		
 		return new Response("user", userService.get(userId));

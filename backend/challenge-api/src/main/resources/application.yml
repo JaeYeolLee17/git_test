@@ -10,6 +10,7 @@ spring:
     username: postgres
     password: postgres
     initialization-mode: never  # never, always - only when we want to insert test data using data.sql
+    data: classpath:data.sql
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

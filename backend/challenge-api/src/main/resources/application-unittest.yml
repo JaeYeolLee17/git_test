@@ -11,4 +11,4 @@ spring:
 
   jpa:
     hibernate: 
-      ddl-auto: update          # should be update... - We want to make tables using Entity classes.
+      ddl-auto: create-drop     # should be create... - We want to make tables using Entity classes.

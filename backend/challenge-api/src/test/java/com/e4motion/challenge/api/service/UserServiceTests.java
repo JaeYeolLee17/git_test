@@ -16,10 +16,10 @@ import com.e4motion.challenge.api.domain.dto.UserDto;
 import com.e4motion.challenge.api.domain.entity.Authority;
 import com.e4motion.challenge.api.repository.UserRepository;
 
-@ActiveProfiles("unittest")
 @SpringBootTest
+@ActiveProfiles("unittest")
 @Transactional(propagation = NOT_SUPPORTED)
-public class UserServiceTest {
+public class UserServiceTests {
 	
 	@Autowired
     private UserRepository repository;
@@ -32,7 +32,6 @@ public class UserServiceTest {
    		repository.deleteAll();
    		
    		assertThat(repository.count()).isEqualTo(0);
-   		
     }
 	
 	//@Test

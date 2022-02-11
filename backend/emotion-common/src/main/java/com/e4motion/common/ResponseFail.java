@@ -1,6 +1,8 @@
 package com.e4motion.common;
 
-//@ToString
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class ResponseFail extends Response {
 
 	/**
@@ -18,6 +20,16 @@ public class ResponseFail extends Response {
 		setData(Response.RESULT, Response.FAIL);
 		setData(Response.CODE, code);
 		setData(Response.MESSAGE, message);
+	}
+
+	@Override
+	public String toString() {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			return "ResponseFail []";
+		}
 	}
 	
 }

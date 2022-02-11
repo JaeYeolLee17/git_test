@@ -24,4 +24,5 @@ public class UserDto {
     	this.phone = phone;
     	this.authority = authority;
     }
+    
 }

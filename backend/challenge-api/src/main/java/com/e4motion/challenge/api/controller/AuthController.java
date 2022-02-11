@@ -22,7 +22,7 @@ import com.e4motion.common.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "1. ¿Œ¡ı")
+@Tag(name = "1. Authentication")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v1")

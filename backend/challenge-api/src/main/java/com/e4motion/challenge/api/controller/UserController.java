@@ -17,7 +17,7 @@ import com.e4motion.common.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-@Tag(name = "2. »ç¿ëÀÚ")
+@Tag(name = "2. User")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v1/user")

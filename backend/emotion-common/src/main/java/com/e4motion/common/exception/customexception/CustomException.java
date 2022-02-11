@@ -1,5 +1,10 @@
 package com.e4motion.common.exception.customexception;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CustomException extends RuntimeException {
 	
 	/**
@@ -13,12 +18,5 @@ public class CustomException extends RuntimeException {
 		super(message);
 		this.code = code;
 	}
-
-	public String getCode() {	// TODO: lombok
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
+	
 }

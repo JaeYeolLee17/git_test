@@ -3,8 +3,6 @@ package com.e4motion.challenge.api.controller;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +17,7 @@ import com.e4motion.challenge.api.domain.dto.UserDto;
 import com.e4motion.challenge.api.domain.entity.Authority;
 import com.e4motion.challenge.api.security.CustomUser;
 import com.e4motion.challenge.api.security.JwtTokenProvider;
+import com.e4motion.common.Response;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +25,14 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "1. ¿Œ¡ı")
 @RequiredArgsConstructor
 @RestController 
-@RequestMapping(path = "v1/")
+@RequestMapping(path = "v1")
 public class AuthController {
 	
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("login")
-    public ResponseEntity<UserDto> login(@RequestBody LoginDto loginDto) {
+    @PostMapping("/login")
+    public Response login(@RequestBody LoginDto loginDto) {
     	UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
 
@@ -42,24 +41,24 @@ public class AuthController {
 
         String token = jwtTokenProvider.createToken(authentication);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-
         CustomUser userDetails = (CustomUser) authentication.getPrincipal();
 
         Set<Authority> authorities = userDetails.getAuthorities().stream()
         		.map(authority -> new Authority(authority.getAuthority()))
                 .collect(Collectors.toSet());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .body(UserDto.builder()
-                		.userId(userDetails.getUsername())
-                		.username(userDetails.getCustomUsername())
-                		.email(userDetails.getEmail())
-                		.phone(userDetails.getPhone())
-                		.authority(authorities.isEmpty() ? null : authorities.iterator().next().getAuthorityName())
-                		.build());
+        UserDto userDto = UserDto.builder()
+        		.userId(userDetails.getUsername())
+        		.username(userDetails.getCustomUsername())
+        		.email(userDetails.getEmail())
+        		.phone(userDetails.getPhone())
+        		.authority(authorities.isEmpty() ? null : authorities.iterator().next().getAuthorityName())
+        		.build();
+        
+        Response response = new Response("token", token);
+        response.setData("user", userDto);
+        
+        return response;
     }
     
 }

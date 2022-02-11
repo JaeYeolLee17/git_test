@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.e4motion.challenge.api.security.JwtAccessDeniedHandler;
 import com.e4motion.challenge.api.security.JwtAuthenticationEntryPoint;
 import com.e4motion.challenge.api.security.JwtTokenFilter;
 
@@ -28,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
     private final JwtTokenFilter jwtTokenFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Value("${management.endpoints.web.base-path}")
     private String actuatorPath;
@@ -37,9 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String swaggerPath;
 
     public SecurityConfig(JwtTokenFilter jwtTokenFilter, 
-    		JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+    		JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+    		JwtAccessDeniedHandler jwtAccessDeniedHandler) {
         this.jwtTokenFilter = jwtTokenFilter;
 		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+		this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
 
         // Inherit security context in async function calls
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
@@ -62,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         	.exceptionHandling()
         	.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        	.accessDeniedHandler(jwtAccessDeniedHandler)
 
         	// enable h2-console
         	.and()

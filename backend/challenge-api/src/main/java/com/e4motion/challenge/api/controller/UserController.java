@@ -1,7 +1,5 @@
 package com.e4motion.challenge.api.controller;
 
-import java.util.List;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.e4motion.challenge.api.domain.dto.UserDto;
 import com.e4motion.challenge.api.service.UserService;
+import com.e4motion.common.Response;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,45 +20,45 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "2. »ç¿ëÀÚ")
 @RequiredArgsConstructor
 @RestController 
-@RequestMapping(path = "v1/")
+@RequestMapping(path = "v1/user")
 public class UserController {
     
 	private final UserService userService;
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("user")
-    public UserDto create(@RequestBody UserDto userDto) {
+    @PostMapping("/")
+    public Response create(@RequestBody UserDto userDto) {
     	
-    	return userService.create(userDto);
+    	return new Response("user", userService.create(userDto));
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("user/{userId}")
-    public UserDto update(@PathVariable String userId, @RequestBody UserDto userDto) {
+    @PutMapping("/{userId}")
+    public Response update(@PathVariable String userId, @RequestBody UserDto userDto) {
 		
-		return userService.update(userId, userDto);
+		return new Response("user", userService.update(userId, userDto));
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("user/{userId}")
-    public String delete(@PathVariable String userId) {
+    @DeleteMapping("/{userId}")
+    public Response delete(@PathVariable String userId) {
 		
 		userService.delete(userId);
 		
-        return "delete ok";
+        return new Response();
     }
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
-	@GetMapping("user")
-    public List<UserDto> getList() {
+	@GetMapping("/")
+    public Response getList() {
 		
-        return userService.getList();
+        return new Response("users", userService.getList());
     }
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
-	@GetMapping("user/{userId}")
-    public UserDto get(@PathVariable String userId) {
+	@GetMapping("/{userId}")
+    public Response get(@PathVariable String userId) {
 		
-		return userService.get(userId);
+		return new Response("user", userService.get(userId));
     }
 }

@@ -29,17 +29,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain chain) throws ServletException, IOException {
+                                    FilterChain chain) throws ServletException, IOException, RuntimeException {
     	
         String token = resolveToken(request);
-        String requestURI = request.getRequestURI();
+        String method = request.getMethod();
+        String uri = request.getRequestURI();
         
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.debug("Security Context, uri: {}", authentication.getName(), requestURI);
+            logger.debug("Token ok : username {}, request {} {}", authentication.getName(), method, uri);
          } else {
-            logger.debug("Security Error!!, uri: {}", requestURI);
+            logger.debug("No token : uri {} {}", method, uri);
          }
 
         chain.doFilter(request, response);

@@ -48,5 +48,7 @@ logging:
   level:
     root: INFO
     web: DEBUG
+    com.e4motion: DEBUG
     org.springframework.security: DEBUG
     org.springframework.web.cors: DEBUG
+    

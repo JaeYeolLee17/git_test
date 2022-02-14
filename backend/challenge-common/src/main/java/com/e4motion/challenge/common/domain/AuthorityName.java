@@ -9,7 +9,6 @@ public class AuthorityName {
 	public final static String ROLE_CAMERA_ADMIN = "ROLE_CAMERA_ADMIN";
 	public final static String ROLE_CAMERA = "ROLE_CAMERA";
 	public final static String ROLE_AVL_CAR = "ROLE_AVL_CAR";
-	public final static String ROLE_ITS = "ROLE_ITS";
 	  
 }
 

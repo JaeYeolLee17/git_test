@@ -1,13 +1,51 @@
-profile:
-  message: This is default profile.
-  
-service:
-  message: Hello, Data Provider!
-  
 server:
   port: 8083
+    
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: postgres
+    password: postgres
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties: 
+        format_sql: true
+    show-sql: true
+    open-in-view: false
   
+jwt:
+  header: Authorization
+  secret: jwt secret smart city challenge
+  token-validity-in-seconds: 86400
+ 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: '/actuator'
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+    operations-sorter: alpha
+    disable-swagger-default-url: true
+    info:
+      title: Challenge Data Collector
+      description: Rest API for Challenge Data Collector
+      version: 1.0.0
+
 logging:
   level:
     root: INFO
     web: DEBUG
+    com.e4motion: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web.cors: DEBUG

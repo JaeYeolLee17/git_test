@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.e4motion.common.Response;
 import com.e4motion.common.ResponseFail;
+import com.e4motion.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.common.exception.customexception.InaccessibleException;
 import com.e4motion.common.exception.customexception.UnauthorizedException;
 import com.e4motion.common.exception.customexception.UserNotFoundException;
@@ -31,6 +32,13 @@ public class GlobalControllerExceptionHandler {
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value=UserNotFoundException.class)
 	public Response handleUserNotFoundException(UserNotFoundException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+	
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(value=CameraNotFoundException.class)
+	public Response handleCameraNotFoundException(CameraNotFoundException ex) {
 
 		return new ResponseFail(ex.getCode(), ex.getMessage());
 	}

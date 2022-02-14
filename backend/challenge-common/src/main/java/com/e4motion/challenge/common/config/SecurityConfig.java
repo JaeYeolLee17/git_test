@@ -85,6 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(format("%s/**", apiDocsPath)).permitAll()	// TODO: apply secure.
             .antMatchers(format("%s/**", swaggerPath)).permitAll()	// TODO: apply secure.
             .antMatchers("/v1/login").permitAll()
+            .antMatchers("/v1/camera/login").permitAll()
         	.anyRequest().authenticated()
 
         	.and()

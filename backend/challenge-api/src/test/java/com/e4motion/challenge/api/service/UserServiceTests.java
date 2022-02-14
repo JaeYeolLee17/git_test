@@ -13,8 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e4motion.challenge.api.domain.dto.UserDto;
-import com.e4motion.challenge.api.domain.entity.Authority;
 import com.e4motion.challenge.api.repository.UserRepository;
+import com.e4motion.challenge.common.domain.AuthorityName;
 
 @SpringBootTest
 @ActiveProfiles("unittest")
@@ -42,7 +42,7 @@ public class UserServiceTests {
 		String username = "adminname";
 		String email = "admin@email...";
 		String phone = "01022223333";
-		String authority = Authority.ROLE_ADMIN;
+		String authority = AuthorityName.ROLE_ADMIN;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)
@@ -76,7 +76,7 @@ public class UserServiceTests {
 		String username = "updated_adminname";
 		String email = "updated_admin@email...";
 		String phone = "01044445555";
-		String authority = Authority.ROLE_USER;
+		String authority = AuthorityName.ROLE_USER;
 		
 		UserDto updatedUserDto = UserDto.builder()
 				.userId(userId)

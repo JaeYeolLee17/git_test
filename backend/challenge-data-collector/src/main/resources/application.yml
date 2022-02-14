@@ -6,17 +6,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/testdb
     username: postgres
     password: postgres
-#    initialization-mode: never  # never, always - only when we want to insert test data using data.sql
-#    data: classpath:data.sql
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    hibernate: 
-#      ddl-auto: none            # none, create, update... - only when we want to make tables using Entity classes.
     properties: 
         format_sql: true
     show-sql: true
-#    defer-datasource-initialization: true 
   
 jwt:
   header: Authorization

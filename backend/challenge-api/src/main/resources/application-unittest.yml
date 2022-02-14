@@ -11,3 +11,4 @@ spring:
   jpa:
     hibernate: 
       ddl-auto: create-drop     # should be create... - We want to make tables using Entity classes.
+    defer-datasource-initialization: true

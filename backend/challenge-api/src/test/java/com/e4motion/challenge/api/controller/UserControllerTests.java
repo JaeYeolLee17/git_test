@@ -17,12 +17,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e4motion.challenge.api.domain.dto.UserDto;
-import com.e4motion.challenge.api.domain.entity.Authority;
+import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.security.JwtAccessDeniedHandler;
 import com.e4motion.common.Response;
 import com.e4motion.common.exception.customexception.UnauthorizedException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.e4motion.common.utils.TestUtils;
 
 @SpringBootTest
 @ActiveProfiles("unittest")
@@ -57,6 +56,7 @@ public class UserControllerTests {
 	}
 	
 	private void assertCreate(HttpStatus expectedStatus, String expectedResult, String expectedCode) throws Exception {
+		
 		String uri = "/v1/user";
 		
 		String userId = "user";
@@ -64,7 +64,7 @@ public class UserControllerTests {
 		String username = "username";
 		String email = "user@email...";
 		String phone = "01022223333";
-		String authority = Authority.ROLE_USER;
+		String authority = AuthorityName.ROLE_USER;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)
@@ -77,12 +77,12 @@ public class UserControllerTests {
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.post(uri)
 	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(getContent(newUserDto)))
+	    		.content(TestUtils.getJsonContent(newUserDto)))
 	    .andExpect(result -> {
 	    		MockHttpServletResponse res = result.getResponse();
 	    		assertThat(res.getStatus()).isEqualTo(expectedStatus.value());
 	    	
-	    		Response response = getResponse(res.getContentAsString());
+	    		Response response = TestUtils.getResponse(res.getContentAsString());
 	    		assertThat(response.get(Response.RESULT)).isEqualTo(expectedResult);
 	    		if (expectedCode != null) {
 	    			assertThat(response.get(Response.CODE)).isEqualTo(expectedCode);
@@ -114,6 +114,7 @@ public class UserControllerTests {
 	}
 	
 	private void assertUpdate(HttpStatus expectedStatus, String expectedResult, String expectedCode) throws Exception {
+		
 		String uri = "/v1/user/user2";
 		
 		String userId = "user2";
@@ -121,7 +122,7 @@ public class UserControllerTests {
 		String username = "username2";
 		String email = "user2@email...";
 		String phone = "01044445555";
-		String authority = Authority.ROLE_USER;
+		String authority = AuthorityName.ROLE_USER;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)
@@ -134,12 +135,12 @@ public class UserControllerTests {
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.put(uri)
 	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(getContent(newUserDto)))
+	    		.content(TestUtils.getJsonContent(newUserDto)))
 	    .andExpect(result -> {
 	    		MockHttpServletResponse res = result.getResponse();
 	    		assertThat(res.getStatus()).isEqualTo(expectedStatus.value());
 	    	
-	    		Response response = getResponse(res.getContentAsString());
+	    		Response response = TestUtils.getResponse(res.getContentAsString());
 	    		assertThat(response.get(Response.RESULT)).isEqualTo(expectedResult);
 	    		if (expectedCode != null) {
 	    			assertThat(response.get(Response.CODE)).isEqualTo(expectedCode);
@@ -171,6 +172,7 @@ public class UserControllerTests {
 	}
 	
 	private void assertDelete(HttpStatus expectedStatus, String expectedResult, String expectedCode) throws Exception {
+		
 		String uri = "/v1/user/user2";
 		
 		String userId = "user2";
@@ -178,7 +180,7 @@ public class UserControllerTests {
 		String username = "username2";
 		String email = "user2@email...";
 		String phone = "01044445555";
-		String authority = Authority.ROLE_USER;
+		String authority = AuthorityName.ROLE_USER;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)
@@ -191,12 +193,12 @@ public class UserControllerTests {
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.delete(uri)
 	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(getContent(newUserDto)))
+	    		.content(TestUtils.getJsonContent(newUserDto)))
 	    .andExpect(result -> {
 	    		MockHttpServletResponse res = result.getResponse();
 	    		assertThat(res.getStatus()).isEqualTo(expectedStatus.value());
 	    	
-	    		Response response = getResponse(res.getContentAsString());
+	    		Response response = TestUtils.getResponse(res.getContentAsString());
 	    		assertThat(response.get(Response.RESULT)).isEqualTo(expectedResult);
 	    		if (expectedCode != null) {
 	    			assertThat(response.get(Response.CODE)).isEqualTo(expectedCode);
@@ -228,6 +230,7 @@ public class UserControllerTests {
 	}
 	
 	private void assertGetList(HttpStatus expectedStatus, String expectedResult, String expectedCode) throws Exception {
+		
 		String uri = "/v1/users";
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.get(uri)
@@ -236,7 +239,7 @@ public class UserControllerTests {
 	    		MockHttpServletResponse response = result.getResponse();
 	    		assertThat(response.getStatus()).isEqualTo(expectedStatus.value());
 	    	
-	    		Response body = getResponse(response.getContentAsString());
+	    		Response body = TestUtils.getResponse(response.getContentAsString());
 	    		assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
 	    		if (expectedCode != null) {
 	    			assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
@@ -276,30 +279,12 @@ public class UserControllerTests {
 	    		MockHttpServletResponse response = result.getResponse();
 	    		assertThat(response.getStatus()).isEqualTo(expectedStatus.value());
 	    	
-	    		Response body = getResponse(response.getContentAsString());
+	    		Response body = TestUtils.getResponse(response.getContentAsString());
 	    		assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
 	    		if (expectedCode != null) {
 	    			assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
 	    		}
 	    	});
-	}
-	
-	private Response getResponse(String content) {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.readValue(content, Response.class);
-		} catch (JsonProcessingException e) {
-			return null;
-		}
-	}
-	
-	private String getContent(Object object) {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.writeValueAsString(object);
-		} catch (JsonProcessingException e) {
-			return "";
-		}
 	}
 	
 }

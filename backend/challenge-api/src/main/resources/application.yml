@@ -13,10 +13,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate: 
       ddl-auto: none            # none, create, update... - only when we want to make tables using Entity classes.
+    defer-datasource-initialization: true
     properties: 
         format_sql: true
     show-sql: true
-    defer-datasource-initialization: true 
   
 jwt:
   header: Authorization

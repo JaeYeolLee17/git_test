@@ -1,10 +1,13 @@
 package com.e4motion.challenge.api.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
 
@@ -14,15 +17,5 @@ public class UserDto {
     private String email;
     private String phone;
     private String authority;
-
-    @Builder
-    public UserDto(String userId, String password, String username, String email, String phone, String authority) {
-    	this.userId = userId;
-    	this.password = password;
-    	this.username = username;
-    	this.email = email;
-    	this.phone = phone;
-    	this.authority = authority;
-    }
     
 }

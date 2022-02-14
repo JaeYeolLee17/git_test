@@ -1,18 +1,18 @@
 package com.e4motion.challenge.data.collector.security;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.data.collector.domain.entity.User;
-import com.e4motion.challenge.data.collector.repository.UserRepository;
-import com.e4motion.common.exception.customexception.UserNotFoundException;
+import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.data.collector.domain.entity.Camera;
+import com.e4motion.challenge.data.collector.repository.CameraRepository;
+import com.e4motion.common.exception.customexception.CameraNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,28 +20,25 @@ import lombok.RequiredArgsConstructor;
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 	
-	private final UserRepository userRepository;
+	private final CameraRepository cameraRepository;
 
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(final String username) {
 
-		return userRepository.findByUserId(username)
-				.map(user -> createUser(user))
-				.orElseThrow(() -> new UserNotFoundException("Invalid user id"));
+		return cameraRepository.findByCameraId(username)
+				.map(camera -> createUser(camera))
+				.orElseThrow(() -> new CameraNotFoundException("Invalid camera id"));
 	}
 
-	private UserDetails createUser(User user) {
+	private UserDetails createUser(Camera camera) {
 		
-		List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-				.map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
-				.collect(Collectors.toList());
+		Set<SimpleGrantedAuthority> grantedAuthorities = Collections.singleton(
+				new SimpleGrantedAuthority(AuthorityName.ROLE_CAMERA));
 		
-		return new CustomUser(user.getUserId(), 
-				user.getPassword(),
-				user.getUsername(),
-				user.getEmail(),
-				user.getPhone(),
+		return new CustomUser(camera.getCameraId(), 
+				camera.getPassword(),
+				camera.isSettingsUpdated(),
 				grantedAuthorities);
    }
 	

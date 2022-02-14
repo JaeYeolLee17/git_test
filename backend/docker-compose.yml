@@ -1,8 +1,8 @@
 version: '2.1'
 
 services:   
-  api:
-    image: api:v0.0.1
+  challenge-api:
+    image: challenge-api:0.0.1
     build: challenge-api
     mem_limit: 1024m
     ports:
@@ -10,8 +10,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
-  data-collector:
-    image: data_collector:v0.0.1
+  challenge-data-collector:
+    image: challenge-data_collector:0.0.1
     build: challenge-data-collector
     mem_limit: 1024m
     ports:
@@ -19,8 +19,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
-  data-provider:
-    image: data-provider:v0.0.1
+  challenge-data-provider:
+    image: challenge-data-provider:0.0.1
     build: challenge-data-provider
     mem_limit: 1024m
     ports:

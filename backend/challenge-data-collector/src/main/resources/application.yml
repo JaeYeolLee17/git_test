@@ -1,16 +1,37 @@
-spring:
-  application:
-    name: Challenge Data Collector
-    
-profile:
-  message: This is default profile.
-  
-service:
-  message: Hello, Data Collector!
-  
 server:
-  port: 8083
+  port: 8082
+    
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: postgres
+    password: postgres
+#    initialization-mode: never  # never, always - only when we want to insert test data using data.sql
+#    data: classpath:data.sql
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate: 
+#      ddl-auto: none            # none, create, update... - only when we want to make tables using Entity classes.
+    properties: 
+        format_sql: true
+    show-sql: true
+#    defer-datasource-initialization: true 
   
+jwt:
+  header: Authorization
+  secret: jwt secret smart city challenge
+  token-validity-in-seconds: 86400
+ 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: '/actuator'
+    health:
+      show-details: always
+
 springdoc:
   api-docs:
     enabled: true
@@ -20,10 +41,15 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
     disable-swagger-default-url: true
+    info:
+      title: Challenge Data Collector
+      description: Rest API for Challenge Data Collector
+      version: 1.0.0
 
 logging:
   level:
     root: INFO
     web: DEBUG
+    com.e4motion: DEBUG
     org.springframework.security: DEBUG
     org.springframework.web.cors: DEBUG

@@ -10,7 +10,6 @@
 rootProject.name = 'backend'
 include('emotion-common')
 include('challenge-common')
-include('challenge-auth')
 include('challenge-api')
 include('challenge-data-collector')
 include('challenge-data-provider')

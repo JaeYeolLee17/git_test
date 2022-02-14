@@ -1,10 +1,3 @@
-# set active profile
-spring:
-  profiles:
-    active:
-    - default
-    
-# default
 profile:
   message: This is default profile.
   
@@ -12,7 +5,7 @@ service:
   message: Hello, Data Provider!
   
 server:
-  port: 8084
+  port: 8083
   
 logging:
   level:

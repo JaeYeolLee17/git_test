@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useAuthDispatch } from "../provider/AuthProvider";
 
 import axios from "axios";
@@ -42,10 +42,10 @@ const Login = () => {
                     withCredentials: true,
                 }
             );
-            console.log(JSON.stringify(response?.data));
+            //console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
             const result = response?.data?.result;
-            console.log("result", result);
+            //console.log("result", result);
 
             //const accessToken = response?.data?.token;
             //const roles = response?.data?.user?.authority;

@@ -2,8 +2,12 @@ package com.e4motion.challenge.api.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.e4motion.challenge.common.domain.AuthorityName;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +22,7 @@ public class Authority {
 	
 	@Id
 	@Column(name = "authority_name", length = 20)
-	private String authorityName;
+	@Enumerated(EnumType.STRING)
+	private AuthorityName authorityName;
    
 }

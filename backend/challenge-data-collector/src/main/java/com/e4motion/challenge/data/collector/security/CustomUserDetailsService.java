@@ -1,8 +1,11 @@
 package com.e4motion.challenge.data.collector.security;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,8 +36,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	private UserDetails createUser(Camera camera) {
 		
-		Set<SimpleGrantedAuthority> grantedAuthorities = Collections.singleton(
-				new SimpleGrantedAuthority(AuthorityName.ROLE_CAMERA));
+		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(
+				new SimpleGrantedAuthority(AuthorityName.ROLE_CAMERA.toString()));
 		
 		return new CustomUser(camera.getCameraId(), 
 				camera.getPassword(),

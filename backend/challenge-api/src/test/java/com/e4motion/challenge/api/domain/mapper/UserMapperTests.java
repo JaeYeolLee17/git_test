@@ -26,7 +26,7 @@ public class UserMapperTests {
 		String testUsername = "adminname";
 		String testEmail = "admin@email...";
 		String testPhone = "01022223333";
-		String testAuthority = AuthorityName.ROLE_ADMIN;
+		AuthorityName testAuthority = AuthorityName.ROLE_ADMIN;
 		
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(new Authority(testAuthority));
@@ -55,13 +55,13 @@ public class UserMapperTests {
 		String testUsername = "adminname";
 		String testEmail = "admin@eamil...";
 		String testPhone = "01022223333";
-		String testAuthority = AuthorityName.ROLE_ADMIN;
+		AuthorityName testAuthority = AuthorityName.ROLE_ADMIN;
 		
 		String testUserId2 = "user1";
 		String testUsername2 = "user1name";
 		String testEmail2 = "user1@email...";
 		String testPhone2 = "01044445555";
-		String testAuthority2 = AuthorityName.ROLE_USER;
+		AuthorityName testAuthority2 = AuthorityName.ROLE_USER;
 		
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(new Authority(testAuthority));

@@ -16,6 +16,7 @@ import com.e4motion.challenge.api.domain.dto.LoginDto;
 import com.e4motion.challenge.api.domain.dto.UserDto;
 import com.e4motion.challenge.api.domain.entity.Authority;
 import com.e4motion.challenge.api.security.CustomUser;
+import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.security.JwtTokenProvider;
 import com.e4motion.common.Response;
 
@@ -43,8 +44,8 @@ public class AuthController {
 
         CustomUser userDetails = (CustomUser) authentication.getPrincipal();
 
-        Set<Authority> authorities = userDetails.getAuthorities().stream()
-        		.map(authority -> new Authority(authority.getAuthority()))
+        Set<AuthorityName> authorities = userDetails.getAuthorities().stream()
+        		.map(authority -> AuthorityName.valueOf(authority.getAuthority()))
                 .collect(Collectors.toSet());
 
         UserDto userDto = UserDto.builder()
@@ -52,7 +53,7 @@ public class AuthController {
         		.username(userDetails.getCustomUsername())
         		.email(userDetails.getEmail())
         		.phone(userDetails.getPhone())
-        		.authority(authorities.isEmpty() ? null : authorities.iterator().next().getAuthorityName())
+        		.authority(authorities.isEmpty() ? null : authorities.iterator().next())
         		.build();
         
         Response response = new Response("token", token);

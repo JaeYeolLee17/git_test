@@ -29,7 +29,7 @@ public class UserRepositoryTests {
 	private String savedUsername = "adminname";
 	private String savedEmail = "admin@email...";
 	private String savedPhone = "01022223333";
-	private String savedAuthority = AuthorityName.ROLE_ADMIN;
+	private AuthorityName savedAuthority = AuthorityName.ROLE_ADMIN;
 	
 	private User savedUser;
 	
@@ -68,7 +68,7 @@ public class UserRepositoryTests {
 		String newUsername = "user1name";
 		String newEmail = "user1@email...";
 		String newPhone = "01044445555";
-		String newAuthority = AuthorityName.ROLE_USER;
+		AuthorityName newAuthority = AuthorityName.ROLE_USER;
 		
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(new Authority(newAuthority));
@@ -95,7 +95,7 @@ public class UserRepositoryTests {
 		String updatedUsername = "updated user name";
 		String updatedEmail = "udpated@email...";
 		String updatedPhone = "01066667777";
-		String updatedAuthority = AuthorityName.ROLE_USER;
+		AuthorityName updatedAuthority = AuthorityName.ROLE_USER;
 		
     	savedUser.setUsername(updatedUsername);
     	savedUser.setEmail(updatedEmail);

@@ -38,8 +38,8 @@ springdoc:
     operations-sorter: alpha
     disable-swagger-default-url: true
     info:
-      title: Challenge Data Collector
-      description: Rest API for Challenge Data Collector
+      title: Challenge Data Provider
+      description: Rest API for Challenge Data Provider
       version: 1.0.0
 
 logging:

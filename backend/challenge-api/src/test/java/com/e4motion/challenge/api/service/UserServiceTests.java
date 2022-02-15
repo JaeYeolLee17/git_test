@@ -42,7 +42,7 @@ public class UserServiceTests {
 		String username = "adminname";
 		String email = "admin@email...";
 		String phone = "01022223333";
-		String authority = AuthorityName.ROLE_ADMIN;
+		AuthorityName authority = AuthorityName.ROLE_ADMIN;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)
@@ -76,7 +76,7 @@ public class UserServiceTests {
 		String username = "updated_adminname";
 		String email = "updated_admin@email...";
 		String phone = "01044445555";
-		String authority = AuthorityName.ROLE_USER;
+		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		UserDto updatedUserDto = UserDto.builder()
 				.userId(userId)

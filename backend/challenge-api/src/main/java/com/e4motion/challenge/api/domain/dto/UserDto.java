@@ -1,5 +1,7 @@
 package com.e4motion.challenge.api.domain.dto;
 
+import com.e4motion.challenge.common.domain.AuthorityName;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +18,6 @@ public class UserDto {
     private String username;
     private String email;
     private String phone;
-    private String authority;
+    private AuthorityName authority;
     
 }

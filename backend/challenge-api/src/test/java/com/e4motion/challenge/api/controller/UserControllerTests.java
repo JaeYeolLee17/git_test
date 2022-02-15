@@ -64,7 +64,7 @@ public class UserControllerTests {
 		String username = "username";
 		String email = "user@email...";
 		String phone = "01022223333";
-		String authority = AuthorityName.ROLE_USER;
+		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)
@@ -122,7 +122,7 @@ public class UserControllerTests {
 		String username = "username2";
 		String email = "user2@email...";
 		String phone = "01044445555";
-		String authority = AuthorityName.ROLE_USER;
+		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)
@@ -180,7 +180,7 @@ public class UserControllerTests {
 		String username = "username2";
 		String email = "user2@email...";
 		String phone = "01044445555";
-		String authority = AuthorityName.ROLE_USER;
+		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		UserDto newUserDto = UserDto.builder()
 				.userId(userId)

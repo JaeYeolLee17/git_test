@@ -1,12 +1,11 @@
-package com.e4motion.challenge.api.domain.mapper;
+package com.e4motion.challenge.api.dto;
 
 import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.e4motion.challenge.api.domain.dto.UserDto;
-import com.e4motion.challenge.api.domain.entity.User;                              
+import com.e4motion.challenge.api.domain.User;                              
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

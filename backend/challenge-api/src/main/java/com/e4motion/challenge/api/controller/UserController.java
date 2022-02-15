@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e4motion.challenge.api.domain.dto.UserDto;
+import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.common.Response;
 
@@ -27,21 +27,21 @@ public class UserController {
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/user")
-    public Response create(@RequestBody UserDto userDto) {
+    public Response create(@RequestBody UserDto userDto) throws Exception {
     	
     	return new Response("user", userService.create(userDto));
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/user/{userId}")
-    public Response update(@PathVariable String userId, @RequestBody UserDto userDto) {
+    public Response update(@PathVariable String userId, @RequestBody UserDto userDto) throws Exception {
 		
 		return new Response("user", userService.update(userId, userDto));
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/user/{userId}")
-    public Response delete(@PathVariable String userId) {
+    public Response delete(@PathVariable String userId) throws Exception {
 		
 		userService.delete(userId);
 		
@@ -50,14 +50,14 @@ public class UserController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
 	@GetMapping("/users")
-    public Response getList() {
+    public Response getList() throws Exception {
 		
         return new Response("users", userService.getList());
     }
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
 	@GetMapping("/user/{userId}")
-    public Response get(@PathVariable String userId) {
+    public Response get(@PathVariable String userId) throws Exception {
 		
 		return new Response("user", userService.get(userId));
     }

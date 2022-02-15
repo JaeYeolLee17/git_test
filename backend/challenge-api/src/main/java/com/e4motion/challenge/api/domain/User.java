@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api.domain.entity;
+package com.e4motion.challenge.api.domain;
 
 import java.util.Set;
 

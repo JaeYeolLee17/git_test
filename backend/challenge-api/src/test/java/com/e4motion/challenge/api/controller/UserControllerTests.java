@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.api.domain.dto.UserDto;
+import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.security.JwtAccessDeniedHandler;
 import com.e4motion.common.Response;
@@ -66,7 +66,7 @@ public class UserControllerTests {
 		String phone = "01022223333";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 		
-		UserDto newUserDto = UserDto.builder()
+		UserDto userDto = UserDto.builder()
 				.userId(userId)
 				.password(password)
 				.username(username)    
@@ -77,7 +77,7 @@ public class UserControllerTests {
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.post(uri)
 	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(TestUtils.getJsonContent(newUserDto)))
+	    		.content(TestUtils.getJsonContent(userDto)))
 	    .andExpect(result -> {
 	    		MockHttpServletResponse res = result.getResponse();
 	    		assertThat(res.getStatus()).isEqualTo(expectedStatus.value());
@@ -98,7 +98,7 @@ public class UserControllerTests {
 	@Test
 	@WithMockUser(username = "user", roles = "ADMIN")
 	public void updateNonExistUserWithRoleAdmin() throws Exception {
-		assertUpdate(HttpStatus.BAD_REQUEST, Response.FAIL, null);	// Nonexistent user.
+		assertUpdate(HttpStatus.NOT_FOUND, Response.FAIL, null);	// Nonexistent user.
 	}
 	
 	@Test
@@ -115,8 +115,6 @@ public class UserControllerTests {
 	
 	private void assertUpdate(HttpStatus expectedStatus, String expectedResult, String expectedCode) throws Exception {
 		
-		String uri = "/v1/user/user2";
-		
 		String userId = "user2";
 		String password = "password2";
 		String username = "username2";
@@ -124,7 +122,9 @@ public class UserControllerTests {
 		String phone = "01044445555";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 		
-		UserDto newUserDto = UserDto.builder()
+		String uri = "/v1/user/" + userId;
+		
+		UserDto userDto = UserDto.builder()
 				.userId(userId)
 				.password(password)
 				.username(username)    
@@ -135,7 +135,7 @@ public class UserControllerTests {
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.put(uri)
 	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(TestUtils.getJsonContent(newUserDto)))
+	    		.content(TestUtils.getJsonContent(userDto)))
 	    .andExpect(result -> {
 	    		MockHttpServletResponse res = result.getResponse();
 	    		assertThat(res.getStatus()).isEqualTo(expectedStatus.value());
@@ -155,8 +155,8 @@ public class UserControllerTests {
 	
 	@Test
 	@WithMockUser(username = "user", roles = "ADMIN")
-	public void deleteWithRoleAdmin() throws Exception {
-		assertDelete(HttpStatus.BAD_REQUEST, Response.FAIL, null);	// Nonexistent user.
+	public void deleteNonExistUserWithRoleAdmin() throws Exception {
+		assertDelete(HttpStatus.OK, Response.OK, null);	// Nonexistent user but ok.
 	}
 	
 	@Test
@@ -173,27 +173,12 @@ public class UserControllerTests {
 	
 	private void assertDelete(HttpStatus expectedStatus, String expectedResult, String expectedCode) throws Exception {
 		
-		String uri = "/v1/user/user2";
-		
 		String userId = "user2";
-		String password = "password2";
-		String username = "username2";
-		String email = "user2@email...";
-		String phone = "01044445555";
-		AuthorityName authority = AuthorityName.ROLE_USER;
 		
-		UserDto newUserDto = UserDto.builder()
-				.userId(userId)
-				.password(password)
-				.username(username)    
-				.email(email)
-				.phone(phone)
-				.authority(authority)
-				.build();
+		String uri = "/v1/user/" + userId;
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.delete(uri)
-	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(TestUtils.getJsonContent(newUserDto)))
+	    		.contentType(MediaType.APPLICATION_JSON))
 	    .andExpect(result -> {
 	    		MockHttpServletResponse res = result.getResponse();
 	    		assertThat(res.getStatus()).isEqualTo(expectedStatus.value());

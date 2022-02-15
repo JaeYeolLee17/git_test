@@ -1,4 +1,4 @@
-package com.e4motion.challenge.data.provider.domain.dto;
+package com.e4motion.challenge.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.e4motion.challenge.data.provider.domain.entity;
+package com.e4motion.challenge.data.provider.domain;
 
 import java.util.Set;
 

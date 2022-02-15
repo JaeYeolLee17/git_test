@@ -29,14 +29,14 @@ public class GlobalControllerExceptionHandler {
 		return new ResponseFail(ex.getCode(), ex.getMessage());
 	}
 	
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value=UserNotFoundException.class)
 	public Response handleUserNotFoundException(UserNotFoundException ex) {
 
 		return new ResponseFail(ex.getCode(), ex.getMessage());
 	}
 	
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value=CameraNotFoundException.class)
 	public Response handleCameraNotFoundException(CameraNotFoundException ex) {
 

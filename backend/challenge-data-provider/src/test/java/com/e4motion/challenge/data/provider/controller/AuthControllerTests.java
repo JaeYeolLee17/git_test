@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.data.provider.domain.dto.LoginDto;
+import com.e4motion.challenge.data.provider.dto.LoginDto;
 import com.e4motion.common.Response;
 import com.e4motion.common.exception.customexception.UnauthorizedException;
 import com.e4motion.common.exception.customexception.UserNotFoundException;
@@ -51,7 +51,7 @@ public class AuthControllerTests {
 	@Test
 	public void loginWithNoexistentUser() throws Exception {
 		assertLogin("anonymous", "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0",
-				HttpStatus.BAD_REQUEST, Response.FAIL, UserNotFoundException.CODE);
+				HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE);
 	}
 	
 	private void assertLogin(String userId, String password, 

@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api.domain.dto;
+package com.e4motion.challenge.data.provider.dto;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
 

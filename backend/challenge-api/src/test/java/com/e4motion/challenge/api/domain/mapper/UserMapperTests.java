@@ -10,9 +10,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import com.e4motion.challenge.api.domain.dto.UserDto;
-import com.e4motion.challenge.api.domain.entity.Authority;
-import com.e4motion.challenge.api.domain.entity.User;
+import com.e4motion.challenge.api.domain.Authority;
+import com.e4motion.challenge.api.domain.User;
+import com.e4motion.challenge.api.dto.UserDto;
+import com.e4motion.challenge.api.dto.UserMapper;
 import com.e4motion.challenge.common.domain.AuthorityName;
 
 public class UserMapperTests {

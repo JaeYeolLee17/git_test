@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e4motion.challenge.api.domain.dto.LoginDto;
-import com.e4motion.challenge.api.domain.dto.UserDto;
-import com.e4motion.challenge.api.domain.entity.Authority;
+import com.e4motion.challenge.api.dto.LoginDto;
+import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.security.CustomUser;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.security.JwtTokenProvider;
@@ -33,7 +32,7 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public Response login(@RequestBody LoginDto loginDto) {
+    public Response login(@RequestBody LoginDto loginDto) throws Exception {
     	UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
 

@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api.domain.dto;
+package com.e4motion.challenge.data.collector.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDto {
+public class CameraLoginDto {
 
-    private String userId;
+    private String cameraId;
     private String password;
     
 }

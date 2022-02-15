@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.data.provider.domain.entity.User;
-import com.e4motion.challenge.data.provider.repository.UserRepository;
+import com.e4motion.challenge.data.provider.dao.UserDao;
+import com.e4motion.challenge.data.provider.domain.User;
 import com.e4motion.common.exception.customexception.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -20,21 +20,24 @@ import lombok.RequiredArgsConstructor;
 @Component("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 	
-	private final UserRepository userRepository;
+	private final UserDao userDao;
 
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(final String username) {
-
-		return userRepository.findByUserId(username)
-				.map(user -> createUser(user))
-				.orElseThrow(() -> new UserNotFoundException("Invalid user id"));
+		
+		try {
+			User user = userDao.get(username);
+			return createUser(user);
+		} catch (Exception e) {
+			throw new UserNotFoundException("Invalid user id");
+		}
 	}
 
 	private UserDetails createUser(User user) {
 		
 		List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-				.map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
+				.map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName().toString()))
 				.collect(Collectors.toList());
 		
 		return new CustomUser(user.getUserId(), 

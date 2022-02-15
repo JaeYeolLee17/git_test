@@ -3,6 +3,7 @@ package com.e4motion.challenge.api.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.api.domain.entity.Authority;
-import com.e4motion.challenge.api.domain.entity.User;
+import com.e4motion.challenge.api.domain.Authority;
+import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.common.domain.AuthorityName;
 
 @DataJpaTest
@@ -36,9 +37,9 @@ public class UserRepositoryTests {
 	@BeforeEach
    	public void setup() {
    		repository.deleteAll();
-   		
-		Set<Authority> authorities = new HashSet<>();
-		authorities.add(new Authority(savedAuthority));
+		
+		Set<Authority> authorities = Collections.singleton(new Authority(savedAuthority));
+		
 		User user = User.builder()
 				.userId(savedUserId)
 				.username(savedUsername)

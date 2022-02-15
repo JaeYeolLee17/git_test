@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.api.domain.dto.UserDto;
+import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.repository.UserRepository;
 import com.e4motion.challenge.common.domain.AuthorityName;
 
@@ -35,7 +35,7 @@ public class UserServiceTests {
     }
 	
 	//@Test
-	public UserDto create() {
+	public UserDto create() throws Exception {
 		
 		String userId = "admin";
 		String password = "password";
@@ -68,7 +68,7 @@ public class UserServiceTests {
     }
 
 	@Test
-   	public void update() {
+   	public void update() throws Exception {
 		
 		UserDto createdUserDto = create();
 		
@@ -78,37 +78,37 @@ public class UserServiceTests {
 		String phone = "01044445555";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 		
-		UserDto updatedUserDto = UserDto.builder()
+		UserDto userDto = UserDto.builder()
 				.userId(userId)
 				.username(username)    
 				.email(email)
 				.build();
 		
-		UserDto userDto = service.update(userId, updatedUserDto);
-		assertThat(userDto).isNotNull();
+		UserDto updaedUserDto = service.update(userId, userDto);
+		assertThat(updaedUserDto).isNotNull();
  
-		assertThat(userDto.getUsername()).isEqualTo(username);
-		assertThat(userDto.getEmail()).isEqualTo(email);
-		assertThat(userDto.getPhone()).isEqualTo(createdUserDto.getPhone());
-		assertThat(userDto.getAuthority()).isEqualTo(createdUserDto.getAuthority());
+		assertThat(updaedUserDto.getUsername()).isEqualTo(username);
+		assertThat(updaedUserDto.getEmail()).isEqualTo(email);
+		assertThat(updaedUserDto.getPhone()).isEqualTo(createdUserDto.getPhone());
+		assertThat(updaedUserDto.getAuthority()).isEqualTo(createdUserDto.getAuthority());
 		
-		updatedUserDto = UserDto.builder()
+		userDto = UserDto.builder()
 				.userId(userId)
 				.phone(phone)    
 				.authority(authority)
 				.build();
 		
-		userDto = service.update(userId, updatedUserDto);
-		assertThat(userDto).isNotNull();
+		updaedUserDto = service.update(userId, userDto);
+		assertThat(updaedUserDto).isNotNull();
  
-		assertThat(userDto.getUsername()).isEqualTo(username);
-		assertThat(userDto.getEmail()).isEqualTo(email);
-		assertThat(userDto.getPhone()).isEqualTo(phone);
-		assertThat(userDto.getAuthority()).isEqualTo(authority);
+		assertThat(updaedUserDto.getUsername()).isEqualTo(username);
+		assertThat(updaedUserDto.getEmail()).isEqualTo(email);
+		assertThat(updaedUserDto.getPhone()).isEqualTo(phone);
+		assertThat(updaedUserDto.getAuthority()).isEqualTo(authority);
     }
 	
 	@Test
-   	public void delete() {
+   	public void delete() throws Exception {
 		
 		UserDto createdUserDto = create();
 		

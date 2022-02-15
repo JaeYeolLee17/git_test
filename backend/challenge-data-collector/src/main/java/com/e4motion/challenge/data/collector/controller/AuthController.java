@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e4motion.challenge.common.security.JwtTokenProvider;
-import com.e4motion.challenge.data.collector.domain.dto.LoginDto;
+import com.e4motion.challenge.data.collector.domain.dto.CameraLoginDto;
 import com.e4motion.challenge.data.collector.security.CustomUser;
 import com.e4motion.common.Response;
 
@@ -27,7 +27,7 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/camera/login")
-    public Response login(@RequestBody LoginDto loginDto) {
+    public Response login(@RequestBody CameraLoginDto loginDto) {
     	UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getCameraId(), loginDto.getPassword());
 

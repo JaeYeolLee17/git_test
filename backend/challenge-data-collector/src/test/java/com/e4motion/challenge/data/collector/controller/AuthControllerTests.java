@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.data.collector.domain.dto.LoginDto;
+import com.e4motion.challenge.data.collector.domain.dto.CameraLoginDto;
 import com.e4motion.common.Response;
 import com.e4motion.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.common.exception.customexception.UnauthorizedException;
@@ -45,7 +45,7 @@ public class AuthControllerTests {
 	@Test
 	public void loginWithNoexistentCamera() throws Exception {
 		assertLogin("C0100", "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0",
-				HttpStatus.BAD_REQUEST, Response.FAIL, CameraNotFoundException.CODE);
+				HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE);
 	}
 	
 	private void assertLogin(String cameraId, String password, 
@@ -53,7 +53,7 @@ public class AuthControllerTests {
 		
 		String uri = "/v1/camera/login";
 		
-		LoginDto loginDto = LoginDto.builder()
+		CameraLoginDto loginDto = CameraLoginDto.builder()
 				.cameraId(cameraId)
 				.password(password)
 				.build();

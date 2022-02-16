@@ -26,7 +26,7 @@ function KakaoMap({ style, cameras }) {
 
     const displayCamera = (camera, index) => {
         let normalState = true; // TODO
-        let isSelected = false;
+        let isSelected = camera.cameraId === cameras.selected;
         let imageUrl =
             "/images/btn_map_cctv" +
             (normalState ? "" : "_e") +
@@ -37,7 +37,7 @@ function KakaoMap({ style, cameras }) {
 
         return (
             <MapMarker
-                key={index}
+                key={camera.cameraId}
                 position={camera.gps}
                 image={{
                     src: `${imageUrl}`,
@@ -51,6 +51,9 @@ function KakaoMap({ style, cameras }) {
                             y: level < 4 ? 20 : 15,
                         },
                     },
+                }}
+                onClick={(marker) => {
+                    cameras.clickEvent(camera.cameraId);
                 }}
             />
         );

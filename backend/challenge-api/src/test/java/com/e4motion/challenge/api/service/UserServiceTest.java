@@ -1,7 +1,6 @@
 package com.e4motion.challenge.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.List;
 

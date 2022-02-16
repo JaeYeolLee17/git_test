@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.e4motion.common.Response;
 import com.e4motion.common.ResponseFail;
+import com.e4motion.common.exception.customexception.CameraDuplicateException;
 import com.e4motion.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.common.exception.customexception.InaccessibleException;
 import com.e4motion.common.exception.customexception.UnauthorizedException;
+import com.e4motion.common.exception.customexception.UserDuplicateException;
 import com.e4motion.common.exception.customexception.UserNotFoundException;
 
 @RestControllerAdvice
@@ -42,4 +44,19 @@ public class GlobalControllerExceptionHandler {
 
 		return new ResponseFail(ex.getCode(), ex.getMessage());
 	}
+	
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	@ExceptionHandler(value=UserDuplicateException.class)
+	public Response handleUserDuplicateException(UserDuplicateException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+	
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	@ExceptionHandler(value=CameraDuplicateException.class)
+	public Response handleCameraDuplicateException(CameraDuplicateException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+	
 }

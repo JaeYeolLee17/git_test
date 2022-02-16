@@ -13,7 +13,7 @@ import com.e4motion.challenge.api.dao.UserDao;
 import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserDto;
-import com.e4motion.challenge.api.dto.UserMapper;
+import com.e4motion.challenge.api.mapper.UserMapper;
 import com.e4motion.challenge.api.service.UserService;
 
 import lombok.RequiredArgsConstructor;

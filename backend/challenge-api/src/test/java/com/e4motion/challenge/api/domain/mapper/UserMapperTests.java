@@ -13,7 +13,7 @@ import org.mapstruct.factory.Mappers;
 import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserDto;
-import com.e4motion.challenge.api.dto.UserMapper;
+import com.e4motion.challenge.api.mapper.UserMapper;
 import com.e4motion.challenge.common.domain.AuthorityName;
 
 public class UserMapperTests {

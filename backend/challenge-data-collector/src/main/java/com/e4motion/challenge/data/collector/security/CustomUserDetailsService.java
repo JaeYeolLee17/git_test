@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.data.collector.dao.CameraDao;
-import com.e4motion.challenge.data.collector.domain.entity.Camera;
+import com.e4motion.challenge.data.collector.domain.Camera;
 import com.e4motion.common.exception.customexception.CameraNotFoundException;
 
 import lombok.RequiredArgsConstructor;

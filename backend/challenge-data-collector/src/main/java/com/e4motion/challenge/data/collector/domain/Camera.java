@@ -1,4 +1,4 @@
-package com.e4motion.challenge.data.collector.domain.entity;
+package com.e4motion.challenge.data.collector.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

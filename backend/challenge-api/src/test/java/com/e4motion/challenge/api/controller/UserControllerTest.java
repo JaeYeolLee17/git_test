@@ -2,7 +2,7 @@ package com.e4motion.challenge.api.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class UserControllerTest {
 	@Autowired 
 	MockMvc mockMvc;
 	
-	@MockBean 
+	@MockBean
 	UserService userService;
 
 	@Test
@@ -71,7 +71,7 @@ public class UserControllerTest {
 				.authority(AuthorityName.ROLE_USER)
 				.build();
 		
-		when(userService.get(userDto.getUserId())).thenReturn(userDto);
+		doReturn(userDto).when(userService).get(userDto.getUserId());
 		
 		String uri = "/v1/user/" + userDto.getUserId();
 		
@@ -138,7 +138,7 @@ public class UserControllerTest {
 		userDtos.add(userDto1);
 		userDtos.add(userDto2);
 	    
-		when(userService.getList()).thenReturn(userDtos);
+		doReturn(userDtos).when(userService).getList();
 		
 		String uri = "/v1/users";
 		
@@ -196,7 +196,7 @@ public class UserControllerTest {
 				.authority(AuthorityName.ROLE_USER)
 				.build();
 		
-		when(userService.create(userDto)).thenReturn(userDto);
+		doReturn(userDto).when(userService).create(userDto);
 		
 		String uri = "/v1/user";
 	    
@@ -251,7 +251,7 @@ public class UserControllerTest {
 				.authority(AuthorityName.ROLE_USER)
 				.build();
 		
-		when(userService.update(userDto.getUserId(), userDto)).thenReturn(userDto);
+		doReturn(userDto).when(userService).update(userDto.getUserId(), userDto);
 		
 		String uri = "/v1/user/" + userDto.getUserId();
 	    

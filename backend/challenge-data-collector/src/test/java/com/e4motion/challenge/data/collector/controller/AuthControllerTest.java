@@ -1,7 +1,8 @@
 package com.e4motion.challenge.data.collector.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 import java.util.Collections;
 import java.util.Set;
@@ -40,7 +41,7 @@ public class AuthControllerTest {
 	@Autowired 
 	PasswordEncoder passwordEncoder;
 	
-	@MockBean 
+	@MockBean
 	UserDetailsService userDetailsService;
 	
 	@Test
@@ -50,7 +51,7 @@ public class AuthControllerTest {
 		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
 		AuthorityName authority = AuthorityName.ROLE_CAMERA;
 		
-		when(userDetailsService.loadUserByUsername(cameraId)).thenReturn(getUserDetails(cameraId, password, authority));
+		doReturn(getUserDetails(cameraId, password, authority)).when(userDetailsService).loadUserByUsername(cameraId);
 		
 		assertLogin(cameraId, password, HttpStatus.OK, Response.OK, null);
 	}
@@ -62,7 +63,7 @@ public class AuthControllerTest {
 		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
 		AuthorityName authority = AuthorityName.ROLE_CAMERA;
 		
-		when(userDetailsService.loadUserByUsername(cameraId)).thenReturn(getUserDetails(cameraId, password, authority));
+		doReturn(getUserDetails(cameraId, password, authority)).when(userDetailsService).loadUserByUsername(cameraId);
 		
 		assertLogin(cameraId, "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3------",	// Invalid password
 				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE);
@@ -73,7 +74,7 @@ public class AuthControllerTest {
 		String cameraId = "C0100";
 		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
 		
-		when(userDetailsService.loadUserByUsername(cameraId)).thenThrow(new UserNotFoundException("Invalid user id"));
+		doThrow(new UserNotFoundException("Invalid user id")).when(userDetailsService).loadUserByUsername(cameraId);
 		
 		assertLogin(cameraId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE);
 	}

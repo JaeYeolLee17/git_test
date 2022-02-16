@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     
 	private final UserService userService;
-    
+	
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/user")
     public Response create(@RequestBody UserDto userDto) throws Exception {
@@ -49,16 +49,16 @@ public class UserController {
     }
 	
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
-	@GetMapping("/users")
-    public Response getList() throws Exception {
-		
-        return new Response("users", userService.getList());
-    }
-	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
 	@GetMapping("/user/{userId}")
     public Response get(@PathVariable String userId) throws Exception {
 		
 		return new Response("user", userService.get(userId));
+    }
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
+	@GetMapping("/users")
+    public Response getList() throws Exception {
+		
+        return new Response("users", userService.getList());
     }
 }

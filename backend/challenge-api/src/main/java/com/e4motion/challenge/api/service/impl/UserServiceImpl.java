@@ -9,12 +9,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e4motion.challenge.api.dao.UserDao;
 import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.mapper.UserMapper;
+import com.e4motion.challenge.api.repository.UserRepository;
 import com.e4motion.challenge.api.service.UserService;
+import com.e4motion.common.exception.customexception.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,24 +23,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserServiceImpl implements UserService {
 	
-	private final UserDao userDao;
+	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     
-    @Transactional(readOnly = true)
-    public List<UserDto> getList() throws Exception {
-    	
-        return userMapper.toUserDto(userDao.getList());
-    }
-    
-    @Transactional(readOnly = true)
-    public UserDto get(String userId) throws Exception {
-    	
-        return userMapper.toUserDto(userDao.get(userId));
-    }
-    
     @Transactional
-    public UserDto create(UserDto userDto) throws Exception {
+    public UserDto create(UserDto userDto) {
 
         User user = User.builder()
                 .userId(userDto.getUserId())
@@ -51,33 +40,57 @@ public class UserServiceImpl implements UserService {
                 .activated(true)
                 .build();
 
-        return userMapper.toUserDto(userDao.create(user));
+        return userMapper.toUserDto(userRepository.save(user));
     }
     
     @Transactional
-    public UserDto update(String userId, UserDto userDto) throws Exception {
-		
-    	User user = User.builder()
-                .userId(userId)
-                .password(userDto.getPassword() != null ? passwordEncoder.encode(userDto.getPassword()) : null)
-                .username(userDto.getUsername())
-                .email(userDto.getEmail())
-                .phone(userDto.getPhone())
-                .activated(true)
-                .build();
-
-    	Set<Authority> authorities = new HashSet<>();
-		if (userDto.getAuthority() != null) {
-			authorities.add(new Authority(userDto.getAuthority()));
+    public UserDto update(String userId, UserDto userDto) {
+    	
+    	User user = userRepository.findByUserId(userId).orElse(null);
+    	if (user == null) {
+    		throw new UserNotFoundException("Invalid user id");
     	}
-		user.setAuthorities(authorities);
+    	
+    	if (userDto.getPassword() != null) {
+    		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+    	}
+    	
+		if (userDto.getUsername() != null) {
+    		user.setUsername(userDto.getUsername());
+    	}
 		
-		return userMapper.toUserDto(userDao.update(user));
+		if (userDto.getEmail() != null) {
+    		user.setEmail(userDto.getEmail());
+    	}
+		
+		if (userDto.getPhone() != null) {
+    		user.setPhone(userDto.getPhone());
+    	}
+		
+		if (userDto.getAuthority() != null) {
+			Set<Authority> authorities = new HashSet<>();	// Do not use Collections.singleton when save for update.
+			authorities.add(new Authority(userDto.getAuthority()));
+    		user.setAuthorities(authorities);
+    	}
+		
+		return userMapper.toUserDto(userRepository.save(user));
     }
 
     @Transactional
-    public void delete(String userId) throws Exception {
+    public void delete(String userId) {
     	
-    	userDao.delete(userId);
+    	userRepository.deleteByUserId(userId);
+    }
+    
+    @Transactional(readOnly = true)
+    public UserDto get(String userId) {
+    	
+        return userMapper.toUserDto(userRepository.findByUserId(userId).orElse(null));
+    }
+    
+    @Transactional(readOnly = true)
+    public List<UserDto> getList() {
+    	
+        return userMapper.toUserDto(userRepository.findAll());
     }
 }

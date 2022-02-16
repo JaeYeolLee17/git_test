@@ -18,8 +18,8 @@ import com.e4motion.challenge.common.domain.AuthorityName;
 
 @SpringBootTest
 @ActiveProfiles("unittest")
-@Transactional(propagation = NOT_SUPPORTED)
-public class UserServiceTests {
+@Transactional
+public class UserServiceTest {
 	
 	@Autowired
     private UserRepository repository;

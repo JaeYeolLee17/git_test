@@ -19,7 +19,7 @@ import com.e4motion.challenge.api.dto.LoginDto;
 import com.e4motion.common.Response;
 import com.e4motion.common.exception.customexception.UnauthorizedException;
 import com.e4motion.common.exception.customexception.UserNotFoundException;
-import com.e4motion.common.utils.TestUtils;
+import com.e4motion.common.utils.JsonHelper;
 
 @SpringBootTest
 @ActiveProfiles("unittest")
@@ -66,15 +66,15 @@ public class AuthControllerTests {
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.post(uri)
 	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(TestUtils.getJsonContent(loginDto)))
+	    		.content(JsonHelper.toJson(loginDto)))
 	    .andExpect(result -> {
-	    		MockHttpServletResponse res = result.getResponse();
-	    		assertThat(res.getStatus()).isEqualTo(expectedStatus.value());
+	    		MockHttpServletResponse response = result.getResponse();
+	    		assertThat(response.getStatus()).isEqualTo(expectedStatus.value());
 	    	
-	    		Response response = TestUtils.getResponse(res.getContentAsString());
-	    		assertThat(response.get(Response.RESULT)).isEqualTo(expectedResult);
+	    		Response body = JsonHelper.fromJson(response.getContentAsString(), Response.class);
+	    		assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
 	    		if (expectedCode != null) {
-	    			assertThat(response.get(Response.CODE)).isEqualTo(expectedCode);
+	    			assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
 	    		}
 	    });
 	}

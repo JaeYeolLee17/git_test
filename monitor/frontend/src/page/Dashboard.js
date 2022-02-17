@@ -13,7 +13,7 @@ import {
 } from "../utils/utils";
 
 const CAMERA_URL = "/challenge-api/v1/cameras";
-//const STREAM_URL = "/challenge-api/v1/login";
+const STREAM_URL_START = "/start";
 
 const Dashboard = () => {
     const userDetails = useAuthState();
@@ -98,51 +98,21 @@ const Dashboard = () => {
         return infos;
     };
 
-    // const requestStreamStart = async (streamCameraInfo) => {
-    //     try {
-    //         const response = await axios.post(
-    //             LOGIN_URL,
-    //             streamCameraInfo
-    //         );
-    //         //console.log(JSON.stringify(response?.data));
-    //         //console.log(JSON.stringify(response));
-    //         const result = response?.data?.result;
-    //         //console.log("result", result);
+    const requestStreamStart = async (streamCameraInfo) => {
+        try {
+            console.log(streamCameraInfo);
+            const response = await axios.post(STREAM_URL_START, {
+                data: streamCameraInfo,
+            });
 
-    //         //const accessToken = response?.data?.token;
-    //         //const roles = response?.data?.user?.authority;
-    //         //console.log("accessToken", accessToken);
-    //         //console.log("roles", roles);
-    //         //setAuth({ user, pwd, roles, accessToken });
-    //         setUser("");
-    //         setPwd("");
-    //         setSuccess(true);
-
-    //         if (result === "ok") {
-    //             dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
-    //             localStorage.setItem(
-    //                 "currentUser",
-    //                 JSON.stringify(response.data)
-    //             );
-    //             navigate("/dashboard");
-    //         } else {
-    //             dispatch({ type: "LOGIN_ERROR", error: "Login failed" });
-    //             localStorage.removeItem("currentUser");
-    //         }
-    //         //navigate("/dashboard");
-    //     } catch (err) {
-    //         if (!err?.response) {
-    //             setErrMsg("No Server Response");
-    //         } else if (err.response?.status === 400) {
-    //             setErrMsg("Missing Username or Password");
-    //         } else if (err.response?.status === 401) {
-    //             setErrMsg("Unauthorized");
-    //         } else {
-    //             setErrMsg("Login Failed");
-    //         }
-    //         errRef.current.focus();
-    //     }
-    //  };
+            //console.log(JSON.stringify(response?.data));
+            //console.log(JSON.stringify(response));
+            const result = response?.data?.result;
+            //console.log("result", result);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const handleClickCamera = (cameraId) => {
         setSelectedCamera(cameraId);
@@ -151,9 +121,9 @@ const Dashboard = () => {
             utilGetInstsectionCameras(listCamera, cameraId)
         );
 
-        //requestStreamStart(streamCameraInfo);
+        requestStreamStart(streamCameraInfo);
 
-        console.log("streamCameraInfo", streamCameraInfo);
+        //console.log("streamCameraInfo", streamCameraInfo);
     };
 
     return (

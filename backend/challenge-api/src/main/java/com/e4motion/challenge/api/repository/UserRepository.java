@@ -1,20 +1,22 @@
 package com.e4motion.challenge.api.repository;
 
+import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.e4motion.challenge.api.domain.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository {
 	
-	@Transactional(readOnly=true)
-	@EntityGraph(attributePaths = "authorities")
-	public Optional<User> findByUserId(String userId);
+	User save(User user);
 	
-	@EntityGraph(attributePaths = "authorities")
-	public void deleteByUserId(String userId);
+	List<User> findAll();
+	
+	void deleteAll();
+	
+	long count();
+	
+	Optional<User> findByUserId(String userId);
+
+	void deleteByUserId(String userId);
 	
 }

@@ -5,15 +5,15 @@ import java.util.List;
 import com.e4motion.challenge.api.dto.UserDto;
 
 public interface UserService {
+	
+    UserDto create(UserDto userDto);
     
-    UserDto get(String userId) throws Exception;
+    public UserDto update(String userId, UserDto userDto);
     
-    List<UserDto> getList() throws Exception;
+    public void delete(String userId);
     
-    UserDto create(UserDto userDto) throws Exception;
+    public UserDto get(String userId);
     
-    UserDto update(String userId, UserDto userDto) throws Exception;
-
-    void delete(String userId) throws Exception;
-
+    public List<UserDto> getList();
+    
 }

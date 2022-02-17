@@ -10,11 +10,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "nt_user")
@@ -45,16 +48,5 @@ public class User {
     	joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
       	inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
-   
-    @Builder
-    public User(String userId, String password, String username, String email, String phone, boolean activated, Set<Authority> authorities) {
-    	this.userId = userId;
-    	this.password = password;
-    	this.username = username;
-    	this.email = email;
-    	this.phone = phone;
-    	this.activated = activated;
-    	this.authorities = authorities;
-    }
    
 }

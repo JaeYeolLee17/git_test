@@ -7,6 +7,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.25.0",
+    "http-proxy-middleware": "^2.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-kakao-maps-sdk": "^1.0.4",
@@ -14,7 +15,6 @@
     "react-scripts": "5.0.0",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://118.45.187.140:9292",
   "scripts": {
     "start": "export PORT=8080 && react-scripts start",
     "build": "react-scripts build",

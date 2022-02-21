@@ -12,11 +12,10 @@ CREATE TABLE public.nt_authority
 CREATE TABLE public.nt_user
 (
     user_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
-    activated boolean,
-    email character varying(128) COLLATE pg_catalog."default",
-    password character varying(128) COLLATE pg_catalog."default",
+    password character varying(128) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(40) COLLATE pg_catalog."default",
     phone character varying(20) COLLATE pg_catalog."default",
-    username character varying(20) COLLATE pg_catalog."default",
     CONSTRAINT nt_user_pkey PRIMARY KEY (user_id)
 );
 

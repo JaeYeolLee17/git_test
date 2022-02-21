@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
                 .email(userDto.getEmail())
                 .phone(userDto.getPhone())
                 .authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-                .activated(true)
                 .build();
 
         return userMapper.toUserDto(userRepository.save(user));

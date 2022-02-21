@@ -9,6 +9,6 @@ import com.e4motion.challenge.data.collector.repository.CameraRepository;
 
 public interface JpaCameraRepository extends JpaRepository<Camera, Long>, CameraRepository {
 	
-	public Optional<Camera> findByCameraId(String cameraId);
+	Optional<Camera> findByCameraId(String cameraId);
 	
 }

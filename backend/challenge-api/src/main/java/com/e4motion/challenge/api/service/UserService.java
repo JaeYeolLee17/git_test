@@ -8,12 +8,12 @@ public interface UserService {
 	
     UserDto create(UserDto userDto);
     
-    public UserDto update(String userId, UserDto userDto);
+    UserDto update(String userId, UserDto userDto);
     
-    public void delete(String userId);
+    void delete(String userId);
     
-    public UserDto get(String userId);
+    UserDto get(String userId);
     
-    public List<UserDto> getList();
+    List<UserDto> getList();
     
 }

@@ -13,13 +13,13 @@ import lombok.Data;
 public class Camera {
 	
 	@Id
-	@Column(name = "camera_id", length = 10)
+	@Column(name = "camera_id")
 	private String cameraId;
 
-	@Column(name = "password", length = 128)
+	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "intersection_id", length = 10)
+	@Column(name = "intersection_id")
 	private String intersectionId;
 	
 	

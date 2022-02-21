@@ -13,8 +13,8 @@ public interface UserMapper {
     
 	@Mapping(target = "authority", expression = "java(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName())")
 	@Mapping(target = "password", ignore = true)
-    public UserDto toUserDto(User user);
+    UserDto toUserDto(User user);
 
-    public List<UserDto> toUserDto(List<User> users);
+    List<UserDto> toUserDto(List<User> users);
 
 }

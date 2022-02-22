@@ -11,9 +11,11 @@ import {
     utilGetInstsectionCameras,
     utilIsPremakeIntersection,
 } from "../utils/utils";
+import StreamCamera from "../component/StreamCamera";
 
 const CAMERA_URL = "/challenge-api/v1/cameras";
 const STREAM_URL_START = "/start";
+const STREAM_URL_STOP = "/stop";
 
 const Dashboard = () => {
     const userDetails = useAuthState();
@@ -21,6 +23,8 @@ const Dashboard = () => {
     const [listCamera, setListCamera] = useState([]);
     const [showCameras, setShowCameras] = useState(true);
     const [selectedCamera, setSelectedCamera] = useState("");
+
+    const [listStreamResponse, setListStreamResponse] = useState([]);
 
     const requesetCameras = async (e) => {
         try {
@@ -44,7 +48,11 @@ const Dashboard = () => {
         const timerId = setInterval(() => {
             requesetCameras();
         }, 10 * 1000);
-        return () => setInterval(timerId);
+        return () => {
+            setInterval(timerId);
+            requestStreamStop(listStreamResponse);
+        };
+        //requesetCameras();
     }, []);
 
     const makeStreamCameraList = (list) => {
@@ -92,6 +100,13 @@ const Dashboard = () => {
                 }
             }
 
+            // For Test [[
+            camera.url =
+                "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
+            camera.width = 240;
+            camera.height = 160;
+            // ]]
+
             return camera;
         });
 
@@ -106,9 +121,31 @@ const Dashboard = () => {
             });
 
             //console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
+            console.log(JSON.stringify(response));
+
             const result = response?.data?.result;
+            console.log("result", result);
+
+            setListStreamResponse(response?.data?.streams);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const requestStreamStop = async (streamCameraInfo) => {
+        try {
+            console.log(streamCameraInfo);
+            const response = await axios.post(STREAM_URL_STOP, {
+                data: streamCameraInfo,
+            });
+
+            //console.log(JSON.stringify(response?.data));
+            //console.log(JSON.stringify(response));
+
+            //const result = response?.data?.result;
             //console.log("result", result);
+
+            setListStreamResponse(response?.data?.streams);
         } catch (err) {
             console.log(err);
         }
@@ -116,6 +153,8 @@ const Dashboard = () => {
 
     const handleClickCamera = (cameraId) => {
         setSelectedCamera(cameraId);
+
+        requestStreamStop(listStreamResponse);
 
         let streamCameraInfo = makeStreamCameraList(
             utilGetInstsectionCameras(listCamera, cameraId)
@@ -143,6 +182,10 @@ const Dashboard = () => {
                     clickEvent: handleClickCamera,
                 }}
             />
+            {listStreamResponse &&
+                listStreamResponse.map((stream) => (
+                    <StreamCamera key={stream.cameraId} stream={stream} />
+                ))}
         </div>
     );
 };

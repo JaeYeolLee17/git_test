@@ -5,13 +5,13 @@ INSERT INTO NT_AUTHORITY (AUTHORITY_NAME) values ('ROLE_DATA');
 INSERT INTO NT_AUTHORITY (AUTHORITY_NAME) values ('ROLE_CAMERA_ADMIN');
 INSERT INTO NT_AUTHORITY (AUTHORITY_NAME) values ('ROLE_CAMERA');
 
-INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE, ACTIVATED) VALUES ('admin', 'admin_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'admin@email...', '010-...', true);
-INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE, ACTIVATED) VALUES ('manager', 'manager_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'manager@email...', '010-...', true);
-INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE, ACTIVATED) VALUES ('user1', 'user_name1', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'user1@email...', '010-...', true);
-INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE, ACTIVATED) VALUES ('user2', 'user_name2', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'user2@email...', '010-...', true);
-INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE, ACTIVATED) VALUES ('algorithm', 'algorithm_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'algorithm@email...', '010-...', true);
-INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE, ACTIVATED) VALUES ('simulator', 'simulator_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'simulator@email...', '010-...', true);
-INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE, ACTIVATED) VALUES ('cameraadmin', 'cameraadmin_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'cameraadmin@email...', '010-...', true);
+INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE) VALUES ('admin', 'admin_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'admin@email...', '010-...');
+INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE) VALUES ('manager', 'manager_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'manager@email...', '010-...');
+INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE) VALUES ('user1', 'user_name1', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'user1@email...', '010-...');
+INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE) VALUES ('user2', 'user_name2', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'user2@email...', '010-...');
+INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE) VALUES ('algorithm', 'algorithm_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'algorithm@email...', '010-...');
+INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE) VALUES ('simulator', 'simulator_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'simulator@email...', '010-...');
+INSERT INTO NT_USER (USER_ID, USERNAME, PASSWORD, EMAIL, PHONE) VALUES ('cameraadmin', 'cameraadmin_name', '$2a$10$ZopyHUrwUiE1n2Y0ck.JkuHPB34PQ8U6qTHPRRg6nPYinAeOBirs.', 'cameraadmin@email...', '010-...');
 
 INSERT INTO NT_USER_AUTHORITY (USER_ID, AUTHORITY_NAME) values ('admin', 'ROLE_ADMIN');
 INSERT INTO NT_USER_AUTHORITY (USER_ID, AUTHORITY_NAME) values ('manager', 'ROLE_MANAGER');

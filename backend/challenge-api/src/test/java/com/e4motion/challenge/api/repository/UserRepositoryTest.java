@@ -20,9 +20,9 @@ import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.common.domain.AuthorityName;
 
 @DataJpaTest
-@ActiveProfiles("unittest")
+@ActiveProfiles("test")
 @Transactional
-class JpaUserRepositoryTest {
+class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository repository;

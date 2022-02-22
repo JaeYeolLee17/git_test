@@ -70,7 +70,7 @@ public class AuthControllerTest {
 	}
 	
 	@Test
-	public void loginWithNoexistentCamera() throws Exception {
+	public void loginWithNonexistentCamera() throws Exception {
 		String cameraId = "C0100";
 		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
 		

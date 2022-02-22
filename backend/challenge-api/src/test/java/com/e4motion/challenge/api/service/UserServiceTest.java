@@ -100,7 +100,6 @@ public class UserServiceTest {
 				.email(newUserDto.getEmail())
 				.phone(newUserDto.getPhone())
 				.authorities(Collections.singleton(new Authority(newUserDto.getAuthority())))
-				.activated(true)
 				.build();
 		
 		doReturn(Optional.of(newUser)).when(userRepository).findByUserId(newUserDto.getUserId());

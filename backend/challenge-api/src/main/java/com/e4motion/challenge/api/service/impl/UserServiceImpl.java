@@ -32,11 +32,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto create(UserDto userDto) {
 
-    	Optional<User> foundUser = userRepository.findByUserId(userDto.getUserId());
-    	if (foundUser.isPresent()) {
-    		throw new UserDuplicateException("User id already exists");
-    	}
-    	
+    	userRepository.findByUserId(userDto.getUserId())
+				.ifPresent(user -> {
+					throw new UserDuplicateException("User id already exists");
+				});
+
         User user = User.builder()
                 .userId(userDto.getUserId())
                 .password(passwordEncoder.encode(userDto.getPassword()))
@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
                 .email(userDto.getEmail())
                 .phone(userDto.getPhone())
                 .authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-                .activated(true)
                 .build();
 
         return userMapper.toUserDto(userRepository.save(user));
@@ -52,35 +51,32 @@ public class UserServiceImpl implements UserService {
     
     @Transactional
     public UserDto update(String userId, UserDto userDto) {
-    	
-    	Optional<User> foundUser = userRepository.findByUserId(userId);
-    	if (!foundUser.isPresent()) {
-    		throw new UserNotFoundException("Invalid user id");
-    	}
-    	
-    	User user = foundUser.get();
-    	if (userDto.getPassword() != null) {
-    		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    	}
-    	
+
+    	User user = userRepository.findByUserId(userId)
+				.orElseThrow(() -> new UserNotFoundException("Invalid user id"));
+
+		if (userDto.getPassword() != null) {
+			user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		}
+
 		if (userDto.getUsername() != null) {
 			user.setUsername(userDto.getUsername());
-    	}
-		
+		}
+
 		if (userDto.getEmail() != null) {
 			user.setEmail(userDto.getEmail());
-    	}
-		
+		}
+
 		if (userDto.getPhone() != null) {
 			user.setPhone(userDto.getPhone());
-    	}
-		
+		}
+
 		if (userDto.getAuthority() != null) {
 			Set<Authority> authorities = new HashSet<>();	// Do not use Collections.singleton when save for update.
 			authorities.add(new Authority(userDto.getAuthority()));
 			user.setAuthorities(authorities);
-    	}
-		
+		}
+
 		return userMapper.toUserDto(userRepository.save(user));
     }
 

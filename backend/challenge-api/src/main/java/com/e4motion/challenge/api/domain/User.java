@@ -24,23 +24,20 @@ import lombok.NoArgsConstructor;
 public class User {
 	
 	@Id
-	@Column(name = "user_id", length = 20)
+	@Column(name = "user_id")
 	private String userId;
 
-	@Column(name = "password", length = 128)
+	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "username", length = 20)
+	@Column(name = "username")
 	private String username;
 
-	@Column(name = "email", length = 128)
+	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "phone", length = 20)
+	@Column(name = "phone")
 	private String phone;
-   
-   	@Column(name = "activated")
-   	private boolean activated;
 
     @ManyToMany
     @JoinTable(

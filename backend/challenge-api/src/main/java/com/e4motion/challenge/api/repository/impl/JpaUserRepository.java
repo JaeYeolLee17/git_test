@@ -12,11 +12,11 @@ import com.e4motion.challenge.api.repository.UserRepository;
 public interface JpaUserRepository extends JpaRepository<User, Long>, UserRepository {
 	
 	@Transactional(readOnly=true)
-	@EntityGraph(attributePaths = "authorities")	// TODO: check actions.
-	public Optional<User> findByUserId(String userId);
+	@EntityGraph(attributePaths = "authorities")
+	Optional<User> findByUserId(String userId);
 	
 	@Transactional
-	@EntityGraph(attributePaths = "authorities")	// TODO: check actions.
-	public void deleteByUserId(String userId);
+	@EntityGraph(attributePaths = "authorities")
+	void deleteByUserId(String userId);
 	
 }

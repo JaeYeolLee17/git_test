@@ -82,7 +82,7 @@ public class AuthControllerTest {
 	}
 	
 	@Test
-	public void loginWithNoexistentUser() throws Exception {
+	public void loginWithNonexistentUser() throws Exception {
 		
 		String userId = "anonymous";
 		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";

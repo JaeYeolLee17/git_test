@@ -52,32 +52,33 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto update(String userId, UserDto userDto) {
 
-    	User user = userRepository.findByUserId(userId)
+    	return userRepository.findByUserId(userId)
+				.map(user -> {
+					if (userDto.getPassword() != null) {
+						user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+					}
+
+					if (userDto.getUsername() != null) {
+						user.setUsername(userDto.getUsername());
+					}
+
+					if (userDto.getEmail() != null) {
+						user.setEmail(userDto.getEmail());
+					}
+
+					if (userDto.getPhone() != null) {
+						user.setPhone(userDto.getPhone());
+					}
+
+					if (userDto.getAuthority() != null) {
+						Set<Authority> authorities = new HashSet<>();	// Do not use Collections.singleton when save for update.
+						authorities.add(new Authority(userDto.getAuthority()));
+						user.setAuthorities(authorities);
+					}
+
+					return userMapper.toUserDto(userRepository.save(user));
+				})
 				.orElseThrow(() -> new UserNotFoundException("Invalid user id"));
-
-		if (userDto.getPassword() != null) {
-			user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		}
-
-		if (userDto.getUsername() != null) {
-			user.setUsername(userDto.getUsername());
-		}
-
-		if (userDto.getEmail() != null) {
-			user.setEmail(userDto.getEmail());
-		}
-
-		if (userDto.getPhone() != null) {
-			user.setPhone(userDto.getPhone());
-		}
-
-		if (userDto.getAuthority() != null) {
-			Set<Authority> authorities = new HashSet<>();	// Do not use Collections.singleton when save for update.
-			authorities.add(new Authority(userDto.getAuthority()));
-			user.setAuthorities(authorities);
-		}
-
-		return userMapper.toUserDto(userRepository.save(user));
     }
 
     @Transactional

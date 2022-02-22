@@ -13,7 +13,13 @@ spring:
         format_sql: true
     show-sql: true
     open-in-view: false
-  
+
+hbase:
+  zookeeper:
+    quorum: devchallenge01.e4motion.com,devchallenge02.e4motion.com,devchallenge03.e4motion.com
+    property:
+      clientPort: 2181
+
 jwt:
   header: Authorization
   secret: jwt secret smart city challenge

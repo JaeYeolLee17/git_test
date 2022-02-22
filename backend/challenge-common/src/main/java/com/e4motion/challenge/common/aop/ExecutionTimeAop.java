@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExecutionTimeAop {
 
-    @Around("execution(* com.e4motion.challenge.*.controller..*(..))")
+    @Around("execution(* com.e4motion.challenge..*.controller..*(..))")
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         try {

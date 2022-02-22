@@ -11,7 +11,7 @@ import com.e4motion.challenge.api.repository.UserRepository;
 
 public interface JpaUserRepository extends JpaRepository<User, Long>, UserRepository {
 	
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	@EntityGraph(attributePaths = "authorities")
 	Optional<User> findByUserId(String userId);
 	

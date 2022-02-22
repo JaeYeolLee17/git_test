@@ -14,4 +14,11 @@ module.exports = function (app) {
             changeOrigin: true,
         })
     );
+
+    app.use(
+        createProxyMiddleware("/stop", {
+            target: process.env.REACT_APP_STREAM_URI,
+            changeOrigin: true,
+        })
+    );
 };

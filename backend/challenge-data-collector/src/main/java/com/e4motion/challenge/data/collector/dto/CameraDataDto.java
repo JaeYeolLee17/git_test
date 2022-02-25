@@ -1,5 +1,6 @@
 package com.e4motion.challenge.data.collector.dto;
 
+import com.e4motion.challenge.data.common.dto.TrafficDataDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataDto {
-
-    public final static int CAR_TYPE = 5;
+public class CameraDataDto {
 
     private String v;
     private String c;

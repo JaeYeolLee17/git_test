@@ -1,4 +1,4 @@
-package com.e4motion.challenge.data.collector.config;
+package com.e4motion.challenge.data.common.config;
 
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;

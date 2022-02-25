@@ -15,14 +15,14 @@ public class CustomUser extends User {
 	private String customUsername;
 	private String email;
 	private String phone;
-   	
-   	public CustomUser(String userId, String password, String username, String email, String phone, 
-   			Collection<? extends GrantedAuthority> authorities) {
-   		
-   		super(userId, password, authorities);
-   		this.customUsername = username;
-   		this.email = email;
-   		this.phone = phone;
-   	}
+
+	public CustomUser(String userId, String password, String username, String email, String phone,
+					  Collection<? extends GrantedAuthority> authorities) {
+
+		super(userId, password, authorities);
+		this.customUsername = username;
+		this.email = email;
+		this.phone = phone;
+	}
 
 }

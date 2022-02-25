@@ -1,14 +1,9 @@
 package com.e4motion.challenge.data.collector.repository;
 
-import com.e4motion.challenge.data.collector.dto.DataDto;
-
-import java.util.HashMap;
-import java.util.List;
+import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 
 public interface DataRepository {
 
-    void insert(DataDto data);
-
-    List<DataDto> query(HashMap<String, Object> map);
+    void insert(CameraDataDto cameraDataDto);
 
 }

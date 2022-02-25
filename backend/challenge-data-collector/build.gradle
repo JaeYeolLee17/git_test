@@ -19,6 +19,8 @@ repositories {
 dependencies {
 	implementation project(':emotion-common')
 	implementation project(':challenge-common')
+	implementation project(':challenge-data-common')
+
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
@@ -28,7 +30,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
 
-	implementation group: 'org.springframework.data', name: 'spring-data-hadoop', version: '2.5.0.RELEASE'
+	implementation group: 'org.springframework.data', name: 'spring-data-hadoop-hbase', version: '2.5.0.RELEASE'
 	implementation ('org.apache.hbase:hbase-client:1.7.1') {
 		exclude group: 'org.slf4j'
 	}

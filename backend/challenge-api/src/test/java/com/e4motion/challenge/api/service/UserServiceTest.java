@@ -81,7 +81,7 @@ public class UserServiceTest {
     }
 	
 	@Test
-	public void createDuplicate() throws Exception {
+	public void createDuplicateUser() throws Exception {
 		
 		// given
 		UserDto newUserDto = UserDto.builder()
@@ -144,7 +144,7 @@ public class UserServiceTest {
     }
 	
 	@Test
-   	public void updateNotExist() throws Exception {
+   	public void updateNonexistentUser() throws Exception {
 		
 		// given		
 		UserDto updateUserDto = UserDto.builder()

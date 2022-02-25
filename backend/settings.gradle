@@ -11,5 +11,6 @@ rootProject.name = 'backend'
 include('emotion-common')
 include('challenge-common')
 include('challenge-api')
+include('challenge-data-common')
 include('challenge-data-collector')
 include('challenge-data-provider')

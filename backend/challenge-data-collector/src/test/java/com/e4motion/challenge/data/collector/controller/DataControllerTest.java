@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.collector.controller;
 
-import com.e4motion.challenge.data.collector.dto.DataDto;
+import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
 import com.e4motion.common.Response;
@@ -75,7 +75,7 @@ class DataControllerTest {
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRole() throws Exception {
 
-        DataDto dataDto = getDataDto();
+        CameraDataDto dataDto = getDataDto();
 
         doNothing().when(dataService).insert(dataDto);
         doReturn(true).when(cameraService).getSettingsUpdated(dataDto.getC());
@@ -90,7 +90,7 @@ class DataControllerTest {
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRoleWithInvalidData() throws Exception {
 
-        DataDto dataDto = getDataDto();
+        CameraDataDto dataDto = getDataDto();
         dataDto.setTd(null);    // invalid traffic data
 
         doThrow(new InvalidParamException(InvalidParamException.INVALID_DATA)).when(dataService).insert(dataDto);
@@ -102,7 +102,7 @@ class DataControllerTest {
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRoleWithNonexistentCamera() throws Exception {
 
-        DataDto dataDto = getDataDto();
+        CameraDataDto dataDto = getDataDto();
 
         doNothing().when(dataService).insert(dataDto);
 
@@ -112,8 +112,8 @@ class DataControllerTest {
         assertInsert(dataDto, false, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE,CameraNotFoundException.INVALID_CAMERA_ID);
     }
 
-    private DataDto getDataDto() {
-        return DataDto.builder()
+    private CameraDataDto getDataDto() {
+        return CameraDataDto.builder()
                 .v("1.0")
                 .c("C0001")
                 .i("I0001")
@@ -123,8 +123,8 @@ class DataControllerTest {
                 .build();
     }
 
-    private void assertInsert(DataDto dataDto, boolean expectedSettingsUpdated,
-                            HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+    private void assertInsert(CameraDataDto dataDto, boolean expectedSettingsUpdated,
+                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
         String uri = "/v1/data";
 

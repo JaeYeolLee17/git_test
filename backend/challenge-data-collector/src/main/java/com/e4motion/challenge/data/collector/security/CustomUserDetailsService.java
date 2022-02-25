@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		return cameraRepository.findByCameraId(username)
 				.map(camera -> createUser(camera))
-				.orElseThrow(() -> new CameraNotFoundException("Invalid camera id"));
+				.orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID));
 	}
 
 	private UserDetails createUser(Camera camera) {

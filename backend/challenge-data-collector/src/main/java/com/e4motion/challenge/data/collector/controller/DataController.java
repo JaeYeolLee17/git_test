@@ -1,6 +1,7 @@
 package com.e4motion.challenge.data.collector.controller;
 
 import com.e4motion.challenge.data.collector.dto.DataDto;
+import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
 import com.e4motion.common.Response;
 import com.e4motion.common.exception.customexception.InvalidParamException;
@@ -22,20 +23,18 @@ public class DataController {
 
     private final DataService dataService;
 
+    private final CameraService cameraService;
+
     @PreAuthorize("hasRole('ROLE_CAMERA')")
     @PostMapping("/data")
     public Response insert(@RequestBody DataDto dataDto) {
 
         dataService.insert(dataDto);
 
-        // TODO:
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //CustomUser user = (CustomUser) authentication.getPrincipal();
-        //return new Response("settingsUpdated", user.isSettingsUpdated());
-        return new Response();
+        return new Response("settingsUpdated", cameraService.getSettingsUpdated(dataDto.getC()));
     }
 
-    @PreAuthorize("hasRole('ROLE_CAMERA')")
+    @PreAuthorize("hasRole('ROLE_DATA')")
     @GetMapping("/data")
     public Response query(@RequestParam(value = "startTime", required = true) String startTime,
                           @RequestParam(value = "endTime", required = false) String endTime,
@@ -44,7 +43,7 @@ public class DataController {
                           @RequestParam(value = "filterId", required = false) String filterId) {
 
         if (limit <= 0 || limit > MAX_LIMIT) {
-            throw new InvalidParamException("Invalid limit");
+            throw new InvalidParamException(InvalidParamException.INVALID_LIMIT);
         }
 
         HashMap<String, Object> map = new HashMap<>();
@@ -59,7 +58,8 @@ public class DataController {
         }
 
         List<DataDto> data = dataService.query(map);
-        // TODO: nextTime
+
+        // TODO: set nextTime
 
         return new Response("data", data);
     }

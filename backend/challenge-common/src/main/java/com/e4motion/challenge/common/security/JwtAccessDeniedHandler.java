@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.e4motion.common.exception.customexception.InaccessibleException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -17,14 +18,12 @@ import com.e4motion.common.ResponseFail;
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	
-	public static final String CODE = "INACCCESSIBLE_DATA";
-	
     @Override
     public void handle(HttpServletRequest request, 
     		HttpServletResponse response, 
-    		AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    		AccessDeniedException accessDeniedException) throws IOException {
 
-		ResponseFail fail = new ResponseFail(CODE, "Access denied");
+		ResponseFail fail = new ResponseFail(InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 		
     	response.setStatus(HttpStatus.FORBIDDEN.value());
 		response.setContentType("application/json"); 

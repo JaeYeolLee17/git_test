@@ -25,14 +25,17 @@ class CameraRepositoryTest {
         String cameraId = "C0001";
         Optional<Camera> camera = cameraRepository.findByCameraId(cameraId);
         assertThat(camera.isPresent()).isTrue();
+        assertThat(camera.get().isSettingsUpdated()).isFalse();
 
         cameraId = "C0002";
         camera = cameraRepository.findByCameraId(cameraId);
         assertThat(camera.isPresent()).isTrue();
+        assertThat(camera.get().isSettingsUpdated()).isTrue();
 
         cameraId = "C0003";
         camera = cameraRepository.findByCameraId(cameraId);
         assertThat(camera.isPresent()).isTrue();
+        assertThat(camera.get().isSettingsUpdated()).isTrue();
 
         cameraId = "C0004";
         camera = cameraRepository.findByCameraId(cameraId);

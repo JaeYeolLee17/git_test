@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     	userRepository.findByUserId(userDto.getUserId())
 				.ifPresent(user -> {
-					throw new UserDuplicateException("User id already exists");
+					throw new UserDuplicateException(UserDuplicateException.USER_ID_ALREADY_EXISTS);
 				});
 
         User user = User.builder()
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
 					return userMapper.toUserDto(userRepository.save(user));
 				})
-				.orElseThrow(() -> new UserNotFoundException("Invalid user id"));
+				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USER_ID));
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import com.e4motion.challenge.data.collector.dto.DataDto;
 import com.e4motion.challenge.data.collector.dto.LaneDataDto;
 import com.e4motion.challenge.data.collector.dto.TrafficDataDto;
 import com.e4motion.challenge.data.collector.repository.DataRepository;
+import com.e4motion.common.exception.customexception.InvalidParamException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -64,35 +65,38 @@ public class HbaseDataRepository implements DataRepository, InitializingBean {
     public void insert(DataDto data) {
 
         List<Put> puts = new ArrayList<>();
+        try {
+            for (TrafficDataDto td : data.getTd()) {
+                byte[] rowKey = getRowKey(data, td);
+                Put put = new Put(rowKey)
+                        .addColumn(CF_D, Q_V, Bytes.toBytes(data.getV()))
+                        .addColumn(CF_D, Q_C, Bytes.toBytes(data.getC()))
+                        .addColumn(CF_D, Q_I, Bytes.toBytes(data.getI()))
+                        .addColumn(CF_D, Q_RE, Bytes.toBytes(data.getR()))
+                        .addColumn(CF_D, Q_T, Bytes.toBytes(data.getT()))
+                        .addColumn(CF_D, Q_ST, Bytes.toBytes(td.getSt()))
+                        .addColumn(CF_D, Q_ET, Bytes.toBytes(td.getEt()))
+                        .addColumn(CF_D, Q_P, Bytes.toBytes(td.getP()))
+                        .addColumn(CF_D, Q_U, toBytes(td.getU()));
 
-        for (TrafficDataDto td : data.getTd()) {
-            byte[] rowKey = getRowKey(data, td);
-            Put put = new Put(rowKey)
-                    .addColumn(CF_D, Q_V, Bytes.toBytes(data.getV()))
-                    .addColumn(CF_D, Q_C, Bytes.toBytes(data.getC()))
-                    .addColumn(CF_D, Q_I, Bytes.toBytes(data.getI()))
-                    .addColumn(CF_D, Q_RE, Bytes.toBytes(data.getR()))
-                    .addColumn(CF_D, Q_T, Bytes.toBytes(data.getT()))
-                    .addColumn(CF_D, Q_ST, Bytes.toBytes(td.getSt()))
-                    .addColumn(CF_D, Q_ET, Bytes.toBytes(td.getEt()))
-                    .addColumn(CF_D, Q_P, Bytes.toBytes(td.getP()))
-                    .addColumn(CF_D, Q_U, toBytes(td.getU()));
-
-            for (LaneDataDto ld : td.getLd()) {
-                int ln = ld.getLn();
-                if (ln < MAX_LANES) {
-                    byte[] cf_lane = CF_L.get(ln);
-                    put.addColumn(cf_lane, Q_LN, Bytes.toBytes(ln))
-                            .addColumn(cf_lane, Q_QML, Bytes.toBytes(ld.getQml()))
-                            .addColumn(cf_lane, Q_QM, toBytes(ld.getQm()))
-                            .addColumn(cf_lane, Q_QAL, Bytes.toBytes(ld.getQal()))
-                            .addColumn(cf_lane, Q_QA, toBytes(ld.getQa()))
-                            .addColumn(cf_lane, Q_S, toBytes(ld.getS()))
-                            .addColumn(cf_lane, Q_L, toBytes(ld.getL()))
-                            .addColumn(cf_lane, Q_R, toBytes(ld.getR()));
+                for (LaneDataDto ld : td.getLd()) {
+                    int ln = ld.getLn();
+                    if (ln < MAX_LANES) {
+                        byte[] cf_lane = CF_L.get(ln);
+                        put.addColumn(cf_lane, Q_LN, Bytes.toBytes(ln))
+                                .addColumn(cf_lane, Q_QML, Bytes.toBytes(ld.getQml()))
+                                .addColumn(cf_lane, Q_QM, toBytes(ld.getQm()))
+                                .addColumn(cf_lane, Q_QAL, Bytes.toBytes(ld.getQal()))
+                                .addColumn(cf_lane, Q_QA, toBytes(ld.getQa()))
+                                .addColumn(cf_lane, Q_S, toBytes(ld.getS()))
+                                .addColumn(cf_lane, Q_L, toBytes(ld.getL()))
+                                .addColumn(cf_lane, Q_R, toBytes(ld.getR()));
+                    }
                 }
+                puts.add(put);
             }
-            puts.add(put);
+        } catch (Exception ex) {
+            throw new InvalidParamException(InvalidParamException.INVALID_DATA);
         }
 
         hbaseTemplate.execute(TABLE_NAME, table -> {

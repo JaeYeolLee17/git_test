@@ -6,9 +6,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/testdb
     username: postgres
     password: postgres
-    initialization-mode: never     # never, always
-    schema: classpath:database/schema-postgresql.sql
-    data: classpath:database/data-postgresql.sql
+
+  sql:
+    init:
+      platform: postgresql
+      mode: never                  # never, always
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -52,4 +54,3 @@ logging:
     com.e4motion: DEBUG
     org.springframework.security: DEBUG
     org.springframework.web.cors: DEBUG
-    

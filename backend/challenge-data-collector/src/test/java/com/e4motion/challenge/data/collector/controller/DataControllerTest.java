@@ -86,17 +86,17 @@ class DataControllerTest {
         assertInsert(dataDto, false, HttpStatus.OK, Response.OK, null, null);
     }
 
-    @Test
-    @WithMockUser(roles = "CAMERA")
-    public void insertWithCameraRoleWithInvalidData() throws Exception {
-
-        CameraDataDto dataDto = getDataDto();
-        dataDto.setTd(null);    // invalid traffic data
-
-        doThrow(new InvalidParamException(InvalidParamException.INVALID_DATA)).when(dataService).insert(dataDto);
-
-        assertInsert(dataDto, false, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
-    }
+//    @Test
+//    @WithMockUser(roles = "CAMERA")
+//    public void insertWithCameraRoleWithInvalidData() throws Exception {
+//
+//        CameraDataDto dataDto = getDataDto();
+//        dataDto.setTd(null);    // invalid traffic data
+//
+//        doThrow(new InvalidParamException(InvalidParamException.INVALID_DATA)).when(dataService).insert(dataDto);
+//
+//        assertInsert(dataDto, false, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+//    }
 
     @Test
     @WithMockUser(roles = "CAMERA")

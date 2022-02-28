@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
-const LOGIN_URL = "/challenge-api/v1/login";
+import * as Request from "../request";
 
 const Login = () => {
     const dispatch = useAuthDispatch();
@@ -33,7 +33,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-                LOGIN_URL,
+                Request.LOGIN_URL,
                 JSON.stringify({ userId: user, password: pwd }),
                 {
                     headers: {

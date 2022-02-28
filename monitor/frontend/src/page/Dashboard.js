@@ -4,18 +4,13 @@ import axios from "axios";
 import Header from "../component/Header";
 import Menu from "../component/Menu";
 import KakaoMap from "../component/KakaoMap";
+import ChartMfd from "../component/ChartMfd";
+import StreamCamera from "../component/StreamCamera";
 
 import { useAuthState } from "../provider/AuthProvider";
 
-import {
-    utilGetInstsectionCameras,
-    utilIsPremakeIntersection,
-} from "../utils/utils";
-import StreamCamera from "../component/StreamCamera";
-
-const CAMERA_URL = "/challenge-api/v1/cameras";
-const STREAM_URL_START = "/start";
-const STREAM_URL_STOP = "/stop";
+import * as Utils from "../utils/utils";
+import * as Request from "../request";
 
 const Dashboard = () => {
     const userDetails = useAuthState();
@@ -26,10 +21,20 @@ const Dashboard = () => {
 
     const [listStreamResponse, setListStreamResponse] = useState([]);
 
-    const requesetCameras = async (e) => {
+    const [dataMfd, setDataMfd] = useState(null);
+
+    const requestData = () => {
+        let now = new Date();
+        if (now.getSeconds() === 0) {
+            requestCameras();
+            requestMfd();
+        }
+    };
+
+    const requestCameras = async (e) => {
         try {
             //console.log(userDetails.token);
-            const response = await axios.get(CAMERA_URL, {
+            const response = await axios.get(Request.CAMERA_URL, {
                 headers: {
                     "Content-Type": "application/json",
                     "X-AUTH-TOKEN": userDetails.token,
@@ -44,10 +49,48 @@ const Dashboard = () => {
         }
     };
 
+    const requestMfd = async (e) => {
+        let startTime = Utils.utilFormatDateYYYYMMDD000000(new Date());
+
+        var now = new Date();
+        var nowMinute = now.getMinutes();
+        var offsetMinute = nowMinute % 15;
+
+        var end = new Date(now.getTime() - offsetMinute * (60 * 1000));
+        let endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
+
+        //console.log("startTime", startTime);
+        //console.log("endTime", endTime);
+
+        try {
+            //console.log(userDetails.token);
+            const response = await axios.get(Request.STAT_MFD_URL, {
+                params: {
+                    startTime: `${startTime}`,
+                    endTime: `${endTime}`,
+                    filterBy: "region",
+                    filterId: "R01",
+                },
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN": userDetails.token,
+                },
+                withCredentials: true,
+            });
+
+            //console.log(JSON.stringify(response?.data));
+            setDataMfd(response?.data?.stat[0]);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         const timerId = setInterval(() => {
-            requesetCameras();
-        }, 10 * 1000);
+            requestData();
+        }, 1 * 1000);
+
         return () => {
             setInterval(timerId);
             requestStreamStop(listStreamResponse);
@@ -74,7 +117,7 @@ const Dashboard = () => {
             }
 
             if (
-                utilIsPremakeIntersection(
+                Utils.utilIsPremakeIntersection(
                     cameraItem.intersection.intersectionId
                 )
             ) {
@@ -116,7 +159,7 @@ const Dashboard = () => {
     const requestStreamStart = async (streamCameraInfo) => {
         try {
             console.log(streamCameraInfo);
-            const response = await axios.post(STREAM_URL_START, {
+            const response = await axios.post(Request.STREAM_URL_START, {
                 data: streamCameraInfo,
             });
 
@@ -135,7 +178,7 @@ const Dashboard = () => {
     const requestStreamStop = async (streamCameraInfo) => {
         try {
             console.log(streamCameraInfo);
-            const response = await axios.post(STREAM_URL_STOP, {
+            const response = await axios.post(Request.STREAM_URL_STOP, {
                 data: streamCameraInfo,
             });
 
@@ -157,7 +200,7 @@ const Dashboard = () => {
         requestStreamStop(listStreamResponse);
 
         let streamCameraInfo = makeStreamCameraList(
-            utilGetInstsectionCameras(listCamera, cameraId)
+            Utils.utilGetInstsectionCameras(listCamera, cameraId)
         );
 
         requestStreamStart(streamCameraInfo);
@@ -186,6 +229,7 @@ const Dashboard = () => {
                 listStreamResponse.map((stream) => (
                     <StreamCamera key={stream.cameraId} stream={stream} />
                 ))}
+            <ChartMfd dataMfd={dataMfd} />
         </div>
     );
 };

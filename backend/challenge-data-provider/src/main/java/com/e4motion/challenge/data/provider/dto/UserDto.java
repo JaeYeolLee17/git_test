@@ -1,7 +1,6 @@
 package com.e4motion.challenge.data.provider.dto;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

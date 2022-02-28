@@ -19,6 +19,7 @@ repositories {
 dependencies {
 	implementation project(':emotion-common')
 	implementation project(':challenge-common')
+
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	

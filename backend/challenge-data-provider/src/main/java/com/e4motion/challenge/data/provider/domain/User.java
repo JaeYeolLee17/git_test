@@ -1,19 +1,12 @@
 package com.e4motion.challenge.data.provider.domain;
 
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Builder
@@ -24,23 +17,20 @@ import lombok.NoArgsConstructor;
 public class User {
 	
 	@Id
-	@Column(name = "user_id", length = 20)
+	@Column(name = "user_id")
 	private String userId;
 
-	@Column(name = "password", length = 128)
+	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "username", length = 20)
+	@Column(name = "username")
 	private String username;
 
-	@Column(name = "email", length = 128)
+	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "phone", length = 20)
+	@Column(name = "phone")
 	private String phone;
-   
-   	@Column(name = "activated")
-   	private boolean activated;
 
     @ManyToMany
     @JoinTable(

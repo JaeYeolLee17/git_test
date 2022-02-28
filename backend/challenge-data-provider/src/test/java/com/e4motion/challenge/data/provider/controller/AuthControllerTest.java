@@ -53,7 +53,7 @@ public class AuthControllerTest {
 		
 		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
 		
-		assertLogin(userId, password, authority, HttpStatus.OK, Response.OK, null);
+		assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
@@ -65,7 +65,7 @@ public class AuthControllerTest {
 		
 		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
 		
-		assertLogin(userId, password, authority, HttpStatus.OK, Response.OK, null);
+		assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
@@ -77,8 +77,8 @@ public class AuthControllerTest {
 		
 		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
 		
-		assertLogin(userId, "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3------",	authority, 	// Invalid password
-				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE);
+		assertLogin(userId, "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3------",	 	// Invalid password
+				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
 	}
 	
 	@Test
@@ -88,13 +88,13 @@ public class AuthControllerTest {
 		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 		
-		doThrow(new UserNotFoundException("Invalid user id")).when(userDetailsService).loadUserByUsername(userId);
+		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(userId);
 		
-		assertLogin(userId, password, authority, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE);
+		assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
 	}
 	
-	private void assertLogin(String userId, String password, AuthorityName authority, 
-			HttpStatus expectedStatus, String expectedResult, String expectedCode) throws Exception {
+	private void assertLogin(String userId, String password,
+			HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 		
 		String uri = "/v1/login";
 		
@@ -117,6 +117,7 @@ public class AuthControllerTest {
 	    			assertThat(body.get("token")).isNotNull();
 	    		} else {
 	    			assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
+					assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
 	    		}
 	    });
 	}

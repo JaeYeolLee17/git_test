@@ -1,6 +1,7 @@
 package com.e4motion.challenge.data.collector.controller;
 
-import com.e4motion.challenge.data.collector.dto.DataDto;
+import com.e4motion.challenge.data.collector.dto.CameraDataDto;
+import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
 import com.e4motion.common.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,12 +20,15 @@ public class DataController {
 
     private final DataService dataService;
 
+    private final CameraService cameraService;
+
     @PreAuthorize("hasRole('ROLE_CAMERA')")
     @PostMapping("/data")
-    public Response insert(@RequestBody DataDto dataDto) {
+    public Response insert(@RequestBody CameraDataDto cameraDataDto) {
 
-        dataService.insert(dataDto);
+        dataService.insert(cameraDataDto);
 
-        return new Response();
+        return new Response("settingsUpdated", cameraService.getSettingsUpdated(cameraDataDto.getC()));
     }
+
 }

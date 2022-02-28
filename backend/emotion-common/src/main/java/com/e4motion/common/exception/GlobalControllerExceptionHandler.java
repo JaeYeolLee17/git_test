@@ -1,5 +1,6 @@
 package com.e4motion.common.exception;
 
+import com.e4motion.common.exception.customexception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -7,12 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.e4motion.common.Response;
 import com.e4motion.common.ResponseFail;
-import com.e4motion.common.exception.customexception.CameraDuplicateException;
-import com.e4motion.common.exception.customexception.CameraNotFoundException;
-import com.e4motion.common.exception.customexception.InaccessibleException;
-import com.e4motion.common.exception.customexception.UnauthorizedException;
-import com.e4motion.common.exception.customexception.UserDuplicateException;
-import com.e4motion.common.exception.customexception.UserNotFoundException;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -58,5 +53,12 @@ public class GlobalControllerExceptionHandler {
 
 		return new ResponseFail(ex.getCode(), ex.getMessage());
 	}
-	
+
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(value=InvalidParamException.class)
+	public Response handleInvalidParamException(InvalidParamException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
 }

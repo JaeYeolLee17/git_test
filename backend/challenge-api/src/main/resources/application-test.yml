@@ -5,11 +5,13 @@ spring:
     url: jdbc:h2:mem:testdb;MODE=PostgreSQL
     username: SA
     password:
-    initialization-mode: always     # never, always
-    schema: classpath:database/schema-h2.sql
-    data: classpath:database/data-h2.sql
+
+  sql:
+    init:
+      platform: h2
+      mode: always                  # never, always
 
   jpa:
     hibernate: 
-      ddl-auto: none                # set none because default value for h2 is create-update.
-      
+      ddl-auto: create-drop         # none, create, update, create-drop
+    defer-datasource-initialization: true

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     	userRepository.findByUserId(userDto.getUserId())
 				.ifPresent(user -> {
-					throw new UserDuplicateException("User id already exists");
+					throw new UserDuplicateException(UserDuplicateException.USER_ID_ALREADY_EXISTS);
 				});
 
         User user = User.builder()
@@ -52,32 +52,33 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto update(String userId, UserDto userDto) {
 
-    	User user = userRepository.findByUserId(userId)
-				.orElseThrow(() -> new UserNotFoundException("Invalid user id"));
+    	return userRepository.findByUserId(userId)
+				.map(user -> {
+					if (userDto.getPassword() != null) {
+						user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+					}
 
-		if (userDto.getPassword() != null) {
-			user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		}
+					if (userDto.getUsername() != null) {
+						user.setUsername(userDto.getUsername());
+					}
 
-		if (userDto.getUsername() != null) {
-			user.setUsername(userDto.getUsername());
-		}
+					if (userDto.getEmail() != null) {
+						user.setEmail(userDto.getEmail());
+					}
 
-		if (userDto.getEmail() != null) {
-			user.setEmail(userDto.getEmail());
-		}
+					if (userDto.getPhone() != null) {
+						user.setPhone(userDto.getPhone());
+					}
 
-		if (userDto.getPhone() != null) {
-			user.setPhone(userDto.getPhone());
-		}
+					if (userDto.getAuthority() != null) {
+						Set<Authority> authorities = new HashSet<>();	// Do not use Collections.singleton when save for update.
+						authorities.add(new Authority(userDto.getAuthority()));
+						user.setAuthorities(authorities);
+					}
 
-		if (userDto.getAuthority() != null) {
-			Set<Authority> authorities = new HashSet<>();	// Do not use Collections.singleton when save for update.
-			authorities.add(new Authority(userDto.getAuthority()));
-			user.setAuthorities(authorities);
-		}
-
-		return userMapper.toUserDto(userRepository.save(user));
+					return userMapper.toUserDto(userRepository.save(user));
+				})
+				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USER_ID));
     }
 
     @Transactional

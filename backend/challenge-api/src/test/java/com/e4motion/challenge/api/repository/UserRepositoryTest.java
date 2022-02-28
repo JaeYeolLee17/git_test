@@ -25,13 +25,13 @@ import com.e4motion.challenge.common.domain.AuthorityName;
 class UserRepositoryTest {
 
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
 	
 	private User savedUser;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		repository.deleteAll();
+		userRepository.deleteAll();
 		
 		User user = User.builder()
 				.userId("admin")
@@ -41,9 +41,9 @@ class UserRepositoryTest {
 				.authorities(Collections.singleton(new Authority(AuthorityName.ROLE_ADMIN)))
 				.build();
 
-		savedUser = repository.save(user);
+		savedUser = userRepository.save(user);
 
-		assertThat(repository.count()).isEqualTo(1);
+		assertThat(userRepository.count()).isEqualTo(1);
 		assertEqualsUser(user, savedUser);
 	}
 
@@ -58,11 +58,11 @@ class UserRepositoryTest {
 				.authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
 				.build();
 
-		repository.save(newUser);
+		userRepository.save(newUser);
 		
-		Optional<User> foundUser = repository.findByUserId(newUser.getUserId());
+		Optional<User> foundUser = userRepository.findByUserId(newUser.getUserId());
 		
-		assertThat(repository.count()).isEqualTo(2);
+		assertThat(userRepository.count()).isEqualTo(2);
 		assertThat(foundUser.isPresent()).isTrue();
         assertEqualsUser(foundUser.get(), newUser);
 	}
@@ -83,9 +83,9 @@ class UserRepositoryTest {
 		authorities.add(new Authority(updatedAuthority));
         savedUser.setAuthorities(authorities);
         
-        repository.save(savedUser);
+        userRepository.save(savedUser);
 
-        Optional<User> foundUser = repository.findByUserId(savedUser.getUserId());
+        Optional<User> foundUser = userRepository.findByUserId(savedUser.getUserId());
         
         assertThat(foundUser.isPresent()).isTrue();
         assertEqualsUser(foundUser.get(), savedUser);
@@ -102,9 +102,9 @@ class UserRepositoryTest {
 				.authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
 				.build();
 
-		repository.save(user);
+		userRepository.save(user);
 		
-		List<User> users = repository.findAll();
+		List<User> users = userRepository.findAll();
 		
 		assertThat(users.size()).isEqualTo(2);
         assertEqualsUser(users.get(0), savedUser);
@@ -122,13 +122,13 @@ class UserRepositoryTest {
 				.authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
 				.build();
 
-		repository.save(user);
+		userRepository.save(user);
 		
-		assertThat(repository.count()).isEqualTo(2);
+		assertThat(userRepository.count()).isEqualTo(2);
 		
-		repository.deleteAll();
+		userRepository.deleteAll();
 		
-		assertThat(repository.count()).isEqualTo(0);
+		assertThat(userRepository.count()).isEqualTo(0);
 	}
 
 	@Test
@@ -142,9 +142,9 @@ class UserRepositoryTest {
 				.authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
 				.build();
 
-		repository.save(user);
+		userRepository.save(user);
 		
-        Optional<User> foundUser = repository.findByUserId(savedUser.getUserId());
+        Optional<User> foundUser = userRepository.findByUserId(savedUser.getUserId());
 
         assertThat(foundUser.isPresent()).isTrue();
         assertEqualsUser(foundUser.get(), savedUser);
@@ -153,16 +153,16 @@ class UserRepositoryTest {
 	@Test
 	void deleteByUserId() {
 		
-		Optional<User> foundUser = repository.findByUserId(savedUser.getUserId());
+		Optional<User> foundUser = userRepository.findByUserId(savedUser.getUserId());
     	
     	assertThat(foundUser.isPresent()).isTrue();
     	
-        repository.deleteByUserId(foundUser.get().getUserId());
+        userRepository.deleteByUserId(foundUser.get().getUserId());
 
-        foundUser = repository.findByUserId(savedUser.getUserId());
+        foundUser = userRepository.findByUserId(savedUser.getUserId());
         
         assertThat(foundUser.isPresent()).isFalse();
-        assertThat(repository.count()).isEqualTo(0);
+        assertThat(userRepository.count()).isEqualTo(0);
 	}
 	
 	private void assertEqualsUser(User user1, User user2) {

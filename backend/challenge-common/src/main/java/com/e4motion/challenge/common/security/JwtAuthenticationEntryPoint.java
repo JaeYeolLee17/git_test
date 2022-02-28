@@ -26,9 +26,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		// BadCredentialsException : invalid password when login.
 		// InsufficientAuthenticationException : no token or invalid token.
 		
-		ResponseFail fail = new ResponseFail(UnauthorizedException.CODE, "Unauthorized token");
+		ResponseFail responseFail = new ResponseFail(UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 		if (authenticationException instanceof BadCredentialsException) {
-			fail = new ResponseFail(UnauthorizedException.CODE, "Invalid password");
+			responseFail = new ResponseFail(UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
 		}
 
     	response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -36,7 +36,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		response.setCharacterEncoding("utf-8"); 
 		
 		PrintWriter out = response.getWriter(); 
-		out.print(fail.toString()); 
+		out.print(responseFail);
 		out.flush();
 		out.close();
    }

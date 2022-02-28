@@ -17,25 +17,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CameraRepositoryTest {
 
     @Autowired
-    private CameraRepository repository;
+    private CameraRepository cameraRepository;
 
     @Test
     void findByCameraId() {
 
         String cameraId = "C0001";
-        Optional<Camera> camera = repository.findByCameraId(cameraId);
+        Optional<Camera> camera = cameraRepository.findByCameraId(cameraId);
         assertThat(camera.isPresent()).isTrue();
+        assertThat(camera.get().isSettingsUpdated()).isFalse();
 
         cameraId = "C0002";
-        camera = repository.findByCameraId(cameraId);
+        camera = cameraRepository.findByCameraId(cameraId);
         assertThat(camera.isPresent()).isTrue();
+        assertThat(camera.get().isSettingsUpdated()).isTrue();
 
         cameraId = "C0003";
-        camera = repository.findByCameraId(cameraId);
+        camera = cameraRepository.findByCameraId(cameraId);
         assertThat(camera.isPresent()).isTrue();
+        assertThat(camera.get().isSettingsUpdated()).isTrue();
 
         cameraId = "C0004";
-        camera = repository.findByCameraId(cameraId);
+        camera = cameraRepository.findByCameraId(cameraId);
         assertThat(camera.isPresent()).isFalse();
     }
 }

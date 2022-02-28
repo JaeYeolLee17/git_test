@@ -81,7 +81,7 @@ public class UserServiceTest {
     }
 	
 	@Test
-	public void createDuplicate() throws Exception {
+	public void createDuplicateUser() throws Exception {
 		
 		// given
 		UserDto newUserDto = UserDto.builder()
@@ -103,13 +103,12 @@ public class UserServiceTest {
 				.build();
 		
 		doReturn(Optional.of(newUser)).when(userRepository).findByUserId(newUserDto.getUserId());
-		
+
+		// when
+		Exception ex = assertThrows(UserDuplicateException.class, () -> userService.create(newUserDto));
+
 		// then
-		assertThrows(UserDuplicateException.class, () -> {
-			
-			// when
-			UserDto userDto = userService.create(newUserDto);
-        });
+		assertThat(ex.getMessage()).isEqualTo(UserDuplicateException.USER_ID_ALREADY_EXISTS);
     }
 
 	@Test
@@ -145,7 +144,7 @@ public class UserServiceTest {
     }
 	
 	@Test
-   	public void updateNotExist() throws Exception {
+   	public void updateNonexistentUser() throws Exception {
 		
 		// given		
 		UserDto updateUserDto = UserDto.builder()
@@ -167,13 +166,12 @@ public class UserServiceTest {
 		
 		doReturn(Optional.ofNullable(null)).when(userRepository).findByUserId(updateUserDto.getUserId());
 		doReturn(updateUser).when(userRepository).save(any());		// use any() due to parameter mismatch?
-		
+
+		// when
+		Exception ex = assertThrows(UserNotFoundException.class, () -> userService.update(updateUserDto.getUserId(), updateUserDto));
+
 		// then
-		assertThrows(UserNotFoundException.class, () -> {
-					
-			// when
-			UserDto userDto = userService.update(updateUserDto.getUserId(), updateUserDto);
-		});
+		assertThat(ex.getMessage()).isEqualTo(UserNotFoundException.INVALID_USER_ID);
     }
 	
 	@Test

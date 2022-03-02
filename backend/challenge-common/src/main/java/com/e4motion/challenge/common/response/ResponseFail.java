@@ -1,4 +1,4 @@
-package com.e4motion.common;
+package com.e4motion.challenge.common.response;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -12,8 +12,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import com.e4motion.common.ResponseFail;
-import com.e4motion.common.exception.customexception.UnauthorizedException;
+import com.e4motion.challenge.common.response.ResponseFail;
+import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {

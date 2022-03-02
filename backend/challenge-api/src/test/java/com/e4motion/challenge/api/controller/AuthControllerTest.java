@@ -26,10 +26,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.e4motion.challenge.api.dto.LoginDto;
 import com.e4motion.challenge.api.security.CustomUser;
 import com.e4motion.challenge.common.domain.AuthorityName;
-import com.e4motion.common.Response;
-import com.e4motion.common.exception.customexception.UnauthorizedException;
-import com.e4motion.common.exception.customexception.UserNotFoundException;
-import com.e4motion.common.utils.JsonHelper;
+import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
+import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
+import com.e4motion.challenge.common.utils.JsonHelper;
 
 @SpringBootTest
 @AutoConfigureMockMvc

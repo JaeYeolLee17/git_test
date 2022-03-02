@@ -3,7 +3,6 @@ package com.e4motion.challenge.api.service.impl;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,8 +15,8 @@ import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.mapper.UserMapper;
 import com.e4motion.challenge.api.repository.UserRepository;
 import com.e4motion.challenge.api.service.UserService;
-import com.e4motion.common.exception.customexception.UserDuplicateException;
-import com.e4motion.common.exception.customexception.UserNotFoundException;
+import com.e4motion.challenge.common.exception.customexception.UserDuplicateException;
+import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 

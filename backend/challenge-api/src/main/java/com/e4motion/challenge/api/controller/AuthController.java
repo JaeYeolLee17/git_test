@@ -17,7 +17,7 @@ import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.security.CustomUser;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.security.JwtTokenProvider;
-import com.e4motion.common.Response;
+import com.e4motion.challenge.common.response.Response;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

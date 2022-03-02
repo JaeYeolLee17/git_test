@@ -1,4 +1,4 @@
-package com.e4motion.common.exception.customexception;
+package com.e4motion.challenge.common.exception.customexception;
 
 import lombok.Getter;
 import lombok.Setter;

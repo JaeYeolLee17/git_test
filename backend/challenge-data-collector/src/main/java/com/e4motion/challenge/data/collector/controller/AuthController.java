@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e4motion.challenge.common.security.JwtTokenProvider;
 import com.e4motion.challenge.data.collector.dto.CameraLoginDto;
 import com.e4motion.challenge.data.collector.security.CustomUser;
-import com.e4motion.common.Response;
+import com.e4motion.challenge.common.response.Response;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -8,7 +8,6 @@
  */
 
 rootProject.name = 'backend'
-include('emotion-common')
 include('challenge-common')
 include('challenge-api')
 include('challenge-data-common')

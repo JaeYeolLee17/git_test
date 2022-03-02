@@ -91,4 +91,16 @@ public class HBaseHelper implements InitializingBean {
         return bBuf.array();
     }
 
+    public static Integer[] toInts(byte[] data) {
+        IntBuffer iBuf = ByteBuffer.wrap(data).asIntBuffer();
+        int[] array = new int[iBuf.remaining()];
+        iBuf.get(array);
+        return Arrays.stream(array).boxed().toArray(Integer[]::new);
+    }
+
+    public static Float[] toFloats(byte[] data) {
+        Integer[] ints = toInts(data);
+        return Arrays.stream(ints).map(v -> v / 100f).toArray(Float[]::new);
+    }
+
 }

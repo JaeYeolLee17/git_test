@@ -1,6 +1,5 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import com.e4motion.challenge.data.provider.dto.DataDto;
 import com.e4motion.challenge.data.provider.dto.DataListDto;
 import com.e4motion.challenge.data.provider.service.DataService;
 import com.e4motion.common.Response;
@@ -8,10 +7,12 @@ import com.e4motion.common.exception.customexception.InvalidParamException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Tag(name = "2. Data")
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class DataController {
                           @RequestParam(value = "filterBy", required = false) String filterBy,
                           @RequestParam(value = "filterId", required = false) String filterId) {
 
+        // TODO: validate params
         if (limit <= 0 || limit > MAX_LIMIT) {
             throw new InvalidParamException(InvalidParamException.INVALID_LIMIT);
         }

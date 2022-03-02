@@ -4,6 +4,7 @@ import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
 import com.e4motion.common.Response;
+import com.e4motion.common.exception.customexception.InvalidParamException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,9 +27,19 @@ public class DataController {
     @PostMapping("/data")
     public Response insert(@RequestBody CameraDataDto cameraDataDto) {
 
+        validateData(cameraDataDto);
+
         dataService.insert(cameraDataDto);
 
         return new Response("settingsUpdated", cameraService.getSettingsUpdated(cameraDataDto.getC()));
+    }
+
+    private void validateData(CameraDataDto cameraDataDto) {
+
+        // TODO: validate date
+        if (cameraDataDto.getV() == null) {
+            throw new InvalidParamException(InvalidParamException.INVALID_DATA);
+        }
     }
 
 }

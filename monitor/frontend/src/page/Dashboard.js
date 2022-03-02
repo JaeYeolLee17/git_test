@@ -7,10 +7,13 @@ import KakaoMap from "../component/KakaoMap";
 import ChartMfd from "../component/ChartMfd";
 import StreamCamera from "../component/StreamCamera";
 
+import Selector from "../component/Selector";
+
 import { useAuthState } from "../provider/AuthProvider";
 
 import * as Utils from "../utils/utils";
 import * as Request from "../request";
+import * as String from "../string";
 
 const Dashboard = () => {
     const userDetails = useAuthState();
@@ -18,6 +21,15 @@ const Dashboard = () => {
     const [listCamera, setListCamera] = useState([]);
     const [showCameras, setShowCameras] = useState(true);
     const [selectedCamera, setSelectedCamera] = useState("");
+
+    const [listRegions, setListRegions] = useState([]);
+    const [listSelectRegions, setListSelectRegions] = useState([]);
+    const [listSelectRegionItem, setListSelectRegionItem] = useState({});
+
+    const [listIntersections, setListIntersections] = useState([]);
+    const [listSelectIntersections, setListSelectIntersections] = useState([]);
+    const [listSelectIntersectionItem, setListSelectIntersectionItem] =
+        useState("");
 
     const [listStreamResponse, setListStreamResponse] = useState([]);
 
@@ -49,6 +61,47 @@ const Dashboard = () => {
         }
     };
 
+    const requestRegionList = async (e) => {
+        try {
+            //console.log(userDetails.token);
+            const response = await axios.get(Request.REGIONS_LIST_URL, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN": userDetails.token,
+                },
+                withCredentials: true,
+            });
+
+            //console.log(JSON.stringify(response?.data));
+            setListRegions(response?.data.regions);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const requestIntersectionList = async (e) => {
+        try {
+            const response = await axios.get(Request.INTERSECTIONS_LIST_URL, {
+                params: {
+                    ...(listSelectRegionItem.value !== "all"
+                        ? { regionId: listSelectRegionItem.value }
+                        : {}),
+                },
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN": userDetails.token,
+                },
+                withCredentials: true,
+            });
+
+            //console.log(JSON.stringify(response?.data));
+            setListIntersections(response?.data.intersections);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const requestMfd = async (e) => {
         let startTime = Utils.utilFormatDateYYYYMMDD000000(new Date());
 
@@ -68,8 +121,6 @@ const Dashboard = () => {
                 params: {
                     startTime: `${startTime}`,
                     endTime: `${endTime}`,
-                    filterBy: "region",
-                    filterId: "R01",
                 },
 
                 headers: {
@@ -87,6 +138,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
+        requestRegionList();
         const timerId = setInterval(() => {
             requestData();
         }, 1 * 1000);
@@ -97,6 +149,65 @@ const Dashboard = () => {
         };
         //requesetCameras();
     }, []);
+
+    useEffect(() => {
+        if (listRegions.length === 0) return;
+
+        let topItem = { value: "all", innerHTML: String.total };
+
+        let newList = [];
+        newList.push(topItem);
+
+        newList = newList.concat(
+            listRegions.map((region) => {
+                //console.log(region);
+                return { value: region.regionId, innerHTML: region.regionName };
+            })
+        );
+
+        setListSelectRegions(newList);
+
+        setListSelectRegionItem(topItem);
+    }, [listRegions]);
+
+    useEffect(() => {
+        if (listSelectRegionItem) {
+            console.log("listSelectRegionItem", listSelectRegionItem);
+
+            requestIntersectionList();
+        }
+    }, [listSelectRegionItem]);
+
+    useEffect(() => {
+        if (listIntersections.length === 0) return;
+
+        //console.log("listIntersections", listIntersections);
+
+        let topItem = { value: "all", innerHTML: String.total };
+
+        let newList = [];
+        newList.push(topItem);
+
+        newList = newList.concat(
+            listIntersections
+                .filter((intersection) => intersection.region !== null)
+                .map((intersection) => {
+                    //console.log(region);
+                    return {
+                        value: intersection.intersectionId,
+                        innerHTML: intersection.intersectionName,
+                    };
+                })
+        );
+
+        setListSelectIntersections(newList);
+
+        setListSelectIntersectionItem(topItem);
+    }, [listIntersections]);
+
+    useEffect(() => {
+        console.log("listSelectIntersectionItem", listSelectIntersectionItem);
+    }, [listSelectIntersectionItem]);
 
     const makeStreamCameraList = (list) => {
         const bHighResolution = false;
@@ -208,11 +319,45 @@ const Dashboard = () => {
         //console.log("streamCameraInfo", streamCameraInfo);
     };
 
+    const onChangeRegions = (e) => {
+        setListSelectRegionItem({
+            value: e.target.value,
+            innerHTML: e.target[e.target.selectedIndex].innerHTML,
+        });
+    };
+
+    const onChangeIntersections = (e) => {
+        console.log(e);
+        setListSelectIntersectionItem({
+            value: e.target.value,
+            innerHTML: e.target[e.target.selectedIndex].innerHTML,
+        });
+    };
+
+    // const onClick = (e) => {
+    //     setListSelectRegionItem("R01");
+    // };
+
     return (
         <div>
             <Header />
             <Menu />
             Dashboard
+            {listSelectRegions.length > 0 ? (
+                <Selector
+                    list={listSelectRegions}
+                    selected={listSelectRegionItem}
+                    onChange={onChangeRegions}
+                />
+            ) : null}
+            {listSelectIntersections.length > 0 ? (
+                <Selector
+                    list={listSelectIntersections}
+                    selected={listSelectIntersectionItem}
+                    onChange={onChangeIntersections}
+                />
+            ) : null}
+            {/* <button onClick={onClick}>TEST</button> */}
             <KakaoMap
                 style={{
                     width: "100%",

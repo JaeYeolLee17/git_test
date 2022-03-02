@@ -6,169 +6,169 @@ import * as String from "../string";
 function ChartMfd({ dataMfd }) {
     const [chartSeries, setChartSeries] = useState([]);
     const [chartOption, setChartOption] = useState({
-        chart: {
-            height: "100%",
-            type: "line",
-            dropShadow: {
-                enabled: true,
-                color: "#000",
-                top: 20,
-                left: 0,
-                blur: 8,
-                opacity: 0.2,
-            },
-            toolbar: {
-                show: false,
-            },
-            zoom: {
-                enabled: false,
-            },
-            animations: {
-                enabled: true,
-                easing: "linear",
-                dynamicAnimation: {
-                    speed: 500,
-                },
-            },
-            background: "#f7f7f7",
-            style: {
-                borderRadius: "12px",
-                padding: "60px 20px 24px 12px",
-            },
-        },
-        plotOptions: {
-            line: {
-                curve: "smooth",
-            },
-        },
-        stroke: {
-            width: [4],
-        },
-        colors: ["#ffcc00", "#9500ff", "#306fd9"],
-        series: [
-            {
-                data: [0],
-            },
-        ],
-        xaxis: {
-            type: "numeric",
-            tooltip: {
-                enabled: false,
-            },
-            crosshairs: {
-                show: false,
-            },
-            title: {
-                style: {
-                    fontSize: "13px",
-                    padding: "12px",
-                    fontFamily: "Noto Sans KR, sans-serif",
-                },
-            },
-            axisBorder: {
-                show: true,
-                color: "#666666",
-                height: 1,
-                width: "100%",
-            },
-            labels: {
-                style: {
-                    fontSize: "13px",
-                    fontFamily: "Noto Sans KR, sans-serif",
-                },
-                formatter: function (val, index) {
-                    return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                },
-            },
-            axisTicks: {
-                show: true,
-                borderType: "solid",
-                color: "#666666",
-                height: 6,
-                offsetX: 0,
-                offsetY: 0,
-            },
-        },
-        yaxis: {
-            /* 			    axisBorder: {
-                show: true,
-                color: '#a9abb3',
-                width: 1,
-            }, */
-            title: {
-                style: {
-                    fontSize: "13px",
-                    padding: "12px",
-                    fontFamily: "Noto Sans KR, sans-serif",
-                },
-            },
-            labels: {
-                style: {
-                    fontSize: "13px",
-                    fontFamily: "Noto Sans KR, sans-serif",
-                },
-                formatter: function (val, index) {
-                    return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                },
-            },
-        },
-        grid: {
-            show: true,
-            borderColor: "#90A4AE",
-            row: {
-                colors: ["white"],
-                opacity: 1,
-            },
-            lines: {
-                show: true,
-            },
-            padding: {
-                top: 0,
-                right: 20,
-                bottom: 0,
-                left: 0,
-            },
-        },
-        legend: {
-            showForSingleSeries: false,
-            position: "top",
-            horizontalAlign: "right",
-            floating: true,
-            offsetY: -25,
-            offsetX: -5,
-        },
-        markers: {
-            size: [4, 7, 7],
-            shape: "circle",
-        },
-        noData: {
-            text: String.chart_no_data,
-            align: "center",
-            verticalAlign: "middle",
-            offsetX: 0,
-            offsetY: 0,
-            style: {
-                color: "#8b0000",
-                fontSize: "32px",
-                fontFamily: "Noto Sans KR",
-            },
-        },
-        tooltip: {
-            intersect: true,
-            shared: false,
-            marker: {
-                show: false,
-            },
-            x: {
-                show: false,
-            },
-        },
+        // chart: {
+        //     height: "100%",
+        //     type: "line",
+        //     dropShadow: {
+        //         enabled: true,
+        //         color: "#000",
+        //         top: 20,
+        //         left: 0,
+        //         blur: 8,
+        //         opacity: 0.2,
+        //     },
+        //     toolbar: {
+        //         show: false,
+        //     },
+        //     zoom: {
+        //         enabled: false,
+        //     },
+        //     animations: {
+        //         enabled: true,
+        //         easing: "linear",
+        //         dynamicAnimation: {
+        //             speed: 500,
+        //         },
+        //     },
+        //     background: "#f7f7f7",
+        //     style: {
+        //         borderRadius: "12px",
+        //         padding: "60px 20px 24px 12px",
+        //     },
+        // },
+        // plotOptions: {
+        //     line: {
+        //         curve: "smooth",
+        //     },
+        // },
+        // stroke: {
+        //     width: [4],
+        // },
+        // colors: ["#ffcc00", "#9500ff", "#306fd9"],
+        // series: [
+        //     {
+        //         data: [0],
+        //     },
+        // ],
+        // xaxis: {
+        //     type: "numeric",
+        //     tooltip: {
+        //         enabled: false,
+        //     },
+        //     crosshairs: {
+        //         show: false,
+        //     },
+        //     title: {
+        //         style: {
+        //             fontSize: "13px",
+        //             padding: "12px",
+        //             fontFamily: "Noto Sans KR, sans-serif",
+        //         },
+        //     },
+        //     axisBorder: {
+        //         show: true,
+        //         color: "#666666",
+        //         height: 1,
+        //         width: "100%",
+        //     },
+        //     labels: {
+        //         style: {
+        //             fontSize: "13px",
+        //             fontFamily: "Noto Sans KR, sans-serif",
+        //         },
+        //         formatter: function (val, index) {
+        //             return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //         },
+        //     },
+        //     axisTicks: {
+        //         show: true,
+        //         borderType: "solid",
+        //         color: "#666666",
+        //         height: 6,
+        //         offsetX: 0,
+        //         offsetY: 0,
+        //     },
+        // },
+        // yaxis: {
+        //     /* 			    axisBorder: {
+        //         show: true,
+        //         color: '#a9abb3',
+        //         width: 1,
+        //     }, */
+        //     title: {
+        //         style: {
+        //             fontSize: "13px",
+        //             padding: "12px",
+        //             fontFamily: "Noto Sans KR, sans-serif",
+        //         },
+        //     },
+        //     labels: {
+        //         style: {
+        //             fontSize: "13px",
+        //             fontFamily: "Noto Sans KR, sans-serif",
+        //         },
+        //         formatter: function (val, index) {
+        //             return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //         },
+        //     },
+        // },
+        // grid: {
+        //     show: true,
+        //     borderColor: "#90A4AE",
+        //     row: {
+        //         colors: ["white"],
+        //         opacity: 1,
+        //     },
+        //     lines: {
+        //         show: true,
+        //     },
+        //     padding: {
+        //         top: 0,
+        //         right: 20,
+        //         bottom: 0,
+        //         left: 0,
+        //     },
+        // },
+        // legend: {
+        //     showForSingleSeries: false,
+        //     position: "top",
+        //     horizontalAlign: "right",
+        //     floating: true,
+        //     offsetY: -25,
+        //     offsetX: -5,
+        // },
+        // markers: {
+        //     size: [4, 7, 7],
+        //     shape: "circle",
+        // },
+        // noData: {
+        //     text: String.chart_no_data,
+        //     align: "center",
+        //     verticalAlign: "middle",
+        //     offsetX: 0,
+        //     offsetY: 0,
+        //     style: {
+        //         color: "#8b0000",
+        //         fontSize: "32px",
+        //         fontFamily: "Noto Sans KR",
+        //     },
+        // },
+        // tooltip: {
+        //     intersect: true,
+        //     shared: false,
+        //     marker: {
+        //         show: false,
+        //     },
+        //     x: {
+        //         show: false,
+        //     },
+        // },
     });
 
     var maxXData = 0;
 
     useEffect(() => {
-        console.log("dataMfd", dataMfd);
+        //console.log("dataMfd", dataMfd);
         if (!dataMfd) return;
 
         let nameCurrent =
@@ -855,7 +855,7 @@ function ChartMfd({ dataMfd }) {
     //     },
     // };
 
-    console.log("chartSeries", chartSeries);
+    //console.log("chartSeries", chartSeries);
     return (
         <Chart
             options={chartOption}

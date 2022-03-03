@@ -1,4 +1,4 @@
-package com.e4motion.common;
+package com.e4motion.challenge.common.response;
 
 import java.util.HashMap;
 

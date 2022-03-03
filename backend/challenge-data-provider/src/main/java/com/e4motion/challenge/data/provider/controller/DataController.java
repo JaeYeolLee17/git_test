@@ -2,8 +2,8 @@ package com.e4motion.challenge.data.provider.controller;
 
 import com.e4motion.challenge.data.provider.dto.DataListDto;
 import com.e4motion.challenge.data.provider.service.DataService;
-import com.e4motion.common.Response;
-import com.e4motion.common.exception.customexception.InvalidParamException;
+import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

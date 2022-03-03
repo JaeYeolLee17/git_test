@@ -1,11 +1,13 @@
 package com.e4motion.challenge.data.collector.controller;
 
+import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
+import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
+import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
-import com.e4motion.common.Response;
-import com.e4motion.common.exception.customexception.*;
-import com.e4motion.common.utils.JsonHelper;
+import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.utils.JsonHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

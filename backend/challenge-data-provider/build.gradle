@@ -17,7 +17,6 @@ repositories {
 }
 
 dependencies {
-	implementation project(':emotion-common')
 	implementation project(':challenge-common')
 	implementation project(':challenge-data-common')
 

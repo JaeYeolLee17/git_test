@@ -25,8 +25,8 @@ import com.e4motion.challenge.api.mapper.UserMapper;
 import com.e4motion.challenge.api.repository.UserRepository;
 import com.e4motion.challenge.api.service.impl.UserServiceImpl;
 import com.e4motion.challenge.common.domain.AuthorityName;
-import com.e4motion.common.exception.customexception.UserDuplicateException;
-import com.e4motion.common.exception.customexception.UserNotFoundException;
+import com.e4motion.challenge.common.exception.customexception.UserDuplicateException;
+import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 
 @SpringBootTest
 public class UserServiceTest {

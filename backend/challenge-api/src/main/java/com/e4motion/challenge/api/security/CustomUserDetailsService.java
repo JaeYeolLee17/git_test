@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.repository.UserRepository;
-import com.e4motion.common.exception.customexception.UserNotFoundException;
+import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 

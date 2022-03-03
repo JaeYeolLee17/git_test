@@ -11,8 +11,6 @@ public class InvalidParamException extends CustomException {
 
 	public static final String INVALID_DATA = "Invalid data";
 
-	public static final String INVALID_LIMIT = "Invalid limit";
-
 	public InvalidParamException(String message) {
 		super(CODE, message);
 	}

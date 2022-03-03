@@ -55,6 +55,7 @@ public class HbaseDataRepository implements DataRepository {
             data.setC(Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_C)));
             data.setI(Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_I)));
             data.setR(Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_RE)));
+            data.setT(Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_T)));
 
             TrafficDataDto td = new TrafficDataDto();
             td.setSt(Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_ST)));

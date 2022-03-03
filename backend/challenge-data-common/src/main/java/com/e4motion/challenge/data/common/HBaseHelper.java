@@ -1,5 +1,6 @@
 package com.e4motion.challenge.data.common;
 
+import com.e4motion.challenge.data.common.dto.TrafficDataDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -22,8 +23,6 @@ public class HBaseHelper implements InitializingBean {
     public static final String TABLE_NAME = "traffic_data_2";
 
     public static final String ROWKEY_DELIMITER = " ";
-
-    public static final int MAX_LANES = 10;
 
     public static final byte[] CF_D = Bytes.toBytes("d");
     public static final ArrayList<byte[]> CF_L = new ArrayList<>();
@@ -51,7 +50,7 @@ public class HBaseHelper implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        for (int i = 0; i < MAX_LANES; i++) {
+        for (int i = TrafficDataDto.MIN_LANE; i <= TrafficDataDto.MAX_LANE; i++) {
             CF_L.add(Bytes.toBytes("l" + i));
         }
         createTable();

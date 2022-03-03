@@ -22,6 +22,8 @@ import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.Valid;
+
 @Tag(name = "1. Auth")
 @RequiredArgsConstructor
 @RestController 
@@ -32,7 +34,7 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public Response login(@RequestBody LoginDto loginDto) throws Exception {
+    public Response login(@Valid @RequestBody LoginDto loginDto) throws Exception {
     	UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
 

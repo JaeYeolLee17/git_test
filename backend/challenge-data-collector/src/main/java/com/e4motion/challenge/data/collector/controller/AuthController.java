@@ -1,5 +1,11 @@
 package com.e4motion.challenge.data.collector.controller;
 
+import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.security.JwtTokenProvider;
+import com.e4motion.challenge.data.collector.dto.CameraLoginDto;
+import com.e4motion.challenge.data.collector.security.CustomUser;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,13 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e4motion.challenge.common.security.JwtTokenProvider;
-import com.e4motion.challenge.data.collector.dto.CameraLoginDto;
-import com.e4motion.challenge.data.collector.security.CustomUser;
-import com.e4motion.challenge.common.response.Response;
-
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import javax.validation.Valid;
 
 @Tag(name = "1. Auth")
 @RequiredArgsConstructor
@@ -27,7 +27,8 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/camera/login")
-    public Response login(@RequestBody CameraLoginDto loginDto) {
+    public Response login(@Valid @RequestBody CameraLoginDto loginDto) {
+
     	UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getCameraId(), loginDto.getPassword());
 

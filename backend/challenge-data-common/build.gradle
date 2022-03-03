@@ -13,11 +13,15 @@ repositories {
 }
 
 dependencies {
+	implementation project(':challenge-common')
+
 	implementation group: 'org.springframework.data', name: 'spring-data-hadoop-hbase', version: '2.5.0.RELEASE'
 	implementation ('org.apache.hbase:hbase-client:1.7.1') {
 		exclude group: 'org.slf4j'
 	}
-	
+
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.6.3'
+
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testCompileOnly 'org.projectlombok:lombok:1.18.22'

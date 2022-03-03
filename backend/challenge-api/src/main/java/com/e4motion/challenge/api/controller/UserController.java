@@ -17,6 +17,8 @@ import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.Valid;
+
 @Tag(name = "2. User")
 @RequiredArgsConstructor
 @RestController 
@@ -27,7 +29,7 @@ public class UserController {
 	
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/user")
-    public Response create(@RequestBody UserDto userDto) throws Exception {
+    public Response create(@Valid @RequestBody UserDto userDto) throws Exception {
     	
     	return new Response("user", userService.create(userDto));
     }

@@ -14,6 +14,7 @@ import { useAuthState } from "../provider/AuthProvider";
 import * as Utils from "../utils/utils";
 import * as Request from "../request";
 import * as String from "../string";
+import { useInterval } from "../utils/customHooks";
 
 const Dashboard = () => {
     const userDetails = useAuthState();
@@ -34,6 +35,8 @@ const Dashboard = () => {
     const [listStreamResponse, setListStreamResponse] = useState([]);
 
     const [dataMfd, setDataMfd] = useState(null);
+    const [dataLastWeekMfd, setDataLastWeekMfd] = useState(null);
+    const [dataLastMonthAvgMfd, setDataLastMonthAvgMfd] = useState(null);
 
     const requestData = () => {
         let now = new Date();
@@ -42,6 +45,10 @@ const Dashboard = () => {
             requestMfd();
         }
     };
+
+    useInterval(() => {
+        requestData();
+    }, 1000);
 
     const requestCameras = async (e) => {
         try {
@@ -115,12 +122,31 @@ const Dashboard = () => {
         //console.log("startTime", startTime);
         //console.log("endTime", endTime);
 
+        let extraParam = {};
+
+        if (listSelectIntersectionItem.value === "all") {
+            if (listSelectRegionItem.value !== "all") {
+                extraParam = {
+                    filterBy: "region",
+                    filterId: listSelectRegionItem.value,
+                };
+            }
+        } else {
+            extraParam = {
+                filterBy: "intersection",
+                filterId: listSelectIntersectionItem.value,
+            };
+        }
+
+        //console.log("extraParam", extraParam);
+
         try {
             //console.log(userDetails.token);
             const response = await axios.get(Request.STAT_MFD_URL, {
                 params: {
-                    startTime: `${startTime}`,
-                    endTime: `${endTime}`,
+                    startTime: startTime,
+                    endTime: endTime,
+                    ...extraParam,
                 },
 
                 headers: {
@@ -137,17 +163,126 @@ const Dashboard = () => {
         }
     };
 
+    const requestLastWeekMfd = async (e) => {
+        let start = new Date();
+        start.setDate(start.getDate() - 7);
+        let startTime = Utils.utilFormatDateYYYYMMDD000000(start);
+
+        let end = new Date(start);
+        end.setDate(end.getDate() + 1);
+        let endTime = Utils.utilFormatDateYYYYMMDD000000(end);
+
+        //console.log("startTime", startTime);
+        //console.log("endTime", endTime);
+
+        let extraParam = {};
+
+        if (listSelectIntersectionItem.value === "all") {
+            if (listSelectRegionItem.value !== "all") {
+                extraParam = {
+                    filterBy: "region",
+                    filterId: listSelectRegionItem.value,
+                };
+            }
+        } else {
+            extraParam = {
+                filterBy: "intersection",
+                filterId: listSelectIntersectionItem.value,
+            };
+        }
+
+        //console.log("extraParam", extraParam);
+
+        try {
+            //console.log(userDetails.token);
+            const response = await axios.get(Request.STAT_MFD_URL, {
+                params: {
+                    startTime: startTime,
+                    endTime: endTime,
+                    ...extraParam,
+                },
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN": userDetails.token,
+                },
+                withCredentials: true,
+            });
+
+            //console.log(JSON.stringify(response?.data));
+            setDataLastWeekMfd(response?.data?.stat[0]);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const requestLastMonthAvgMfd = async (e) => {
+        let start = new Date();
+        start.setDate(start.getDate() - 28);
+        let startTime = Utils.utilFormatDateYYYYMMDD000000(start);
+
+        let end = new Date();
+        let endTime = Utils.utilFormatDateYYYYMMDD000000(end);
+
+        let dayOfWeek = end.getDay();
+        if (dayOfWeek === 0) dayOfWeek = 7;
+
+        //console.log("startTime", startTime);
+        //console.log("endTime", endTime);
+
+        let extraParam = {};
+
+        if (listSelectIntersectionItem.value === "all") {
+            if (listSelectRegionItem.value !== "all") {
+                extraParam = {
+                    filterBy: "region",
+                    filterId: listSelectRegionItem.value,
+                };
+            }
+        } else {
+            extraParam = {
+                filterBy: "intersection",
+                filterId: listSelectIntersectionItem.value,
+            };
+        }
+
+        //console.log("extraParam", extraParam);
+
+        try {
+            //console.log(userDetails.token);
+            const response = await axios.get(Request.STAT_MFD_URL, {
+                params: {
+                    startTime: startTime,
+                    endTime: endTime,
+                    ...extraParam,
+                    dayOfWeek: dayOfWeek,
+                },
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN": userDetails.token,
+                },
+                withCredentials: true,
+            });
+
+            //console.log(JSON.stringify(response?.data));
+            setDataLastMonthAvgMfd(response?.data?.stat[0]);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         requestRegionList();
-        const timerId = setInterval(() => {
-            requestData();
-        }, 1 * 1000);
+        // const timerId = setInterval(() => {
+        //     requestData();
+        // }, 1 * 1000);
 
-        return () => {
-            setInterval(timerId);
-            requestStreamStop(listStreamResponse);
-        };
-        //requesetCameras();
+        // return () => {
+        //     clearInterval(timerId);
+        //     requestStreamStop(listStreamResponse);
+        // };
+        requestCameras();
     }, []);
 
     useEffect(() => {
@@ -207,6 +342,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         console.log("listSelectIntersectionItem", listSelectIntersectionItem);
+
+        //setDataMfd(null);
+        setDataLastWeekMfd(null);
+        setDataLastMonthAvgMfd(null);
+
+        requestMfd();
+        requestLastWeekMfd();
+        requestLastMonthAvgMfd();
     }, [listSelectIntersectionItem]);
 
     const makeStreamCameraList = (list) => {
@@ -343,7 +486,7 @@ const Dashboard = () => {
             <Header />
             <Menu />
             Dashboard
-            {listSelectRegions.length > 0 ? (
+            {/* {listSelectRegions.length > 0 ? (
                 <Selector
                     list={listSelectRegions}
                     selected={listSelectRegionItem}
@@ -356,7 +499,7 @@ const Dashboard = () => {
                     selected={listSelectIntersectionItem}
                     onChange={onChangeIntersections}
                 />
-            ) : null}
+            ) : null} */}
             {/* <button onClick={onClick}>TEST</button> */}
             <KakaoMap
                 style={{
@@ -374,7 +517,25 @@ const Dashboard = () => {
                 listStreamResponse.map((stream) => (
                     <StreamCamera key={stream.cameraId} stream={stream} />
                 ))}
-            <ChartMfd dataMfd={dataMfd} />
+            {listSelectRegions.length > 0 ? (
+                <Selector
+                    list={listSelectRegions}
+                    selected={listSelectRegionItem}
+                    onChange={onChangeRegions}
+                />
+            ) : null}
+            {listSelectIntersections.length > 0 ? (
+                <Selector
+                    list={listSelectIntersections}
+                    selected={listSelectIntersectionItem}
+                    onChange={onChangeIntersections}
+                />
+            ) : null}
+            <ChartMfd
+                dataMfd={dataMfd}
+                dataLastWeekMfd={dataLastWeekMfd}
+                dataLastMonthAvgMfd={dataLastMonthAvgMfd}
+            />
         </div>
     );
 };

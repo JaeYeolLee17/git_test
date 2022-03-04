@@ -24,19 +24,19 @@ import lombok.NoArgsConstructor;
 public class User {
 	
 	@Id
-	@Column(name = "user_id")
+	@Column(name = "user_id", length = 20)
 	private String userId;
 
-	@Column(name = "password")
+	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 	
-	@Column(name = "username")
+	@Column(name = "username", length = 20, nullable = false)
 	private String username;
 
-	@Column(name = "email")
+	@Column(name = "email", length = 128)
 	private String email;
 	
-	@Column(name = "phone")
+	@Column(name = "phone", length = 20)
 	private String phone;
 
     @ManyToMany

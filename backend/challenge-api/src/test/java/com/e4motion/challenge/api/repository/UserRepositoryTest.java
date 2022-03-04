@@ -35,6 +35,7 @@ class UserRepositoryTest {
 		
 		User user = User.builder()
 				.userId("admin")
+				.password("password")
 				.username("adminname")
 				.email("admin@email...")
 				.phone("01022223333")
@@ -52,6 +53,7 @@ class UserRepositoryTest {
 		
 		User newUser = User.builder()
 				.userId("user1")
+				.password("password")
 				.username("user1name")
 				.email("user1@email...")
 				.phone("01044445555")
@@ -96,6 +98,7 @@ class UserRepositoryTest {
 
 		User user = User.builder()
 				.userId("user2")
+				.password("password")
 				.username("user2name")
 				.email("user2@email...")
 				.phone("01066667777")
@@ -116,6 +119,7 @@ class UserRepositoryTest {
 		
 		User user = User.builder()
 				.userId("user2")
+				.password("password")
 				.username("user2name")
 				.email("user2@email...")
 				.phone("01066667777")
@@ -136,6 +140,7 @@ class UserRepositoryTest {
 		
 		User user = User.builder()
 				.userId("user1")
+				.password("password")
 				.username("user1name")
 				.email("user1@email...")
 				.phone("01044445555")

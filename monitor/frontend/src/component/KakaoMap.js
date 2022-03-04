@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Map, MapMarker, useMap } from "react-kakao-maps-sdk";
+import { Map, MapMarker, Polygon } from "react-kakao-maps-sdk";
 
-function KakaoMap({ style, cameras }) {
+function KakaoMap({ style, region, cameras }) {
     // const { kakao } = window;
     // let map = null;
 
@@ -23,6 +23,26 @@ function KakaoMap({ style, cameras }) {
     //console.log(cameras.list);
 
     const [level, setLevel] = useState();
+
+    //console.log("region", region);
+
+    const displayRegion = () => {
+        if (region.current) {
+            return (
+                <Polygon
+                    path={region.current.gps}
+                    strokeWeight={2} // 선의 두께입니다
+                    strokeColor={"#ff00aa"} // 선의 색깔입니다
+                    strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                    fillColor={"#ff00aa"} // 채우기 색깔입니다
+                    fillOpacity={0.05} // 채우기 불투명도 입니다
+                    zIndex={1}
+                />
+            );
+        }
+
+        return null;
+    };
 
     const displayCamera = (camera, index) => {
         let normalState = true; // TODO
@@ -70,7 +90,8 @@ function KakaoMap({ style, cameras }) {
             level={7}
             onZoomChanged={(map) => setLevel(map.getLevel())}
         >
-            {cameras.list?.map(displayCamera)}
+            {region.isShow && displayRegion()}
+            {cameras.isShow && cameras.list?.map(displayCamera)}
         </Map>
     );
 }

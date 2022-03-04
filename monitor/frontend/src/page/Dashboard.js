@@ -26,6 +26,8 @@ const Dashboard = () => {
     const [listRegions, setListRegions] = useState([]);
     const [listSelectRegions, setListSelectRegions] = useState([]);
     const [listSelectRegionItem, setListSelectRegionItem] = useState({});
+    const [showRegion, setShowRegion] = useState(true);
+    const [curretnRegionInfo, setCurretnRegionInfo] = useState({});
 
     const [listIntersections, setListIntersections] = useState([]);
     const [listSelectIntersections, setListSelectIntersections] = useState([]);
@@ -308,6 +310,10 @@ const Dashboard = () => {
     useEffect(() => {
         if (listSelectRegionItem) {
             console.log("listSelectRegionItem", listSelectRegionItem);
+            let currentRegionInfo = listRegions.filter(
+                (region) => region.regionId === listSelectRegionItem.value
+            );
+            setCurretnRegionInfo(currentRegionInfo[0]);
 
             requestIntersectionList();
         }
@@ -477,46 +483,20 @@ const Dashboard = () => {
         });
     };
 
-    // const onClick = (e) => {
-    //     setListSelectRegionItem("R01");
-    // };
+    const onClickRegion = (e) => {
+        setShowRegion(!showRegion);
+    };
+
+    const onClickCamera = (e) => {
+        // setListSelectRegionItem("R01");
+        setShowCameras(!showCameras);
+    };
 
     return (
         <div>
             <Header />
             <Menu />
             Dashboard
-            {/* {listSelectRegions.length > 0 ? (
-                <Selector
-                    list={listSelectRegions}
-                    selected={listSelectRegionItem}
-                    onChange={onChangeRegions}
-                />
-            ) : null}
-            {listSelectIntersections.length > 0 ? (
-                <Selector
-                    list={listSelectIntersections}
-                    selected={listSelectIntersectionItem}
-                    onChange={onChangeIntersections}
-                />
-            ) : null} */}
-            {/* <button onClick={onClick}>TEST</button> */}
-            <KakaoMap
-                style={{
-                    width: "100%",
-                    height: "100vh",
-                }}
-                cameras={{
-                    list: listCamera,
-                    isShow: showCameras,
-                    selected: selectedCamera,
-                    clickEvent: handleClickCamera,
-                }}
-            />
-            {listStreamResponse &&
-                listStreamResponse.map((stream) => (
-                    <StreamCamera key={stream.cameraId} stream={stream} />
-                ))}
             {listSelectRegions.length > 0 ? (
                 <Selector
                     list={listSelectRegions}
@@ -531,6 +511,42 @@ const Dashboard = () => {
                     onChange={onChangeIntersections}
                 />
             ) : null}
+            <button onClick={onClickRegion}>region</button>
+            <button onClick={onClickCamera}>camera</button>
+            <KakaoMap
+                style={{
+                    width: "100%",
+                    height: "100vh",
+                }}
+                region={{
+                    current: curretnRegionInfo,
+                    isShow: showRegion,
+                }}
+                cameras={{
+                    list: listCamera,
+                    isShow: showCameras,
+                    selected: selectedCamera,
+                    clickEvent: handleClickCamera,
+                }}
+            />
+            {listStreamResponse &&
+                listStreamResponse.map((stream) => (
+                    <StreamCamera key={stream.cameraId} stream={stream} />
+                ))}
+            {/* {listSelectRegions.length > 0 ? (
+                <Selector
+                    list={listSelectRegions}
+                    selected={listSelectRegionItem}
+                    onChange={onChangeRegions}
+                />
+            ) : null}
+            {listSelectIntersections.length > 0 ? (
+                <Selector
+                    list={listSelectIntersections}
+                    selected={listSelectIntersectionItem}
+                    onChange={onChangeIntersections}
+                />
+            ) : null} */}
             <ChartMfd
                 dataMfd={dataMfd}
                 dataLastWeekMfd={dataLastWeekMfd}

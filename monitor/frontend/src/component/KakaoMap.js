@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Map, MapMarker, Polygon } from "react-kakao-maps-sdk";
+import { Map, MapMarker, Polygon, Circle } from "react-kakao-maps-sdk";
 
-function KakaoMap({ style, region, cameras }) {
+function KakaoMap({ style, region, intersections, cameras }) {
     // const { kakao } = window;
     // let map = null;
 
@@ -44,6 +44,56 @@ function KakaoMap({ style, region, cameras }) {
         return null;
     };
 
+    const displayIntersection = () => {
+        if (intersections.list) {
+            return intersections.list
+                .filter(
+                    (intersection) =>
+                        intersections.showEdge || intersection.region !== null
+                )
+                .map((intersection) => {
+                    let strokeColor;
+                    let fillColor;
+
+                    if (
+                        intersection.intersectionId === intersections.selected
+                    ) {
+                        strokeColor = "#ff8000";
+                        fillColor = "#ff9900";
+                    } else {
+                        if (intersection.region !== null) {
+                            strokeColor = "#ffff00";
+                            fillColor = "#ffee00";
+                        } else {
+                            strokeColor = "#ffff00";
+                            fillColor = "#707070";
+                        }
+                    }
+
+                    return (
+                        <Circle
+                            key={intersection.intersectionId}
+                            center={intersection.gps}
+                            radius={150}
+                            strokeWeight={1} // 선의 두께입니다
+                            strokeColor={strokeColor} // 선의 색깔입니다
+                            strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                            fillColor={fillColor} // 채우기 색깔입니다
+                            fillOpacity={0.4} // 채우기 불투명도 입니다
+                            zIndex={5}
+                            onClick={(marker) => {
+                                intersections.clickEvent(
+                                    intersection.intersectionId
+                                );
+                            }}
+                        />
+                    );
+                });
+        }
+
+        return null;
+    };
+
     const displayCamera = (camera, index) => {
         let normalState = true; // TODO
         let isSelected = camera.cameraId === cameras.selected;
@@ -73,7 +123,10 @@ function KakaoMap({ style, region, cameras }) {
                     },
                 }}
                 onClick={(marker) => {
-                    cameras.clickEvent(camera.cameraId);
+                    cameras.clickEvent(
+                        camera.cameraId,
+                        camera.intersection.intersectionId
+                    );
                 }}
             />
         );
@@ -91,6 +144,7 @@ function KakaoMap({ style, region, cameras }) {
             onZoomChanged={(map) => setLevel(map.getLevel())}
         >
             {region.isShow && displayRegion()}
+            {displayIntersection()}
             {cameras.isShow && cameras.list?.map(displayCamera)}
         </Map>
     );

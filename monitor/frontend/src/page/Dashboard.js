@@ -33,6 +33,7 @@ const Dashboard = () => {
     const [listSelectIntersections, setListSelectIntersections] = useState([]);
     const [listSelectIntersectionItem, setListSelectIntersectionItem] =
         useState("");
+    const [selectedIntersection, setSelectedIntersection] = useState("");
 
     const [listStreamResponse, setListStreamResponse] = useState([]);
 
@@ -454,18 +455,26 @@ const Dashboard = () => {
         }
     };
 
-    const handleClickCamera = (cameraId) => {
+    const handleClickCamera = (cameraId, intersectionId) => {
         setSelectedCamera(cameraId);
+        setSelectedIntersection(intersectionId);
 
-        requestStreamStop(listStreamResponse);
+        // play streamming
+        // requestStreamStop(listStreamResponse);
 
-        let streamCameraInfo = makeStreamCameraList(
-            Utils.utilGetInstsectionCameras(listCamera, cameraId)
-        );
+        // let streamCameraInfo = makeStreamCameraList(
+        //     Utils.utilGetInstsectionCameras(listCamera, cameraId)
+        // );
 
-        requestStreamStart(streamCameraInfo);
+        // requestStreamStart(streamCameraInfo);
 
-        //console.log("streamCameraInfo", streamCameraInfo);
+        //console.log("intersectionId", intersectionId);
+    };
+
+    const handleClickIntersection = (intersectionId) => {
+        //console.log("intersectionId", intersectionId);
+        setSelectedCamera(null);
+        setSelectedIntersection(intersectionId);
     };
 
     const onChangeRegions = (e) => {
@@ -496,7 +505,6 @@ const Dashboard = () => {
         <div>
             <Header />
             <Menu />
-            Dashboard
             {listSelectRegions.length > 0 ? (
                 <Selector
                     list={listSelectRegions}
@@ -521,6 +529,12 @@ const Dashboard = () => {
                 region={{
                     current: curretnRegionInfo,
                     isShow: showRegion,
+                }}
+                intersections={{
+                    list: listIntersections,
+                    selected: selectedIntersection,
+                    clickEvent: handleClickIntersection,
+                    //showEdge: true,
                 }}
                 cameras={{
                     list: listCamera,

@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Authority {
 	
 	@Id
-	@Column(name = "authority_name")
+	@Column(name = "authority_name", length = 20)
 	@Enumerated(EnumType.STRING)
 	private AuthorityName authorityName;
    

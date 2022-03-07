@@ -36,6 +36,8 @@ dependencies {
 
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
 
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.6.3'
+
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testCompileOnly 'org.projectlombok:lombok:1.18.22'

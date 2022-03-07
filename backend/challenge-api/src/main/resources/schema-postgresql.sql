@@ -14,7 +14,7 @@ CREATE TABLE public.nt_user
     user_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
     password character varying(128) COLLATE pg_catalog."default" NOT NULL,
     username character varying(20) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(40) COLLATE pg_catalog."default",
+    email character varying(128) COLLATE pg_catalog."default",
     phone character varying(20) COLLATE pg_catalog."default",
     CONSTRAINT nt_user_pkey PRIMARY KEY (user_id)
 );
@@ -38,7 +38,7 @@ CREATE TABLE public.nt_camera
 (
     camera_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
     intersection_id character varying(10) COLLATE pg_catalog."default",
-    password character varying(128) COLLATE pg_catalog."default",
-    settings_updated boolean,
+    password character varying(128) COLLATE pg_catalog."default" NOT NULL,
+    settings_updated boolean DEFAULT false,
     CONSTRAINT nt_camera_pkey PRIMARY KEY (camera_id)
 );

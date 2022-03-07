@@ -41,7 +41,7 @@ public class HbaseDataRepository implements DataRepository {
 
             for (LaneDataDto ld : td.getLd()) {
                 int ln = ld.getLn();
-                if (ln < HBaseHelper.MAX_LANES) {
+                if (ln >= TrafficDataDto.MIN_LANE && ln <= TrafficDataDto.MAX_LANE) {
                     byte[] cf_lane = HBaseHelper.CF_L.get(ln);
                     put.addColumn(cf_lane, HBaseHelper.Q_LN, Bytes.toBytes(ln))
                             .addColumn(cf_lane, HBaseHelper.Q_QML, Bytes.toBytes(ld.getQml()))

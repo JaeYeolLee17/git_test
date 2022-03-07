@@ -4,10 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateTimeUtils {
+public class DateTimeHelper {
 
-    private static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-    private static final String dateFormat = "yyyy-MM-dd";
+    public static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    public static final String dateFormat = "yyyy-MM-dd";
 
     public static Date parseDateTime(String dateTime) throws ParseException {
         return new SimpleDateFormat(dateTimeFormat).parse(dateTime);

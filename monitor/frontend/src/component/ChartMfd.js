@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import * as Utils from "../utils/utils";
 import * as String from "../string";
-import * as Common from "../common";
+//import * as Common from "../common";
 
 function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }) {
     const [chartSeries, setChartSeries] = useState([]);
@@ -394,16 +394,18 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }) {
                                     dataPointIndex
                                 ].x;
 
-                            if (yValue / xValue >= Common.trafficSpeedNormal) {
-                                return Common.trafficColorNormal;
-                            } else if (
-                                yValue / xValue <
-                                Common.trafficSpeedBusy
-                            ) {
-                                return Common.trafficColorBusy;
-                            } else {
-                                return Common.trafficColorSlowly;
-                            }
+                            return Utils.utilGetSpeedColor(yValue / xValue);
+
+                            // if (yValue / xValue >= Common.trafficSpeedNormal) {
+                            //     return Common.trafficColorNormal;
+                            // } else if (
+                            //     yValue / xValue <
+                            //     Common.trafficSpeedBusy
+                            // ) {
+                            //     return Common.trafficColorBusy;
+                            // } else {
+                            //     return Common.trafficColorSlowly;
+                            // }
                         },
                     ],
                 },

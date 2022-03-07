@@ -15,6 +15,7 @@ import * as Utils from "../utils/utils";
 import * as Request from "../request";
 import * as String from "../string";
 import { useInterval } from "../utils/customHooks";
+//import { useMap } from "react-kakao-maps-sdk";
 
 const Dashboard = () => {
     const userDetails = useAuthState();
@@ -35,6 +36,9 @@ const Dashboard = () => {
         useState("");
     const [selectedIntersection, setSelectedIntersection] = useState("");
 
+    const [listLink, setListLink] = useState([]);
+    const [showLinks, setShowLinks] = useState(true);
+
     const [listStreamResponse, setListStreamResponse] = useState([]);
 
     const [dataMfd, setDataMfd] = useState(null);
@@ -46,6 +50,7 @@ const Dashboard = () => {
         if (now.getSeconds() === 0) {
             requestCameras();
             requestMfd();
+            requestLink();
         }
     };
 
@@ -275,6 +280,39 @@ const Dashboard = () => {
         }
     };
 
+    const requestLink = async (e) => {
+        var now = new Date();
+        var nowMinute = now.getMinutes();
+        var offsetMinute = nowMinute % 15;
+
+        var end = new Date(now.getTime() - offsetMinute * (60 * 1000));
+        let endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
+
+        var start = new Date(end.getTime() - 15 * (60 * 1000));
+        let startTime = Utils.utilFormatDateYYYYMMDDHHmm00(start);
+
+        try {
+            //console.log(userDetails.token);
+            const response = await axios.get(Request.STAT_LINK_URL, {
+                params: {
+                    startTime: startTime,
+                    endTime: endTime,
+                },
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-AUTH-TOKEN": userDetails.token,
+                },
+                withCredentials: true,
+            });
+
+            //console.log(JSON.stringify(response?.data));
+            setListLink(response?.data?.stat);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         requestRegionList();
         // const timerId = setInterval(() => {
@@ -357,6 +395,8 @@ const Dashboard = () => {
         requestMfd();
         requestLastWeekMfd();
         requestLastMonthAvgMfd();
+
+        requestLink();
     }, [listSelectIntersectionItem]);
 
     const makeStreamCameraList = (list) => {
@@ -501,6 +541,10 @@ const Dashboard = () => {
         setShowCameras(!showCameras);
     };
 
+    const onClickLinks = (e) => {
+        setShowLinks(!showLinks);
+    };
+
     return (
         <div>
             <Header />
@@ -521,6 +565,7 @@ const Dashboard = () => {
             ) : null}
             <button onClick={onClickRegion}>region</button>
             <button onClick={onClickCamera}>camera</button>
+            <button onClick={onClickLinks}>links</button>
             <KakaoMap
                 style={{
                     width: "100%",
@@ -541,6 +586,10 @@ const Dashboard = () => {
                     isShow: showCameras,
                     selected: selectedCamera,
                     clickEvent: handleClickCamera,
+                }}
+                links={{
+                    list: listLink,
+                    isShow: showLinks,
                 }}
             />
             {listStreamResponse &&

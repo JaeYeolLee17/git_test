@@ -5,6 +5,7 @@ import com.e4motion.challenge.common.exception.customexception.CameraNotFoundExc
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
+import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
 import com.e4motion.challenge.data.collector.security.CustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CameraLoginDtoTest {
+class CameraLoginDtoTest extends HBaseMockBaseTest {
 
     @Autowired
     MockMvc mockMvc;

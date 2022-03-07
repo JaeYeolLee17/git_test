@@ -1,11 +1,12 @@
 package com.e4motion.challenge.data.provider.dto;
 
-import com.e4motion.challenge.data.provider.security.CustomUser;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
+import com.e4motion.challenge.data.provider.HBaseMockBaseTest;
+import com.e4motion.challenge.data.provider.security.CustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class LoginDtoTest {
+class LoginDtoTest extends HBaseMockBaseTest {
 
     @Autowired
     MockMvc mockMvc;

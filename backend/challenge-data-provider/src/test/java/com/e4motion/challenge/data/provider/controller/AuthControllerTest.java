@@ -1,12 +1,13 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-
-import java.util.Collections;
-import java.util.Set;
-
+import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
+import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
+import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.utils.JsonHelper;
+import com.e4motion.challenge.data.provider.HBaseMockBaseTest;
+import com.e4motion.challenge.data.provider.dto.LoginDto;
+import com.e4motion.challenge.data.provider.security.CustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,18 +24,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
-import com.e4motion.challenge.data.provider.dto.LoginDto;
-import com.e4motion.challenge.data.provider.security.CustomUser;
-import com.e4motion.challenge.common.response.Response;
-import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
-import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
-import com.e4motion.challenge.common.utils.JsonHelper;
+import java.util.Collections;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest {
-	
+public class AuthControllerTest extends HBaseMockBaseTest {
+
 	@Autowired 
 	MockMvc mockMvc;
 	

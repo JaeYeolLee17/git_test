@@ -1,5 +1,6 @@
 package com.e4motion.challenge.data.collector.repository;
 
+import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
 import com.e4motion.challenge.data.collector.domain.Camera;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ActiveProfiles("test")
 @Transactional
-class CameraRepositoryTest {
+class CameraRepositoryTest extends HBaseMockBaseTest {
 
     @Autowired
     private CameraRepository cameraRepository;

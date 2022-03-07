@@ -1,6 +1,5 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
@@ -8,6 +7,7 @@ import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
 import com.e4motion.challenge.data.common.dto.LaneDataDto;
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
+import com.e4motion.challenge.data.provider.HBaseMockBaseTest;
 import com.e4motion.challenge.data.provider.dto.DataDto;
 import com.e4motion.challenge.data.provider.dto.DataListDto;
 import com.e4motion.challenge.data.provider.service.DataService;
@@ -28,11 +28,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DataControllerTest {
+class DataControllerTest extends HBaseMockBaseTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -63,19 +64,12 @@ class DataControllerTest {
     @Test
     @WithMockUser(roles = "DATA")
     public void queryWithDataRole() throws Exception {
-
-        HashMap<String, Object> map = getGoodHashMap();
-
-        doReturn(getDataListDto()).when(dataService).query(map);
-
-        assertQuery(map, HttpStatus.OK, Response.OK, null, null);
+        assertQuery(getGoodHashMap(), HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
     @WithMockUser(roles = "DATA")
     public void validateQueryParam() throws Exception {
-
-        doReturn(getDataListDto()).when(dataService).query(any());
 
         // startTime
         HashMap<String, Object> map = getGoodHashMap();
@@ -119,6 +113,16 @@ class DataControllerTest {
         map.remove("filterBy");     // missing
         map.remove("filterId");
         assertQuery(map, HttpStatus.OK, Response.OK, null, null);
+    }
+
+    private HashMap getGoodHashMap() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("startTime", "2022-04-01 12:00:00");
+        map.put("endTime", "2022-04-01 12:01:00");
+        map.put("limit", 1);
+        map.put("filterBy", "camera");
+        map.put("filterId", "C0001");
+        return map;
     }
 
     private DataListDto getDataListDto() {
@@ -166,18 +170,10 @@ class DataControllerTest {
                 .build();
     }
 
-    private HashMap getGoodHashMap() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("startTime", "2022-04-01 12:00:00");
-        map.put("endTime", "2022-04-01 12:01:00");
-        map.put("limit", 1);
-        map.put("filterBy", "camera");
-        map.put("filterId", "C0001");
-        return map;
-    }
-
     private void assertQuery(HashMap map,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+
+        doReturn(getDataListDto()).when(dataService).query(any());
 
         String uri = "/v1/data?";
         if (map.get("startTime") != null) {

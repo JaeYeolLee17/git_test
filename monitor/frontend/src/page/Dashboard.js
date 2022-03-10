@@ -61,13 +61,16 @@ const Dashboard = () => {
     const requestCameras = async (e) => {
         try {
             //console.log(userDetails.token);
-            const response = await axios.get(Request.CAMERA_URL, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-AUTH-TOKEN": userDetails.token,
-                },
-                withCredentials: true,
-            });
+            const response = await axios.get(
+                process.env.REACT_APP_API_URI + Request.CAMERA_URL,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-AUTH-TOKEN": userDetails.token,
+                    },
+                    withCredentials: true,
+                }
+            );
 
             //console.log(JSON.stringify(response?.data));
             setListCamera(response?.data.cameras);
@@ -79,13 +82,16 @@ const Dashboard = () => {
     const requestRegionList = async (e) => {
         try {
             //console.log(userDetails.token);
-            const response = await axios.get(Request.REGIONS_LIST_URL, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-AUTH-TOKEN": userDetails.token,
-                },
-                withCredentials: true,
-            });
+            const response = await axios.get(
+                process.env.REACT_APP_API_URI + Request.REGIONS_LIST_URL,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-AUTH-TOKEN": userDetails.token,
+                    },
+                    withCredentials: true,
+                }
+            );
 
             //console.log(JSON.stringify(response?.data));
             setListRegions(response?.data.regions);
@@ -96,19 +102,22 @@ const Dashboard = () => {
 
     const requestIntersectionList = async (e) => {
         try {
-            const response = await axios.get(Request.INTERSECTIONS_LIST_URL, {
-                params: {
-                    ...(listSelectRegionItem.value !== "all"
-                        ? { regionId: listSelectRegionItem.value }
-                        : {}),
-                },
+            const response = await axios.get(
+                process.env.REACT_APP_API_URI + Request.INTERSECTIONS_LIST_URL,
+                {
+                    params: {
+                        ...(listSelectRegionItem.value !== "all"
+                            ? { regionId: listSelectRegionItem.value }
+                            : {}),
+                    },
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-AUTH-TOKEN": userDetails.token,
-                },
-                withCredentials: true,
-            });
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-AUTH-TOKEN": userDetails.token,
+                    },
+                    withCredentials: true,
+                }
+            );
 
             //console.log(JSON.stringify(response?.data));
             setListIntersections(response?.data.intersections);
@@ -150,19 +159,22 @@ const Dashboard = () => {
 
         try {
             //console.log(userDetails.token);
-            const response = await axios.get(Request.STAT_MFD_URL, {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                },
+            const response = await axios.get(
+                process.env.REACT_APP_API_URI + Request.STAT_MFD_URL,
+                {
+                    params: {
+                        startTime: startTime,
+                        endTime: endTime,
+                        ...extraParam,
+                    },
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-AUTH-TOKEN": userDetails.token,
-                },
-                withCredentials: true,
-            });
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-AUTH-TOKEN": userDetails.token,
+                    },
+                    withCredentials: true,
+                }
+            );
 
             //console.log(JSON.stringify(response?.data));
             setDataMfd(response?.data?.stat[0]);
@@ -203,19 +215,22 @@ const Dashboard = () => {
 
         try {
             //console.log(userDetails.token);
-            const response = await axios.get(Request.STAT_MFD_URL, {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                },
+            const response = await axios.get(
+                process.env.REACT_APP_API_URI + Request.STAT_MFD_URL,
+                {
+                    params: {
+                        startTime: startTime,
+                        endTime: endTime,
+                        ...extraParam,
+                    },
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-AUTH-TOKEN": userDetails.token,
-                },
-                withCredentials: true,
-            });
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-AUTH-TOKEN": userDetails.token,
+                    },
+                    withCredentials: true,
+                }
+            );
 
             //console.log(JSON.stringify(response?.data));
             setDataLastWeekMfd(response?.data?.stat[0]);
@@ -258,20 +273,23 @@ const Dashboard = () => {
 
         try {
             //console.log(userDetails.token);
-            const response = await axios.get(Request.STAT_MFD_URL, {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                    dayOfWeek: dayOfWeek,
-                },
+            const response = await axios.get(
+                process.env.REACT_APP_API_URI + Request.STAT_MFD_URL,
+                {
+                    params: {
+                        startTime: startTime,
+                        endTime: endTime,
+                        ...extraParam,
+                        dayOfWeek: dayOfWeek,
+                    },
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-AUTH-TOKEN": userDetails.token,
-                },
-                withCredentials: true,
-            });
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-AUTH-TOKEN": userDetails.token,
+                    },
+                    withCredentials: true,
+                }
+            );
 
             //console.log(JSON.stringify(response?.data));
             setDataLastMonthAvgMfd(response?.data?.stat[0]);
@@ -293,18 +311,21 @@ const Dashboard = () => {
 
         try {
             //console.log(userDetails.token);
-            const response = await axios.get(Request.STAT_LINK_URL, {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                },
+            const response = await axios.get(
+                process.env.REACT_APP_API_URI + Request.STAT_LINK_URL,
+                {
+                    params: {
+                        startTime: startTime,
+                        endTime: endTime,
+                    },
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-AUTH-TOKEN": userDetails.token,
-                },
-                withCredentials: true,
-            });
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-AUTH-TOKEN": userDetails.token,
+                    },
+                    withCredentials: true,
+                }
+            );
 
             //console.log(JSON.stringify(response?.data));
             setListLink(response?.data?.stat);

@@ -1,4 +1,4 @@
-const DEFAULT_URL = "/challenge-api/v1/";
+const DEFAULT_URL = process.env.REACT_APP_API_PREFIX + "/v1/";
 
 export const LOGIN_URL = DEFAULT_URL + "login";
 

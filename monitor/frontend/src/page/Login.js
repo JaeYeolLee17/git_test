@@ -33,7 +33,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-                Request.LOGIN_URL,
+                process.env.REACT_APP_API_URI + Request.LOGIN_URL,
                 JSON.stringify({ userId: user, password: pwd }),
                 {
                     headers: {

@@ -12,6 +12,7 @@ spring:
       mode: always                  # never, always
 
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop         # none, create, update, create-drop
     defer-datasource-initialization: true

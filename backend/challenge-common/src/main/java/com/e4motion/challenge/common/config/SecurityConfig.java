@@ -1,7 +1,8 @@
 package com.e4motion.challenge.common.config;
 
-import static java.lang.String.format;
-
+import com.e4motion.challenge.common.security.JwtAccessDeniedHandler;
+import com.e4motion.challenge.common.security.JwtAuthenticationEntryPoint;
+import com.e4motion.challenge.common.security.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +20,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.e4motion.challenge.common.security.JwtAccessDeniedHandler;
-import com.e4motion.challenge.common.security.JwtAuthenticationEntryPoint;
-import com.e4motion.challenge.common.security.JwtTokenFilter;
+import java.util.Arrays;
+
+import static java.lang.String.format;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityConfig(JwtTokenFilter jwtTokenFilter, 
     		JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
     		JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+
         this.jwtTokenFilter = jwtTokenFilter;
 		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
 		this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
@@ -62,34 +64,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-        	.cors().and().csrf().disable()
+                .cors().and().csrf().disable()
 
-        	.exceptionHandling()
-        	.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-        	.accessDeniedHandler(jwtAccessDeniedHandler)
+        	    .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
 
-        	// enable h2-console
-        	.and()
-        	.headers()
-        	.frameOptions()
-        	.sameOrigin()
+        	    // enable h2-console
+        	    .and()
+        	    .headers()
+        	    .frameOptions()
+        	    .sameOrigin()
 
-        	// Set session management to stateless
-        	.and()
-        	.sessionManagement()
-        	.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        	    // Set session management to stateless
+                .and()
+        	    .sessionManagement()
+        	    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-        	.and()
-        	.authorizeRequests()
-        	.antMatchers(format("%s/**", actuatorPath)).permitAll()	// TODO: apply secure.
-            .antMatchers(format("%s/**", apiDocsPath)).permitAll()	// TODO: apply secure.
-            .antMatchers(format("%s/**", swaggerPath)).permitAll()	// TODO: apply secure.
-            .antMatchers("/v1/login").permitAll()
-            .antMatchers("/v1/camera/login").permitAll()
-        	.anyRequest().authenticated()
+        	    .and()
+        	    .authorizeRequests()
+        	    .antMatchers(format("%s/**", actuatorPath)).permitAll()	// TODO: apply secure.
+                .antMatchers(format("%s/**", apiDocsPath)).permitAll()	// TODO: apply secure.
+                .antMatchers(format("%s/**", swaggerPath)).permitAll()	// TODO: apply secure.
+                .antMatchers("/v1/login").permitAll()
+                .antMatchers("/v1/camera/login").permitAll()
+        	    .anyRequest().authenticated()
 
-        	.and()
-        	.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        	    .and()
+        	    .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -102,11 +104,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080",            // local server for dev
+                                                "http://192.168.0.17:3000", "http://192.168.0.17:8080"));   // real server
+        config.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
+        config.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Accept",
+                "Cache-Control",
+                "Content-Type",
+                "Origin",
+                "ajax", // <-- This is needed for jQuery's ajax request.
+                "x-csrf-token",
+                "x-requested-with"
+        ));
+
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/v1/**", config);
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
     

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.repository.UserRepository;
 
-public interface JpaUserRepository extends JpaRepository<User, Long>, UserRepository {
+public interface JpaUserRepository extends JpaRepository<User, String>, UserRepository {
 	
 	@Transactional(readOnly = true)
 	@EntityGraph(attributePaths = "authorities")

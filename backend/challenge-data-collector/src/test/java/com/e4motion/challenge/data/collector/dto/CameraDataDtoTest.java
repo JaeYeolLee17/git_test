@@ -3,6 +3,7 @@ package com.e4motion.challenge.data.collector.dto;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
+import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
 import com.e4motion.challenge.data.common.dto.LaneDataDto;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CameraDataDtoTest {
+class CameraDataDtoTest extends HBaseMockBaseTest {
 
     @Autowired
     MockMvc mockMvc;

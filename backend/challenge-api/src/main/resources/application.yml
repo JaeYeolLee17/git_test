@@ -16,7 +16,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties: 
-        format_sql: true
+      format_sql: true
     show-sql: true
     open-in-view: false
   
@@ -30,7 +30,7 @@ management:
     web:
       exposure:
         include: "*"
-      base-path: '/actuator'
+      base-path: /actuator
     health:
       show-details: always
 

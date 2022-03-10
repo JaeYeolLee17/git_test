@@ -1,6 +1,7 @@
 package com.e4motion.challenge.data.collector.controller;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
 import com.e4motion.challenge.data.collector.dto.CameraLoginDto;
 import com.e4motion.challenge.data.collector.security.CustomUser;
 import com.e4motion.challenge.common.response.Response;
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest {
+public class AuthControllerTest extends HBaseMockBaseTest {
 	
 	@Autowired 
 	MockMvc mockMvc;

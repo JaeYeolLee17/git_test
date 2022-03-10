@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.provider.repository.impl;
 
-import com.e4motion.challenge.data.common.HBaseHelper;
+import com.e4motion.challenge.data.common.repository.HBaseHelper;
 import com.e4motion.challenge.data.common.dto.LaneDataDto;
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
 import com.e4motion.challenge.data.provider.dto.DataDto;
@@ -8,12 +8,14 @@ import com.e4motion.challenge.data.provider.dto.DataListDto;
 import com.e4motion.challenge.data.provider.repository.DataRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.CompareFilter;
 import org.apache.hadoop.hbase.filter.RowFilter;
 import org.apache.hadoop.hbase.filter.SubstringComparator;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,9 +26,16 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Repository
-public class HbaseDataRepository implements DataRepository {
+public class HBaseDataRepository implements DataRepository, InitializingBean {
+
+    private final Admin hbaseAdmin;
 
     private final HbaseTemplate hbaseTemplate;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        HBaseHelper.createTable(hbaseAdmin);
+    }
 
     @Override
     public DataListDto query(HashMap<String, Object> map) {

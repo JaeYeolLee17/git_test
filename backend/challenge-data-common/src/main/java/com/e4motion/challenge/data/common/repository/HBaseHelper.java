@@ -1,4 +1,4 @@
-package com.e4motion.challenge.data.common;
+package com.e4motion.challenge.data.common.repository;
 
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
 import lombok.RequiredArgsConstructor;
@@ -46,17 +46,14 @@ public class HBaseHelper implements InitializingBean {
     public static final byte[] Q_L = Bytes.toBytes("l");
     public static final byte[] Q_R = Bytes.toBytes("r");
 
-    private final Admin hbaseAdmin;
-
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         for (int i = TrafficDataDto.MIN_LANE; i <= TrafficDataDto.MAX_LANE; i++) {
             CF_L.add(Bytes.toBytes("l" + i));
         }
-        createTable();
     }
 
-    private void createTable() throws IOException {
+    public static void createTable(Admin hbaseAdmin) throws IOException {
 
         TableName tableName = TableName.valueOf(TABLE_NAME);
         if(!hbaseAdmin.tableExists(tableName)) {

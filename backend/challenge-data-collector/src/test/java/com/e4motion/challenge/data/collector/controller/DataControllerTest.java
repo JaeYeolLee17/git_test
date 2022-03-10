@@ -3,6 +3,7 @@ package com.e4motion.challenge.data.collector.controller;
 import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
+import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DataControllerTest {
+class DataControllerTest extends HBaseMockBaseTest {
 
     @Autowired
     MockMvc mockMvc;

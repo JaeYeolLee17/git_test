@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface JpaUserRepository extends JpaRepository<User, Long>, UserRepository {
+public interface JpaUserRepository extends JpaRepository<User, String>, UserRepository {
 	
 	@Transactional(readOnly = true)
 	@EntityGraph(attributePaths = "authorities")

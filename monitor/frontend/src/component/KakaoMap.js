@@ -14,7 +14,7 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
     const [level, setLevel] = useState(7);
 
     const displayRegion = () => {
-        if (region.current) {
+        if (Utils.utilIsEmptyObj(region.current) === false) {
             return (
                 <Polygon
                     path={region.current.gps}

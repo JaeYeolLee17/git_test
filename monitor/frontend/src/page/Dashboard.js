@@ -323,7 +323,11 @@ const Dashboard = () => {
     }, []);
 
     useEffect(() => {
-        if (listRegions.length === 0) return;
+        if (Utils.utilIsEmptyArray(listRegions)) {
+            return;
+        }
+
+        console.log("listRegions", listRegions);
 
         let topItem = { value: "all", innerHTML: String.total };
 
@@ -343,21 +347,25 @@ const Dashboard = () => {
     }, [listRegions]);
 
     useEffect(() => {
-        if (listSelectRegionItem) {
-            console.log("listSelectRegionItem", listSelectRegionItem);
-            let currentRegionInfo = listRegions.filter(
-                (region) => region.regionId === listSelectRegionItem.value
-            );
-            setCurretnRegionInfo(currentRegionInfo[0]);
-
-            requestIntersectionList();
+        if (Utils.utilIsEmptyObj(listSelectRegionItem)) {
+            return;
         }
+
+        console.log("listSelectRegionItem", listSelectRegionItem);
+        let currentRegionInfo = listRegions.filter(
+            (region) => region.regionId === listSelectRegionItem.value
+        );
+        setCurretnRegionInfo(currentRegionInfo[0]);
+
+        requestIntersectionList();
     }, [listSelectRegionItem]);
 
     useEffect(() => {
-        if (listIntersections.length === 0) return;
+        if (Utils.utilIsEmptyArray(listIntersections)) {
+            return;
+        }
 
-        //console.log("listIntersections", listIntersections);
+        console.log("listIntersections", listIntersections);
 
         let topItem = { value: "all", innerHTML: String.total };
 
@@ -382,8 +390,9 @@ const Dashboard = () => {
     }, [listIntersections]);
 
     useEffect(() => {
-        console.log("listSelectIntersectionItem", listSelectIntersectionItem);
+        if (!listSelectIntersectionItem) return;
 
+        console.log("listSelectIntersectionItem", listSelectIntersectionItem);
         //setDataMfd(null);
         setDataLastWeekMfd(null);
         setDataLastMonthAvgMfd(null);

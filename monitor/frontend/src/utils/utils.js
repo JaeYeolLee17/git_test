@@ -196,3 +196,22 @@ export const utilAxiosWithAuth = (auth) => {
 
     return instance;
 };
+
+export const utilIsEmptyObj = (obj) => {
+    if (
+        obj === undefined ||
+        (obj.constructor === Object && Object.keys(obj).length === 0)
+    ) {
+        return true;
+    }
+
+    return false;
+};
+
+export const utilIsEmptyArray = (array) => {
+    if (array !== undefined && Array.isArray(array) && array.length) {
+        return false;
+    }
+
+    return true;
+};

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 import * as Request from "../request";
 
+import * as Utils from "../utils/utils";
+
 const Login = () => {
     const dispatch = useAuthDispatch();
     const userRef = useRef();
@@ -32,16 +34,11 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(
-                process.env.REACT_APP_API_URI + Request.LOGIN_URL,
-                JSON.stringify({ userId: user, password: pwd }),
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
-                }
+            const response = await Utils.utilAxios().post(
+                Request.LOGIN_URL,
+                JSON.stringify({ userId: user, password: pwd })
             );
+
             //console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
             const result = response?.data?.result;
@@ -58,6 +55,13 @@ const Login = () => {
 
             if (result === "ok") {
                 dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
+
+                // JWT
+                const accessToken = response?.data?.token;
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${accessToken}`;
+
                 localStorage.setItem(
                     "currentUser",
                     JSON.stringify(response.data)

@@ -1,7 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = function (app) {
-    console.log("TEST", process.env.REACT_APP_NEXT_DEV);
     if (process.env.REACT_APP_NEXT_DEV === "false") {
         app.use(
             createProxyMiddleware("/challenge-api", {

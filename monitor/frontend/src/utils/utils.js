@@ -1,4 +1,5 @@
 import * as Common from "../common";
+import axios from "axios";
 
 const { kakao } = window;
 
@@ -166,4 +167,32 @@ export const utilConvertParallelLines = (map, level, list) => {
     }
 
     return path;
+};
+
+export const utilAxios = () => {
+    const instance = axios.create({
+        headers: {
+            "Content-Type": "application/json",
+        },
+        withCredentials: true,
+    });
+
+    return instance;
+};
+
+export const utilAxiosWithAuth = (auth) => {
+    let instance = null;
+    if (process.env.REACT_APP_NEXT_DEV === "true") {
+        instance = utilAxios();
+    } else {
+        instance = axios.create({
+            headers: {
+                "Content-Type": "application/json",
+                "X-AUTH-TOKEN": `${auth}`,
+            },
+            withCredentials: true,
+        });
+    }
+
+    return instance;
 };

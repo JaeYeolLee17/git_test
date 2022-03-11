@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     Map,
     MapMarker,
     Polygon,
     Circle,
     Polyline,
-    useMap,
 } from "react-kakao-maps-sdk";
 import * as Utils from "../utils/utils";
 import * as Common from "../common";
@@ -124,7 +123,7 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
 
     const displayLinks = () => {
         if (links.list) {
-            console.log("links", links);
+            //console.log("links", links);
             if (level >= 5) {
                 return links.list.map((link, index) => {
                     let qtsrlu = (link.data[0].qtsrlu * 4) / 3600;

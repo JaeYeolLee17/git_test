@@ -33,10 +33,12 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const sha256 = require("sha256");
+
         try {
             const response = await Utils.utilAxios().post(
                 Request.LOGIN_URL,
-                JSON.stringify({ userId: user, password: pwd })
+                JSON.stringify({ userId: user, password: sha256(pwd) })
             );
 
             //console.log(JSON.stringify(response?.data));

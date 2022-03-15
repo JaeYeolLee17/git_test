@@ -1,0 +1,97 @@
+<svg id="btn_map_cctv_e_40_23_f" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: rgba(0,0,0,0);
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-3, .cls-7 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        opacity: 0;
+      }
+
+      .cls-4 {
+        fill: #0766b6;
+      }
+
+      .cls-5 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-6 {
+        clip-path: url(#clip-path-2);
+      }
+
+      .cls-8 {
+        fill: red;
+      }
+
+      .cls-10, .cls-9 {
+        stroke: none;
+      }
+
+      .cls-10 {
+        fill: #1f5499;
+      }
+
+      .cls-11 {
+        filter: url(#합치기_75);
+      }
+
+      .cls-12 {
+        filter: url(#패스_229);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#0766b6"/>
+      <stop offset="1" stop-color="#c1e3ff"/>
+    </linearGradient>
+    <filter id="패스_229" x="1" y="2" width="38" height="38" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feFlood flood-opacity="0.302"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <path id="패스_2877" data-name="패스 2877" class="cls-1" d="M8.812,0A14.943,14.943,0,0,0,0,2.893L7.812,10.7h2l7.812-7.812A14.944,14.944,0,0,0,8.812,0Z"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="사각형_3660" data-name="사각형 3660" class="cls-2" width="17.625" height="25.705" transform="translate(0 0)"/>
+    </clipPath>
+    <filter id="합치기_75" x="14" y="6" width="12" height="27.708" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1" result="blur-2"/>
+      <feFlood flood-opacity="0.6"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <rect id="사각형_274" data-name="사각형 274" class="cls-3" width="40" height="40"/>
+  <g id="그룹_2859" data-name="그룹 2859">
+    <g class="cls-12" transform="matrix(1, 0, 0, 1, 0, 0)">
+      <g id="패스_229-2" data-name="패스 229" class="cls-4" transform="translate(4 4)">
+        <path class="cls-9" d="M 16 31.5 C 11.85980033874512 31.5 7.967410087585449 29.88772010803223 5.039840221405029 26.96015930175781 C 2.112279891967773 24.03259086608887 0.5 20.14019966125488 0.5 16 C 0.5 11.85980033874512 2.112279891967773 7.967410087585449 5.039840221405029 5.039840221405029 C 7.967410087585449 2.112279891967773 11.85980033874512 0.5 16 0.5 C 20.14019966125488 0.5 24.03259086608887 2.112279891967773 26.96015930175781 5.039840221405029 C 29.88772010803223 7.967410087585449 31.5 11.85980033874512 31.5 16 C 31.5 20.14019966125488 29.88772010803223 24.03259086608887 26.96015930175781 26.96015930175781 C 24.03259086608887 29.88772010803223 20.14019966125488 31.5 16 31.5 Z"/>
+        <path class="cls-10" d="M 16 1 C 11.99334907531738 1 8.226520538330078 2.560270309448242 5.393400192260742 5.393400192260742 C 2.560270309448242 8.226520538330078 1 11.99334907531738 1 16 C 1 20.00664901733398 2.560270309448242 23.77347946166992 5.393400192260742 26.60659980773926 C 8.226520538330078 29.43972969055176 11.99334907531738 31 16 31 C 20.00664901733398 31 23.77347946166992 29.43972969055176 26.60659980773926 26.60659980773926 C 29.43972969055176 23.77347946166992 31 20.00664901733398 31 16 C 31 11.99334907531738 29.43972969055176 8.226520538330078 26.60659980773926 5.393400192260742 C 23.77347946166992 2.560270309448242 20.00664901733398 1 16 1 M 16 0 C 24.8365592956543 0 32 7.163440704345703 32 16 C 32 24.8365592956543 24.8365592956543 32 16 32 C 7.163440704345703 32 0 24.8365592956543 0 16 C 0 7.163440704345703 7.163440704345703 0 16 0 Z"/>
+      </g>
+    </g>
+  </g>
+  <g id="그룹_3035" data-name="그룹 3035" class="cls-5" transform="matrix(-0.643, -0.766, 0.766, -0.643, 14.294, 36.536)">
+    <rect id="사각형_3658" data-name="사각형 3658" class="cls-1" width="17.625" height="10.705" transform="translate(0 0)"/>
+  </g>
+  <g id="그룹_3037" data-name="그룹 3037" class="cls-6" transform="matrix(-0.643, -0.766, 0.766, -0.643, 14.294, 36.536)">
+    <path id="패스_2878" data-name="패스 2878" class="cls-7" d="M7.812,10.705h2l4-4h-10Z"/>
+    <rect id="사각형_3659" data-name="사각형 3659" class="cls-7" width="10" height="13" transform="translate(3.812 12.705)"/>
+  </g>
+  <g class="cls-11" transform="matrix(1, 0, 0, 1, 0, 0)">
+    <path id="합치기_75-2" data-name="합치기 75" class="cls-8" d="M1074-158.292a3,3,0,0,1,3-3,3,3,0,0,1,3,3,3,3,0,0,1-3,3A3,3,0,0,1,1074-158.292Zm.657-5.11V-177h5v13.6Z" transform="translate(-1057 186)"/>
+  </g>
+</svg>

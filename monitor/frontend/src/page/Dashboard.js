@@ -44,6 +44,10 @@ const Dashboard = () => {
     const [dataLastWeekMfd, setDataLastWeekMfd] = useState(null);
     const [dataLastMonthAvgMfd, setDataLastMonthAvgMfd] = useState(null);
 
+    const [listTrafficLights, setListTrafficLights] = useState([]);
+    const [blinkTrafficLights, setBlinkTrafficLights] = useState(false);
+    const [showTrafficLights, setShowTrafficLights] = useState(true);
+
     const requestData = () => {
         let now = new Date();
         if (now.getSeconds() === 0) {
@@ -51,6 +55,8 @@ const Dashboard = () => {
             requestMfd();
             requestLink();
         }
+
+        if (showTrafficLights) requestTrafficLight();
     };
 
     useInterval(() => {
@@ -307,16 +313,23 @@ const Dashboard = () => {
         }
     };
 
+    const requestTrafficLight = async (e) => {
+        try {
+            //console.log(userDetails.token);
+            const response = await Utils.utilAxiosWithAuth(
+                userDetails.token
+            ).get(Request.TSI_URL);
+
+            //console.log(JSON.stringify(response?.data));
+            setBlinkTrafficLights(!blinkTrafficLights);
+            setListTrafficLights(response?.data?.tsi);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     useEffect(() => {
         requestRegionList();
-        // const timerId = setInterval(() => {
-        //     requestData();
-        // }, 1 * 1000);
-
-        // return () => {
-        //     clearInterval(timerId);
-        //     requestStreamStop(listStreamResponse);
-        // };
         requestCameras();
 
         //requestUsers();
@@ -327,7 +340,7 @@ const Dashboard = () => {
             return;
         }
 
-        console.log("listRegions", listRegions);
+        //console.log("listRegions", listRegions);
 
         let topItem = { value: "all", innerHTML: String.total };
 
@@ -351,7 +364,7 @@ const Dashboard = () => {
             return;
         }
 
-        console.log("listSelectRegionItem", listSelectRegionItem);
+        //console.log("listSelectRegionItem", listSelectRegionItem);
         let currentRegionInfo = listRegions.filter(
             (region) => region.regionId === listSelectRegionItem.value
         );
@@ -365,7 +378,7 @@ const Dashboard = () => {
             return;
         }
 
-        console.log("listIntersections", listIntersections);
+        //console.log("listIntersections", listIntersections);
 
         let topItem = { value: "all", innerHTML: String.total };
 
@@ -392,7 +405,7 @@ const Dashboard = () => {
     useEffect(() => {
         if (!listSelectIntersectionItem) return;
 
-        console.log("listSelectIntersectionItem", listSelectIntersectionItem);
+        //console.log("listSelectIntersectionItem", listSelectIntersectionItem);
         //setDataMfd(null);
         setDataLastWeekMfd(null);
         setDataLastMonthAvgMfd(null);
@@ -550,6 +563,10 @@ const Dashboard = () => {
         setShowLinks(!showLinks);
     };
 
+    const onClickTrafficLight = (e) => {
+        setShowTrafficLights(!showTrafficLights);
+    };
+
     return (
         <div>
             <Header />
@@ -571,6 +588,7 @@ const Dashboard = () => {
             <button onClick={onClickRegion}>region</button>
             <button onClick={onClickCamera}>camera</button>
             <button onClick={onClickLinks}>links</button>
+            <button onClick={onClickTrafficLight}>TrafficLight</button>
             <KakaoMap
                 style={{
                     width: "100%",
@@ -595,6 +613,11 @@ const Dashboard = () => {
                 links={{
                     list: listLink,
                     isShow: showLinks,
+                }}
+                trafficLights={{
+                    list: listTrafficLights,
+                    blink: blinkTrafficLights,
+                    isShow: showTrafficLights,
                 }}
             />
             {listStreamResponse &&

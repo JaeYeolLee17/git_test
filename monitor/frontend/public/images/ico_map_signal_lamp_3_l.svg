@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <clipPath id="mo41arhyka">
+            <path data-name="사각형 2463" style="fill:#fff;stroke:#707070;opacity:0" d="M0 0h40v40H0z"/>
+        </clipPath>
+        <filter id="nnhnv6e2yb" x="1.358" y="3.358" width="37.284" height="37.284" filterUnits="userSpaceOnUse">
+            <feOffset dy="2"/>
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feFlood flood-opacity=".302"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g style="clip-path:url(#mo41arhyka)">
+        <g style="filter:url(#nnhnv6e2yb)" data-name="마스크 그룹 22">
+            <g data-name="사각형 2459" transform="rotate(135 12.928 17.07)" style="fill:#3f4a4a;stroke:#fff">
+                <rect width="20" height="20" rx="4" style="stroke:none"/>
+                <rect x=".5" y=".5" width="19" height="19" rx="3.5" style="fill:none"/>
+            </g>
+        </g>
+    </g>
+    <g data-name="그룹 2219">
+        <g data-name="그룹 2207">
+            <path data-name="패스 1457" d="M8.987 5.253H3.664l2.919-2.922L5.253 1 0 6.253l5.253 5.255 1.33-1.33-2.924-2.925h3.328a2.977 2.977 0 0 1 2.974 2.974v5.114h2v-5.114a4.979 4.979 0 0 0-4.974-4.974" transform="rotate(135 10.515 16.9)" style="fill:#6fe600"/>
+        </g>
+    </g>
+</svg>

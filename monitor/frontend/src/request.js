@@ -12,6 +12,8 @@ export const INTERSECTIONS_LIST_URL = DEFAULT_URL + "intersections";
 export const STAT_MFD_URL = DEFAULT_URL + "stat/mfd";
 export const STAT_LINK_URL = DEFAULT_URL + "stat/link";
 
+export const TSI_URL = DEFAULT_URL + "tsi";
+
 export const USERS_URL = DEFAULT_URL + "users";
 
 export const STREAM_URL_START = "/start";

@@ -9,7 +9,14 @@ import {
 import * as Utils from "../utils/utils";
 import * as Common from "../common";
 
-function KakaoMap({ style, region, intersections, cameras, links }) {
+function KakaoMap({
+    style,
+    region,
+    intersections,
+    cameras,
+    links,
+    trafficLights,
+}) {
     const [kakaoMap, setKakaoMap] = useState(null);
     const [level, setLevel] = useState(7);
 
@@ -91,7 +98,7 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
                 "_40_" +
                 (camera.degree ? camera.degree : "0") +
                 (isSelected ? "_f" : "_n") +
-                ".png";
+                ".svg";
 
             return (
                 <MapMarker
@@ -131,8 +138,10 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
                     let speed = (srlu / qtsrlu).toFixed(2);
                     let color = Utils.utilGetSpeedColor(speed);
 
+                    let key = link.link.startId + "_" + link.link.endId;
+
                     return (
-                        <>
+                        <div key={key}>
                             <Polyline
                                 path={link.link.gps}
                                 strokeWeight={8} // 선의 두께 입니다
@@ -150,7 +159,7 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
                                 strokeStyle={"solid"} // 선의 스타일입니다
                                 zIndex={3}
                             />
-                        </>
+                        </div>
                     );
                 });
             } else {
@@ -173,8 +182,10 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
                         link.link.gps
                     );
 
+                    let key = link.link.startId + "_" + link.link.endId;
+
                     return (
-                        <>
+                        <div key={key}>
                             <Polyline
                                 path={luPath}
                                 strokeWeight={8} // 선의 두께 입니다
@@ -210,10 +221,176 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
                                 strokeStyle={"solid"} // 선의 스타일입니다
                                 zIndex={3}
                             />
-                        </>
+                        </div>
                     );
                 });
             }
+        }
+
+        return null;
+    };
+
+    const getTrafficSignalType = (signalDatas) => {
+        let signalType = "d";
+
+        signalDatas.signalInfo.forEach((signalInfo) => {
+            if (signalInfo.info === 1 || signalInfo.info === 2) {
+                switch (signalInfo.status) {
+                    case 0:
+                        break;
+                    case 1:
+                        if (signalType === "d" || signalType === "y") {
+                            signalType = "r";
+                        }
+                        break;
+                    case 2:
+                        if (signalType === "d") {
+                            signalType = "y";
+                        }
+                        break;
+                    case 3:
+                    case 6:
+                        if (signalType === "s" || signalType === "l") {
+                            signalType = "sl";
+                        } else {
+                            if (signalInfo.info === 1) {
+                                signalType = "s";
+                            } else if (signalInfo.info === 2) {
+                                signalType = "l";
+                            }
+                        }
+                        break;
+
+                    case 4:
+                        if (trafficLights.blink === true) {
+                            signalType = "r";
+                        } else {
+                            signalType = "d";
+                        }
+                        break;
+
+                    case 5:
+                        if (trafficLights.blink === true) {
+                            signalType = "y";
+                        } else {
+                            signalType = "d";
+                        }
+                        break;
+
+                    default:
+                        signalType = "d";
+                        break;
+                }
+            }
+        });
+
+        return signalType;
+    };
+
+    const toRad = (brng) => {
+        return (brng * Math.PI) / 180;
+    };
+
+    const toDeg = (brng) => {
+        return (brng * 180) / Math.PI;
+    };
+
+    const getMoveGPSPosition = (gps, bearing, distance) => {
+        var originalLat = gps.lat;
+        var originalLng = gps.lng;
+
+        distance = distance / 6371;
+        bearing = toRad(bearing);
+
+        originalLat = toRad(originalLat);
+        originalLng = toRad(originalLng);
+
+        var tranlateLat = Math.asin(
+            Math.sin(originalLat) * Math.cos(distance) +
+                Math.cos(originalLat) * Math.sin(distance) * Math.cos(bearing)
+        );
+
+        var tranlateLng =
+            originalLng +
+            Math.atan2(
+                Math.sin(bearing) * Math.sin(distance) * Math.cos(originalLat),
+                Math.cos(distance) -
+                    Math.sin(originalLat) * Math.sin(tranlateLat)
+            );
+
+        if (isNaN(tranlateLat) || isNaN(tranlateLng)) return null;
+
+        return { lat: toDeg(tranlateLat), lng: toDeg(tranlateLng) };
+    };
+
+    const displayTrafficLights = () => {
+        const defaultTrafficeIntervalTime = 1000 * 60 * 1;
+        if (Utils.utilIsEmptyArray(trafficLights.list) === false) {
+            return trafficLights.list.map((tsiData) => {
+                let currentDateTime = new Date();
+                let lastSignalDateTime = new Date(tsiData.time);
+                let signalDateInterval =
+                    currentDateTime.getTime() - lastSignalDateTime.getTime();
+
+                var signalType = "d";
+                if (tsiData.error !== 0) {
+                    signalType = "e";
+                } else if (
+                    signalDateInterval > defaultTrafficeIntervalTime ||
+                    tsiData.time === undefined
+                ) {
+                    signalType = "e";
+                }
+
+                signalType = "d"; // TODO: Code for Demo
+
+                return tsiData.signal.map((signalData) => {
+                    if (signalType !== "e") {
+                        signalType = getTrafficSignalType(signalData);
+                    }
+
+                    let imageUrl = "/images/ico_map_signal_lamp_";
+                    let signalDirectionType = signalData.direction / 45;
+                    let imageType = 4;
+                    if (
+                        signalType === "s" ||
+                        signalType === "l" ||
+                        signalType === "sl"
+                    ) {
+                        if (signalDirectionType < 4)
+                            imageType = signalDirectionType + 4;
+                        else imageType = signalDirectionType - 4;
+                    } else {
+                        imageType = signalDirectionType % 2;
+                    }
+                    imageUrl += String(imageType) + "_" + signalType + ".svg";
+
+                    let position = getMoveGPSPosition(
+                        tsiData.gps,
+                        signalData.direction,
+                        0.05
+                    );
+
+                    return (
+                        <MapMarker
+                            position={position}
+                            image={{
+                                src: imageUrl,
+                                size: {
+                                    widht: 40,
+                                    height: 40,
+                                },
+                                options: {
+                                    offset: {
+                                        x: 20,
+                                        y: 20,
+                                    },
+                                },
+                            }}
+                        />
+                    );
+                });
+            });
         }
 
         return null;
@@ -239,6 +416,7 @@ function KakaoMap({ style, region, intersections, cameras, links }) {
             {displayIntersection()}
             {cameras.isShow && displayCamera()}
             {links.isShow && displayLinks()}
+            {trafficLights.isShow && displayTrafficLights()}
         </Map>
     );
 }

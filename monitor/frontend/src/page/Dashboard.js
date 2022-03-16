@@ -336,12 +336,48 @@ const Dashboard = () => {
         }
     };
 
+    const getLocalStorageData = () => {
+        setShowRegion(
+            localStorage.showRegion === undefined ||
+                localStorage.showRegion === "true"
+        );
+        setShowCameras(
+            localStorage.showCameras === undefined ||
+                localStorage.showCameras === "true"
+        );
+        setShowLinks(
+            localStorage.showLinks === undefined ||
+                localStorage.showLinks === "true"
+        );
+        setShowTrafficLights(
+            localStorage.showTrafficLights === undefined ||
+                localStorage.showTrafficLights === "true"
+        );
+        setShowAvlDatas(
+            localStorage.showAvlDatas === undefined ||
+                localStorage.showAvlDatas === "true"
+        );
+    };
+
+    const setLocalStorageData = () => {
+        localStorage.showRegion = showRegion;
+        localStorage.showCameras = showCameras;
+        localStorage.showLinks = showLinks;
+        localStorage.showTrafficLights = showTrafficLights;
+        localStorage.showAvlDatas = showAvlDatas;
+    };
+
     useEffect(() => {
+        getLocalStorageData();
         requestRegionList();
         requestCameras();
 
         //requestUsers();
     }, []);
+
+    useEffect(() => {
+        setLocalStorageData();
+    }, [showRegion, showCameras, showLinks, showTrafficLights, showAvlDatas]);
 
     useEffect(() => {
         if (Utils.utilIsEmptyArray(listRegions)) {

@@ -400,7 +400,7 @@ function KakaoMap({
     const displayAvl = () => {
         if (Utils.utilIsEmptyArray(avl.list) === false) {
             return avl.list.map((avlData) => {
-                console.log("avlData", avlData);
+                //console.log("avlData", avlData);
 
                 let naviPath = avlData.path.slice(-1)[0].gps;
                 //console.log("naviPath", naviPath);
@@ -429,7 +429,7 @@ function KakaoMap({
                     (avlData.carNo === avl.selected ? "_p" : "_n") +
                     ".svg";
 
-                console.log(vehicleImageUrl);
+                //console.log(vehicleImageUrl);
 
                 return (
                     <div key={avlData.carNo}>

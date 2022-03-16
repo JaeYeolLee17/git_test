@@ -22,6 +22,7 @@ function KakaoMap({
     const [level, setLevel] = useState(7);
 
     const displayRegion = () => {
+        //console.log("displayRegion");
         if (Utils.utilIsEmptyObj(region.current) === false) {
             return (
                 <Polygon
@@ -40,6 +41,7 @@ function KakaoMap({
     };
 
     const displayIntersection = () => {
+        //console.log("displayIntersection");
         if (intersections.list) {
             return intersections.list
                 .filter(
@@ -90,6 +92,7 @@ function KakaoMap({
     };
 
     const displayCamera = () => {
+        //console.log("displayCamera");
         return cameras.list?.map((camera) => {
             let normalState = true; // TODO
             let isSelected = camera.cameraId === cameras.selected;
@@ -130,6 +133,7 @@ function KakaoMap({
     };
 
     const displayLinks = () => {
+        //console.log("displayLinks");
         if (links.list) {
             //console.log("links", links);
             if (level >= 5) {
@@ -326,6 +330,7 @@ function KakaoMap({
 
     const displayTrafficLights = () => {
         const defaultTrafficeIntervalTime = 1000 * 60 * 1;
+        //console.log("displayTrafficLights");
         if (Utils.utilIsEmptyArray(trafficLights.list) === false) {
             return trafficLights.list.map((tsiData) => {
                 let currentDateTime = new Date();
@@ -345,7 +350,11 @@ function KakaoMap({
 
                 signalType = "d"; // TODO: Code for Demo
 
-                return tsiData.signal.map((signalData) => {
+                // if (tsiData.nodeId === "1570190800") {
+                //     console.log("tsiData", tsiData);
+                // }
+
+                let datas = tsiData.signal.map((signalData) => {
                     if (signalType !== "e") {
                         signalType = getTrafficSignalType(signalData);
                     }
@@ -374,6 +383,7 @@ function KakaoMap({
 
                     return (
                         <MapMarker
+                            // key={tsiData.nodeId + "_" + signalData.direction}
                             position={position}
                             image={{
                                 src: imageUrl,
@@ -391,6 +401,8 @@ function KakaoMap({
                         />
                     );
                 });
+
+                return <div key={tsiData.nodeId}>{datas}</div>;
             });
         }
 

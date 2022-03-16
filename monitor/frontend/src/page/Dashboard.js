@@ -48,6 +48,10 @@ const Dashboard = () => {
     const [blinkTrafficLights, setBlinkTrafficLights] = useState(false);
     const [showTrafficLights, setShowTrafficLights] = useState(true);
 
+    const [listAvlDatas, setListAvlDatas] = useState([]);
+    const [showAvlDatas, setShowAvlDatas] = useState(true);
+    const [selectedAvl, setSelectedAvl] = useState("");
+
     const requestData = () => {
         let now = new Date();
         if (now.getSeconds() === 0) {
@@ -57,6 +61,7 @@ const Dashboard = () => {
         }
 
         if (showTrafficLights) requestTrafficLight();
+        if (showAvlDatas) requestAvlDatas();
     };
 
     useInterval(() => {
@@ -78,17 +83,6 @@ const Dashboard = () => {
 
     const requestCameras = async (e) => {
         try {
-            //console.log(userDetails.token);
-            // const response = await axios.get(
-            //     Request.CAMERA_URL,
-            //     {
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //             "X-AUTH-TOKEN": userDetails.token,
-            //         },
-            //         withCredentials: true,
-            //     }
-            // );
             const response = await Utils.utilAxiosWithAuth(
                 userDetails.token
             ).get(Request.CAMERA_URL);
@@ -323,6 +317,20 @@ const Dashboard = () => {
             //console.log(JSON.stringify(response?.data));
             setBlinkTrafficLights(!blinkTrafficLights);
             setListTrafficLights(response?.data?.tsi);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const requestAvlDatas = async (e) => {
+        try {
+            //console.log(userDetails.token);
+            const response = await Utils.utilAxiosWithAuth(
+                userDetails.token
+            ).get(Request.AVL_URL);
+
+            //console.log(JSON.stringify(response?.data));
+            setListAvlDatas(response?.data?.avl);
         } catch (err) {
             console.log(err);
         }
@@ -567,6 +575,10 @@ const Dashboard = () => {
         setShowTrafficLights(!showTrafficLights);
     };
 
+    const onClickAvl = (e) => {
+        setShowAvlDatas(!showAvlDatas);
+    };
+
     return (
         <div>
             <Header />
@@ -589,6 +601,7 @@ const Dashboard = () => {
             <button onClick={onClickCamera}>camera</button>
             <button onClick={onClickLinks}>links</button>
             <button onClick={onClickTrafficLight}>TrafficLight</button>
+            <button onClick={onClickAvl}>avl</button>
             <KakaoMap
                 style={{
                     width: "100%",
@@ -618,6 +631,11 @@ const Dashboard = () => {
                     list: listTrafficLights,
                     blink: blinkTrafficLights,
                     isShow: showTrafficLights,
+                }}
+                avl={{
+                    list: listAvlDatas,
+                    selected: selectedAvl,
+                    isShow: showAvlDatas,
                 }}
             />
             {listStreamResponse &&

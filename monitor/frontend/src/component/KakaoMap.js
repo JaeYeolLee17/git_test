@@ -16,6 +16,7 @@ function KakaoMap({
     cameras,
     links,
     trafficLights,
+    avl,
 }) {
     const [kakaoMap, setKakaoMap] = useState(null);
     const [level, setLevel] = useState(7);
@@ -396,6 +397,102 @@ function KakaoMap({
         return null;
     };
 
+    const displayAvl = () => {
+        if (Utils.utilIsEmptyArray(avl.list) === false) {
+            return avl.list.map((avlData) => {
+                console.log("avlData", avlData);
+
+                let naviPath = avlData.path.slice(-1)[0].gps;
+                //console.log("naviPath", naviPath);
+
+                let currPosition = null;
+                if (Utils.utilIsEmptyArray(avlData.track) === false) {
+                    currPosition = avlData.track[0].gps;
+                }
+                //console.log("currPosition", currPosition);
+
+                let destPosition = avlData.gps;
+                //console.log("destPosition", destPosition);
+                let status = avlData.status.slice(-1)[0].name;
+                //console.log("status", status);
+
+                let statusInfo = {
+                    출동: "r",
+                    현장도착: "y",
+                    현장출발: "b",
+                    병원도착: "g",
+                };
+
+                let vehicleImageUrl =
+                    "/images/btn_map_emergency_" +
+                    statusInfo[status] +
+                    (avlData.carNo === avl.selected ? "_p" : "_n") +
+                    ".svg";
+
+                console.log(vehicleImageUrl);
+
+                return (
+                    <div key={avlData.carNo}>
+                        <Polyline
+                            path={naviPath}
+                            strokeWeight={8} // 선의 두께 입니다
+                            strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
+                            strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                            strokeStyle={"solid"} // 선의 스타일입니다
+                            zIndex={8}
+                        />
+                        <Polyline
+                            path={naviPath}
+                            strokeWeight={4} // 선의 두께 입니다
+                            strokeColor={"#306fd9"} // 선의 색깔입니다
+                            strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                            strokeStyle={"shortdot"} // 선의 스타일입니다
+                            zIndex={8}
+                        />
+                        <MapMarker
+                            position={destPosition}
+                            image={{
+                                src: "/images/ico_map_emergency_vehicle_pin.png",
+                                size: {
+                                    widht: 40,
+                                    height: 40,
+                                },
+                                options: {
+                                    offset: {
+                                        x: 20,
+                                        y: 20,
+                                    },
+                                },
+                            }}
+                            zIndex={8}
+                        />
+                        {currPosition && (
+                            <MapMarker
+                                position={currPosition}
+                                image={{
+                                    src: vehicleImageUrl,
+                                    size: {
+                                        widht: 67,
+                                        height: 89,
+                                    },
+                                    options: {
+                                        offset: {
+                                            x: 34,
+                                            y: 81,
+                                        },
+                                    },
+                                }}
+                                zIndex={9}
+                            />
+                        )}
+                    </div>
+                );
+            });
+        }
+
+        return null;
+    };
+
     const handleMap = (map) => {
         setKakaoMap(map);
     };
@@ -417,6 +514,7 @@ function KakaoMap({
             {cameras.isShow && displayCamera()}
             {links.isShow && displayLinks()}
             {trafficLights.isShow && displayTrafficLights()}
+            {avl.isShow && displayAvl()}
         </Map>
     );
 }

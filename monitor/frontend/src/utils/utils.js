@@ -1,4 +1,4 @@
-import * as Common from "../common";
+import * as Common from "../commons/common";
 import axios from "axios";
 
 const { kakao } = window;

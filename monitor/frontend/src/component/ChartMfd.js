@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import * as Utils from "../utils/utils";
-import * as String from "../string";
+import * as String from "../commons/string";
 //import * as Common from "../common";
 
 function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }) {

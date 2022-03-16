@@ -7,7 +7,7 @@ import {
     Polyline,
 } from "react-kakao-maps-sdk";
 import * as Utils from "../utils/utils";
-import * as Common from "../common";
+import * as Common from "../commons/common";
 
 function KakaoMap({
     style,

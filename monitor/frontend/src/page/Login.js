@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
-import * as Request from "../request";
+import * as Request from "../commons/request";
 
 import * as Utils from "../utils/utils";
 

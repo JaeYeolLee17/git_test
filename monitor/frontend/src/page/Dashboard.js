@@ -12,8 +12,8 @@ import Selector from "../component/Selector";
 import { useAuthState } from "../provider/AuthProvider";
 
 import * as Utils from "../utils/utils";
-import * as Request from "../request";
-import * as String from "../string";
+import * as Request from "../commons/request";
+import * as String from "../commons/string";
 import { useInterval } from "../utils/customHooks";
 
 const Dashboard = () => {

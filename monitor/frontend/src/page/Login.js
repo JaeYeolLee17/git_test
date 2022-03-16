@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import * as Request from "../commons/request";
+import * as Common from "../commons/common";
 
 import * as Utils from "../utils/utils";
 
@@ -68,7 +69,7 @@ const Login = () => {
                     "currentUser",
                     JSON.stringify(response.data)
                 );
-                navigate("/dashboard");
+                navigate(Common.PAGE_DASHBOARD);
             } else {
                 dispatch({ type: "LOGIN_ERROR", error: "Login failed" });
                 localStorage.removeItem("currentUser");

@@ -15,6 +15,8 @@ import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as String from "../commons/string";
 import { useInterval } from "../utils/customHooks";
+import SelectorRegion from "../component/SelectorRegion";
+import SelectorIntersection from "../component/SelectorIntersection";
 
 const Dashboard = () => {
     const userDetails = useAuthState();
@@ -23,17 +25,19 @@ const Dashboard = () => {
     const [showCameras, setShowCameras] = useState(true);
     const [selectedCamera, setSelectedCamera] = useState("");
 
-    const [listRegions, setListRegions] = useState([]);
-    const [listSelectRegions, setListSelectRegions] = useState([]);
-    const [listSelectRegionItem, setListSelectRegionItem] = useState({});
+    //const [listRegions, setListRegions] = useState([]);
+    //const [listSelectRegions, setListSelectRegions] = useState([]);
+    //const [listSelectRegionItem, setListSelectRegionItem] = useState({});
     const [showRegion, setShowRegion] = useState(true);
-    const [curretnRegionInfo, setCurretnRegionInfo] = useState({});
+    const [selectedRegionId, setSelectedRegionId] = useState("");
+    const [currentRegionInfo, setCurrentRegionInfo] = useState({});
 
+    // const [listIntersections, setListIntersections] = useState([]);
+    // const [listSelectIntersections, setListSelectIntersections] = useState([]);
+    // const [listSelectIntersectionItem, setListSelectIntersectionItem] =
+    //     useState("");
     const [listIntersections, setListIntersections] = useState([]);
-    const [listSelectIntersections, setListSelectIntersections] = useState([]);
-    const [listSelectIntersectionItem, setListSelectIntersectionItem] =
-        useState("");
-    const [selectedIntersection, setSelectedIntersection] = useState("");
+    const [selectedIntersectionId, setSelectedIntersectionId] = useState("");
 
     const [listLink, setListLink] = useState([]);
     const [showLinks, setShowLinks] = useState(true);
@@ -94,38 +98,38 @@ const Dashboard = () => {
         }
     };
 
-    const requestRegionList = async (e) => {
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.REGIONS_LIST_URL);
+    // const requestRegionList = async (e) => {
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.REGIONS_LIST_URL);
 
-            //console.log(JSON.stringify(response?.data));
-            setListRegions(response?.data.regions);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    //         //console.log(JSON.stringify(response?.data));
+    //         setListRegions(response?.data.regions);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
-    const requestIntersectionList = async (e) => {
-        try {
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.INTERSECTIONS_LIST_URL, {
-                params: {
-                    ...(listSelectRegionItem.value !== "all"
-                        ? { regionId: listSelectRegionItem.value }
-                        : {}),
-                },
-            });
+    // const requestIntersectionList = async (e) => {
+    //     try {
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.INTERSECTIONS_LIST_URL, {
+    //             // params: {
+    //             //     ...(listSelectRegionItem.value !== "all"
+    //             //         ? { regionId: listSelectRegionItem.value }
+    //             //         : {}),
+    //             // },
+    //         });
 
-            //console.log(JSON.stringify(response?.data));
-            setListIntersections(response?.data.intersections);
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    //         //console.log(JSON.stringify(response?.data));
+    //         setListIntersections(response?.data.intersections);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     const requestMfd = async (e) => {
         let startTime = Utils.utilFormatDateYYYYMMDD000000(new Date());
@@ -142,39 +146,39 @@ const Dashboard = () => {
 
         let extraParam = {};
 
-        if (listSelectIntersectionItem.value === "all") {
-            if (listSelectRegionItem.value !== "all") {
-                extraParam = {
-                    filterBy: "region",
-                    filterId: listSelectRegionItem.value,
-                };
-            }
-        } else {
-            extraParam = {
-                filterBy: "intersection",
-                filterId: listSelectIntersectionItem.value,
-            };
-        }
+        // if (listSelectIntersectionItem.value === "all") {
+        //     if (listSelectRegionItem.value !== "all") {
+        //         extraParam = {
+        //             filterBy: "region",
+        //             filterId: listSelectRegionItem.value,
+        //         };
+        //     }
+        // } else {
+        //     extraParam = {
+        //         filterBy: "intersection",
+        //         filterId: listSelectIntersectionItem.value,
+        //     };
+        // }
 
-        //console.log("extraParam", extraParam);
+        // //console.log("extraParam", extraParam);
 
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.STAT_MFD_URL, {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                },
-            });
+        // try {
+        //     //console.log(userDetails.token);
+        //     const response = await Utils.utilAxiosWithAuth(
+        //         userDetails.token
+        //     ).get(Request.STAT_MFD_URL, {
+        //         params: {
+        //             startTime: startTime,
+        //             endTime: endTime,
+        //             ...extraParam,
+        //         },
+        //     });
 
-            //console.log(JSON.stringify(response?.data));
-            setDataMfd(response?.data?.stat[0]);
-        } catch (err) {
-            console.log(err);
-        }
+        //     //console.log(JSON.stringify(response?.data));
+        //     setDataMfd(response?.data?.stat[0]);
+        // } catch (err) {
+        //     console.log(err);
+        // }
     };
 
     const requestLastWeekMfd = async (e) => {
@@ -191,39 +195,39 @@ const Dashboard = () => {
 
         let extraParam = {};
 
-        if (listSelectIntersectionItem.value === "all") {
-            if (listSelectRegionItem.value !== "all") {
-                extraParam = {
-                    filterBy: "region",
-                    filterId: listSelectRegionItem.value,
-                };
-            }
-        } else {
-            extraParam = {
-                filterBy: "intersection",
-                filterId: listSelectIntersectionItem.value,
-            };
-        }
+        // if (listSelectIntersectionItem.value === "all") {
+        //     if (listSelectRegionItem.value !== "all") {
+        //         extraParam = {
+        //             filterBy: "region",
+        //             filterId: listSelectRegionItem.value,
+        //         };
+        //     }
+        // } else {
+        //     extraParam = {
+        //         filterBy: "intersection",
+        //         filterId: listSelectIntersectionItem.value,
+        //     };
+        // }
 
-        //console.log("extraParam", extraParam);
+        // //console.log("extraParam", extraParam);
 
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.STAT_MFD_URL, {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                },
-            });
+        // try {
+        //     //console.log(userDetails.token);
+        //     const response = await Utils.utilAxiosWithAuth(
+        //         userDetails.token
+        //     ).get(Request.STAT_MFD_URL, {
+        //         params: {
+        //             startTime: startTime,
+        //             endTime: endTime,
+        //             ...extraParam,
+        //         },
+        //     });
 
-            //console.log(JSON.stringify(response?.data));
-            setDataLastWeekMfd(response?.data?.stat[0]);
-        } catch (err) {
-            console.log(err);
-        }
+        //     //console.log(JSON.stringify(response?.data));
+        //     setDataLastWeekMfd(response?.data?.stat[0]);
+        // } catch (err) {
+        //     console.log(err);
+        // }
     };
 
     const requestLastMonthAvgMfd = async (e) => {
@@ -242,40 +246,40 @@ const Dashboard = () => {
 
         let extraParam = {};
 
-        if (listSelectIntersectionItem.value === "all") {
-            if (listSelectRegionItem.value !== "all") {
-                extraParam = {
-                    filterBy: "region",
-                    filterId: listSelectRegionItem.value,
-                };
-            }
-        } else {
-            extraParam = {
-                filterBy: "intersection",
-                filterId: listSelectIntersectionItem.value,
-            };
-        }
+        // if (listSelectIntersectionItem.value === "all") {
+        //     if (listSelectRegionItem.value !== "all") {
+        //         extraParam = {
+        //             filterBy: "region",
+        //             filterId: listSelectRegionItem.value,
+        //         };
+        //     }
+        // } else {
+        //     extraParam = {
+        //         filterBy: "intersection",
+        //         filterId: listSelectIntersectionItem.value,
+        //     };
+        // }
 
-        //console.log("extraParam", extraParam);
+        // //console.log("extraParam", extraParam);
 
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.STAT_MFD_URL, {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                    dayOfWeek: dayOfWeek,
-                },
-            });
+        // try {
+        //     //console.log(userDetails.token);
+        //     const response = await Utils.utilAxiosWithAuth(
+        //         userDetails.token
+        //     ).get(Request.STAT_MFD_URL, {
+        //         params: {
+        //             startTime: startTime,
+        //             endTime: endTime,
+        //             ...extraParam,
+        //             dayOfWeek: dayOfWeek,
+        //         },
+        //     });
 
-            //console.log(JSON.stringify(response?.data));
-            setDataLastMonthAvgMfd(response?.data?.stat[0]);
-        } catch (err) {
-            console.log(err);
-        }
+        //     //console.log(JSON.stringify(response?.data));
+        //     setDataLastMonthAvgMfd(response?.data?.stat[0]);
+        // } catch (err) {
+        //     console.log(err);
+        // }
     };
 
     const requestLink = async (e) => {
@@ -369,7 +373,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         getLocalStorageData();
-        requestRegionList();
+        //requestRegionList();
         requestCameras();
 
         //requestUsers();
@@ -379,87 +383,87 @@ const Dashboard = () => {
         setLocalStorageData();
     }, [showRegion, showCameras, showLinks, showTrafficLights, showAvlDatas]);
 
-    useEffect(() => {
-        if (Utils.utilIsEmptyArray(listRegions)) {
-            return;
-        }
+    // useEffect(() => {
+    //     if (Utils.utilIsEmptyArray(listRegions)) {
+    //         return;
+    //     }
 
-        //console.log("listRegions", listRegions);
+    //     //console.log("listRegions", listRegions);
 
-        let topItem = { value: "all", innerHTML: String.total };
+    //     let topItem = { value: "all", innerHTML: String.total };
 
-        let newList = [];
-        newList.push(topItem);
+    //     let newList = [];
+    //     newList.push(topItem);
 
-        newList = newList.concat(
-            listRegions.map((region) => {
-                //console.log(region);
-                return { value: region.regionId, innerHTML: region.regionName };
-            })
-        );
+    //     newList = newList.concat(
+    //         listRegions.map((region) => {
+    //             //console.log(region);
+    //             return { value: region.regionId, innerHTML: region.regionName };
+    //         })
+    //     );
 
-        setListSelectRegions(newList);
+    //     setListSelectRegions(newList);
 
-        setListSelectRegionItem(topItem);
-    }, [listRegions]);
+    //     setListSelectRegionItem(topItem);
+    // }, [listRegions]);
 
-    useEffect(() => {
-        if (Utils.utilIsEmptyObj(listSelectRegionItem)) {
-            return;
-        }
+    // useEffect(() => {
+    //     if (Utils.utilIsEmptyObj(listSelectRegionItem)) {
+    //         return;
+    //     }
 
-        //console.log("listSelectRegionItem", listSelectRegionItem);
-        let currentRegionInfo = listRegions.filter(
-            (region) => region.regionId === listSelectRegionItem.value
-        );
-        setCurretnRegionInfo(currentRegionInfo[0]);
+    //     console.log("listSelectRegionItem", listSelectRegionItem);
+    //     let currentRegionInfo = listRegions.filter(
+    //         (region) => region.regionId === listSelectRegionItem.value
+    //     );
+    //     setCurrentRegionInfo(currentRegionInfo[0]);
 
-        requestIntersectionList();
-    }, [listSelectRegionItem]);
+    //     requestIntersectionList();
+    // }, [listSelectRegionItem]);
 
-    useEffect(() => {
-        if (Utils.utilIsEmptyArray(listIntersections)) {
-            return;
-        }
+    // useEffect(() => {
+    //     if (Utils.utilIsEmptyArray(listIntersections)) {
+    //         return;
+    //     }
 
-        //console.log("listIntersections", listIntersections);
+    //     //console.log("listIntersections", listIntersections);
 
-        let topItem = { value: "all", innerHTML: String.total };
+    //     let topItem = { value: "all", innerHTML: String.total };
 
-        let newList = [];
-        newList.push(topItem);
+    //     let newList = [];
+    //     newList.push(topItem);
 
-        newList = newList.concat(
-            listIntersections
-                .filter((intersection) => intersection.region !== null)
-                .map((intersection) => {
-                    //console.log(region);
-                    return {
-                        value: intersection.intersectionId,
-                        innerHTML: intersection.intersectionName,
-                    };
-                })
-        );
+    //     newList = newList.concat(
+    //         listIntersections
+    //             .filter((intersection) => intersection.region !== null)
+    //             .map((intersection) => {
+    //                 //console.log(region);
+    //                 return {
+    //                     value: intersection.intersectionId,
+    //                     innerHTML: intersection.intersectionName,
+    //                 };
+    //             })
+    //     );
 
-        setListSelectIntersections(newList);
+    //     setListSelectIntersections(newList);
 
-        setListSelectIntersectionItem(topItem);
-    }, [listIntersections]);
+    //     setListSelectIntersectionItem(topItem);
+    // }, [listIntersections]);
 
-    useEffect(() => {
-        if (!listSelectIntersectionItem) return;
+    // useEffect(() => {
+    //     if (!listSelectIntersectionItem) return;
 
-        //console.log("listSelectIntersectionItem", listSelectIntersectionItem);
-        //setDataMfd(null);
-        setDataLastWeekMfd(null);
-        setDataLastMonthAvgMfd(null);
+    //     //console.log("listSelectIntersectionItem", listSelectIntersectionItem);
+    //     //setDataMfd(null);
+    //     setDataLastWeekMfd(null);
+    //     setDataLastMonthAvgMfd(null);
 
-        requestMfd();
-        requestLastWeekMfd();
-        requestLastMonthAvgMfd();
+    //     requestMfd();
+    //     requestLastWeekMfd();
+    //     requestLastMonthAvgMfd();
 
-        requestLink();
-    }, [listSelectIntersectionItem]);
+    //     requestLink();
+    // }, [listSelectIntersectionItem]);
 
     const makeStreamCameraList = (list) => {
         const bHighResolution = false;
@@ -559,7 +563,7 @@ const Dashboard = () => {
 
     const handleClickCamera = (cameraId, intersectionId) => {
         setSelectedCamera(cameraId);
-        setSelectedIntersection(intersectionId);
+        setSelectedIntersectionId(intersectionId);
 
         // play streamming
         // requestStreamStop(listStreamResponse);
@@ -576,26 +580,38 @@ const Dashboard = () => {
     const handleClickIntersection = (intersectionId) => {
         //console.log("intersectionId", intersectionId);
         setSelectedCamera(null);
-        setSelectedIntersection(intersectionId);
+        setSelectedIntersectionId(intersectionId);
     };
 
-    const onChangeRegions = (e) => {
-        setListSelectRegionItem({
-            value: e.target.value,
-            innerHTML: e.target[e.target.selectedIndex].innerHTML,
-        });
+    // const onChangeRegions = (e) => {
+    //     setListSelectRegionItem({
+    //         value: e.target.value,
+    //         innerHTML: e.target[e.target.selectedIndex].innerHTML,
+    //     });
+    // };
+
+    const onChangedCurrentRegion = (regionItem) => {
+        //console.log("regionItem", regionItem);
+        setSelectedRegionId(regionItem.regionId);
+        setCurrentRegionInfo(regionItem);
     };
 
-    const onChangeIntersections = (e) => {
-        console.log(e);
-        setListSelectIntersectionItem({
-            value: e.target.value,
-            innerHTML: e.target[e.target.selectedIndex].innerHTML,
-        });
+    // const onChangeIntersections = (e) => {
+    //     console.log(e);
+    //     setListSelectIntersectionItem({
+    //         value: e.target.value,
+    //         innerHTML: e.target[e.target.selectedIndex].innerHTML,
+    //     });
+    // };
+
+    const onChangedCurrentIntersection = (intersectionItem) => {
+        console.log("intersectionItem", intersectionItem);
+        setSelectedIntersectionId(intersectionItem.intersectionId);
     };
 
     const onClickRegion = (e) => {
-        setShowRegion(!showRegion);
+        setSelectedIntersectionId("I0006");
+        //setShowRegion(!showRegion);
     };
 
     const onClickCamera = (e) => {
@@ -619,20 +635,32 @@ const Dashboard = () => {
         <div>
             <Header />
             <Menu />
-            {listSelectRegions.length > 0 ? (
+            {/* {listSelectRegions.length > 0 ? (
                 <Selector
                     list={listSelectRegions}
                     selected={listSelectRegionItem}
                     onChange={onChangeRegions}
                 />
-            ) : null}
-            {listSelectIntersections.length > 0 ? (
+            ) : null} */}
+            <SelectorRegion
+                selectedRegionId={selectedRegionId}
+                onChangedCurrentRegion={onChangedCurrentRegion}
+            />
+            {/* {listSelectIntersections.length > 0 ? (
                 <Selector
                     list={listSelectIntersections}
                     selected={listSelectIntersectionItem}
                     onChange={onChangeIntersections}
                 />
-            ) : null}
+            ) : null} */}
+            <SelectorIntersection
+                currentRegionInfo={currentRegionInfo}
+                selectedIntersectionId={selectedIntersectionId}
+                onChangedntersectionList={(list) => {
+                    setListIntersections(list);
+                }}
+                onChangedCurrentIntersection={onChangedCurrentIntersection}
+            />
             <button onClick={onClickRegion}>region</button>
             <button onClick={onClickCamera}>camera</button>
             <button onClick={onClickLinks}>links</button>
@@ -644,12 +672,12 @@ const Dashboard = () => {
                     height: "100vh",
                 }}
                 region={{
-                    current: curretnRegionInfo,
+                    current: currentRegionInfo,
                     isShow: showRegion,
                 }}
                 intersections={{
                     list: listIntersections,
-                    selected: selectedIntersection,
+                    selected: selectedIntersectionId,
                     clickEvent: handleClickIntersection,
                     //showEdge: true,
                 }}

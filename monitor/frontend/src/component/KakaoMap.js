@@ -41,8 +41,9 @@ function KakaoMap({
     };
 
     const displayIntersection = () => {
+        if (intersections === undefined) return null;
         //console.log("displayIntersection");
-        if (intersections.list) {
+        if (Utils.utilIsEmptyArray(intersections.list) === false) {
             return intersections.list
                 .filter(
                     (intersection) =>

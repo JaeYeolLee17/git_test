@@ -10,10 +10,23 @@ export const utilGetCamera = (listCamera, cameraId) => {
 
 export const utilGetInstsectionCameras = (listCamera, cameraId) => {
     let cameraData = utilGetCamera(listCamera, cameraId);
+    // let cameras = listCamera.filter(
+    //     (camera) =>
+    //         cameraData.intersection.intersectionId ===
+    //         camera.intersection.intersectionId
+    // );
+    return utilGetInstsectionCamerasByIntersectionId(
+        listCamera,
+        cameraData.intersection.intersectionId
+    );
+};
+
+export const utilGetInstsectionCamerasByIntersectionId = (
+    listCamera,
+    intersectionId
+) => {
     let cameras = listCamera.filter(
-        (camera) =>
-            cameraData.intersection.intersectionId ===
-            camera.intersection.intersectionId
+        (camera) => intersectionId === camera.intersection.intersectionId
     );
     return cameras;
 };

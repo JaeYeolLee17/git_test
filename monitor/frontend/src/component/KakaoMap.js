@@ -22,8 +22,12 @@ function KakaoMap({
     const [level, setLevel] = useState(7);
 
     const displayRegion = () => {
-        //console.log("displayRegion");
-        if (Utils.utilIsEmptyObj(region.current) === false) {
+        if (region === undefined) return null;
+        //console.log("displayRegion", region);
+        if (
+            Utils.utilIsEmptyObj(region.current) === false &&
+            Utils.utilIsEmptyArray(region.current.gps) === false
+        ) {
             return (
                 <Polygon
                     path={region.current.gps}
@@ -93,6 +97,7 @@ function KakaoMap({
     };
 
     const displayCamera = () => {
+        if (cameras === undefined) return null;
         //console.log("displayCamera");
         return cameras.list?.map((camera) => {
             let normalState = true; // TODO
@@ -134,6 +139,7 @@ function KakaoMap({
     };
 
     const displayLinks = () => {
+        if (links === undefined) return null;
         //console.log("displayLinks");
         if (links.list) {
             //console.log("links", links);
@@ -330,6 +336,8 @@ function KakaoMap({
     };
 
     const displayTrafficLights = () => {
+        if (trafficLights === undefined) return null;
+
         const defaultTrafficeIntervalTime = 1000 * 60 * 1;
         //console.log("displayTrafficLights");
         if (Utils.utilIsEmptyArray(trafficLights.list) === false) {
@@ -411,6 +419,8 @@ function KakaoMap({
     };
 
     const displayAvl = () => {
+        if (avl === undefined) return null;
+
         if (Utils.utilIsEmptyArray(avl.list) === false) {
             return avl.list.map((avlData) => {
                 //console.log("avlData", avlData);

@@ -6,7 +6,11 @@ import * as Request from "../commons/request";
 import * as String from "../commons/string";
 import { useAuthState } from "../provider/AuthProvider";
 
-function SelectorRegion({ selectedRegionId, onChangedCurrentRegion }) {
+function SelectorRegion({
+    selectedRegionId,
+    onChangedRegionList,
+    onChangedCurrentRegion,
+}) {
     const userDetails = useAuthState();
 
     const [listRegions, setListRegions] = useState([]);
@@ -32,6 +36,10 @@ function SelectorRegion({ selectedRegionId, onChangedCurrentRegion }) {
     }, []);
 
     useEffect(() => {
+        if (onChangedRegionList !== undefined) {
+            onChangedRegionList(listRegions);
+        }
+
         if (Utils.utilIsEmptyArray(listRegions)) {
             return;
         }
@@ -45,7 +53,7 @@ function SelectorRegion({ selectedRegionId, onChangedCurrentRegion }) {
 
         newList = newList.concat(
             listRegions.map((region) => {
-                console.log(region);
+                //console.log(region);
                 return { value: region.regionId, innerHTML: region.regionName };
             })
         );

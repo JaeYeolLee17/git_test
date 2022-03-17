@@ -9,7 +9,7 @@ import { useAuthState } from "../provider/AuthProvider";
 function SelectorIntersection({
     currentRegionInfo,
     selectedIntersectionId,
-    onChangedntersectionList,
+    onChangedIntersectionList,
     onChangedCurrentIntersection,
 }) {
     const userDetails = useAuthState();
@@ -43,8 +43,8 @@ function SelectorIntersection({
     }, [currentRegionInfo]);
 
     useEffect(() => {
-        if (onChangedntersectionList !== undefined) {
-            onChangedntersectionList(listIntersections);
+        if (onChangedIntersectionList !== undefined) {
+            onChangedIntersectionList(listIntersections);
         }
 
         if (Utils.utilIsEmptyArray(listIntersections)) {

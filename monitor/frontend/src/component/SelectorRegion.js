@@ -5,6 +5,7 @@ import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as String from "../commons/string";
 import { useAuthState } from "../provider/AuthProvider";
+import { useAsyncAxios } from "../utils/customHooks";
 
 function SelectorRegion({
     selectedRegionId,
@@ -17,23 +18,49 @@ function SelectorRegion({
     const [listSelectRegions, setListSelectRegions] = useState([]);
     const [listSelectRegionItem, setListSelectRegionItem] = useState({});
 
-    const requestRegionList = async (e) => {
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.REGIONS_LIST_URL);
-
-            //console.log(JSON.stringify(response?.data));
-            setListRegions(response?.data.regions);
-        } catch (err) {
-            console.log(err);
-        }
+    const requestRegionList = async () => {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.REGIONS_LIST_URL
+        );
+        return response.data;
     };
 
+    const {
+        loading,
+        error: errorRegionList,
+        data: resultRegionList,
+        execute: requestRegion,
+    } = useAsyncAxios(requestRegionList, true);
+
     useEffect(() => {
-        requestRegionList();
-    }, []);
+        console.log("resultRegionList", resultRegionList);
+        if (resultRegionList === null) return;
+        setListRegions(resultRegionList.regions);
+    }, [resultRegionList]);
+
+    useEffect(() => {
+        if (errorRegionList === false) return;
+
+        console.log("errorRegionList", errorRegionList);
+    }, [errorRegionList]);
+
+    // const requestRegionList = async (e) => {
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.REGIONS_LIST_URL);
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setListRegions(response?.data.regions);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     requestRegion();
+    // }, []);
 
     useEffect(() => {
         if (onChangedRegionList !== undefined) {

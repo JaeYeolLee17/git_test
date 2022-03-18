@@ -6,6 +6,7 @@ import * as Request from "../commons/request";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios, useInterval } from "../utils/customHooks";
 import StreamIntersection from "./StreamIntersection";
+import ToggleImageButton from "./ToggleImageButton";
 
 function DashboardMap({
     currentRegionInfo,
@@ -44,6 +45,7 @@ function DashboardMap({
             requestLink();
         }
 
+        console.log("showAvlDatas", showAvlDatas);
         if (showTrafficLights) requestTrafficLight();
         if (showAvlDatas) requestAvlDatas();
     };
@@ -210,7 +212,7 @@ function DashboardMap({
 
     const requestAxiosAvlDatas = async () => {
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.TSI_URL
+            Request.AVL_URL
         );
         return response.data;
     };
@@ -365,11 +367,32 @@ function DashboardMap({
 
     return (
         <div>
-            <button onClick={onClickRegion}>region</button>
-            <button onClick={onClickCamera}>camera</button>
-            <button onClick={onClickLinks}>links</button>
-            <button onClick={onClickTrafficLight}>TrafficLight</button>
-            <button onClick={onClickAvl}>avl</button>
+            <ToggleImageButton
+                bOn={showRegion}
+                onClick={onClickRegion}
+                text={"region"}
+            />
+            <ToggleImageButton
+                bOn={showCameras}
+                onClick={onClickCamera}
+                text={"camera"}
+            />
+            <ToggleImageButton
+                bOn={showLinks}
+                onClick={onClickLinks}
+                text={"links"}
+            />
+            <ToggleImageButton
+                bOn={showTrafficLights}
+                onClick={onClickTrafficLight}
+                text={"TrafficLight"}
+            />
+            <ToggleImageButton
+                bOn={showAvlDatas}
+                onClick={onClickAvl}
+                text={"avl"}
+            />
+
             <KakaoMap
                 style={{
                     width: "100%",

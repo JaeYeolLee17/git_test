@@ -90,7 +90,7 @@ function StreamIntersection({ streamIntersectionCameras }) {
             });
 
             //console.log(JSON.stringify(response?.data));
-            console.log(JSON.stringify(response));
+            //console.log(JSON.stringify(response));
 
             const result = response?.data?.result;
             //console.log("result", result);

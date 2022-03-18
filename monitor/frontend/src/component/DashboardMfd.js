@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ChartMfd from "./ChartMfd";
 
 import { useAuthState } from "../provider/AuthProvider";
-import { useInterval } from "../utils/customHooks";
+import { useAsyncAxios, useInterval } from "../utils/customHooks";
 
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
@@ -41,7 +41,7 @@ function DashboardMfd({ regionId, intersectionId }) {
         return extraParam;
     };
 
-    const requestMfd = async (e) => {
+    const requestAxiosMfd = async () => {
         let startTime = Utils.utilFormatDateYYYYMMDD000000(new Date());
 
         var now = new Date();
@@ -56,28 +56,77 @@ function DashboardMfd({ regionId, intersectionId }) {
 
         let extraParam = getExtraParams();
 
-        //console.log("extraParam", extraParam);
-
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.STAT_MFD_URL, {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.STAT_MFD_URL,
+            {
                 params: {
                     startTime: startTime,
                     endTime: endTime,
                     ...extraParam,
                 },
-            });
+            }
+        );
 
-            //console.log(JSON.stringify(response?.data));
-            setDataMfd(response?.data?.stat[0]);
-        } catch (err) {
-            console.log(err);
-        }
+        return response.data;
     };
 
-    const requestLastWeekMfd = async (e) => {
+    const {
+        loading: loadingMfd,
+        error: errorMfd,
+        data: resultMfd,
+        execute: requestMfd,
+    } = useAsyncAxios(requestAxiosMfd);
+
+    useEffect(() => {
+        if (resultMfd === null) return;
+
+        //console.log("resultMfd", resultMfd);
+        setDataMfd(resultMfd.stat[0]);
+    }, [resultMfd]);
+
+    useEffect(() => {
+        if (errorMfd === null) return;
+
+        console.log("errorMfd", errorMfd);
+    }, [errorMfd]);
+
+    // const requestMfd = async (e) => {
+    //     let startTime = Utils.utilFormatDateYYYYMMDD000000(new Date());
+
+    //     var now = new Date();
+    //     var nowMinute = now.getMinutes();
+    //     var offsetMinute = nowMinute % 15;
+
+    //     var end = new Date(now.getTime() - offsetMinute * (60 * 1000));
+    //     let endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
+
+    //     //console.log("startTime", startTime);
+    //     //console.log("endTime", endTime);
+
+    //     let extraParam = getExtraParams();
+
+    //     //console.log("extraParam", extraParam);
+
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.STAT_MFD_URL, {
+    //             params: {
+    //                 startTime: startTime,
+    //                 endTime: endTime,
+    //                 ...extraParam,
+    //             },
+    //         });
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setDataMfd(response?.data?.stat[0]);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
+    const requestAxiosLastWeekMfd = async () => {
         let start = new Date();
         start.setDate(start.getDate() - 7);
         let startTime = Utils.utilFormatDateYYYYMMDD000000(start);
@@ -91,28 +140,76 @@ function DashboardMfd({ regionId, intersectionId }) {
 
         let extraParam = getExtraParams();
 
-        //console.log("extraParam", extraParam);
-
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.STAT_MFD_URL, {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.STAT_MFD_URL,
+            {
                 params: {
                     startTime: startTime,
                     endTime: endTime,
                     ...extraParam,
                 },
-            });
+            }
+        );
 
-            //console.log(JSON.stringify(response?.data));
-            setDataLastWeekMfd(response?.data?.stat[0]);
-        } catch (err) {
-            console.log(err);
-        }
+        return response.data;
     };
 
-    const requestLastMonthAvgMfd = async (e) => {
+    const {
+        loading: loadingLastWeekMfd,
+        error: errorLastWeekMfd,
+        data: resultLastWeekMfd,
+        execute: requestLastWeekMfd,
+    } = useAsyncAxios(requestAxiosLastWeekMfd);
+
+    useEffect(() => {
+        if (resultLastWeekMfd === null) return;
+
+        //console.log("resultLastWeekMfd", resultLastWeekMfd);
+        setDataLastWeekMfd(resultLastWeekMfd.stat[0]);
+    }, [resultLastWeekMfd]);
+
+    useEffect(() => {
+        if (errorLastWeekMfd === null) return;
+
+        console.log("errorLastWeekMfd", errorLastWeekMfd);
+    }, [errorLastWeekMfd]);
+
+    // const requestLastWeekMfd = async (e) => {
+    //     let start = new Date();
+    //     start.setDate(start.getDate() - 7);
+    //     let startTime = Utils.utilFormatDateYYYYMMDD000000(start);
+
+    //     let end = new Date(start);
+    //     end.setDate(end.getDate() + 1);
+    //     let endTime = Utils.utilFormatDateYYYYMMDD000000(end);
+
+    //     //console.log("startTime", startTime);
+    //     //console.log("endTime", endTime);
+
+    //     let extraParam = getExtraParams();
+
+    //     //console.log("extraParam", extraParam);
+
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.STAT_MFD_URL, {
+    //             params: {
+    //                 startTime: startTime,
+    //                 endTime: endTime,
+    //                 ...extraParam,
+    //             },
+    //         });
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setDataLastWeekMfd(response?.data?.stat[0]);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
+    const requestAxiosLastMonthAvgMfd = async () => {
         let start = new Date();
         start.setDate(start.getDate() - 28);
         let startTime = Utils.utilFormatDateYYYYMMDD000000(start);
@@ -130,25 +227,78 @@ function DashboardMfd({ regionId, intersectionId }) {
 
         //console.log("extraParam", extraParam);
 
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.STAT_MFD_URL, {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.STAT_MFD_URL,
+            {
                 params: {
                     startTime: startTime,
                     endTime: endTime,
                     ...extraParam,
                     dayOfWeek: dayOfWeek,
                 },
-            });
+            }
+        );
 
-            //console.log(JSON.stringify(response?.data));
-            setDataLastMonthAvgMfd(response?.data?.stat[0]);
-        } catch (err) {
-            console.log(err);
-        }
+        return response.data;
     };
+
+    const {
+        loading: loadingLastMonthAvgMfd,
+        error: errorLastMonthAvgMfd,
+        data: resultLastMonthAvgMfd,
+        execute: requestLastMonthAvgMfd,
+    } = useAsyncAxios(requestAxiosLastMonthAvgMfd);
+
+    useEffect(() => {
+        if (resultLastMonthAvgMfd === null) return;
+
+        //console.log("resultLastWeekMfd", resultLastWeekMfd);
+        setDataLastMonthAvgMfd(resultLastMonthAvgMfd.stat[0]);
+    }, [resultLastWeekMfd]);
+
+    useEffect(() => {
+        if (errorLastMonthAvgMfd === null) return;
+
+        console.log("errorLastMonthAvgMfd", errorLastMonthAvgMfd);
+    }, [errorLastMonthAvgMfd]);
+
+    // const requestLastMonthAvgMfd = async (e) => {
+    //     let start = new Date();
+    //     start.setDate(start.getDate() - 28);
+    //     let startTime = Utils.utilFormatDateYYYYMMDD000000(start);
+
+    //     let end = new Date();
+    //     let endTime = Utils.utilFormatDateYYYYMMDD000000(end);
+
+    //     let dayOfWeek = end.getDay();
+    //     if (dayOfWeek === 0) dayOfWeek = 7;
+
+    //     //console.log("startTime", startTime);
+    //     //console.log("endTime", endTime);
+
+    //     let extraParam = getExtraParams();
+
+    //     //console.log("extraParam", extraParam);
+
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.STAT_MFD_URL, {
+    //             params: {
+    //                 startTime: startTime,
+    //                 endTime: endTime,
+    //                 ...extraParam,
+    //                 dayOfWeek: dayOfWeek,
+    //             },
+    //         });
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setDataLastMonthAvgMfd(response?.data?.stat[0]);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     useEffect(() => {
         if (regionId === "" || intersectionId === "") return;
@@ -161,6 +311,7 @@ function DashboardMfd({ regionId, intersectionId }) {
         requestLastMonthAvgMfd();
     }, [regionId, intersectionId]);
 
+    // TODO: loadingMfd || loadingLastWeekMfd || loadingLastMonthAvgMfd => loading image
     return (
         <div>
             <ChartMfd

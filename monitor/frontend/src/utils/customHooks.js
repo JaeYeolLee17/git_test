@@ -28,7 +28,6 @@ const initialAxiosState = {
 };
 
 const ayncAxiosReducer = (state, action) => {
-    console.log("ayncAxiosReducer", action.type);
     switch (action.type) {
         case "LOADING":
             return {
@@ -37,7 +36,6 @@ const ayncAxiosReducer = (state, action) => {
                 error: null,
             };
         case "SUCCESS":
-            console.log("action.data", action.data);
             return {
                 loading: false,
                 data: action.data,

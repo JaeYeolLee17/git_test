@@ -29,19 +29,19 @@ function SelectorRegion({
         loading,
         error: errorRegionList,
         data: resultRegionList,
-        execute: requestRegion,
     } = useAsyncAxios(requestRegionList, true);
 
     useEffect(() => {
-        console.log("resultRegionList", resultRegionList);
         if (resultRegionList === null) return;
+
+        // console.log("resultRegionList", resultRegionList);
         setListRegions(resultRegionList.regions);
     }, [resultRegionList]);
 
     useEffect(() => {
-        if (errorRegionList === false) return;
+        if (errorRegionList === null) return;
 
-        console.log("errorRegionList", errorRegionList);
+        // console.log("errorRegionList", errorRegionList);
     }, [errorRegionList]);
 
     // const requestRegionList = async (e) => {

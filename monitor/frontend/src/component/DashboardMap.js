@@ -4,7 +4,7 @@ import KakaoMap from "./KakaoMap";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import { useAuthState } from "../provider/AuthProvider";
-import { useInterval } from "../utils/customHooks";
+import { useAsyncAxios, useInterval } from "../utils/customHooks";
 import StreamIntersection from "./StreamIntersection";
 
 function DashboardMap({
@@ -52,20 +52,47 @@ function DashboardMap({
         requestData();
     }, 1000);
 
-    const requestCameras = async (e) => {
-        try {
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.CAMERA_URL);
-
-            //console.log(JSON.stringify(response?.data));
-            setListCamera(response?.data.cameras);
-        } catch (err) {
-            console.log(err);
-        }
+    const requestAxiosCameras = async () => {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.CAMERA_URL
+        );
+        return response.data;
     };
 
-    const requestLink = async (e) => {
+    const {
+        loading: loadingCamerasList,
+        error: errorCamerasList,
+        data: resultCamerasList,
+        execute: requestCameras,
+    } = useAsyncAxios(requestAxiosCameras);
+
+    useEffect(() => {
+        if (resultCamerasList === null) return;
+
+        //console.log("resultCamerasList", resultCamerasList);
+        setListCamera(resultCamerasList.cameras);
+    }, [resultCamerasList]);
+
+    useEffect(() => {
+        if (errorCamerasList === null) return;
+
+        console.log("errorCamerasList", errorCamerasList);
+    }, [errorCamerasList]);
+
+    // const requestCameras = async (e) => {
+    //     try {
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.CAMERA_URL);
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setListCamera(response?.data.cameras);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
+    const requestAxiosLink = async () => {
         var now = new Date();
         var nowMinute = now.getMinutes();
         var offsetMinute = nowMinute % 15;
@@ -76,52 +103,151 @@ function DashboardMap({
         var start = new Date(end.getTime() - 15 * (60 * 1000));
         let startTime = Utils.utilFormatDateYYYYMMDDHHmm00(start);
 
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.STAT_LINK_URL, {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.STAT_LINK_URL,
+            {
                 params: {
                     startTime: startTime,
                     endTime: endTime,
                 },
-            });
+            }
+        );
 
-            //console.log(JSON.stringify(response?.data));
-            setListLink(response?.data?.stat);
-        } catch (err) {
-            console.log(err);
-        }
+        return response.data;
     };
 
-    const requestTrafficLight = async (e) => {
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.TSI_URL);
+    const {
+        loading: loadinLink,
+        error: errorLink,
+        data: resultLink,
+        execute: requestLink,
+    } = useAsyncAxios(requestAxiosLink);
 
-            //console.log(JSON.stringify(response?.data));
-            setBlinkTrafficLights(!blinkTrafficLights);
-            setListTrafficLights(response?.data?.tsi);
-        } catch (err) {
-            console.log(err);
-        }
+    useEffect(() => {
+        if (resultLink === null) return;
+
+        //console.log("resultLink", resultLink);
+        setListLink(resultLink.stat);
+    }, [resultLink]);
+
+    useEffect(() => {
+        if (errorLink === null) return;
+
+        console.log("errorLink", errorLink);
+    }, [errorLink]);
+
+    // const requestLink = async (e) => {
+    //     var now = new Date();
+    //     var nowMinute = now.getMinutes();
+    //     var offsetMinute = nowMinute % 15;
+
+    //     var end = new Date(now.getTime() - offsetMinute * (60 * 1000));
+    //     let endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
+
+    //     var start = new Date(end.getTime() - 15 * (60 * 1000));
+    //     let startTime = Utils.utilFormatDateYYYYMMDDHHmm00(start);
+
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.STAT_LINK_URL, {
+    //             params: {
+    //                 startTime: startTime,
+    //                 endTime: endTime,
+    //             },
+    //         });
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setListLink(response?.data?.stat);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
+    const requestAxiosTrafficLight = async () => {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.TSI_URL
+        );
+        return response.data;
     };
 
-    const requestAvlDatas = async (e) => {
-        try {
-            //console.log(userDetails.token);
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.AVL_URL);
+    const {
+        loading: loadingTrafficLight,
+        error: errorTrafficLight,
+        data: resultTrafficLight,
+        execute: requestTrafficLight,
+    } = useAsyncAxios(requestAxiosTrafficLight);
 
-            //console.log(JSON.stringify(response?.data));
-            setListAvlDatas(response?.data?.avl);
-        } catch (err) {
-            console.log(err);
-        }
+    useEffect(() => {
+        if (resultTrafficLight === null) return;
+
+        //console.log("resultTrafficLight", resultTrafficLight);
+        setBlinkTrafficLights(!blinkTrafficLights);
+        setListTrafficLights(resultTrafficLight.tsi);
+    }, [resultTrafficLight]);
+
+    useEffect(() => {
+        if (errorTrafficLight === null) return;
+
+        console.log("errorTrafficLight", errorTrafficLight);
+    }, [errorTrafficLight]);
+
+    // const requestTrafficLight = async (e) => {
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.TSI_URL);
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setBlinkTrafficLights(!blinkTrafficLights);
+    //         setListTrafficLights(response?.data?.tsi);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
+    const requestAxiosAvlDatas = async () => {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.TSI_URL
+        );
+        return response.data;
     };
+
+    const {
+        loading: loadingAvlDatas,
+        error: errorAvlDatas,
+        data: resultAvlDatas,
+        execute: requestAvlDatas,
+    } = useAsyncAxios(requestAxiosAvlDatas);
+
+    useEffect(() => {
+        if (resultAvlDatas === null) return;
+
+        //console.log("resultTrafficLight", resultTrafficLight);
+        setListAvlDatas(resultAvlDatas.avl);
+    }, [resultAvlDatas]);
+
+    useEffect(() => {
+        if (errorAvlDatas === null) return;
+
+        console.log("errorAvlDatas", errorAvlDatas);
+    }, [errorAvlDatas]);
+
+    // const requestAvlDatas = async (e) => {
+    //     try {
+    //         //console.log(userDetails.token);
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.AVL_URL);
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setListAvlDatas(response?.data?.avl);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     const getLocalStorageData = () => {
         setShowRegion(

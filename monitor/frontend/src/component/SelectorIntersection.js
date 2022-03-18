@@ -5,6 +5,7 @@ import * as Request from "../commons/request";
 import * as String from "../commons/string";
 
 import { useAuthState } from "../provider/AuthProvider";
+import { useAsyncAxios } from "../utils/customHooks";
 
 function SelectorIntersection({
     currentRegionInfo,
@@ -19,24 +20,59 @@ function SelectorIntersection({
     const [listSelectIntersectionItem, setListSelectIntersectionItem] =
         useState({});
 
-    const requestIntersectionList = async (e) => {
-        try {
-            const response = await Utils.utilAxiosWithAuth(
-                userDetails.token
-            ).get(Request.INTERSECTIONS_LIST_URL, {
+    const requestAxiosIntersectionList = async () => {
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
+            Request.INTERSECTIONS_LIST_URL,
+            {
                 params: {
                     ...(currentRegionInfo.regionId !== "all"
                         ? { regionId: currentRegionInfo.regionId }
                         : {}),
                 },
-            });
-
-            //console.log(JSON.stringify(response?.data));
-            setListIntersections(response?.data.intersections);
-        } catch (err) {
-            console.log(err);
-        }
+            }
+        );
+        return response.data;
     };
+
+    const {
+        loading,
+        error: errorIntersectionList,
+        data: resultIntersectionList,
+        execute: requestIntersectionList,
+    } = useAsyncAxios(requestAxiosIntersectionList);
+
+    useEffect(() => {
+        if (resultIntersectionList === null) return;
+
+        // console.log("resultIntersectionList", resultIntersectionList);
+
+        setListIntersections(resultIntersectionList.intersections);
+    }, [resultIntersectionList]);
+
+    useEffect(() => {
+        if (errorIntersectionList === null) return;
+
+        // console.log("errorIntersectionList", errorIntersectionList);
+    }, [errorIntersectionList]);
+
+    // const requestIntersectionList = async (e) => {
+    //     try {
+    //         const response = await Utils.utilAxiosWithAuth(
+    //             userDetails.token
+    //         ).get(Request.INTERSECTIONS_LIST_URL, {
+    //             params: {
+    //                 ...(currentRegionInfo.regionId !== "all"
+    //                     ? { regionId: currentRegionInfo.regionId }
+    //                     : {}),
+    //             },
+    //         });
+
+    //         //console.log(JSON.stringify(response?.data));
+    //         setListIntersections(response?.data.intersections);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     useEffect(() => {
         requestIntersectionList();

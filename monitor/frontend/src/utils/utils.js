@@ -212,6 +212,7 @@ export const utilAxiosWithAuth = (auth) => {
 
 export const utilIsEmptyObj = (obj) => {
     if (
+        obj === null ||
         obj === undefined ||
         (obj.constructor === Object && Object.keys(obj).length === 0)
     ) {
@@ -222,9 +223,24 @@ export const utilIsEmptyObj = (obj) => {
 };
 
 export const utilIsEmptyArray = (array) => {
-    if (array !== undefined && Array.isArray(array) && array.length) {
+    if (
+        array !== null &&
+        array !== undefined &&
+        Array.isArray(array) &&
+        array.length
+    ) {
         return false;
     }
 
     return true;
+};
+
+export const utilConvertQtsrlu15Minute = (qtsrlu) => {
+    // 15분단위
+    return (qtsrlu * 4) / 3600;
+};
+
+export const utilConvertSrlu15Minute = (srlu) => {
+    // 100m -> km로 변환 // 15분단위
+    return (srlu * 100 * 4) / 1000;
 };

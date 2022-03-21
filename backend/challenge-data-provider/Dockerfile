@@ -1,6 +1,6 @@
 FROM gcr.io/distroless/java:8
 
-EXPOSE 8080
+EXPOSE 8083
 
 ADD ./build/libs/*.jar app.jar
 

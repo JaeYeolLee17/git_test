@@ -145,8 +145,11 @@ function KakaoMap({
             //console.log("links", links);
             if (level >= 5) {
                 return links.list.map((link, index) => {
-                    let qtsrlu = (link.data[0].qtsrlu * 4) / 3600;
-                    let srlu = (link.data[0].srlu * 100 * 4) / 1000;
+                    let qtsrlu = Utils.utilConvertQtsrlu15Minute(
+                        link.data[0].qtsrlu
+                    );
+                    let srlu = Utils.utilConvertSrlu15Minute(link.data[0].srlu);
+
                     let speed = (srlu / qtsrlu).toFixed(2);
                     let color = Utils.utilGetSpeedColor(speed);
 
@@ -176,11 +179,18 @@ function KakaoMap({
                 });
             } else {
                 return links.list.map((link, index) => {
-                    let qtsr = (link.data[0].qtsr * 4) / 3600;
-                    let sr = (link.data[0].sr * 100 * 4) / 1000;
-
-                    let qtlu = (link.data[0].qtlu * 4) / 3600;
-                    let lu = (link.data[0].lu * 100 * 4) / 1000;
+                    // let qtsr = (link.data[0].qtsr * 4) / 3600;
+                    // let sr = (link.data[0].sr * 100 * 4) / 1000;
+                    let qtsr = Utils.utilConvertQtsrlu15Minute(
+                        link.data[0].qtsr
+                    );
+                    let sr = Utils.utilConvertSrlu15Minute(link.data[0].sr);
+                    // let qtlu = (link.data[0].qtlu * 4) / 3600;
+                    // let lu = (link.data[0].lu * 100 * 4) / 1000;
+                    let qtlu = Utils.utilConvertQtsrlu15Minute(
+                        link.data[0].qtlu
+                    );
+                    let lu = Utils.utilConvertSrlu15Minute(link.data[0].lu);
 
                     let srSpeed = (sr / qtsr).toFixed(2);
                     let luSpeed = (lu / qtlu).toFixed(2);

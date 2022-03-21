@@ -37,8 +37,10 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }) {
             let nameCurrent =
                 dataMfd.year + "-" + dataMfd.month + "-" + dataMfd.day;
             let currentData = dataMfd.data.map((dataWithTime) => {
-                var xData = (dataWithTime.qtsrlu * 4) / 3600; // 15분단위
-                var yData = (dataWithTime.srlu * 100 * 4) / 1000; // 100m -> km로 변환 // 15분단위
+                var xData = Utils.utilConvertQtsrlu15Minute(
+                    dataWithTime.qtsrlu
+                );
+                var yData = Utils.utilConvertSrlu15Minute(dataWithTime.srlu);
 
                 if (xData > maxXData) maxXData = xData;
 
@@ -65,8 +67,12 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }) {
                 });
 
                 if (lastWeekMfd) {
-                    let xData = (lastWeekMfd[0].qtsrlu * 4) / 3600; // 15분단위
-                    let yData = (lastWeekMfd[0].srlu * 100 * 4) / 1000; // 100m -> km로 변환 // 15분단위
+                    let xData = Utils.utilConvertQtsrlu15Minute(
+                        lastWeekMfd[0].qtsrlu
+                    );
+                    let yData = Utils.utilConvertSrlu15Minute(
+                        lastWeekMfd[0].srlu
+                    );
 
                     if (xData > maxXData) maxXData = xData;
 
@@ -94,8 +100,13 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }) {
                 );
 
                 if (lastMonthAvgMfd) {
-                    let xData = (lastMonthAvgMfd[0].qtsrlu * 4) / 3600 / 4; // 15분단위
-                    let yData = (lastMonthAvgMfd[0].srlu * 100 * 4) / 1000 / 4; // 100m -> km로 변환 // 15분단위
+                    let xData =
+                        Utils.utilConvertQtsrlu15Minute(
+                            lastMonthAvgMfd[0].qtsrlu
+                        ) / 4;
+                    let yData =
+                        Utils.utilConvertSrlu15Minute(lastMonthAvgMfd[0].srlu) /
+                        4;
 
                     if (xData > maxXData) maxXData = xData;
 

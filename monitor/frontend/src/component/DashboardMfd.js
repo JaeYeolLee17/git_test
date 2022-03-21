@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ChartMfd from "./ChartMfd";
 
 import { useAuthState } from "../provider/AuthProvider";
@@ -6,6 +6,7 @@ import { useAsyncAxios, useInterval } from "../utils/customHooks";
 
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
+import TableMfd from "./TableMfd";
 
 function DashboardMfd({ regionId, intersectionId }) {
     const userDetails = useAuthState();
@@ -315,6 +316,11 @@ function DashboardMfd({ regionId, intersectionId }) {
     return (
         <div>
             <ChartMfd
+                dataMfd={dataMfd}
+                dataLastWeekMfd={dataLastWeekMfd}
+                dataLastMonthAvgMfd={dataLastMonthAvgMfd}
+            />
+            <TableMfd
                 dataMfd={dataMfd}
                 dataLastWeekMfd={dataLastWeekMfd}
                 dataLastMonthAvgMfd={dataLastMonthAvgMfd}

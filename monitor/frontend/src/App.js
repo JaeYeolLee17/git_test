@@ -21,7 +21,7 @@ const PrivateAdminRoute = ({ children }) => {
     const checkRole =
         userDetails.user && userDetails.user.authority === "ROLE_ADMIN";
 
-    console.log("userDetails", userDetails);
+    //console.log("userDetails", userDetails);
     return checkRole ? children : <NotFound />;
 };
 

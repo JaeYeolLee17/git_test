@@ -252,9 +252,9 @@ function DashboardMfd({ regionId, intersectionId }) {
     useEffect(() => {
         if (resultLastMonthAvgMfd === null) return;
 
-        //console.log("resultLastWeekMfd", resultLastWeekMfd);
+        //console.log("resultLastMonthAvgMfd", resultLastMonthAvgMfd);
         setDataLastMonthAvgMfd(resultLastMonthAvgMfd.stat[0]);
-    }, [resultLastWeekMfd]);
+    }, [resultLastMonthAvgMfd]);
 
     useEffect(() => {
         if (errorLastMonthAvgMfd === null) return;

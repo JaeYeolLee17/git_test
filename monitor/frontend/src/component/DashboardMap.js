@@ -45,7 +45,6 @@ function DashboardMap({
             requestLink();
         }
 
-        console.log("showAvlDatas", showAvlDatas);
         if (showTrafficLights) requestTrafficLight();
         if (showAvlDatas) requestAvlDatas();
     };

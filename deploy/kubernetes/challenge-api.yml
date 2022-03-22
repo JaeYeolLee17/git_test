@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: challenge-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: challenge-api
+  template:
+    metadata:
+      labels:
+        app: challenge-api
+    spec:
+      containers:
+      - name: challenge-api
+        image: 192.168.0.241:5000/challenge-api:0.0.1
+        imagePullPolicy: Always
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "dev"
+        ports:
+        - containerPort: 8081
+        resources:
+          limits:
+            memory: 1024Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: challenge-api
+spec:
+  type: NodePort
+  selector:
+    app: challenge-api
+  ports:
+    - port: 8081
+      nodePort: 31081
+      targetPort: 8081

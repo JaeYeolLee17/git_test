@@ -2,14 +2,14 @@ version: '2.1'
 
 services:   
   challenge-monitor:
-    build: monitor/frontend
+    build: ../monitor/frontend
     image: 192.168.0.241:5000/challenge-monitor:0.0.1
     mem_limit: 1024m
     ports:
       - "8080:8080"
 
   challenge-api:
-    build: backend/challenge-api
+    build: ../backend/challenge-api
     image: 192.168.0.241:5000/challenge-api:0.0.1
     mem_limit: 1024m
     ports:
@@ -18,7 +18,7 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
 
   challenge-data-collector:
-    build: backend/challenge-data-collector
+    build: ../backend/challenge-data-collector
     image: 192.168.0.241:5000/challenge-data-collector:0.0.1
     mem_limit: 1024m
     ports:
@@ -27,7 +27,7 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
 
   challenge-data-provider:
-    build: backend/challenge-data-provider
+    build: ../backend/challenge-data-provider
     image: 192.168.0.241:5000/challenge-data-provider:0.0.1
     mem_limit: 1024m
     ports:

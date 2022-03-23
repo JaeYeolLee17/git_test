@@ -15,6 +15,9 @@ const Menu = () => {
                         Dashboard Detail
                     </Link>
                 </li>
+                <li>
+                    <Link to={Common.PAGE_STAT_TRAFFIC}>Stat Traffic</Link>
+                </li>
             </ul>
         </div>
     );

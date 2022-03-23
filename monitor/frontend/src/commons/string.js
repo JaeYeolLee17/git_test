@@ -26,6 +26,14 @@ export const stats_title_speed = "시간대별 평균 속도";
 export const stats_title_mfd = "시간대별 교통 흐름 상태";
 export const stats_title_person = "시간대별 보행자 수";
 
+export const stats_sunday = "일요일";
+export const stats_monday = "월요일";
+export const stats_tuesday = "화요일";
+export const stats_wednesday = "수요일";
+export const stats_thursday = "목요일";
+export const stats_friday = "금요일";
+export const stats_saturday = "토요일";
+
 export const carType_normal = "일반차량";
 export const carType_taxi = "택시";
 export const carType_bus = "버스";

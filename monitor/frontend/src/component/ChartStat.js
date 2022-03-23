@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 
-function ChartStat({ loading, name, series, type }) {
+function ChartStat({ loading, name, series, option }) {
     //console.log(name, loading);
     const [chartOption, setChartOption] = useState({
         chart: {
-            height: "500px",
-            type: type,
-            stacked: true,
+            height: option?.chart?.height,
+            type: option?.chart?.type,
+
             toolbar: {
                 show: false,
             },
@@ -32,7 +32,6 @@ function ChartStat({ loading, name, series, type }) {
             enabled: false,
         },
 
-        colors: ["#224d99", "#3b84ff", "#17e6b1", "#ffd500", "#ff5b7d"],
         title: {
             align: "center",
         },
@@ -68,15 +67,6 @@ function ChartStat({ loading, name, series, type }) {
                 show: false,
             },
         },
-        grid: {
-            show: true,
-            padding: {
-                top: 20,
-                right: 0,
-                bottom: 20,
-                left: 0,
-            },
-        },
         legend: {
             showForSingleSeries: true,
         },
@@ -94,15 +84,19 @@ function ChartStat({ loading, name, series, type }) {
         // }
     });
 
+    useEffect(() => {
+        setChartOption({ ...chartOption, ...option });
+    }, [option]);
+
     return (
         <div>
             <h2>{name}</h2>
             <Chart
                 options={chartOption}
                 series={series}
-                type={type}
-                width='1000'
-                height='500'
+                type={chartOption.chart.type}
+                width='1500'
+                height={chartOption.chart.height}
             ></Chart>
         </div>
     );

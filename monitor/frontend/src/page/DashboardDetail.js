@@ -20,6 +20,26 @@ const DashboardDetail = () => {
         PreBuiltIntersection: "PreBuiltIntersection",
         Intersection: "OnlyCarType",
     };
+
+    const option = {
+        chart: {
+            height: "500px",
+            type: "bar",
+            stacked: true,
+        },
+        colors: ["#224d99", "#3b84ff", "#17e6b1", "#ffd500", "#ff5b7d"],
+
+        grid: {
+            show: true,
+            padding: {
+                top: 20,
+                right: 0,
+                bottom: 20,
+                left: 0,
+            },
+        },
+    };
+
     const [firstLoad, setFirstLoad] = useState(true);
     const [currentRegionInfo, setCurrentRegionInfo] = useState({});
     const [currentIntersectionInfo, setCurrentIntersectionInfo] = useState({});
@@ -280,7 +300,7 @@ const DashboardDetail = () => {
                     loading={loadingDailyStatCarType}
                     name={String.stats_title_cartype_srlu}
                     series={seriesChartSrluCarType}
-                    type='bar'
+                    option={option}
                 />
             )}
             {(requestType === RequestType.Intersection ||
@@ -289,7 +309,7 @@ const DashboardDetail = () => {
                     loading={loadingDailyStatCamera}
                     name={String.stats_title_camera_srlu}
                     series={seriesChartSrluCamera}
-                    type='bar'
+                    option={option}
                 />
             )}
             {(requestType === RequestType.All ||
@@ -298,7 +318,7 @@ const DashboardDetail = () => {
                     loading={loadingDailyStatCarType}
                     name={String.stats_title_cartype_qtsrlu}
                     series={seriesChartQtsrluCarType}
-                    type='bar'
+                    option={option}
                 />
             )}
             {requestType === RequestType.Intersection && (
@@ -306,7 +326,7 @@ const DashboardDetail = () => {
                     loading={loadingDailyStatCamera}
                     name={String.stats_title_camera_qtsrlu}
                     series={seriesChartQtsrluCamera}
-                    type='bar'
+                    option={option}
                 />
             )}
             {(requestType === RequestType.All ||
@@ -315,7 +335,7 @@ const DashboardDetail = () => {
                     loading={loadingDailyStatCamera || loadingDailyStatCarType}
                     name={String.stats_title_person}
                     series={seriesChartPerson}
-                    type='bar'
+                    option={option}
                 />
             )}
         </div>

@@ -470,7 +470,115 @@ export const utilConvertChartSeriesCamera = (dataCamera, listCamera) => {
     };
 };
 
-export const utilConvertChartSeries = (dataStat, listCamera) => {
+const to2Digit = (number) => {
+    return ("0" + number.toFixed(0)).slice(-2);
+};
+
+const convertWeekOfYearString = (year, weekOfYear) => {
+    let startOfYear = new Date();
+    startOfYear.setFullYear(year, 0, 1);
+    //startOfYear.setMonth(0, 1);
+
+    if (startOfYear.getDay() === 0)
+        startOfYear.setDate(startOfYear.getDate() + 1);
+    else if (startOfYear.getDay() === 5)
+        startOfYear.setDate(startOfYear.getDate() + 3);
+    else if (startOfYear.getDay() === 6)
+        startOfYear.setDate(startOfYear.getDate() + 2);
+    else if (startOfYear.getDay() === 2)
+        startOfYear.setDate(startOfYear.getDate() - 1);
+    else if (startOfYear.getDay() === 3)
+        startOfYear.setDate(startOfYear.getDate() - 2);
+    else if (startOfYear.getDay() === 4)
+        startOfYear.setDate(startOfYear.getDate() - 3);
+
+    let startOfWeek = new Date(startOfYear);
+    startOfWeek.setDate(startOfWeek.getDate() + (weekOfYear - 1) * 7);
+
+    let endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+    let startTime = utilFormatDateYYYYMMDD(startOfWeek);
+    let endTime = utilFormatDateYYYYMMDD(endOfWeek);
+
+    return startTime + "~" + endTime;
+};
+
+const convertDayOfWeekString = (dayOfWeek) => {
+    var convertDayOfWeek = String.stats_sunday;
+    switch (dayOfWeek) {
+        case 1:
+            convertDayOfWeek = String.stats_monday;
+            break;
+        case 2:
+            convertDayOfWeek = String.stats_tuesday;
+            break;
+        case 3:
+            convertDayOfWeek = String.stats_wednesday;
+            break;
+        case 4:
+            convertDayOfWeek = String.stats_thursday;
+            break;
+        case 5:
+            convertDayOfWeek = String.stats_friday;
+            break;
+        case 6:
+            convertDayOfWeek = String.stats_saturday;
+            break;
+        case 7:
+            convertDayOfWeek = String.stats_sunday;
+            break;
+
+        default:
+            break;
+    }
+
+    return convertDayOfWeek;
+};
+
+const getNameFromSeriesData = (seriesData) => {
+    if (
+        seriesData.year !== 0 &&
+        seriesData.month !== 0 &&
+        seriesData.day !== 0
+    ) {
+        return (
+            "20" +
+            to2Digit(seriesData.year) +
+            "-" +
+            to2Digit(seriesData.month) +
+            "-" +
+            to2Digit(seriesData.day)
+        );
+    } else if (
+        seriesData.year !== 0 &&
+        seriesData.month === 0 &&
+        seriesData.day === 0 &&
+        seriesData.weekOfYear !== 0.0
+    ) {
+        return convertWeekOfYearString(seriesData.year, seriesData.weekOfYear);
+    } else if (
+        seriesData.year !== 0 &&
+        seriesData.month !== 0 &&
+        seriesData.day === 0 &&
+        seriesData.dayOfWeek === 0.0 &&
+        seriesData.weekOfYear === 0.0
+    ) {
+        return (
+            "20" + to2Digit(seriesData.year) + "-" + to2Digit(seriesData.month)
+        );
+    } else if (
+        seriesData.year === 0 &&
+        seriesData.month === 0 &&
+        seriesData.day === 0
+    ) {
+        return convertDayOfWeekString(seriesData.dayOfWeek);
+    }
+
+    return "";
+};
+
+export const utilConvertChartSeriesPeriod = (dataStat) => {
     let seriesSrluDatas = [];
     let seriesQtsrluDatas = [];
     let seriesSpeedDatas = [];
@@ -481,13 +589,7 @@ export const utilConvertChartSeries = (dataStat, listCamera) => {
 
     if (!utilIsEmptyObj(dataStat)) {
         dataStat.forEach((seriesData) => {
-            console.log("cameraId", seriesData.cameraId);
-            let name = "";
-            if (listCamera !== undefined) {
-                let cameraInfo = utilGetCamera(listCamera, seriesData.cameraId);
-                name = cameraInfo.direction.intersectionName;
-            }
-            //let name = checkName(seriesData);
+            let name = getNameFromSeriesData(seriesData);
 
             let srluDatas = initDataArrayinStatChart();
             let qtsrluDatas = initDataArrayinStatChart();

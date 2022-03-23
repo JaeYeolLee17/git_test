@@ -11,6 +11,7 @@ export const INTERSECTIONS_LIST_URL = DEFAULT_URL + "intersections";
 
 export const STAT_MFD_URL = DEFAULT_URL + "stat/mfd";
 export const STAT_LINK_URL = DEFAULT_URL + "stat/link";
+export const STAT_DAILY_URL = DEFAULT_URL + "stat/daily";
 
 export const AVL_URL = DEFAULT_URL + "avl";
 

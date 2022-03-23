@@ -1,5 +1,6 @@
 import * as Common from "../commons/common";
 import axios from "axios";
+import * as String from "../commons/string";
 
 const { kakao } = window;
 
@@ -78,6 +79,21 @@ export const utilFormatDateYYYYMMDDHHmm00 = (date) => {
         ":" +
         (minute < 10 ? "0" + minute : minute) +
         ":00";
+
+    return format;
+};
+
+export const utilFormatDateYYYYMMDD = (date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    let format =
+        year +
+        "-" +
+        (month < 10 ? "0" + month : month) +
+        "-" +
+        (day < 10 ? "0" + day : day);
 
     return format;
 };
@@ -243,4 +259,301 @@ export const utilConvertQtsrlu15Minute = (qtsrlu) => {
 export const utilConvertSrlu15Minute = (srlu) => {
     // 100m -> km로 변환 // 15분단위
     return (srlu * 100 * 4) / 1000;
+};
+
+export const isPrebuiltIntersection = (intersectionId) => {
+    var result = false;
+
+    if (
+        intersectionId === "I0001" ||
+        intersectionId === "I0002" ||
+        intersectionId === "I0003" ||
+        intersectionId === "I0004" ||
+        intersectionId === "I0005"
+    ) {
+        result = true;
+    }
+
+    return result;
+};
+
+const initDataArrayinStatChart = () => {
+    return Array.from({ length: 24 }, (v, i) => {
+        return { x: i, y: 0 };
+    });
+};
+
+export const utilConvertChartSeriesCarType = (dataCarType) => {
+    let seriesChartSrlu = [];
+    let seriesChartQtsrlu = [];
+    let seriesChartPerson = [];
+
+    let normal_srluDatas = initDataArrayinStatChart();
+    let taxi_srluDatas = initDataArrayinStatChart();
+    let bus_srluDatas = initDataArrayinStatChart();
+    let truck_srluDatas = initDataArrayinStatChart();
+    let motocycle_srluDatas = initDataArrayinStatChart();
+
+    let normal_qtsrluDatas = initDataArrayinStatChart();
+    let taxi_qtsrluDatas = initDataArrayinStatChart();
+    let bus_qtsrluDatas = initDataArrayinStatChart();
+    let truck_qtsrluDatas = initDataArrayinStatChart();
+    let motocycle_qtsrluDatas = initDataArrayinStatChart();
+
+    let personDatas = initDataArrayinStatChart();
+
+    // skip if no data
+    if (!utilIsEmptyObj(dataCarType)) {
+        dataCarType.data.forEach((seriesData) => {
+            var normal_srluData = normal_srluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            normal_srluData.y = seriesData.srlu[0];
+
+            var taxi_srluData = taxi_srluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            taxi_srluData.y = seriesData.srlu[1];
+
+            var bus_srluData = bus_srluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            bus_srluData.y = seriesData.srlu[2];
+
+            var truck_srluData = truck_srluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            truck_srluData.y = seriesData.srlu[3];
+
+            var motocycle_srluData = motocycle_srluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            motocycle_srluData.y = seriesData.srlu[4];
+
+            var normal_qtsrluData = normal_qtsrluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            normal_qtsrluData.y = (seriesData.qtsrlu[0] / 3600).toFixed(1);
+
+            var taxi_qtsrluData = taxi_qtsrluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            taxi_qtsrluData.y = (seriesData.qtsrlu[1] / 3600).toFixed(1);
+
+            var bus_qtsrluData = bus_qtsrluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            bus_qtsrluData.y = (seriesData.qtsrlu[2] / 3600).toFixed(1);
+
+            var truck_qtsrluData = truck_qtsrluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            truck_qtsrluData.y = (seriesData.qtsrlu[3] / 3600).toFixed(1);
+
+            var motocycle_qtsrluData = motocycle_qtsrluDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            motocycle_qtsrluData.y = (seriesData.qtsrlu[4] / 3600).toFixed(1);
+
+            var personData = personDatas.find(
+                (data) => data.x === seriesData.hour
+            );
+            personData.y = seriesData.p;
+        });
+    }
+
+    seriesChartSrlu.push({
+        name: String.carType_normal,
+        data: normal_srluDatas,
+    });
+    seriesChartSrlu.push({
+        name: String.carType_taxi,
+        data: taxi_srluDatas,
+    });
+    seriesChartSrlu.push({
+        name: String.carType_bus,
+        data: bus_srluDatas,
+    });
+    seriesChartSrlu.push({
+        name: String.carType_truck,
+        data: truck_srluDatas,
+    });
+    seriesChartSrlu.push({
+        name: String.carType_motocycle,
+        data: motocycle_srluDatas,
+    });
+
+    seriesChartQtsrlu.push({
+        name: String.carType_normal,
+        data: normal_qtsrluDatas,
+    });
+    seriesChartQtsrlu.push({
+        name: String.carType_taxi,
+        data: taxi_qtsrluDatas,
+    });
+    seriesChartQtsrlu.push({
+        name: String.carType_bus,
+        data: bus_qtsrluDatas,
+    });
+    seriesChartQtsrlu.push({
+        name: String.carType_truck,
+        data: truck_qtsrluDatas,
+    });
+    seriesChartQtsrlu.push({
+        name: String.carType_motocycle,
+        data: motocycle_qtsrluDatas,
+    });
+
+    seriesChartPerson.push({
+        name: String.stats_person,
+        data: personDatas,
+    });
+
+    return { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson };
+};
+
+export const utilConvertChartSeriesCamera = (dataCamera, listCamera) => {
+    let seriesChartSrlu = [];
+    let seriesChartQtsrlu = [];
+    let seriesChartPerson = [];
+
+    if (!utilIsEmptyObj(dataCamera)) {
+        dataCamera.forEach((seriesData) => {
+            let name = "";
+            if (listCamera !== undefined) {
+                let cameraInfo = utilGetCamera(listCamera, seriesData.cameraId);
+                name =
+                    cameraInfo.direction.intersectionName +
+                    String.camera_direction_unit;
+            }
+
+            let srluDatas = initDataArrayinStatChart();
+            let qtsrluDatas = initDataArrayinStatChart();
+            let personDatas = initDataArrayinStatChart();
+
+            seriesData.data.forEach((data) => {
+                let hour = data.hour;
+
+                let srluData = srluDatas.find((srlu) => srlu.x === hour);
+                srluData.y = data.srluSum;
+
+                let qtsrluData = qtsrluDatas.find(
+                    (qtsrlu) => qtsrlu.x === hour
+                );
+                qtsrluData.y = data.qtsrluSum;
+
+                let personData = personDatas.find(
+                    (person) => person.x === hour
+                );
+                personData.y = data.p;
+            });
+
+            seriesChartSrlu.push({
+                name: name,
+                data: srluDatas,
+            });
+            seriesChartQtsrlu.push({
+                name: name,
+                data: qtsrluDatas,
+            });
+            seriesChartPerson.push({
+                name: name,
+                data: personDatas,
+            });
+        });
+    }
+
+    return {
+        seriesChartSrlu,
+        seriesChartQtsrlu,
+        seriesChartPerson,
+    };
+};
+
+export const utilConvertChartSeries = (dataStat, listCamera) => {
+    let seriesSrluDatas = [];
+    let seriesQtsrluDatas = [];
+    let seriesSpeedDatas = [];
+    let seriesPersonDatas = [];
+    let seriesMfdDatas = [];
+
+    let maxQtsrluData = 0;
+
+    if (!utilIsEmptyObj(dataStat)) {
+        dataStat.forEach((seriesData) => {
+            console.log("cameraId", seriesData.cameraId);
+            let name = "";
+            if (listCamera !== undefined) {
+                let cameraInfo = utilGetCamera(listCamera, seriesData.cameraId);
+                name = cameraInfo.direction.intersectionName;
+            }
+            //let name = checkName(seriesData);
+
+            let srluDatas = initDataArrayinStatChart();
+            let qtsrluDatas = initDataArrayinStatChart();
+            let speedDatas = initDataArrayinStatChart();
+            let personDatas = initDataArrayinStatChart();
+            let mfdDatas = initDataArrayinStatChart();
+
+            seriesData.data.forEach((data) => {
+                let qtsrlu = data.qtsrlu / 3600; // 1시간 단위
+                let srlu = (data.srlu * 100) / 1000; // 100m -> km로 변환 // 1시간단위
+
+                //console.log("updateStatPeriod : " + JSON.stringify(seriesData.data[j]));
+
+                let hour = data.hour;
+
+                let srluData = srluDatas.find((srlu) => srlu.x === hour);
+                srluData.y = data.srlu;
+
+                let qtsrluData = qtsrluDatas.find(
+                    (qtsrlu) => qtsrlu.x === hour
+                );
+                qtsrluData.y = data.qtsrlu;
+
+                let speedData = speedDatas.find((speed) => speed.x === hour);
+                speedData.y = srlu / qtsrlu;
+
+                let personData = personDatas.find(
+                    (person) => person.x === hour
+                );
+                personData.y = data.p;
+
+                mfdDatas[hour].x = qtsrlu;
+                mfdDatas[hour].y = srlu;
+
+                if (qtsrlu > maxQtsrluData) maxQtsrluData = qtsrlu;
+            });
+
+            seriesSrluDatas.push({
+                name: name,
+                data: srluDatas,
+            });
+            seriesQtsrluDatas.push({
+                name: name,
+                data: qtsrluDatas,
+            });
+            seriesSpeedDatas.push({
+                name: name,
+                data: speedDatas,
+            });
+            seriesPersonDatas.push({
+                name: name,
+                data: personDatas,
+            });
+            seriesMfdDatas.push({
+                name: name,
+                data: mfdDatas,
+            });
+        });
+    }
+
+    return {
+        seriesSrluDatas,
+        seriesQtsrluDatas,
+        seriesSpeedDatas,
+        seriesPersonDatas,
+        seriesMfdDatas,
+        maxQtsrluData,
+    };
 };

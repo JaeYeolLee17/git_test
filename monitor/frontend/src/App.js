@@ -10,6 +10,7 @@ import Login from "./page/Login";
 import NotFound from "./page/NotFound";
 
 import * as Common from "./commons/common";
+import StatTraffic from "./page/StatTraffic";
 
 const PrivateRoute = ({ children }) => {
     const userDetails = useAuthState();
@@ -47,6 +48,14 @@ function App() {
                         <PrivateAdminRoute>
                             <DashboardDetail />
                         </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_STAT_TRAFFIC}
+                    element={
+                        <PrivateRoute>
+                            <StatTraffic />
+                        </PrivateRoute>
                     }
                 ></Route>
             </Routes>

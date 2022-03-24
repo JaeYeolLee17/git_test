@@ -313,6 +313,9 @@ function DashboardMfd({ regionId, intersectionId }) {
     }, [regionId, intersectionId]);
 
     // TODO: loadingMfd || loadingLastWeekMfd || loadingLastMonthAvgMfd => loading image
+    // console.log("loadingMfd", loadingMfd);
+    // console.log("loadingLastWeekMfd", loadingLastWeekMfd);
+    // console.log("loadingLastMonthAvgMfd", loadingLastMonthAvgMfd);
     return (
         <div>
             <ChartMfd

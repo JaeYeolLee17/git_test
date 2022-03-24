@@ -1,0 +1,31 @@
+<svg id="ico_profile_img" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #e6e6e6;
+      }
+
+      .cls-4 {
+        fill: #b3b3b3;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_2613" data-name="사각형 2613" class="cls-1" width="36" height="36"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_2294" data-name="그룹 2294">
+    <g id="그룹_2294-2" data-name="그룹 2294" class="cls-2">
+      <path id="패스_1494" data-name="패스 1494" class="cls-3" d="M18,0A18,18,0,1,1,0,18,18,18,0,0,1,18,0"/>
+      <path id="패스_1495" data-name="패스 1495" class="cls-4" d="M18,7.333a6,6,0,1,1-6,6,6,6,0,0,1,6-6" transform="translate(0 0)"/>
+      <path id="패스_1496" data-name="패스 1496" class="cls-4" d="M18,21.667A13,13,0,0,0,5.541,30.972a17.95,17.95,0,0,0,24.918,0A13,13,0,0,0,18,21.667" transform="translate(0 0)"/>
+    </g>
+  </g>
+</svg>

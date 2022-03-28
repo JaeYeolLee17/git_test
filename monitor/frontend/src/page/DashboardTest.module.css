@@ -1,0 +1,31 @@
+:root {
+    --pointMain: #1F5499;
+	--pointSub1: #0766B6;
+	--pointSub2: #4DE1FF;
+
+	--menu: 	#262626;
+	--menuSub: 	#404040;
+	--content1: #EBEBEB;
+	--content2: #F7F7F7;
+	--bgWhite: 	#FFFFFF;
+
+	--fontBlack1: 	#000;
+	--fontBlack2: 	#333;
+	--fontBlack3: 	#555;
+	--fontBlack4: 	#777;
+	--fontBlack5: 	#999;
+	--fontWhite: 	#FFF;
+
+	--line1: 	#B3B3B3;
+	--line2: 	#E6E6E6;
+	--table1:	#212121;
+	--table2:	#AAA;
+	--table3:	#DDD;
+}
+.navbar {
+    
+}
+
+.drawerNavbar {
+
+}

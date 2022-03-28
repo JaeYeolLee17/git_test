@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "../component/Header";
+import HeaderContent from "../component/HeaderContent";
 import Menu from "../component/Menu";
 import Selector from "../component/Selector";
 import SelectorRegion from "../component/SelectorRegion";
@@ -224,7 +224,7 @@ function StatTraffic() {
 
     return (
         <div>
-            <Header />
+            <HeaderContent />
             <Menu />
 
             <Selector list={listPeriod} onChange={onChangePeriod} />

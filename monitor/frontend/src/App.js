@@ -12,6 +12,8 @@ import NotFound from "./page/NotFound";
 import * as Common from "./commons/common";
 import StatTraffic from "./page/StatTraffic";
 
+import DashboardTest from './page/DashboardTest'
+
 const PrivateRoute = ({ children }) => {
     const userDetails = useAuthState();
     return userDetails.user ? children : <NotFound />;
@@ -58,6 +60,14 @@ function App() {
                         </PrivateRoute>
                     }
                 ></Route>
+                <Route 
+                    path={"/dashboard/test"}
+                    element={
+                        <PrivateRoute>
+                            <DashboardTest />
+                        </PrivateRoute>
+                    }
+                />
             </Routes>
         </div>
     );

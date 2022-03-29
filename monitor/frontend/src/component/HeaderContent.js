@@ -44,14 +44,16 @@ const HeaderContent = () => {
             </Link>
         
             <div className={styles.rightSection}>
+                <MediaQuery smallerThan="sm" styles={{ width: 0, opacity: 0 }}>
                 <div className={styles.timeBox}>
                     <div className={styles.time}>{date}</div>
-                    <Divider orientation="vertical" mx="sm" size="xs" variant="solid" style={{ height: "24px" }}/>
+                    <Divider orientation="vertical" mx="sm" size="xs" variant="solid" className={styles.divider}/>
                     <div className={styles.date}>{time}</div>
                 </div>
-
+                </MediaQuery>
                 <div className={styles.userBox}>
-                    <button onClick={handleLogout}>Logout</button>
+                    <div>안녕하세요 {JSON.parse(localStorage.getItem("currentUser")).user.userId}님</div>
+                    <button className={styles.logoutBtn} onClick={handleLogout}>Logout</button>
                 </div>
             </div>
         </header>

@@ -5,9 +5,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
 }
-
 .logoSection {
     display: flex;
     align-items: center;
@@ -45,6 +43,17 @@
     justify-content: space-between;
     align-items: center;
 }
+.divider {
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 24px;
+}
 .userBox {
     margin-left: 1rem;
+    padding: 0.5rem;
+
+    border: 1px solid var(--table2);
+}
+.logoutBtn {
+    width: 100%;
 }

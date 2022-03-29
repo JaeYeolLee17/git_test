@@ -1,0 +1,17 @@
+.wrapper {
+    padding: 0.5rem;
+    background: var(--menu);
+    height: 100%;
+}
+
+li {
+    margin-bottom: 1rem;
+}
+li:hover {
+    background: gray;
+}
+.groupItem {
+    text-decoration: none;
+    color: white;
+    width: 100%;    
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { AppShell, Burger, Drawer, Header, MediaQuery, Navbar, Text, useMantineTheme } from '@mantine/core'
 import Menu from '../component/Menu'
 import HeaderContent from '../component/HeaderContent';
+
 import styles from './DashboardTest.module.css'
 
 function DashboardTest() {
@@ -26,11 +27,12 @@ function DashboardTest() {
                         onClose={()=>setOpened(false)}
                         padding="sm"
                         size={ 200 }
+                        
                     >
                         <Menu />
                     </Drawer>
                     <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                        <Menu />
+                        <Menu />                        
                     </MediaQuery>                    
                 </Navbar>
             }

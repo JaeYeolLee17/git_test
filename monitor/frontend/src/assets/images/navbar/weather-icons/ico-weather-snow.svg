@@ -1,0 +1,35 @@
+<svg id="ico_weather_snow" xmlns="http://www.w3.org/2000/svg" width="78" height="78" viewBox="0 0 78 78">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="사각형_3481" data-name="사각형 3481" class="cls-1" d="M0 0h38v42.051H0z"/>
+        </clipPath>
+        <style>
+            .cls-1{fill:#9ef}
+        </style>
+    </defs>
+    <g id="그룹_2782" data-name="그룹 2782" transform="translate(20 18)">
+        <path id="사각형_3463" data-name="사각형 3463" class="cls-1" transform="translate(17.417 .001)" d="M0 0h3.154v17.654H0z"/>
+        <path id="사각형_3464" data-name="사각형 3464" class="cls-1" transform="rotate(-45 12.951 -11.476)" d="M0 0h3.153v8.444H0z"/>
+        <path id="사각형_3465" data-name="사각형 3465" class="cls-1" transform="rotate(-45 20.456 -16.83)" d="M0 0h8.445v3.153H0z"/>
+        <path id="사각형_3466" data-name="사각형 3466" class="cls-1" transform="rotate(-60.003 10.291 5.942)" d="M0 0h3.153v17.655H0z"/>
+        <path id="사각형_3467" data-name="사각형 3467" class="cls-1" transform="rotate(-14.995 63.433 2.752)" d="M0 0h8.443v3.153H0z"/>
+        <path id="사각형_3468" data-name="사각형 3468" class="cls-1" transform="rotate(-15.002 33.856 -19.915)" d="M0 0h3.153v8.443H0z"/>
+        <path id="사각형_3469" data-name="사각형 3469" class="cls-1" transform="rotate(-30 56.313 15.08)" d="M0 0h17.654v3.153H0z"/>
+        <path id="사각형_3470" data-name="사각형 3470" class="cls-1" transform="rotate(-74.99 25.291 12.868)" d="M0 0h8.443v3.153H0z"/>
+        <path id="사각형_3471" data-name="사각형 3471" class="cls-1" transform="rotate(-74.998 17.37 11.829)" d="M0 0h3.153v8.444H0z"/>
+        <path id="사각형_3472" data-name="사각형 3472" class="cls-1" transform="translate(17.43 24.397)" d="M0 0h3.154v17.654H0z"/>
+        <path id="사각형_3473" data-name="사각형 3473" class="cls-1" transform="rotate(-45.005 48.19 -5.336)" d="M0 0h3.153v8.444H0z"/>
+        <path id="사각형_3474" data-name="사각형 3474" class="cls-1" transform="rotate(-45 49.719 3.754)" d="M0 0h8.443v3.153H0z"/>
+        <path id="사각형_3475" data-name="사각형 3475" class="cls-1" transform="rotate(-60 31.414 -6.267)" d="M0 0h3.153v17.654H0z"/>
+        <path id="사각형_3476" data-name="사각형 3476" class="cls-1" transform="rotate(-14.995 107.569 -92.443)" d="M0 0h8.443v3.154H0z"/>
+        <path id="사각형_3477" data-name="사각형 3477" class="cls-1" transform="rotate(-15.002 114.342 -87.161)" d="M0 0h3.153v8.443H0z"/>
+        <path id="사각형_3478" data-name="사각형 3478" class="cls-1" transform="rotate(-29.994 44.1 -30.45)" d="M0 0h17.654v3.153H0z"/>
+        <path id="사각형_3479" data-name="사각형 3479" class="cls-1" transform="rotate(-75.005 23.28 -9.528)" d="M0 0h8.443v3.153H0z"/>
+        <path id="사각형_3480" data-name="사각형 3480" class="cls-1" transform="rotate(-74.99 25.106 -9.293)" d="M0 0h3.153v8.443H0z"/>
+        <g id="그룹_2781" data-name="그룹 2781">
+            <g id="그룹_2780" data-name="그룹 2780" style="clip-path:url(#clip-path)">
+                <path id="패스_2648" data-name="패스 2648" class="cls-1" d="M18.315 25.183a4.942 4.942 0 1 1 4.942-4.942 4.948 4.948 0 0 1-4.942 4.942m0-6.73a1.788 1.788 0 1 0 1.785 1.788 1.79 1.79 0 0 0-1.788-1.788" transform="translate(.686 .784)"/>
+            </g>
+        </g>
+    </g>
+</svg>

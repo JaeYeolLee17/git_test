@@ -1,0 +1,158 @@
+@font-face {
+	font-family: 'S-CoreDream5';
+	src:
+		url('./SCDream5/SCDream5.ttf') format('truetype'),
+		url('./SCDream5/scdream5-webfont.woff2') format('woff2'),
+        url('./SCDream5/scdream5-webfont.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;	
+}
+@font-face {
+  font-family: 'icomoon';
+  src:  url('./icomoon/icomoon.eot') format('embedded-opentype'),
+    url('./icomoon/icomoon.ttf') format('truetype'),
+    url('./icomoon/icomoon.woff') format('woff'),
+    url('./icomoon/icomoon.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-ico-map-area-f:before {
+  content: "\e900";
+  color: #fff;
+}
+.icon-ico-map-area-n:before {
+  content: "\e901";
+  color: #4d4d4d;
+}
+.icon-ico-map-camera-f:before {
+  content: "\e902";
+  color: #fff;
+}
+.icon-ico-map-camera-n:before {
+  content: "\e903";
+  color: #4d4d4d;
+}
+.icon-ico-map-emergency-vehicle-f:before {
+  content: "\e904";
+  color: #fff;
+}
+.icon-ico-map-emergency-vehicle-n:before {
+  content: "\e905";
+  color: #4d4d4d;
+}
+.icon-ico-map-signal-lamp-f:before {
+  content: "\e906";
+  color: #fff;
+}
+.icon-ico-map-signal-lamp-n:before {
+  content: "\e907";
+  color: #4d4d4d;
+}
+.icon-ico-map-traffic-f:before {
+  content: "\e908";
+  color: #fff;
+}
+.icon-ico-map-traffic-n:before {
+  content: "\e909";
+  color: #4d4d4d;
+}
+.icon-ico-search:before {
+  content: "\e90a";
+  color: #fff;
+}
+.icon-schedule_black_24dp:before {
+  content: "\e90b";
+  color: #fff;
+}
+.icon-ico-menu-01-d:before {
+  content: "\e90c";
+  color: #8f9bb3;
+}
+.icon-ico-menu-01-f:before {
+  content: "\e90d";
+  color: #fff;
+}
+.icon-ico-menu-02-d:before {
+  content: "\e90e";
+  color: #8f9bb3;
+}
+.icon-ico-menu-02-f:before {
+  content: "\e90f";
+  color: #fff;
+}
+.icon-ico-menu-03-d:before {
+  content: "\e910";
+  color: #8f9bb3;
+}
+.icon-ico-menu-03-f:before {
+  content: "\e911";
+  color: #fff;
+}
+.icon-ico-menu-04-d:before {
+  content: "\e912";
+  color: #8f9bb3;
+}
+.icon-ico-menu-04-f:before {
+  content: "\e913";
+  color: #fff;
+}
+.icon-ico-menu-05-d:before {
+  content: "\e914";
+  color: #8f9bb3;
+}
+.icon-ico-menu-05-f:before {
+  content: "\e915";
+  color: #fff;
+}
+.icon-ico-menu-06-d:before {
+  content: "\e916";
+  color: #8f9bb3;
+}
+.icon-ico-menu-06-f:before {
+  content: "\e917";
+  color: #fff;
+}
+.icon-ico-menu-07-d:before {
+  content: "\e918";
+  color: #8f9bb3;
+}
+.icon-ico-menu-07-f:before {
+  content: "\e919";
+  color: #fff;
+}
+.icon-ico-menu-08-d:before {
+  content: "\e91a";
+  color: #8f9bb3;
+}
+.icon-ico-menu-08-f:before {
+  content: "\e91b";
+  color: #fff;
+}
+.icon-ico-menu-09-d:before {
+  content: "\e91c";
+  color: #8f9bb3;
+}
+.icon-ico-menu-10-d:before {
+  content: "\e922";
+  color: #8f9bb3;
+}
+.icon-ico-menu-10-f:before {
+  content: "\e923";
+  color: #fff;
+}

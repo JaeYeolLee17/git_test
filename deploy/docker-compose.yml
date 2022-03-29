@@ -3,15 +3,15 @@ version: '2.1'
 services:   
   challenge-monitor:
     build: ../monitor/frontend
-    image: 192.168.0.241:5000/challenge-monitor:0.0.1
-    mem_limit: 1024m
+    image: challenge-monitor
+    mem_limit: 512m
     ports:
       - "8080:8080"
 
   challenge-api:
     build: ../backend/challenge-api
-    image: 192.168.0.241:5000/challenge-api:0.0.1
-    mem_limit: 1024m
+    image: challenge-api
+    mem_limit: 512m
     ports:
       - "8081:8081"
     environment:
@@ -19,8 +19,8 @@ services:
 
   challenge-data-collector:
     build: ../backend/challenge-data-collector
-    image: 192.168.0.241:5000/challenge-data-collector:0.0.1
-    mem_limit: 1024m
+    image: challenge-data-collector
+    mem_limit: 512m
     ports:
       - "8082:8082"
     environment:
@@ -28,8 +28,8 @@ services:
 
   challenge-data-provider:
     build: ../backend/challenge-data-provider
-    image: 192.168.0.241:5000/challenge-data-provider:0.0.1
-    mem_limit: 1024m
+    image: challenge-data-provider
+    mem_limit: 512m
     ports:
       - "8083:8083"
     environment:

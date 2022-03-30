@@ -31,8 +31,8 @@ public class IntersectionServiceImpl implements IntersectionService {
         Intersection intersection = Intersection.builder()
                 .intersectionId(intersectionDto.getIntersectionId())
                 .intersectionName(intersectionDto.getIntersectionName())
-                .lat(intersectionDto.getGps().getLat())
-                .lng(intersectionDto.getGps().getLng())
+                .gps(intersectionDto.getGps())
+                .regionId(intersectionDto.getRegionDto().getRegionId())
                 .nationalId(intersectionDto.getNationalId())
                 .build();
 
@@ -48,12 +48,8 @@ public class IntersectionServiceImpl implements IntersectionService {
                         intersection.setIntersectionName(intersectionDto.getIntersectionName());
                     }
 
-                    if (intersectionDto.getGps() != null && intersectionDto.getGps().getLat() != 0) {
-                        intersection.setLat(intersectionDto.getGps().getLat());
-                    }
-
-                    if (intersectionDto.getGps() != null && intersectionDto.getGps().getLng() != 0) {
-                        intersection.setLng(intersectionDto.getGps().getLng());
+                    if (intersectionDto.getGps() != null) {
+                        intersection.setGps(intersectionDto.getGps());
                     }
 
                     if (intersectionDto.getNationalId() != null) {

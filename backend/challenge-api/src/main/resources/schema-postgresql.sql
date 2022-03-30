@@ -42,8 +42,7 @@ CREATE TABLE public.nt_camera
 (
     camera_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
     intersection_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
-    lat double precision NOT NULL,
-    lng double precision NOT NULL,
+    gps point NOT NULL,
     direction character varying(10) COLLATE pg_catalog."default" NOT NULL,
     rtsp_url character varying(128) COLLATE pg_catalog."default",
     server_url character varying(128) COLLATE pg_catalog."default",
@@ -76,8 +75,7 @@ CREATE TABLE public.nt_intersection
 (
     intersection_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
     intersection_name character varying(20) COLLATE pg_catalog."default" NOT NULL,
-    lat double precision NOT NULL,
-    lng double precision NOT NULL,
+    gps point NOT NULL,
     region_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
     national_id integer,
     CONSTRAINT nt_intersection_pkey PRIMARY KEY (intersection_id)

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.e4motion.challenge.api.domain.Camera;
+import com.e4motion.challenge.api.domain.Road;
 
 public interface CameraRepository {
 
@@ -18,4 +19,5 @@ public interface CameraRepository {
     Optional<Camera> findByCameraId(String cameraId);
 
     void deleteByCameraId(String cameraId);
+
 }

@@ -21,11 +21,11 @@ public class RoadDto {
 
     private String startLine;
 
-    private String uTurn;
+    private String uturn;
 
     private String crosswalk;
 
     private List<String> lane;
 
-    private List<List<Boolean>> direction;
+    private List<String> direction;
 }

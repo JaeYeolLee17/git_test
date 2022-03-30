@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface RegionRepository {
 
-    Region save(Region link);
+    Region save(Region region);
 
     List<Region> findAll();
 

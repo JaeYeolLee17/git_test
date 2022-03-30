@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GpsDto {
 
-    private double lat;
+    private double latitude;
 
-    private double lng;
+    private double longitude;
 }

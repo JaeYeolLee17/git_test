@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "../component/Header";
+import Header from "../component/HeaderContent";
 import Menu from "../component/Menu";
 import SelectorIntersection from "../component/SelectorIntersection";
 import SelectorRegion from "../component/SelectorRegion";

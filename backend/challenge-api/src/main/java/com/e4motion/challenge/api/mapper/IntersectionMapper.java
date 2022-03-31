@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface IntersectionMapper {
-
+    @Mapping(target = "regionDto", ignore = true)
     IntersectionDto toIntersectionDto(Intersection intersection);
 
     List<IntersectionDto> toIntersectionDto(List<Intersection> intersections);

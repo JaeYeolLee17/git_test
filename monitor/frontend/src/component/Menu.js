@@ -3,10 +3,19 @@ import { Link } from "react-router-dom";
 
 import * as Common from "../commons/common";
 
+import WeatherWidget from '../component/WeatherWidget'
+
+import styles from './Menu.module.css'
+import MenuGroup from "./MenuGroup";
+
 const Menu = () => {
+
+    // pass string array of menu items to be rendered into 
+    // components
     return (
-        <div style={{ border: "solid 1px", background: "red" }}>
-            <ul>
+        <aside className={styles.wrapper}>
+            <WeatherWidget />
+            <ul >
                 <li>
                     <Link to={Common.PAGE_DASHBOARD}>Dashboard</Link>
                 </li>
@@ -18,8 +27,16 @@ const Menu = () => {
                 <li>
                     <Link to={Common.PAGE_STAT_TRAFFIC}>Stat Traffic</Link>
                 </li>
+                
+                <li>                    
+                    <Link to={"/dashboard/test"}>
+                        <div className={styles.groupItem}>TEST</div>
+                    </Link>
+                </li>
+
             </ul>
-        </div>
+            
+        </aside>
     );
 };
 

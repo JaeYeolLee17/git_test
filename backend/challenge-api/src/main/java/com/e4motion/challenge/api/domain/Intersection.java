@@ -26,11 +26,8 @@ public class Intersection {
     @Column(name = "intersection_name", length = 20)
     private String intersectionName;
 
-    @Column(name = "lat")
-    private double lat;
-
-    @Column(name = "lng")
-    private double lng;
+    @Column(name = "gps")
+    private Point gps;
 
     @Column(name = "region_id", length = 10)
     private String regionId;

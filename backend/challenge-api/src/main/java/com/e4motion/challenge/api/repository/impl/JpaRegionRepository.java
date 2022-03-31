@@ -11,10 +11,8 @@ import java.util.Optional;
 public interface JpaRegionRepository extends JpaRepository<Region, String>, RegionRepository {
 
     @Transactional(readOnly = true)
-    @EntityGraph(attributePaths = "authorities")
     Optional<Region> findByRegionId(String regionId);
 
     @Transactional
-    @EntityGraph(attributePaths = "authorities")
     void deleteByRegionId(String regionId);
 }

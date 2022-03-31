@@ -5,6 +5,8 @@ import com.e4motion.challenge.api.service.RegionService;
 import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(path = "v1")
 public class RegionController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final RegionService regionService;
 
@@ -45,6 +49,7 @@ public class RegionController {
     @GetMapping("/region/{regionId}")
     public Response get(@PathVariable String regionId) throws Exception {
 
+        logger.debug(" regionId : " + regionId);
         return new Response("region", regionService.get(regionId));
     }
 

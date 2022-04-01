@@ -5,3 +5,13 @@ resources:
 - challenge-api.yml
 - challenge-data-collector.yml
 - challenge-data-provider.yml
+
+images:
+- name: challenge-api
+  newTag: 0.0.2
+- name: challenge-data-collector
+  newTag: 0.0.2
+- name: challenge-data-provider
+  newTag: 0.0.2
+- name: challenge-monitor
+  newTag: 0.0.2

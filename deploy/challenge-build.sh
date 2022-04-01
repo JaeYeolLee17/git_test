@@ -5,6 +5,6 @@ cd ../backend
 ./gradlew clean build
 
 #build frontend
-cd ../../monlitor/frontend
+cd ../../monitor/frontend
 npm install && npm run build:nextdev
 

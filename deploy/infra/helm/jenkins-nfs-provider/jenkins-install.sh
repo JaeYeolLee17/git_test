@@ -8,7 +8,7 @@ helm repo update
 helm install nfs-provisioner \
   nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
   --set nfs.server=192.168.0.241 \
-  --set nfs.path=/nfs-share/jenkins \
+  --set nfs.path=/nfs-share/jenkins-home \
   --set storageClass.name=nfs-provisioner
 
 kubectl apply -f jenkins-namespace.yml

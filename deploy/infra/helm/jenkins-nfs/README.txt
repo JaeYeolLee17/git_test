@@ -13,6 +13,13 @@
 4. agent workspace volume
    workspaceVolume 에 nfs 로 설정
 
+4. build script 작성 시
+   gradle build 시 gradle user home 을 persistence 위치로 변경해주어야 한다.
+   (gradle lib download 받는 시간이 너무 많이 소요되므로.)
+
+   build shell script 에서 
+   export GRADLE_USER_HOME=${WORKSPACE}/../.gradle  등으로...
+
 
 -----------------------
 ** 위 설정 전 먼저 준비할 사항.
@@ -23,3 +30,4 @@
 -----------------------
 ** 최초 Jenkins 구동 후 plugin 모두 update 필수!!
 오류 없을때 까지
+

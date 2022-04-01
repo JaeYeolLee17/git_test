@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    ports:
+      - 8090:8080
+      - 50000:50000
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    mem_limit: 2048m
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
+    external: true

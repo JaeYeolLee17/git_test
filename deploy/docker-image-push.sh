@@ -12,7 +12,7 @@ echo "TAG=$TAG"
 echo "REGISTRY=$REGISTRY"
 
 # push images
-#docker push $REGISTRY/challenge-api:$TAG
-#docker push $REGISTRY/challenge-data-collector:$TAG
-#docker push $REGISTRY/challenge-data-provider:$TAG
-#docker push $REGISTRY/challenge-monitor:$TAG
+docker push $REGISTRY/challenge-api:$TAG
+docker push $REGISTRY/challenge-data-collector:$TAG
+docker push $REGISTRY/challenge-data-provider:$TAG
+docker push $REGISTRY/challenge-monitor:$TAG

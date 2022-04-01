@@ -1,3 +1,5 @@
+namespace: default
+
 resources:
 - challenge-monitor.yml
 - challenge-api.yml

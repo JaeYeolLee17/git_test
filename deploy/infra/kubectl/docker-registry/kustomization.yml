@@ -1,4 +1,5 @@
-namespace: intra
+namespace: registry
+
 resources:
 - namespace.yaml
 - docker-registry.yml

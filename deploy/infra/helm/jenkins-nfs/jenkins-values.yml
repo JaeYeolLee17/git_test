@@ -599,8 +599,8 @@ agent:
   componentName: "jenkins-agent"
   websocket: false
   privileged: false
-  runAsUser:
-  runAsGroup:
+  runAsUser: 1000
+  runAsGroup: 998
   resources:
     requests:
       cpu: "512m"

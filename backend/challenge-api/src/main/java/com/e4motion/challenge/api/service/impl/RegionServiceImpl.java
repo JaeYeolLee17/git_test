@@ -50,6 +50,7 @@ public class RegionServiceImpl implements RegionService {
                         region.setRegionName(regionDto.getRegionName());
                     }
 
+                    //TODO: gps update ??
 //                    if (regionDto.getGps() != null) {
 //                        region.setGps(regionMapper.toGps(regionDto.getGps()));
 //                    }

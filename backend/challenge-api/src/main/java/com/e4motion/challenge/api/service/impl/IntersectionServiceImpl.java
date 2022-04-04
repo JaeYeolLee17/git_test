@@ -3,11 +3,14 @@ package com.e4motion.challenge.api.service.impl;
 import com.e4motion.challenge.api.domain.Intersection;
 import com.e4motion.challenge.api.dto.IntersectionDto;
 import com.e4motion.challenge.api.mapper.IntersectionMapper;
+import com.e4motion.challenge.api.mapper.RegionMapper;
 import com.e4motion.challenge.api.repository.IntersectionRepository;
 import com.e4motion.challenge.api.service.IntersectionService;
 import com.e4motion.challenge.common.exception.customexception.IntersectionDuplicationException;
 import com.e4motion.challenge.common.exception.customexception.IntersectionNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +20,11 @@ import java.util.List;
 @Service
 public class IntersectionServiceImpl implements IntersectionService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final IntersectionRepository intersectionRepository;
     private final IntersectionMapper intersectionMapper;
+    private final RegionMapper regionMapper;
 
     @Transactional
     public IntersectionDto create(IntersectionDto intersectionDto) {
@@ -31,10 +37,13 @@ public class IntersectionServiceImpl implements IntersectionService {
         Intersection intersection = Intersection.builder()
                 .intersectionId(intersectionDto.getIntersectionId())
                 .intersectionName(intersectionDto.getIntersectionName())
-                .gps(intersectionDto.getGps())
-                .regionId(intersectionDto.getRegionDto().getRegionId())
+                .latitude(intersectionDto.getLatitude())
+                .longitude(intersectionDto.getLongitude())
+                .region(regionMapper.toRegion(intersectionDto.getRegionDto()))
                 .nationalId(intersectionDto.getNationalId())
                 .build();
+
+        logger.debug(" intersection : " + intersection);
 
         return intersectionMapper.toIntersectionDto(intersectionRepository.save(intersection));
     }
@@ -48,8 +57,17 @@ public class IntersectionServiceImpl implements IntersectionService {
                         intersection.setIntersectionName(intersectionDto.getIntersectionName());
                     }
 
-                    if (intersectionDto.getGps() != null) {
-                        intersection.setGps(intersectionDto.getGps());
+                    if (intersectionDto.getLatitude() != null) {
+                        intersection.setLatitude(intersectionDto.getLatitude());
+                    }
+
+                    if (intersectionDto.getLongitude() != null) {
+                        intersection.setLongitude(intersectionDto.getLongitude());
+                    }
+
+                    //TODO : Region ??
+                    if (intersectionDto.getRegionDto() != null) {
+                        intersection.setRegion(regionMapper.toRegion(intersectionDto.getRegionDto()));
                     }
 
                     if (intersectionDto.getNationalId() != null) {

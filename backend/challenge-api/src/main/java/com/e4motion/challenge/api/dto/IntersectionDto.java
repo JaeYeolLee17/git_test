@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -20,7 +22,9 @@ public class IntersectionDto {
     @NotBlank
     private String intersectionName;
 
-    private Point gps;
+    private Double latitude;
+
+    private Double longitude;
 
     private RegionDto regionDto;
 

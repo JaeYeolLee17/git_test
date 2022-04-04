@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -28,5 +27,5 @@ public class LinkDto {
 
     private String endName;
 
-    private List<Point> gps;
+    private List<GpsDto> gps;
 }

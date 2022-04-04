@@ -25,7 +25,7 @@ public class RoadDto {
 
     private String crosswalk;
 
-    private List<String> lane;
+    private List<RoadLaneDto> lanes;
 
-    private List<String> direction;
+    private List<RoadDirectionDto> directions;
 }

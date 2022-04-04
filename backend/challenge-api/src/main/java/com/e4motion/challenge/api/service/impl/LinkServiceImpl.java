@@ -33,7 +33,7 @@ public class LinkServiceImpl implements LinkService {
                 .endId(linkDto.getEndId())
                 .startName(linkDto.getStartName())
                 .endName(linkDto.getEndName())
-                //.gps(linkDto.getGps()) TODO::how change type ??
+                .gps(linkMapper.toGps(linkDto.getGps()))
                 .linkId(linkDto.getLinkId())
                 .build();
 

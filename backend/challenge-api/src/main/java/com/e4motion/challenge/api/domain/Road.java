@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 import java.util.List;
@@ -33,11 +32,12 @@ public class Road {
     @Column(name = "crosswalk", length = 128)
     private String crosswalk;
 
-    @Column(name = "lane")
-    @ElementCollection(targetClass= String.class)
-    private List<String> lane;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "road_id")
+    private List<RoadLane> lanes;
 
-    @Column(name = "direction", length = 128)
-    @ElementCollection(targetClass= String.class)
-    private List<String> direction;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "road_id")
+    private List<RoadDirection> directions;
+
 }

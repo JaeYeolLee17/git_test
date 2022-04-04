@@ -11,10 +11,8 @@ import java.util.Optional;
 public interface JpaCameraRepository extends JpaRepository<Camera, String>, CameraRepository {
 
     @Transactional(readOnly = true)
-    @EntityGraph(attributePaths = "authorities")
     Optional<Camera> findByCameraId(String cameraId);
 
     @Transactional
-    @EntityGraph(attributePaths = "authorities")
     void deleteByCameraId(String cameraId);
 }

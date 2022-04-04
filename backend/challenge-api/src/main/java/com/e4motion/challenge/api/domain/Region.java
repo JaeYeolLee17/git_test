@@ -23,7 +23,10 @@ public class Region {
     @Column(name = "region_name", length = 20)
     private String regionName;
 
+    @OneToMany(mappedBy = "region")
+    private List<Intersection> intersections;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "region_id")
-    private List<Gps> gps;
+    private List<RegionGps> gps;
 }

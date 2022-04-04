@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "nt_region_gps")
-public class Gps {
+public class RegionGps {
 
     @Id
     @Column(name = "latitude")
@@ -19,4 +19,8 @@ public class Gps {
 
     @Column(name = "longitude")
     private double longitude;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "region_id", insertable = false, updatable = false)
+    private Region region;
 }

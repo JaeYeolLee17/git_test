@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 import java.util.List;
@@ -33,7 +32,7 @@ public class Link {
     @Column(name = "end_name", length = 30)
     private String endName;
 
-    @Column(name = "gps")
-    @ElementCollection(targetClass=Point.class)
-    private List<Point> gps;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "link_id")
+    private List<LinkGps> gps;
 }

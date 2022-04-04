@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Builder
@@ -26,12 +23,16 @@ public class Intersection {
     @Column(name = "intersection_name", length = 20)
     private String intersectionName;
 
-    @Column(name = "gps")
-    private Point gps;
+    @Column(name = "latitude")
+    private double latitude;
 
-    @Column(name = "region_id", length = 10)
-    private String regionId;
+    @Column(name = "longitude")
+    private double longitude;
 
     @Column(name = "national_id")
     private Integer nationalId;
+
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region region;
 }

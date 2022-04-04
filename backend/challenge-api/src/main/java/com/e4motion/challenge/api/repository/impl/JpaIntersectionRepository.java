@@ -12,11 +12,8 @@ import java.util.Optional;
 public interface JpaIntersectionRepository extends JpaRepository<Intersection, String>, IntersectionRepository {
 
     @Transactional(readOnly = true)
-    @EntityGraph(attributePaths = "authorities")
-    @Mapping(target = "region_id", ignore = true)
     Optional<Intersection> findByIntersectionId(String intersectionId);
 
     @Transactional
-    @EntityGraph(attributePaths = "authorities")
     void deleteByIntersectionId(String intersectionId);
 }

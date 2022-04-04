@@ -26,23 +26,25 @@ public class CameraDto {
 
     private IntersectionDto direction;
 
-    private Point gps;
+    private Double latitude;
 
-    private RoadDto road;
+    private Double longitude;
 
     private String rtspUrl;
+
+    private String serverUrl;
+
+    private Integer collectCycle;
 
     private String rtspId;
 
     private String rtspPassword;
 
-    private String serverUrl;
+    private Integer sendCycle;
 
     private Integer distance;
 
-    private Integer sendCycle;
-
-    private Integer collectCycle;
+    private Timestamp lastDataTime;
 
     private Integer smallWidth;
 
@@ -54,7 +56,7 @@ public class CameraDto {
 
     private Integer degree;
 
-    private Timestamp lastDataTime;
-
     private boolean settingsUpdated;
+
+    private RoadDto road;
 }

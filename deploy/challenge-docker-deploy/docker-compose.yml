@@ -2,35 +2,41 @@ version: '2'
 
 services:   
   challenge-monitor:
-    build: ../monitor/frontend
+    build: ../../monitor/frontend
     image: challenge-monitor
     ports:
       - "8080:8080"
     mem_limit: 1024m
 
   challenge-api:
-    build: ../backend/challenge-api
+    build: ../../backend/challenge-api
     image: challenge-api
     ports:
       - "8081:8081"
+    volumes:
+      - /var/log/challenge-api:/logs
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     mem_limit: 1024m
 
   challenge-data-collector:
-    build: ../backend/challenge-data-collector
+    build: ../../backend/challenge-data-collector
     image: challenge-data-collector
     ports:
       - "8082:8082"
+    volumes:
+      - /var/log/challenge-data-collector:/logs
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     mem_limit: 1024m
 
   challenge-data-provider:
-    build: ../backend/challenge-data-provider
+    build: ../../backend/challenge-data-provider
     image: challenge-data-provider
     ports:
       - "8083:8083"
+    volumes:
+      - /var/log/challenge-data-provider:/logs
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     mem_limit: 1024m

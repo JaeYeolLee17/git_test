@@ -291,7 +291,7 @@ function DashboardMap({
     }, [showRegion, showCameras, showLinks, showTrafficLights, showAvlDatas]);
 
     useEffect(() => {
-        setSelectedIntersectionId(intersections.selectedIntersectionId);
+        setSelectedIntersectionId(intersections?.selectedIntersectionId);
     }, [intersections]);
 
     useEffect(() => {
@@ -402,7 +402,7 @@ function DashboardMap({
                     isShow: showRegion,
                 }}
                 intersections={{
-                    list: intersections.listIntersections,
+                    list: intersections?.listIntersections,
                     selected: selectedIntersectionId,
                     clickEvent: handleClickIntersection,
                     //showEdge: true,

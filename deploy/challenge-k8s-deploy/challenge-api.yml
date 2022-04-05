@@ -26,6 +26,14 @@ spec:
             memory: 512Mi
           limits:
             memory: 1Gi
+#        volumeMounts:
+#        - mountPath: /logs
+#          name: host-path
+#      volumes:
+#      - name: host-path
+#        hostPath:
+#          path: /var/log/challenge-api
+#          type: DirectoryOrCreate
 #---
 #apiVersion: v1
 #kind: Service

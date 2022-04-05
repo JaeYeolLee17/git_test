@@ -31,9 +31,9 @@ function App() {
         <div>
             <Routes>
                 <Route path='*' element={<NotFound />} />
-                <Route path='/' element={<Navigate to='/login' />} />
+                <Route path='/' element={<Navigate to={Common.PAGE_LOGIN} />} />
 
-                <Route path='/login' element={<Login />}></Route>
+                <Route path={Common.PAGE_LOGIN} element={<Login />}></Route>
                 <Route
                     path={Common.PAGE_DASHBOARD}
                     element={

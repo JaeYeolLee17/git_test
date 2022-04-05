@@ -12,11 +12,11 @@ import * as Utils from "../utils/utils";
 
 import { useAsyncAxios } from "../utils/customHooks";
 
-import "../assets/font/font.icon.css"
-import styles from "./Login.module.css"
-import loginIcon from "../assets/images/login/login_ico.png"
-import daeguLogo from "../assets/images/login/logo_daegu.png"
-import emgLogo from "../assets/images/login/logo_emg.png"
+import "../assets/font/font.icon.css";
+import styles from "./Login.module.css";
+import loginIcon from "../assets/images/login/login_ico.png";
+import daeguLogo from "../assets/images/login/logo_daegu.png";
+import emgLogo from "../assets/images/login/logo_emg.png";
 
 const Login = () => {
     const dispatch = useAuthDispatch();
@@ -88,46 +88,46 @@ const Login = () => {
             <section className={styles.left}>
                 <div className={styles.appNameWrapper}>
                     <div className={styles.appName}>
-                        대구광역시 <br/>
+                        대구광역시 <br />
                         AI 스마트교통관제플랫폼
                     </div>
                 </div>
                 <div className={styles.logos}>
-                    <img src={daeguLogo} alt="daegu"/>
-                    <img src={emgLogo} alt="emg"/>
+                    <img src={daeguLogo} alt='daegu' />
+                    <img src={emgLogo} alt='emg' />
                 </div>
             </section>
 
             <section className={styles.right}>
                 <div className={styles.loginCard}>
-                    <img src={loginIcon} alt="login-icon" />
+                    <img src={loginIcon} alt='login-icon' />
                     <h1>로그인하기</h1>
                     <p>등록된 아이디ㆍ비밀번호를 입력하여 로그인해 주세요.</p>
                     <form onSubmit={handleSubmit}>
                         <div className={styles.formGroup}>
-                        <label htmlFor='username'>아이디</label>
-                        <input
-                            type='text'
-                            id='username'
-                            ref={userRef}
-                            autoComplete='off'
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
-                            placeholder="아이디를 입력해주세요."
-                            required
-                        />
+                            <label htmlFor='username'>아이디</label>
+                            <input
+                                type='text'
+                                id='username'
+                                ref={userRef}
+                                autoComplete='off'
+                                onChange={(e) => setUser(e.target.value)}
+                                value={user}
+                                placeholder='아이디를 입력해주세요.'
+                                required
+                            />
                         </div>
 
                         <div className={styles.formGroup}>
-                        <label htmlFor='password'>비밀번호</label>
-                        <input
-                            type='password'
-                            id='password'
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            placeholder="비밀번호를 입력해주세요."
-                            required
-                        />
+                            <label htmlFor='password'>비밀번호</label>
+                            <input
+                                type='password'
+                                id='password'
+                                onChange={(e) => setPwd(e.target.value)}
+                                value={pwd}
+                                placeholder='비밀번호를 입력해주세요.'
+                                required
+                            />
                         </div>
                         <button className={styles.loginBtn}>로그인</button>
                     </form>

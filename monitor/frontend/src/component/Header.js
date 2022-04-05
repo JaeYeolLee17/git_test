@@ -1,11 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthDispatch } from "../provider/AuthProvider";
 
 const Header = () => {
     const navigate = useNavigate();
+    const dispatch = useAuthDispatch();
 
     const handleLogout = () => {
-        localStorage.removeItem("currentUser");
+        //localStorage.removeItem("currentUser");
+        dispatch({ type: "LOGOUT" });
         navigate("/login");
     };
 

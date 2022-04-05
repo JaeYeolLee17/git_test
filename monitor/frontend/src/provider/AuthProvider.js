@@ -49,12 +49,14 @@ export const initialState = {
 export const AuthReducer = (initialState, action) => {
     switch (action.type) {
         case "LOGIN_SUCCESS":
+            localStorage.setItem("currentUser", JSON.stringify(action.payload));
             return {
                 ...initialState,
                 user: action.payload.user,
                 token: action.payload.token,
             };
         case "LOGOUT":
+            localStorage.removeItem("currentUser");
             return {
                 ...initialState,
                 user: null,
@@ -62,6 +64,7 @@ export const AuthReducer = (initialState, action) => {
             };
 
         case "LOGIN_ERROR":
+            localStorage.removeItem("currentUser");
             return {
                 ...initialState,
                 errorMessage: action.error,

@@ -1,3 +1,13 @@
-# prod
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.0.5:5432/testdb
+    username: postgres
+    password: postgres
 
-  
+logging:
+  level:
+    root: INFO
+    web: INFO
+    com.e4motion: DEBUG
+    org.springframework.security: INFO
+    org.springframework.web.cors: INFO

@@ -47,7 +47,7 @@ const Login = () => {
     useEffect(() => {
         if (resultLogin === null) return;
 
-        console.log(JSON.stringify(resultLogin));
+        //console.log(JSON.stringify(resultLogin));
         dispatch({ type: "LOGIN_SUCCESS", payload: resultLogin });
 
         // JWT

@@ -8,6 +8,8 @@ import com.e4motion.challenge.api.service.RegionService;
 import com.e4motion.challenge.common.exception.customexception.RegionDuplicationException;
 import com.e4motion.challenge.common.exception.customexception.RegionNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class RegionServiceImpl implements RegionService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final RegionRepository regionRepository;
     private final RegionMapper regionMapper;
@@ -31,7 +35,7 @@ public class RegionServiceImpl implements RegionService {
         Region region = Region.builder()
                 .regionId(regionDto.getRegionId())
                 .regionName(regionDto.getRegionName())
-                //.gps(regionDto.getGps()) TODO::how change type ??
+                .gps(regionMapper.toGps(regionDto.getGps()))
                 .build();
 
         return regionMapper.toRegionDto(regionRepository.save(region));
@@ -46,9 +50,9 @@ public class RegionServiceImpl implements RegionService {
                         region.setRegionName(regionDto.getRegionName());
                     }
 
-                    //TODO::how change type ??
+                    //TODO: gps update ??
 //                    if (regionDto.getGps() != null) {
-//                        region.setGps(regionDto.getGps());
+//                        region.setGps(regionMapper.toGps(regionDto.getGps()));
 //                    }
 
                     return regionMapper.toRegionDto(regionRepository.save(region));

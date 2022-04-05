@@ -659,3 +659,18 @@ export const utilConvertChartSeriesPeriod = (dataStat) => {
         maxQtsrluData,
     };
 };
+
+export const getCurrentDateTime = () => {  
+    const now = new Date();
+    const year = now.getFullYear();
+    const month= now.getMonth() + 1;
+    const date = now.getDate();
+    const hour = now.getHours();		 
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    
+    var today = year + "-" + (month < 10 ? "0" + month : month) + "-" + (date < 10 ? "0" + date : date);		
+    var time = (hour < 12 ? "오전" : "오후") + " " + (hour < 10 ? (((hour+11)%12)+1) : ((hour+11)%12)+1 ) + ":" + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    
+    return {"date" : today, "time" : time};
+}

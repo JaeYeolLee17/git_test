@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.service;
 
 import com.e4motion.challenge.api.dto.CameraDto;
+import com.e4motion.challenge.api.dto.RoadDto;
 
 import java.util.List;
 

@@ -6,6 +6,8 @@ import com.e4motion.challenge.api.service.IntersectionService;
 import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,9 @@ import javax.validation.Valid;
 @RequestMapping(path = "v1")
 public class IntersectionController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
     private final IntersectionService intersectionService;
 
 
@@ -24,6 +29,7 @@ public class IntersectionController {
     @PostMapping("/intersection")
     public Response create(@Valid @RequestBody IntersectionDto intersectionDto) throws Exception {
 
+        logger.debug("intersectionDto : " + intersectionDto);
         return new Response("intersection", intersectionService.create(intersectionDto));
     }
 

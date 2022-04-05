@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Header from "../component/Header";
+import HeaderContent from "../component/HeaderContent";
 import Menu from "../component/Menu";
 import SelectorRegion from "../component/SelectorRegion";
 import SelectorIntersection from "../component/SelectorIntersection";
@@ -26,7 +26,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            <Header />
+            <HeaderContent />
             <Menu />
 
             <SelectorRegion

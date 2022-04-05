@@ -1,15 +1,11 @@
 package com.e4motion.challenge.api.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
@@ -26,18 +22,20 @@ public class Camera {
 
 	@Column(name = "password", length = 256, nullable = false)
 	private String password;
-	
-	@Column(name = "intersection_id", length = 10)
-	private String intersectionId;
 
-	@Column(name = "lat")
-	private double lat;
+	@ManyToOne
+	@JoinColumn(name = "intersection_id")
+	private Intersection intersection;
 
-	@Column(name = "lng")
-	private double lng;
+	@ManyToOne
+	@JoinColumn(name = "direction_id")
+	private Intersection direction;
 
-	@Column(name = "direction", length = 10)
-	private String direction;
+	@Column(name = "latitude")
+	private double latitude;
+
+	@Column(name = "longitude")
+	private double longitude;
 
 	@Column(name = "rtsp_url", length = 128)
 	private String rtspUrl;
@@ -80,5 +78,9 @@ public class Camera {
 
    	@Column(name = "settings_updated")
    	private boolean settingsUpdated;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "camera_id")
+	private Road road;
 
 }

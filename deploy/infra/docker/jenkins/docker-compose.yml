@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  jenkins:
+    build: .
+    image: jenkins-docker-group:lts-jdk11
+    ports:
+      - 8090:8080
+      - 50000:50000
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /bin/docker:/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    mem_limit: 2048m
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
+    external: true

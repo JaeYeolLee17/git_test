@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,8 +23,10 @@ public class Region {
     @Column(name = "region_name", length = 20)
     private String regionName;
 
-    @Column(name = "gps")
-    @ElementCollection(targetClass=Point.class)
-    private List<Point> gps;
+    @OneToMany(mappedBy = "region")
+    private List<Intersection> intersections;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "region_id")
+    private List<RegionGps> gps;
 }

@@ -1,14 +1,13 @@
 package com.e4motion.challenge.api.dto;
 
 
-import com.e4motion.challenge.common.domain.AuthorityName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.geo.Point;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Data
@@ -27,23 +26,25 @@ public class CameraDto {
 
     private IntersectionDto direction;
 
-    private GpsDto gps;
+    private Double latitude;
 
-    private RoadDto road;
+    private Double longitude;
 
     private String rtspUrl;
+
+    private String serverUrl;
+
+    private Integer collectCycle;
 
     private String rtspId;
 
     private String rtspPassword;
 
-    private String serverUrl;
+    private Integer sendCycle;
 
     private Integer distance;
 
-    private Integer sendCycle;
-
-    private Integer collectCycle;
+    private Timestamp lastDataTime;
 
     private Integer smallWidth;
 
@@ -55,7 +56,7 @@ public class CameraDto {
 
     private Integer degree;
 
-    private Timestamp lastDataTime;
-
     private boolean settingsUpdated;
+
+    private RoadDto road;
 }

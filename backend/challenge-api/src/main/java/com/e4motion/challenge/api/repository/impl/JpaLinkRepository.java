@@ -11,10 +11,8 @@ import java.util.Optional;
 public interface JpaLinkRepository extends JpaRepository<Link, String>, LinkRepository {
 
     @Transactional(readOnly = true)
-    @EntityGraph(attributePaths = "authorities")
     Optional<Link> findByLinkId(String linkId);
 
     @Transactional
-    @EntityGraph(attributePaths = "authorities")
     void deleteByLinkId(String linkId);
 }

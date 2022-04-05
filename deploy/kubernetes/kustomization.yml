@@ -1,5 +1,0 @@
-resources:
-- challenge-monitor.yml
-- challenge-api.yml
-- challenge-data-collector.yml
-- challenge-data-provider.yml

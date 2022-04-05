@@ -3,6 +3,7 @@ package com.e4motion.challenge.api.service.impl;
 import com.e4motion.challenge.api.domain.Camera;
 import com.e4motion.challenge.api.dto.CameraDto;
 import com.e4motion.challenge.api.mapper.CameraMapper;
+import com.e4motion.challenge.api.mapper.IntersectionMapper;
 import com.e4motion.challenge.api.repository.CameraRepository;
 import com.e4motion.challenge.api.service.CameraService;
 import com.e4motion.challenge.common.exception.customexception.CameraDuplicateException;
@@ -21,6 +22,7 @@ public class CameraServiceImpl implements CameraService {
     private final CameraRepository cameraRepository;
     private final PasswordEncoder passwordEncoder;
     private final CameraMapper cameraMapper;
+    private final IntersectionMapper intersectionMapper;
 
     @Transactional
     public CameraDto create(CameraDto cameraDto) {
@@ -32,25 +34,26 @@ public class CameraServiceImpl implements CameraService {
 
         Camera camera = Camera.builder()
                 .cameraId(cameraDto.getCameraId())
-                .intersectionId(cameraDto.getIntersection().getIntersectionId())
-                .lat(cameraDto.getGps().getLat())
-                .lng(cameraDto.getGps().getLng())
-                .direction(cameraDto.getDirection().getIntersectionId())
+                .password(passwordEncoder.encode(cameraDto.getPassword()))
+                .intersection(intersectionMapper.toIntersection(cameraDto.getIntersection()))
+                .direction(intersectionMapper.toIntersection(cameraDto.getDirection()))
+                .latitude(cameraDto.getLatitude())
+                .longitude(cameraDto.getLongitude())
                 .rtspUrl(cameraDto.getRtspUrl())
                 .serverUrl(cameraDto.getServerUrl())
                 .collectCycle(cameraDto.getCollectCycle())
-                .password(passwordEncoder.encode(cameraDto.getPassword()))
                 .rtspId(cameraDto.getRtspId())
                 .rtspPassword(passwordEncoder.encode(cameraDto.getRtspPassword()))
                 .sendCycle(cameraDto.getSendCycle())
                 .distance(cameraDto.getDistance())
-                .settingsUpdated(cameraDto.isSettingsUpdated())
                 .lastDataTime(cameraDto.getLastDataTime())
                 .smallWidth(cameraDto.getSmallWidth())
                 .smallHeight(cameraDto.getSmallHeight())
                 .largeWidth(cameraDto.getLargeWidth())
                 .largeHeight(cameraDto.getLargeHeight())
                 .degree(cameraDto.getDegree())
+                .settingsUpdated(cameraDto.isSettingsUpdated())
+                .road(cameraMapper.toRoad(cameraDto.getRoad()))
                 .build();
 
         return cameraMapper.toCameraDto(cameraRepository.save(camera));
@@ -63,20 +66,20 @@ public class CameraServiceImpl implements CameraService {
                 .map(camera -> {
                     if (cameraDto.getIntersection() != null &&
                             cameraDto.getIntersection().getIntersectionId() != null) {
-                        camera.setIntersectionId(cameraDto.getIntersection().getIntersectionId());
-                    }
-
-                    if (cameraDto.getGps() != null && cameraDto.getGps().getLat() != 0) {
-                        camera.setLat(cameraDto.getGps().getLat());
-                    }
-
-                    if (cameraDto.getGps() != null && cameraDto.getGps().getLng() != 0) {
-                        camera.setLng(cameraDto.getGps().getLng());
+                        camera.setIntersection(intersectionMapper.toIntersection(cameraDto.getIntersection()));
                     }
 
                     if (cameraDto.getDirection() != null &&
                             cameraDto.getDirection().getIntersectionId() != null) {
-                        camera.setDirection(cameraDto.getDirection().getIntersectionId());
+                        camera.setDirection(intersectionMapper.toIntersection(cameraDto.getDirection()));
+                    }
+
+                    if (cameraDto.getLatitude() != null) {
+                        camera.setLatitude(cameraDto.getLatitude());
+                    }
+
+                    if (cameraDto.getLongitude() != null) {
+                        camera.setLongitude(cameraDto.getLongitude());
                     }
 
                     if (cameraDto.getRtspUrl() != null) {
@@ -89,10 +92,6 @@ public class CameraServiceImpl implements CameraService {
 
                     if (cameraDto.getCollectCycle() != null) {
                         camera.setCollectCycle(cameraDto.getCollectCycle());
-                    }
-
-                    if (cameraDto.getPassword() != null) {
-                        camera.setPassword(passwordEncoder.encode(camera.getPassword()));
                     }
 
                     if (cameraDto.getRtspId() != null) {
@@ -110,8 +109,6 @@ public class CameraServiceImpl implements CameraService {
                     if (cameraDto.getDistance() != null) {
                         camera.setDistance(cameraDto.getDistance());
                     }
-
-                    camera.setSettingsUpdated(true);
 
                     if (cameraDto.getLastDataTime() != null) {
                         camera.setLastDataTime(cameraDto.getLastDataTime());
@@ -137,7 +134,9 @@ public class CameraServiceImpl implements CameraService {
                         camera.setDegree(cameraDto.getDegree());
                     }
 
-                    //TODO::cameraDto - road ??
+                    camera.setSettingsUpdated(true);
+
+                    //TODO : update road ??
 
                     return cameraMapper.toCameraDto(cameraRepository.save(camera));
                 }).orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID));

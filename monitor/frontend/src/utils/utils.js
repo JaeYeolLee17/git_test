@@ -470,7 +470,7 @@ export const utilConvertChartSeriesCamera = (dataCamera, listCamera) => {
     };
 };
 
-const to2Digit = (number) => {
+export const to2Digit = (number) => {
     return ("0" + number.toFixed(0)).slice(-2);
 };
 

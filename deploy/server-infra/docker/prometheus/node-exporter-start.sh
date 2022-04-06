@@ -1,10 +1,12 @@
 #!/bin/bash
 
-if [ ! -d "node_exporter-1.3.1.linux-amd64" ]; then
-  wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
-  tar xvfz node_exporter-*.*-amd64.tar.gz
-  rm -rf node_exporter-*.*-amd64.tar.gz
+FILENAME=node_exporter-1.3.1.linux-amd64
+
+if [ ! -d "$FILENAME" ]; then
+  wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/$FILENAME.tar.gz
+  tar xvfz $FILENAME.tar.gz
+  rm -rf $FILENAME.tar.gz
 fi
 
-cd node_exporter-*.*-amd64
+cd $FILENAME
 ./node_exporter

@@ -663,7 +663,7 @@ agent:
     type: Nfs
     readOnly: false
     serverAddress: "192.168.0.241"
-    serverPath: /nfs-share/jenkins-home
+    serverPath: /nfs-share/jenkins
   ## DynamicPVC example
   # type: DynamicPVC
   # configMapName: myconfigmap

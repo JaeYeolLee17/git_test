@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="/nfs-share/jenkins-home"
+DIR="/nfs-share/jenkins"
 if [ ! -d "$DIR" ]; then
   sudo mkdir $DIR 
 fi
@@ -9,5 +9,5 @@ if [ ! -f "/etc/exports" ]; then
   sudo apt install -y nfs-kernel-server nfs-common
 fi
 
-sudo bash -c 'echo "/nfs-share/jenkins-home 192.168.0.0/24(rw,sync,no_subtree_check)" >> /etc/exports'
+sudo bash -c 'echo "/nfs-share/jenkins 192.168.0.0/24(rw,sync,no_subtree_check)" >> /etc/exports'
 sudo systemctl restart nfs-server.service

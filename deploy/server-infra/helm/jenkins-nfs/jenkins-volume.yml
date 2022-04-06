@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: 192.168.0.241
-    path: /nfs-share/jenkins-home
+    path: /nfs-share/jenkins
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

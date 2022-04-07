@@ -36,7 +36,7 @@
 ** 위 설정 전 먼저 준비할 사항.
 
 1. nfs 공유 dir 설정.
-   infra > nfs 참조.
+   server-infra > k8s-host > nfs 참조.
 
 -----------------------
 ** 최초 Jenkins 구동 후 plugin 모두 update 필수!!

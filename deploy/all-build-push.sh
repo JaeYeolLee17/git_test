@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TAG=1.0.0
+export TAG=0.0.1
 
 cd deploy
 ./challenge-build.sh

@@ -9,4 +9,5 @@ if [ ! -d "$FILENAME" ]; then
 fi
 
 cd $FILENAME
-./node_exporter
+nohup ./node_exporter 1>/dev/null 2>&1 &
+

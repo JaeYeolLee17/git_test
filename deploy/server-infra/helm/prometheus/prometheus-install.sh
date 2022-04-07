@@ -9,4 +9,4 @@ kubectl apply -f prometheus-alertmanager-volume.yml
 
 helm install prometheus prometheus-community/prometheus \
   -n prometheus \
-  -f values.yaml
+  -f prometheus-values.yml

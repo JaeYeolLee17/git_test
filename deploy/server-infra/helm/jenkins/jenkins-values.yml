@@ -122,7 +122,7 @@ controller:
     runAsGroup: 1000
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
-  servicePort: 8090
+  servicePort: 80
   targetPort: 8080
   # For minikube, set this to NodePort, elsewhere use LoadBalancer
   # Use ClusterIP if your setup includes ingress controller

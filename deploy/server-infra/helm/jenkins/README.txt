@@ -16,6 +16,7 @@
    -- workspace volume 은 agent 가 쓰는 영역.
 
 5. Service type 을 LoadBalancer 로 변경
+   servicePort 80 으로 변경
 
 6. adminPassword 설정
 

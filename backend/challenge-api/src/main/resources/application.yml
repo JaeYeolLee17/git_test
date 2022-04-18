@@ -11,7 +11,7 @@ spring:
   sql:
     init:
       platform: postgresql
-      mode: never                  # never, always
+      mode: always                  # never, always
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  jenkins:
+    build: .
+    image: jenkins
+    ports:
+      - 8090:8080
+      - 50000:50000
+    volumes:
+      - jenkins:/var/jenkins_home
+      - /bin/docker:/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    mem_limit: 2048m
+    restart: unless-stopped
+
+volumes:
+  jenkins:

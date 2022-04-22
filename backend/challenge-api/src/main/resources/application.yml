@@ -12,6 +12,7 @@ spring:
     init:
       platform: postgresql
       mode: never                  # never, always
+      encoding: UTF-8
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

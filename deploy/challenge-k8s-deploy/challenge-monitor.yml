@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: challenge-monitor
-        image: 192.168.0.241:5000/challenge-monitor:0.0.1
+        image: 192.168.0.240:5000/challenge-monitor:0.0.1
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

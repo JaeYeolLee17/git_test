@@ -39,6 +39,7 @@ metadata:
   name: challenge-monitor
 spec:
   type: LoadBalancer
+  loadBalancerIP: 192.168.0.250
   selector:
     app: challenge-monitor
   ports:

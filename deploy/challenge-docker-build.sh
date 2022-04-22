@@ -1,11 +1,15 @@
 #!/bin/bash
 
 if [ -z "$TAG" ]; then
-  export TAG=latest
+  export TAG=0.0.1
 fi
-echo "TAG=$TAG"
 
-export REGISTRY=192.168.0.241:5000
+if [ -z "$REGISTRY" ]; then
+  export REGISTRY=192.168.0.240:5000
+fi
+
+echo "TAG=$TAG"
+echo "REGISTRY=$REGISTRY"
 
 # build docker image 
 docker build -t $REGISTRY/challenge-api:$TAG ../backend/challenge-api

@@ -7,11 +7,11 @@ resources:
 - challenge-data-provider.yml
 
 images:
-- name: 192.168.0.241:5000/challenge-api
+- name: 192.168.0.240:5000/challenge-api
   newTag: 0.0.1
-- name: 192.168.0.241:5000/challenge-data-collector
+- name: 192.168.0.240:5000/challenge-data-collector
   newTag: 0.0.1
-- name: 192.168.0.241:5000/challenge-data-provider
+- name: 192.168.0.240:5000/challenge-data-provider
   newTag: 0.0.1
-- name: 192.168.0.241:5000/challenge-monitor
+- name: 192.168.0.240:5000/challenge-monitor
   newTag: 0.0.1

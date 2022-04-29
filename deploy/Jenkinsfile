@@ -66,4 +66,23 @@ pipeline {
       }
     }
   }
-}    
+  post {
+    failure {
+        emailext subject: '$DEFAULT_SUBJECT',
+                 body: '$DEFAULT_CONTENT',
+                 to: '$DEFAULT_RECIPIENTS',
+                 attachLog: true
+    }
+    success {
+        emailext subject: '$DEFAULT_SUBJECT',
+                 body: '$DEFAULT_CONTENT',
+                 to: '$DEFAULT_RECIPIENTS'
+    }
+    unstable {
+        emailext subject: '$DEFAULT_SUBJECT',
+                 body: '$DEFAULT_CONTENT',
+                 to: '$DEFAULT_RECIPIENTS'
+                 attachLog: true
+    }
+  }
+}

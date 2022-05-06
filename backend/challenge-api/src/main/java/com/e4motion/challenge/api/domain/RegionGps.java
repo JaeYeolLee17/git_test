@@ -4,8 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
-
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

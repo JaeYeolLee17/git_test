@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.api.dto.UserDto;
+import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
@@ -98,7 +99,9 @@ public class UserControllerTest {
 						}
 	    			} else {
 	    				assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-						assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						if (expectedMessage != null) {
+							assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						}
 	    			}
 				});
 	}
@@ -151,7 +154,9 @@ public class UserControllerTest {
 	    				assertThat(body.get("users")).isNotNull();
 	    			} else {
 	    				assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-						assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						if (expectedMessage != null) {
+							assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						}
 	    			}
 				});
 	}
@@ -208,53 +213,68 @@ public class UserControllerTest {
 	    				assertThat(body.get("user")).isNotNull();
 	    			} else {
 	    				assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-						assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						if (expectedMessage != null) {
+							assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						}
 	    			}
 				});
 	}
 	
 	@Test
 	public void updateWithoutRole() throws Exception {
-		assertUpdate(getUserDto2(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+		UserDto userDto = getUserDto2();
+		UserUpdateDto userUpdateDto = getUserUpdateDto();
+
+		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 	}
 	
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void updateWithAdminRole() throws Exception {
 		UserDto userDto = getUserDto2();
-		doReturn(userDto).when(userService).update(userDto.getUserId(), userDto);
+		UserUpdateDto userUpdateDto = getUserUpdateDto();
 
-		assertUpdate(userDto, HttpStatus.OK, Response.OK, null, null);
+		doReturn(userDto).when(userService).update(userDto.getUserId(), userUpdateDto);
+
+		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void updateWithAdminRoleWithNonexistentUser() throws Exception {	// update nonexistent user
 		UserDto userDto = getUserDto2();
-		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userService).update(userDto.getUserId(), userDto);
+		UserUpdateDto userUpdateDto = getUserUpdateDto();
 
-		assertUpdate(userDto, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userService).update(userDto.getUserId(), userUpdateDto);
+
+		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
 	}
 
 	@Test
 	@WithMockUser(roles = "MANAGER")
 	public void updateWithManagerRole() throws Exception {
-		assertUpdate(getUserDto2(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+		UserDto userDto = getUserDto2();
+		UserUpdateDto userUpdateDto = getUserUpdateDto();
+
+		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 	
 	@Test
 	@WithMockUser(roles = "USER")
 	public void updateWithUserRole() throws Exception {
-		assertUpdate(getUserDto2(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+		UserDto userDto = getUserDto2();
+		UserUpdateDto userUpdateDto = getUserUpdateDto();
+
+		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 	
-	private void assertUpdate(UserDto userDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+	private void assertUpdate(String userId, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-		String uri = "/v1/user/" + userDto.getUserId();
-	    
+		String uri = "/v1/user/" + userId;
+
 	    mockMvc.perform(MockMvcRequestBuilders.put(uri)
 						.contentType(MediaType.APPLICATION_JSON)
-						.content(JsonHelper.toJson(userDto)))
+						.content(JsonHelper.toJson(userUpdateDto)))
 				.andExpect(result -> {
 					MockHttpServletResponse response = result.getResponse();
 	    			assertThat(response.getStatus()).isEqualTo(expectedStatus.value());
@@ -265,7 +285,9 @@ public class UserControllerTest {
 	    				assertThat(body.get("user")).isNotNull();
 	    			} else {
 	    				assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-						assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						if (expectedMessage != null) {
+							assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						}
 	    			}
 				});
 	}
@@ -311,7 +333,9 @@ public class UserControllerTest {
 	    			assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
 	    			if (!expectedResult.equals(Response.OK)) {
 	    				assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-						assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						if (expectedMessage != null) {
+							assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						}
 	    			}
 	    });
 	}
@@ -321,7 +345,7 @@ public class UserControllerTest {
 				.userId("user1")
 				.password("password1")
 				.username("username1")
-				.email("user1@email...")
+				.email("user1@email.com")
 				.phone("01022223333")
 				.authority(AuthorityName.ROLE_USER)
 				.build();
@@ -332,9 +356,19 @@ public class UserControllerTest {
 				.userId("user2")
 				.password("password2")
 				.username("username2")
-				.email("user2@email...")
+				.email("user2@email.com")
 				.phone("01044445555")
 				.authority(AuthorityName.ROLE_USER)
+				.build();
+	}
+
+	private UserUpdateDto getUserUpdateDto() {
+		return UserUpdateDto.builder()
+				.password("password-updated")
+				.username("username-updated")
+				.email("email-updated@email.com")
+				.phone("01088889999")
+				.authority(AuthorityName.ROLE_ADMIN)
 				.build();
 	}
 }

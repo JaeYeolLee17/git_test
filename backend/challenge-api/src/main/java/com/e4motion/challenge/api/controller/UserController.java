@@ -1,5 +1,6 @@
 package com.e4motion.challenge.api.controller;
 
+import com.e4motion.challenge.api.dto.UserUpdateDto;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +37,9 @@ public class UserController {
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/user/{userId}")
-    public Response update(@PathVariable String userId, @RequestBody UserDto userDto) throws Exception {
+    public Response update(@PathVariable String userId, @Valid @RequestBody UserUpdateDto userUpdateDto) throws Exception {
 		
-		return new Response("user", userService.update(userId, userDto));
+		return new Response("user", userService.update(userId, userUpdateDto));
     }
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")

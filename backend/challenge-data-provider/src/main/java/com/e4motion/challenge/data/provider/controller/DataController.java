@@ -1,11 +1,12 @@
 package com.e4motion.challenge.data.provider.controller;
 
 import com.e4motion.challenge.common.response.Response;
-import com.e4motion.challenge.common.utils.RegExp;
+import com.e4motion.challenge.common.utils.DateTimeHelper;
 import com.e4motion.challenge.data.provider.dto.DataListDto;
 import com.e4motion.challenge.data.provider.service.DataService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 
 @Tag(name = "2. Data")
 @RequiredArgsConstructor
+@Validated
 @RestController
 @RequestMapping(path = "v1")
-@Validated
 public class DataController {
 
     private final static int MAX_LIMIT = 100000;
@@ -31,8 +31,8 @@ public class DataController {
 
     @PreAuthorize("hasRole('ROLE_DATA')")
     @GetMapping("/data")
-    public Response query(@RequestParam(value = "startTime", required = true) @Pattern(regexp = RegExp.dateTime) String startTime,
-                          @RequestParam(value = "endTime", required = false) @Pattern(regexp = RegExp.dateTime) String endTime,
+    public Response query(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) String startTime,
+                          @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) String endTime,
                           @RequestParam(value = "limit", required = true) @Min(1) @Max(MAX_LIMIT) Integer limit,
                           @RequestParam(value = "filterBy", required = false) String filterBy,
                           @RequestParam(value = "filterId", required = false) String filterId) {

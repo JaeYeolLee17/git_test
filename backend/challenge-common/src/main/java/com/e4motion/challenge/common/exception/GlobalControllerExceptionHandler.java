@@ -3,7 +3,6 @@ package com.e4motion.challenge.common.exception;
 import com.e4motion.challenge.common.exception.customexception.*;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.response.ResponseFail;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
-
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -39,17 +37,17 @@ public class GlobalControllerExceptionHandler {
 
 		return new ResponseFail(ex.getCode(), ex.getMessage());
 	}
-	
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	@ExceptionHandler(value = CameraNotFoundException.class)
-	public Response handleCameraNotFoundException(CameraNotFoundException ex) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
-	}
-	
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(value = UserDuplicateException.class)
 	public Response handleUserDuplicateException(UserDuplicateException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(value = CameraNotFoundException.class)
+	public Response handleCameraNotFoundException(CameraNotFoundException ex) {
 
 		return new ResponseFail(ex.getCode(), ex.getMessage());
 	}
@@ -76,6 +74,6 @@ public class GlobalControllerExceptionHandler {
 			ConstraintViolationException.class})					// Exception by @Validated in request param
 	public Response handleParamsException(Exception ex) {
 
-		return new ResponseFail(InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+		return new ResponseFail(InvalidParamException.CODE, ex.getMessage());
 	}
 }

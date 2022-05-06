@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.e4motion.challenge.api.dto.UserUpdateDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,29 +50,29 @@ public class UserServiceImpl implements UserService {
     }
     
     @Transactional
-    public UserDto update(String userId, UserDto userDto) {
+    public UserDto update(String userId, UserUpdateDto userUpdateDto) {
 
     	return userRepository.findByUserId(userId)
 				.map(user -> {
-					if (userDto.getPassword() != null) {
-						user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+					if (userUpdateDto.getPassword() != null) {
+						user.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
 					}
 
-					if (userDto.getUsername() != null) {
-						user.setUsername(userDto.getUsername());
+					if (userUpdateDto.getUsername() != null) {
+						user.setUsername(userUpdateDto.getUsername());
 					}
 
-					if (userDto.getEmail() != null) {
-						user.setEmail(userDto.getEmail());
+					if (userUpdateDto.getEmail() != null) {
+						user.setEmail(userUpdateDto.getEmail());
 					}
 
-					if (userDto.getPhone() != null) {
-						user.setPhone(userDto.getPhone());
+					if (userUpdateDto.getPhone() != null) {
+						user.setPhone(userUpdateDto.getPhone());
 					}
 
-					if (userDto.getAuthority() != null) {
+					if (userUpdateDto.getAuthority() != null) {
 						Set<Authority> authorities = new HashSet<>();	// Do not use Collections.singleton when save for update.
-						authorities.add(new Authority(userDto.getAuthority()));
+						authorities.add(new Authority(userUpdateDto.getAuthority()));
 						user.setAuthorities(authorities);
 					}
 

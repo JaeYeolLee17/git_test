@@ -116,7 +116,9 @@ public class AuthControllerTest {
 	    				assertThat(body.get("token")).isNotNull();
 	    			} else {
 	    				assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-						assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						if (expectedMessage != null) {
+							assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						}
 	    			}
 				});
 	}
@@ -125,9 +127,9 @@ public class AuthControllerTest {
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
 		UserDetails userDetails = new CustomUser(userId, 
 				passwordEncoder.encode(password),
-				"username",
-				"email",
-				"phone",
+				null,
+				null,
+				null,
 				grantedAuthorities);
 		return userDetails;
 	}

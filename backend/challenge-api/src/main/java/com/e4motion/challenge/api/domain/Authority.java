@@ -9,11 +9,11 @@ import javax.persistence.Table;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

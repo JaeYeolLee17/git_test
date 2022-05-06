@@ -59,10 +59,10 @@ class LoginDtoTest {
         LoginDto loginDto = getGoodLoginDto();
 
         loginDto.setUserId(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setUserId("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setUserId(" ");
         doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
@@ -75,10 +75,10 @@ class LoginDtoTest {
         LoginDto loginDto = getGoodLoginDto();
 
         loginDto.setPassword(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setPassword("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setPassword(" ");
         doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
@@ -111,7 +111,9 @@ class LoginDtoTest {
                         assertThat(body.get("token")).isNotNull();
                     } else {
                         assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-                        assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        if (expectedMessage != null) {
+                            assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        }
                     }
                 });
     }
@@ -120,9 +122,9 @@ class LoginDtoTest {
         Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
         UserDetails userDetails = new CustomUser(userId,
                 passwordEncoder.encode(password),
-                "username",
-                "email",
-                "phone",
+                null,
+                null,
+                null,
                 grantedAuthorities);
         return userDetails;
     }

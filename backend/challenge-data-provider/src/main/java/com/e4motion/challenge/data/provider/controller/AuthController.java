@@ -1,6 +1,5 @@
 package com.e4motion.challenge.data.provider.controller;
 
-
 import java.util.Set;
 import java.util.stream.Collectors;
 

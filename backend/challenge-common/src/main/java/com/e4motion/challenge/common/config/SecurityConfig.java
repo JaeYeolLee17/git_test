@@ -105,9 +105,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080",
-                                                "http://192.168.0.17:3000", "http://192.168.0.17:8080",	// inho's
-                                                "http://192.168.0.154:3000", "http://192.168.0.154:8080")); // sujin's
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8090",
+                                                "http://192.168.0.231:3000", "http://192.168.0.231:8090", // dev challenge 01
+                                                "http://192.168.0.17:3000", "http://192.168.0.17:8090",	// inho's
+                                                "http://192.168.0.154:3000", "http://192.168.0.154:8090")); // sujin's
         config.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
         config.setAllowedHeaders(Arrays.asList(
                 "Authorization",

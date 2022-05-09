@@ -74,12 +74,10 @@ class DataControllerTest extends HBaseMockBaseTest {
         // startTime
         HashMap<String, Object> map = getGoodHashMap();
         map.remove("startTime");                // missing
-        assertQuery(map,
-                HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         map.put("startTime", "2022-4-1 12:00:00");  // mis-format
-        assertQuery(map,
-                HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // endTime
         map = getGoodHashMap();
@@ -87,26 +85,21 @@ class DataControllerTest extends HBaseMockBaseTest {
         assertQuery(map, HttpStatus.OK, Response.OK, null, null);
 
         map.put("endTime", "2022-04-01");           // mis-format
-        assertQuery(map,
-                HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // limit
         map = getGoodHashMap();
         map.remove("limit");        // missing
-        assertQuery(map,
-                HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         map.put("limit", "a");          // invalid type
-        assertQuery(map,
-                HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         map.put("limit", 0);            // out of range
-        assertQuery(map,
-                HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         map.replace("limit", 100001);   // out of range
-        assertQuery(map,
-                HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // filterBy, filterId
         map = getGoodHashMap();
@@ -202,7 +195,9 @@ class DataControllerTest extends HBaseMockBaseTest {
                         assertThat(body.get("nextTime")).isNotNull();
                     } else {
                         assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-                        assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        if (expectedMessage != null) {
+                            assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        }
                     }
                 });
     }

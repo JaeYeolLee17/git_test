@@ -60,10 +60,10 @@ class LoginDtoTest extends HBaseMockBaseTest {
         LoginDto loginDto = getGoodLoginDto();
 
         loginDto.setUserId(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setUserId("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setUserId(" ");
         doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
@@ -76,10 +76,10 @@ class LoginDtoTest extends HBaseMockBaseTest {
         LoginDto loginDto = getGoodLoginDto();
 
         loginDto.setPassword(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setPassword("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         loginDto.setPassword(" ");
         doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
@@ -112,7 +112,9 @@ class LoginDtoTest extends HBaseMockBaseTest {
                         assertThat(body.get("token")).isNotNull();
                     } else {
                         assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-                        assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        if (expectedMessage != null) {
+                            assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        }
                     }
                 });
     }

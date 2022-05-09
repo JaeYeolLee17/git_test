@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @Tag(name = "2. Data")
@@ -31,8 +32,8 @@ public class DataController {
 
     @PreAuthorize("hasRole('ROLE_DATA')")
     @GetMapping("/data")
-    public Response query(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) String startTime,
-                          @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) String endTime,
+    public Response query(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
+                          @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime endTime,
                           @RequestParam(value = "limit", required = true) @Min(1) @Max(MAX_LIMIT) Integer limit,
                           @RequestParam(value = "filterBy", required = false) String filterBy,
                           @RequestParam(value = "filterId", required = false) String filterId) {

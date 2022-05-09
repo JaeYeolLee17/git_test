@@ -56,19 +56,19 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         CameraDataDto dataDto = getGoodDataDto();
 
         dataDto.setV(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setV("");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setV(" ");
         assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
 
         dataDto.setC(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setC("");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setC(" ");
         assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
@@ -81,19 +81,19 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         CameraDataDto dataDto = getGoodDataDto();
 
         dataDto.setT(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setT("2022-04-01");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setT("2022-04-01 12:00");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setT("22-04-01 12:00:00");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setT("2022-04-01 12:00:00.500");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -103,10 +103,10 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         CameraDataDto dataDto = getGoodDataDto();
 
         dataDto.getTd().clear();    // size 0
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setTd(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -118,44 +118,44 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
 
         // St
         td.setSt(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setSt("");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setSt(" ");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setSt("2022-04-01");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setSt("2022-4-1 12:00:00");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setSt("2022-04-01 12:00:00 ");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setSt("2022-04-01 12:00:00");
         assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
 
         // Et
         td.setEt(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setEt("");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setEt(" ");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setEt("2022-04-01");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setEt("2022-4-1 12:00:00");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setEt("2022-04-01 12:00:00 ");
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -166,13 +166,13 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         TrafficDataDto td = dataDto.getTd().get(0);
 
         td.setU(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setU(new Integer[4]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setU(new Integer[6]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -183,10 +183,10 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         TrafficDataDto td = dataDto.getTd().get(0);
 
         td.getLd().clear();     // size 0
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         td.setLd(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -198,10 +198,10 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         LaneDataDto ld = td.getLd().get(0);
 
         ld.setLn(0);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setLn(11);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setLn(10);
         assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
@@ -217,53 +217,53 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
 
         // qm
         ld.setQm(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setQm(new Integer[4]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setQm(new Integer[6]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // qa
         ld.setQa(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setQa(new Float[1]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setQa(new Float[10]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // s
         ld.setS(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setS(new Integer[3]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setS(new Integer[7]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // l
         ld.setL(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setL(new Integer[2]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setL(new Integer[100]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // r
         ld.setR(null);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setR(new Integer[0]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         ld.setR(new Integer[9]);
-        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, InvalidParamException.INVALID_DATA);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     private CameraDataDto getGoodDataDto() {
@@ -319,7 +319,9 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
                         //
                     } else {
                         assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-                        assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        if (expectedMessage != null) {
+                            assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        }
                     }
                 });
     }

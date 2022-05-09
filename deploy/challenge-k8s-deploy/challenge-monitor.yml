@@ -11,27 +11,27 @@ spec:
     metadata:
       labels:
         app: challenge-monitor
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/path: /metrics
-        prometheus.io/port: "9113"
+#      annotations:
+#        prometheus.io/scrape: "true"
+#        prometheus.io/path: /metrics
+#        prometheus.io/port: "9113"
     spec:
       containers:
       - name: challenge-monitor
         image: 192.168.0.240:5000/challenge-monitor:0.0.1
         imagePullPolicy: Always
         ports:
-        - containerPort: 8080
+        - containerPort: 8090
         resources:
           requests:
             memory: 512Mi
           limits:
-            memory: 1Gi
-      - name: nginx-exporter
-        image: nginx/nginx-prometheus-exporter
-        env:
-        - name: SCRAPE_URI
-          value: http://localhost:8080/metrics
+            memory: 4Gi
+#      - name: nginx-exporter
+#        image: nginx/nginx-prometheus-exporter
+#        env:
+#        - name: SCRAPE_URI
+#          value: http://localhost:8090/metrics
 ---
 apiVersion: v1
 kind: Service
@@ -43,5 +43,5 @@ spec:
   selector:
     app: challenge-monitor
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 8090
+      targetPort: 8090

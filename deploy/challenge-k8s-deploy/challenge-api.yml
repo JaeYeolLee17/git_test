@@ -18,14 +18,14 @@ spec:
         imagePullPolicy: Always
         env:
           - name: SPRING_PROFILES_ACTIVE
-            value: "dev"
+            value: "prod"
         ports:
-        - containerPort: 8081
+        - containerPort: 8091
         resources:
           requests:
             memory: 512Mi
           limits:
-            memory: 2Gi
+            memory: 4Gi
 #        volumeMounts:
 #        - mountPath: /logs
 #          name: host-path
@@ -45,5 +45,5 @@ spec:
   selector:
     app: challenge-api
   ports:
-    - port: 8081
-      targetPort: 8081
+    - port: 8091
+      targetPort: 8091

@@ -1,8 +1,4 @@
 #!/bin/bash
 
-cd ../backend
-./gradlew clean build
-
-cd ../monitor/frontend
-npm install && npm run build:nextdev
-
+cd ../monitor/frontend && rm -rf build && npm install && npm run build:nextdev
+cd ../../backend && ./gradlew clean build

@@ -1,0 +1,74 @@
+pipeline {
+  agent any
+  environment {
+      CI = false
+  }
+  stages {
+    stage('git pull') {
+      steps {
+        git url: 'https://sjkim_emotion@bitbucket.org/emgglobal/smart-city-challenge.git', 
+            branch: 'dev', 
+            credentialsId: 'b07620dd-74f5-486d-bba7-c671cfbb3825'
+      }
+    }
+    stage ('frontend build') {
+      tools { nodejs "NodeJS16" }
+      steps {
+        sh 'cd monitor/frontend && rm -rf build && npm install && npm run build:nextdev'
+      }
+    }
+    stage ('backend build') {
+      steps {
+        sh 'cd backend && ./gradlew clean build'
+      }
+    }
+    stage('docker build and push'){
+      steps {
+        sh 'cd deploy && ./challenge-docker-build-push.sh'
+      }
+    }
+    stage('docker deploy over ssh') {
+      steps([$class: 'BapSshPromotionPublisherPlugin']) {
+        sshPublisher(
+          continueOnError: false,
+          failOnError: true,
+          publishers: [
+            sshPublisherDesc(
+              configName: 'DevChallenge01',
+              verbose: true,
+              transfers: [
+                sshTransfer(
+                    sourceFiles: 'deploy/challenge-docker-deploy/*',
+                    removePrefix: 'deploy/challenge-docker-deploy/',
+                    remoteDirectory: 'smart-city-challenge/deploy',
+                    execCommand: 'cd smart-city-challenge/deploy && chmod 755 *.sh; \
+                                  ./challenge-stop.sh; \
+                                  ./challenge-start.sh'
+                )
+              ]
+            )
+          ]
+        )
+      }
+    }
+  }
+  post {
+    failure {
+        emailext subject: '$DEFAULT_SUBJECT',
+                 body: '$DEFAULT_CONTENT',
+                 to: '$DEFAULT_RECIPIENTS',
+                 attachLog: true
+    }
+    success {
+        emailext subject: '$DEFAULT_SUBJECT',
+                 body: '$DEFAULT_CONTENT',
+                 to: '$DEFAULT_RECIPIENTS'
+    }
+    unstable {
+        emailext subject: '$DEFAULT_SUBJECT',
+                 body: '$DEFAULT_CONTENT',
+                 to: '$DEFAULT_RECIPIENTS',
+                 attachLog: true
+    }
+  }
+}

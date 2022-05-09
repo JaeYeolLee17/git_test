@@ -1,23 +1,17 @@
 package com.e4motion.challenge.api.repository;
 
-import java.util.List;
+import com.e4motion.challenge.api.domain.Camera;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
-import com.e4motion.challenge.api.domain.Camera;
-import com.e4motion.challenge.api.domain.Road;
+public interface CameraRepository extends JpaRepository<Camera, String> {
 
-public interface CameraRepository {
-
-    Camera save(Camera camera);
-
-    List<Camera> findAll();
-
-    void deleteAll();
-
-    long count();
-
+    @Transactional(readOnly = true)
     Optional<Camera> findByCameraId(String cameraId);
 
+    @Transactional
     void deleteByCameraId(String cameraId);
 
 }

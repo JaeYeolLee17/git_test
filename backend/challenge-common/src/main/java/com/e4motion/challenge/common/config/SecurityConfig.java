@@ -21,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.String.format;
 
@@ -38,6 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String apiDocsPath;
     @Value("${springdoc.swagger-ui.path}")
     private String swaggerPath;
+
+    @Value("${cors.origins}")
+    List<String> origins;
 
     public SecurityConfig(JwtTokenFilter jwtTokenFilter, 
     		JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
@@ -105,10 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8090",
-                                                "http://192.168.0.231:3000", "http://192.168.0.231:8090", // dev challenge 01
-                                                "http://192.168.0.17:3000", "http://192.168.0.17:8090",	// inho's
-                                                "http://192.168.0.154:3000", "http://192.168.0.154:8090")); // sujin's
+        config.setAllowedOrigins(origins);
         config.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
         config.setAllowedHeaders(Arrays.asList(
                 "Authorization",

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: challenge-data-collector
-        image: 192.168.0.240:5000/challenge-data-collector:0.0.1
+        image: registry.emgglobal.co.kr:9443/challenge-data-collector:0.0.1
         imagePullPolicy: Always
         env:
           - name: SPRING_PROFILES_ACTIVE

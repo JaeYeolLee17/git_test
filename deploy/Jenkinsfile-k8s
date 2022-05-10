@@ -24,7 +24,7 @@ pipeline {
     }
     stage('docker build and push'){
       steps {
-        sh './challenge-docker-build-push.sh'
+        sh 'cd deploy && ./challenge-docker-build-push.sh'
       }
     }
     stage('kubernetes deploy over ssh') {

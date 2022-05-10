@@ -25,7 +25,11 @@ jwt:
   header: Authorization
   secret: jwt secret smart city challenge
   token-validity-in-seconds: 86400
- 
+
+cors:
+  origins: >
+    http://localhost:${server.port}
+
 management:
   endpoints:
     web:
@@ -45,8 +49,8 @@ springdoc:
     operations-sorter: alpha
     disable-swagger-default-url: true
     info:
-      title: Challenge Data Provider
-      description: Rest API for Challenge Data Provider
+      title: Challenge Data Provider API
+      description: REST API for Challenge Data Provider
       version: 1.0.0
 
 logging:

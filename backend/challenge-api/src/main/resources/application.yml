@@ -25,7 +25,16 @@ jwt:
   header: Authorization
   secret: jwt secret smart city challenge
   token-validity-in-seconds: 86400
- 
+
+cors:
+  origins: >
+    http://localhost:3000,
+    http://localhost:8090,
+    http://192.168.0.231:8090,
+    http://192.168.0.250:8090,
+    http://192.168.0.17:3000,
+    http://192.168.0.17:8090
+
 management:
   endpoints:
     web:
@@ -46,7 +55,7 @@ springdoc:
     disable-swagger-default-url: true
     info:
       title: Challenge API
-      description: Rest API for Challenge API
+      description: REST API for Challenge
       version: 1.0.0
 
 logging:

@@ -1,6 +1,7 @@
-namespace: default
+namespace: challenge
 
 resources:
+- namespace.yml
 - challenge-monitor.yml
 - challenge-api.yml
 - challenge-data-collector.yml

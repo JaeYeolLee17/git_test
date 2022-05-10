@@ -38,11 +38,12 @@ pipeline {
               verbose: true,
               transfers: [
                 sshTransfer(
-                    sourceFiles: 'deploy/challenge-k8s-deploy/**',
+                    sourceFiles: 'deploy/challenge-k8s-deploy/*',
                     removePrefix: 'deploy/challenge-k8s-deploy/',
                     remoteDirectory: 'smart-city-challenge/deploy',
-                    execCommand: 'kubectl delete -k smart-city-challenge/deploy; \
-                                  kubectl apply -k smart-city-challenge/deploy'
+                    execCommand: 'cd smart-city-challenge/deploy && chmod 755 *.sh; \
+                                  ./challenge-stop.sh; \
+                                  ./challenge-start.sh;'
                 )
               ]
             )

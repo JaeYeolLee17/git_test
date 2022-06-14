@@ -9,17 +9,16 @@ import DashboardMap from "../component/DashboardMap";
 import { useAuthState } from "../provider/AuthProvider";
 
 describe("dashboard page", () => {
-    test("sample", () => {
-        const history = createMemoryHistory();
-        history.push(Common.PAGE_LOGIN);
-        render(
-            <Router location={history.location} navigator={history}>
-                <DashboardMap />
-            </Router>
-        );
-
-        //screen.debug();
-    });
+    // test("sample", () => {
+    //     const history = createMemoryHistory();
+    //     history.push(Common.PAGE_LOGIN);
+    //     render(
+    //         <Router location={history.location} navigator={history}>
+    //             <DashboardMap />
+    //         </Router>
+    //     );
+    //     //screen.debug();
+    // });
 });
 
 describe("dashboardd page", () => {

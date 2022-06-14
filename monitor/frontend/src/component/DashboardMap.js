@@ -284,6 +284,7 @@ function DashboardMap({
     useEffect(() => {
         getLocalStorageData();
         requestCameras();
+        requestLink();
     }, []);
 
     useEffect(() => {

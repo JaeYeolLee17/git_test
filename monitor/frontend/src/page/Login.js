@@ -27,7 +27,8 @@ const Login = () => {
 
     useEffect(() => {
         userRef.current.focus();
-        localStorage.removeItem("currentUser");
+        //localStorage.removeItem("currentUser");
+        dispatch({ type: "LOGOUT" });
     }, []);
 
     const navigate = useNavigate();
@@ -64,7 +65,7 @@ const Login = () => {
         if (errorLogin === false || errorLogin === null) return;
 
         dispatch({ type: "LOGIN_ERROR", error: "Login failed" });
-        localStorage.removeItem("currentUser");
+        //localStorage.removeItem("currentUser");
     }, [errorLogin]);
 
     const handleSubmit = async (e) => {

@@ -82,7 +82,7 @@ function DashboardMfd({ regionId, intersectionId }) {
         if (resultMfd === null) return;
 
         //console.log("resultMfd", JSON.stringify(resultMfd.stat[0]));
-        console.log("resultMfd", resultMfd);
+        //console.log("resultMfd", resultMfd);
         setDataMfd(resultMfd.stat[0]);
     }, [resultMfd]);
 
@@ -166,10 +166,10 @@ function DashboardMfd({ regionId, intersectionId }) {
     useEffect(() => {
         if (resultLastWeekMfd === null) return;
 
-        console.log(
-            "resultLastWeekMfd",
-            JSON.stringify(resultLastWeekMfd.stat[0])
-        );
+        // console.log(
+        //     "resultLastWeekMfd",
+        //     JSON.stringify(resultLastWeekMfd.stat[0])
+        // );
         setDataLastWeekMfd(resultLastWeekMfd.stat[0]);
     }, [resultLastWeekMfd]);
 
@@ -257,10 +257,10 @@ function DashboardMfd({ regionId, intersectionId }) {
     useEffect(() => {
         if (resultLastMonthAvgMfd === null) return;
 
-        console.log(
-            "resultLastMonthAvgMfd",
-            JSON.stringify(resultLastMonthAvgMfd.stat[0])
-        );
+        // console.log(
+        //     "resultLastMonthAvgMfd",
+        //     JSON.stringify(resultLastMonthAvgMfd.stat[0])
+        // );
         setDataLastMonthAvgMfd(resultLastMonthAvgMfd.stat[0]);
     }, [resultLastMonthAvgMfd]);
 

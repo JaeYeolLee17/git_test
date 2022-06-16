@@ -26,8 +26,8 @@ const Dashboard = () => {
 
     return (
         <div>
-            <HeaderContent />
-            <Menu />
+            {/* <HeaderContent />
+            <Menu /> */}
 
             <SelectorRegion
                 selectedRegionId={selectedRegionId}

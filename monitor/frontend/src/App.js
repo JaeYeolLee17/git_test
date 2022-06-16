@@ -12,7 +12,8 @@ import NotFound from "./page/NotFound";
 import * as Common from "./commons/common";
 import StatTraffic from "./page/StatTraffic";
 
-import DashboardTest from './page/DashboardTest'
+import DashboardTest from "./page/DashboardTest";
+import DashboardLayout from "./layout/DashboardLayout";
 
 const PrivateRoute = ({ children }) => {
     const userDetails = useAuthState();
@@ -40,7 +41,9 @@ function App() {
                     path={Common.PAGE_DASHBOARD}
                     element={
                         <PrivateRoute>
-                            <Dashboard />
+                            <DashboardLayout>
+                                <Dashboard />
+                            </DashboardLayout>
                         </PrivateRoute>
                     }
                 ></Route>
@@ -48,7 +51,9 @@ function App() {
                     path={Common.PAGE_DASHBOARD_DETAIL}
                     element={
                         <PrivateAdminRoute>
-                            <DashboardDetail />
+                            <DashboardLayout>
+                                <DashboardDetail />
+                            </DashboardLayout>
                         </PrivateAdminRoute>
                     }
                 ></Route>
@@ -56,18 +61,20 @@ function App() {
                     path={Common.PAGE_STAT_TRAFFIC}
                     element={
                         <PrivateRoute>
-                            <StatTraffic />
+                            <DashboardLayout>
+                                <StatTraffic />
+                            </DashboardLayout>
                         </PrivateRoute>
                     }
                 ></Route>
-                <Route 
+                {/* <Route 
                     path={"/dashboard/test"}
                     element={
                         <PrivateRoute>
                             <DashboardTest />
                         </PrivateRoute>
                     }
-                />
+                /> */}
             </Routes>
         </div>
     );

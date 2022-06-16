@@ -277,8 +277,8 @@ const DashboardDetail = () => {
 
     return (
         <div>
-            <Header />
-            <Menu />
+            {/* <Header />
+            <Menu /> */}
 
             <SelectorRegion onChangedCurrentRegion={onChangedCurrentRegion} />
             <SelectorIntersection

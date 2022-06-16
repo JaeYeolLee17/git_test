@@ -1,10 +1,108 @@
 .wrapper {
-    padding: 0.5rem;
     background: var(--menu);
     height: 100%;
 }
 
-li {
+.accordionItem {
+    border-top: 1px solid #4d4d4d;
+    border-bottom: none;
+    margin-bottom: 8px;
+}
+
+.accordionItemControl {
+    height: 44px;
+    background: #404040
+}
+
+.accordionItemControl:hover {
+    background: #404040
+}
+
+.accordionItemLabel {
+    color: #bfbfbf;
+    font-size: 14px
+}
+
+.accordionItemOpened {
+    padding: 0px;
+    margin: 0px
+}
+
+.accordionConnentInner {
+    padding: 0px;
+    margin: 0px
+}
+
+.menuListItem {
+	color: var(--table2);
+	
+	padding: 12px 0px 12px 20px;
+
+	line-height: 28px;	
+	vertical-align: middle;	
+}
+.menuListItem:hover,
+.menuListItem:active {
+	background: var(--fontBlack2);
+}
+
+.menuListItemActive {
+	background: var(--fontBlack2);
+}
+
+.menuListDiv {
+    display: flex;
+	align-items:center;
+	justify-content: flex-start;
+}
+
+.menuLinkItem {
+    fill:#cccccc
+}
+
+.menuLinkItem:active,
+.menuLinkItem:hover {
+    fill:#ffffff
+}
+
+.menuLinkItemActive {
+    fill:#ffffff
+} 
+
+.menuLinkItemActive:visited,
+.menuLinkItem:visited {
+    color: var(--table2);
+} 
+
+
+.iconContainer {
+	display: flex;
+	align-items:center;
+	justify-content: center;
+	
+	height: 28px;
+	width: 28px;
+			
+	margin-right: 8px;	 
+}
+
+.menuText {
+	display: inline-block;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 16px;
+	letter-spacing: -0.45px;
+	
+	-webkit-transition: 0.3s;
+	transition: 0.3s;
+}
+
+.menuTextActive,
+.menuText:hover {
+    color: #ffffff;
+}
+
+
+/* li {
     margin-bottom: 1rem;
 }
 li:hover {
@@ -14,4 +112,4 @@ li:hover {
     text-decoration: none;
     color: white;
     width: 100%;    
-}
+} */

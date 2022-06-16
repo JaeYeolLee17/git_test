@@ -8,6 +8,6 @@ export const trafficSpeedBusy = 25;
 
 // Page Link
 export const PAGE_LOGIN = "/login";
-export const PAGE_DASHBOARD = "/dashboard";
+export const PAGE_DASHBOARD = "/dashboard/summary";
 export const PAGE_DASHBOARD_DETAIL = "/dashboard/detail/all";
 export const PAGE_STAT_TRAFFIC = "/stats/traffic";

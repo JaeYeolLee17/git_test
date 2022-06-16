@@ -25,6 +25,7 @@
     "react-scripts": "5.0.0",
     "react-table": "^7.7.0",
     "sha256": "^0.2.0",
+    "tabler-icons-react": "^1.48.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

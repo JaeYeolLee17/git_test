@@ -465,8 +465,8 @@ function StatTraffic() {
 
     return (
         <div>
-            <HeaderContent />
-            <Menu />
+            {/* <HeaderContent />
+            <Menu /> */}
 
             <Selector list={listPeriod} onChange={onChangePeriod} />
             <SelectorRegion onChangedCurrentRegion={onChangedCurrentRegion} />

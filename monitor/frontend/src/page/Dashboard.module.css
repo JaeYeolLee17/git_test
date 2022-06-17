@@ -1,0 +1,21 @@
+.dashboardMap {
+	position: relative;
+	
+	/* width: calc(100% - 6to relative from absolute (emergency ); */
+	width: 100%;
+	order: 0;
+	transition: 0.4s;
+}
+
+.mapSelectWrap {
+	/* display: flex;
+	align-items: center;
+	justify-content: flex-start; */
+	
+	position: absolute; 
+	top: 16px; 
+	left: 16px; 
+	z-index : 1;
+	
+	/* padding: 0px; */
+}

@@ -9,7 +9,6 @@ import StreamIntersection from "./StreamIntersection";
 import ToggleImageButton from "./ToggleImageButton";
 
 function DashboardMap({
-    className,
     currentRegionInfo,
     intersections,
     onChangedSelectedItem,
@@ -367,7 +366,7 @@ function DashboardMap({
     };
 
     return (
-        <div className={className}>
+        <div>
             <ToggleImageButton
                 bOn={showRegion}
                 onClick={onClickRegion}

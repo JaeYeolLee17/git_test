@@ -28,8 +28,22 @@ const Dashboard = () => {
     };
 
     return (
-        <div style={{ position: "relative" }}>
-            {/* <DashboardMap
+        <div>
+            <SelectorRegion
+                selectedRegionId={selectedRegionId}
+                onChangedCurrentRegion={onChangedCurrentRegion}
+            />
+
+            <SelectorIntersection
+                currentRegionInfo={currentRegionInfo}
+                selectedIntersectionId={selectedIntersectionId}
+                onChangedIntersectionList={(list) => {
+                    setListIntersections(list);
+                }}
+                onChangedCurrentIntersection={onChangedCurrentIntersection}
+            />
+
+            <DashboardMap
                 className={styles.dashboardMap}
                 currentRegionInfo={currentRegionInfo}
                 intersections={{
@@ -39,28 +53,12 @@ const Dashboard = () => {
                 onChangedSelectedItem={(item) => {
                     setSelectedIntersectionId(item.intersectionId);
                 }}
-            /> */}
+            />
 
-            <div className={styles.mapSelectWrap}>
-                <SelectorRegion
-                    selectedRegionId={selectedRegionId}
-                    onChangedCurrentRegion={onChangedCurrentRegion}
-                />
-
-                <SelectorIntersection
-                    currentRegionInfo={currentRegionInfo}
-                    selectedIntersectionId={selectedIntersectionId}
-                    onChangedIntersectionList={(list) => {
-                        setListIntersections(list);
-                    }}
-                    onChangedCurrentIntersection={onChangedCurrentIntersection}
-                />
-            </div>
-
-            {/* <DashboardMfd
+            <DashboardMfd
                 regionId={selectedRegionId}
                 intersectionId={selectedIntersectionId}
-            /> */}
+            />
         </div>
     );
 };

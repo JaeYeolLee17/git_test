@@ -107,26 +107,41 @@ class UserDtoTest {
 
         doReturn(userDto).when(userService).update(any(), any());
 
-        userUpdateDto.setPassword(null);
+        String oldPassword = userUpdateDto.getOldPassword();
+
+        // old password
+        userUpdateDto.setOldPassword(null);
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userUpdateDto.setPassword("");
+        userUpdateDto.setOldPassword("");
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userUpdateDto.setPassword(" ");
+        userUpdateDto.setOldPassword(" ");
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword("challenge");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userUpdateDto.setOldPassword(oldPassword);
 
-        userDto.setPassword("challenge1123");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        // new password
+        userUpdateDto.setNewPassword(null);
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setPassword("1123!@1123");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userUpdateDto.setNewPassword("");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword("cha112!");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userUpdateDto.setNewPassword(" ");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setNewPassword("challenge");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setNewPassword("challenge1123");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setNewPassword("1123!@1123");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setNewPassword("cha112!");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test

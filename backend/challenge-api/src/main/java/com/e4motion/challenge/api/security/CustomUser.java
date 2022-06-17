@@ -16,10 +16,10 @@ public class CustomUser extends User {
 	private String email;
 	private String phone;
    	
-   	public CustomUser(String userId, String password, String username, String email, String phone, 
+   	public CustomUser(String userId, String password, String username, String email, String phone, Boolean enabled,
    			Collection<? extends GrantedAuthority> authorities) {
-   		
-   		super(userId, password, authorities);
+
+		super(userId, password, enabled, true, true, true, authorities);
    		this.customUsername = username;
    		this.email = email;
    		this.phone = phone;

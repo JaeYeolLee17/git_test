@@ -56,6 +56,7 @@ public class AuthController {
         		.username(userDetails.getCustomUsername())
         		.email(userDetails.getEmail())
         		.phone(userDetails.getPhone())
+                .enabled(userDetails.isEnabled())
         		.authority(authorities.isEmpty() ? null : authorities.iterator().next())
         		.build();
         

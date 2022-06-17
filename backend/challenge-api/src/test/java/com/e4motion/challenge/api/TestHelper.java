@@ -17,6 +17,7 @@ public class TestHelper {
                 .username("username1")
                 .email("user1@email.com")
                 .phone("01022223333")
+                .enabled(true)
                 .authority(AuthorityName.ROLE_USER)
                 .build();
     }
@@ -28,16 +29,19 @@ public class TestHelper {
                 .username("username2")
                 .email("user2@email.com")
                 .phone("01044445555")
+                .enabled(true)
                 .authority(AuthorityName.ROLE_USER)
                 .build();
     }
 
     public static UserUpdateDto getUserUpdateDto() {
         return UserUpdateDto.builder()
-                .password("challenge12!@updated")
+                .oldPassword("challenge12!@")
+                .newPassword("challenge12!@updated")
                 .username("usernameupdated")
                 .email("emailupdated@email.com")
                 .phone("01088889999")
+                .enabled(true)
                 .authority(AuthorityName.ROLE_ADMIN)
                 .build();
     }
@@ -49,6 +53,7 @@ public class TestHelper {
                 .username("username1")
                 .email("user1@email.com")
                 .phone("01022223333")
+                .enabled(true)
                 .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_ADMIN)))
                 .build();
     }
@@ -60,6 +65,7 @@ public class TestHelper {
                 .username("username2")
                 .email("user2@email.com")
                 .phone("01044445555")
+                .enabled(true)
                 .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
                 .build();
     }

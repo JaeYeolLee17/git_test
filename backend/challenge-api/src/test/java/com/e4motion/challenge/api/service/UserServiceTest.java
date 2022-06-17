@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import com.e4motion.challenge.api.TestHelper;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
+import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,6 +30,8 @@ import com.e4motion.challenge.api.service.impl.UserServiceImpl;
 import com.e4motion.challenge.common.exception.customexception.UserDuplicateException;
 import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 
+import javax.persistence.EntityManager;
+
 @SpringBootTest
 public class UserServiceTest {
 	
@@ -40,12 +43,15 @@ public class UserServiceTest {
 	
     @Mock
     private UserRepository userRepository;
-    
+
+	@Mock
+	EntityManager entityManager;
+
     private UserService userService;
 	
 	@BeforeEach 
 	void setup() { 
-		userService = new UserServiceImpl(userRepository, passwordEncoder, userMapper); 
+		userService = new UserServiceImpl(userRepository, passwordEncoder, userMapper, entityManager);
 	}
     
 	@Test
@@ -54,15 +60,8 @@ public class UserServiceTest {
 		// given
 		UserDto userDto = TestHelper.getUserDto1();
 
-		// TODO: user UserMapper for UserDto -> User
-		User newUser = User.builder()
-				.userId(userDto.getUserId())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.username(userDto.getUsername())
-				.email(userDto.getEmail())
-				.phone(userDto.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-				.build();
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		User newUser = userMapper.toUser(userDto);
 		
 		doReturn(Optional.ofNullable(null)).when(userRepository).findByUserId(userDto.getUserId());
 		doReturn(newUser).when(userRepository).save(any());
@@ -81,16 +80,9 @@ public class UserServiceTest {
 		// given
 		UserDto userDto = TestHelper.getUserDto1();
 
-		// TODO: user UserMapper for UserDto -> User
-		User newUser = User.builder()
-				.userId(userDto.getUserId())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.username(userDto.getUsername())
-				.email(userDto.getEmail())
-				.phone(userDto.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-				.build();
-		
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		User newUser = userMapper.toUser(userDto);
+
 		doReturn(Optional.of(newUser)).when(userRepository).findByUserId(userDto.getUserId());
 
 		// when
@@ -107,18 +99,12 @@ public class UserServiceTest {
 		UserDto userDto = TestHelper.getUserDto2();
 		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
-		// TODO: user UserMapper for UserDto -> User
-		User user = User.builder()
-				.userId(userDto.getUserId())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.username(userDto.getUsername())
-				.email(userDto.getEmail())
-				.phone(userDto.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-				.build();
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		User user = userMapper.toUser(userDto);
 
 		User updatedUser = User.builder()
 				.userId(userDto.getUserId())
+				.password(passwordEncoder.encode(userUpdateDto.getNewPassword()))
 				.username(userUpdateDto.getUsername())
 				.email(userUpdateDto.getEmail())
 				.phone(userUpdateDto.getPhone())
@@ -126,7 +112,8 @@ public class UserServiceTest {
 				.build();
 		
 		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
-		doReturn(updatedUser).when(userRepository).save(any());		// use any() due to parameter mismatch?
+		doReturn(updatedUser).when(userRepository).save(any());
+		doNothing().when(entityManager).flush();
 		
 		// when
 		UserDto updatedUserDto = userService.update(userDto.getUserId(), userUpdateDto);
@@ -140,6 +127,27 @@ public class UserServiceTest {
 		assertThat(updatedUserDto).isNotNull();
 		assertEqualsUserDtos(updatedUserDto, userDto);
     }
+
+	@Test
+	public void updateWithInvalidOldPassword() throws Exception {
+
+		// given
+		UserDto userDto = TestHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+
+		userUpdateDto.setOldPassword("wrong old password...");
+
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		User user = userMapper.toUser(userDto);
+
+		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
+
+		// when
+		Exception ex = assertThrows(UnauthorizedException.class, () -> userService.update(userDto.getUserId(), userUpdateDto));
+
+		// then
+		assertThat(ex.getMessage()).isEqualTo(UnauthorizedException.INVALID_PASSWORD);
+	}
 	
 	@Test
    	public void updateNonexistentUser() throws Exception {
@@ -177,15 +185,8 @@ public class UserServiceTest {
 		// given
 		UserDto userDto = TestHelper.getUserDto1();
 
-		// TODO: user UserMapper for UserDto -> User
-		// TODO: DB 에서 조회 시 password 가 있나?
-		User user = User.builder()
-				.userId(userDto.getUserId())
-				.username(userDto.getUsername())
-				.email(userDto.getEmail())
-				.phone(userDto.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-				.build();
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		User user = userMapper.toUser(userDto);
 		
 		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
 		
@@ -208,25 +209,11 @@ public class UserServiceTest {
 		userDtos.add(userDto1);
 		userDtos.add(userDto2);
 
-		// TODO: user UserMapper for UserDto -> User
-		// TODO: DB 에서 조회 시 password 가 있나?
-		User user1 = User.builder()
-				.userId(userDto1.getUserId())
-				.username(userDto1.getUsername())
-				.email(userDto1.getEmail())
-				.phone(userDto1.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto1.getAuthority())))
-				.build();
+		userDto1.setPassword(passwordEncoder.encode(userDto1.getPassword()));
+		User user1 = userMapper.toUser(userDto1);
 
-		// TODO: user UserMapper for UserDto -> User
-		// TODO: DB 에서 조회 시 password 가 있나?
-		User user2 = User.builder()
-				.userId(userDto2.getUserId())
-				.username(userDto2.getUsername())
-				.email(userDto2.getEmail())
-				.phone(userDto2.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto2.getAuthority())))
-				.build();
+		userDto2.setPassword(passwordEncoder.encode(userDto2.getPassword()));
+		User user2 = userMapper.toUser(userDto2);
 		
 		List<User> users = new ArrayList<>();
 		users.add(user1);

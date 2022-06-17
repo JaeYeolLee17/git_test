@@ -16,8 +16,11 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class UserUpdateDto {
 
+    @NullOrNotBlank
+    private String oldPassword;
+
     @Pattern(regexp = RegExp.strongPw)
-    private String password;
+    private String newPassword;
 
     @NullOrNotBlank
     private String username;
@@ -27,6 +30,8 @@ public class UserUpdateDto {
 
     @Pattern(regexp = RegExp.emptyOrPhone)
     private String phone;
+
+    private Boolean enabled;
 
     private AuthorityName authority;
     

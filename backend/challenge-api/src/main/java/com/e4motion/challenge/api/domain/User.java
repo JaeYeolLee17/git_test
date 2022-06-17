@@ -20,7 +20,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "nt_user")
-public class User {
+public class User extends BaseTimeEntity {
 	
 	@Id
 	@Column(name = "user_id", length = 20)
@@ -37,6 +37,9 @@ public class User {
 	
 	@Column(name = "phone", length = 20)
 	private String phone;
+
+	@Column(name = "enabled", nullable = false)
+	private Boolean enabled;
 
     @ManyToMany
     @JoinTable(

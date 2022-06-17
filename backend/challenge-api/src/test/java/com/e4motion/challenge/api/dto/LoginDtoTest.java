@@ -122,6 +122,7 @@ class LoginDtoTest {
                 null,
                 null,
                 null,
+                true,
                 grantedAuthorities);
         return userDetails;
     }

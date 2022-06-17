@@ -103,6 +103,18 @@ public class AuthControllerTest {
 		assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
 	}
 
+	@Test
+	public void loginWithDisabledUser() throws Exception {
+
+		String userId = "user";
+		String password = "challenge12!@";
+		AuthorityName authority = AuthorityName.ROLE_USER;
+
+		doReturn(getUserDetails(userId, password, authority, false)).when(userDetailsService).loadUserByUsername(userId);
+
+		assertLogin(userId, password, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.DISABLED_USER);
+	}
+
 	private void assertLogin(String userId, String password,
 			HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
@@ -135,12 +147,17 @@ public class AuthControllerTest {
 	}
 
 	private UserDetails getUserDetails(String userId, String password, AuthorityName authority) {
+		return getUserDetails(userId, password, authority, true);
+	}
+
+	private UserDetails getUserDetails(String userId, String password, AuthorityName authority, Boolean enabled) {
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
 		UserDetails userDetails = new CustomUser(userId,
 				passwordEncoder.encode(password),
 				null,
 				null,
 				null,
+				enabled,
 				grantedAuthorities);
 		return userDetails;
 	}

@@ -45,14 +45,16 @@ public class UserMapperTest {
 		
 		assertEqualsUserDtoWithUser(userDtos.get(0), user1);
 		assertEqualsUserDtoWithUser(userDtos.get(1), user2);
-		
 	}
 
 	@Test
 	public void toUser() {
 
-		// TODO: test userDto -> User.
+		UserDto userDto = TestHelper.getUserDto1();
 
+		User user = mapper.toUser(userDto);
+
+		assertEqualsUserDtoWithUser(userDto, user);
 	}
 	
 	private void assertEqualsUserDtoWithUser(UserDto userDto, User user) {

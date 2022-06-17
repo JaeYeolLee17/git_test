@@ -6,6 +6,9 @@ import SelectorRegion from "../component/SelectorRegion";
 import SelectorIntersection from "../component/SelectorIntersection";
 import DashboardMap from "../component/DashboardMap";
 import DashboardMfd from "../component/DashboardMfd";
+import { Container } from "@mantine/core";
+
+import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
     const [selectedRegionId, setSelectedRegionId] = useState("");
@@ -25,25 +28,9 @@ const Dashboard = () => {
     };
 
     return (
-        <div>
-            {/* <HeaderContent />
-            <Menu /> */}
-
-            <SelectorRegion
-                selectedRegionId={selectedRegionId}
-                onChangedCurrentRegion={onChangedCurrentRegion}
-            />
-
-            <SelectorIntersection
-                currentRegionInfo={currentRegionInfo}
-                selectedIntersectionId={selectedIntersectionId}
-                onChangedIntersectionList={(list) => {
-                    setListIntersections(list);
-                }}
-                onChangedCurrentIntersection={onChangedCurrentIntersection}
-            />
-
-            <DashboardMap
+        <div style={{ position: "relative" }}>
+            {/* <DashboardMap
+                className={styles.dashboardMap}
                 currentRegionInfo={currentRegionInfo}
                 intersections={{
                     listIntersections: listIntersections,
@@ -52,12 +39,28 @@ const Dashboard = () => {
                 onChangedSelectedItem={(item) => {
                     setSelectedIntersectionId(item.intersectionId);
                 }}
-            />
+            /> */}
 
-            <DashboardMfd
+            <div className={styles.mapSelectWrap}>
+                <SelectorRegion
+                    selectedRegionId={selectedRegionId}
+                    onChangedCurrentRegion={onChangedCurrentRegion}
+                />
+
+                <SelectorIntersection
+                    currentRegionInfo={currentRegionInfo}
+                    selectedIntersectionId={selectedIntersectionId}
+                    onChangedIntersectionList={(list) => {
+                        setListIntersections(list);
+                    }}
+                    onChangedCurrentIntersection={onChangedCurrentIntersection}
+                />
+            </div>
+
+            {/* <DashboardMfd
                 regionId={selectedRegionId}
                 intersectionId={selectedIntersectionId}
-            />
+            /> */}
         </div>
     );
 };

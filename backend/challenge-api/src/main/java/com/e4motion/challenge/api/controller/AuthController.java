@@ -3,6 +3,7 @@ package com.e4motion.challenge.api.controller;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,15 +25,16 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.Valid;
 
-@Tag(name = "1. Auth")
+@Tag(name = "1. 인증")
 @RequiredArgsConstructor
 @RestController 
-@RequestMapping(path = "v1")
+@RequestMapping(path = "v2")
 public class AuthController {
 	
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Operation(summary = "로그인", description = "접근 권한 : 전체")
     @PostMapping("/login")
     public Response login(@Valid @RequestBody LoginDto loginDto) throws Exception {
     	UsernamePasswordAuthenticationToken authenticationToken =

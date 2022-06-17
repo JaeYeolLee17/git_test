@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
 					throw new UserDuplicateException(UserDuplicateException.USER_ID_ALREADY_EXISTS);
 				});
 
+		// TODO: UserDto -> User UserMapper 사용.
         User user = User.builder()
                 .userId(userDto.getUserId())
                 .password(passwordEncoder.encode(userDto.getPassword()))

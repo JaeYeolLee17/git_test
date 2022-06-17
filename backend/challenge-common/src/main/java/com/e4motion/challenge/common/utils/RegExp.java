@@ -10,4 +10,6 @@ public class RegExp {
 
     public static final String emptyOrPhone = "^$|"+ phone;
 
+    public static final String strongPw = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
+
 }

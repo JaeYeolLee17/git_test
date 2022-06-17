@@ -17,4 +17,6 @@ public interface UserMapper {
 
     List<UserDto> toUserDto(List<User> users);
 
+    // TODO: UserDto -> User mapper 추가. (authority 변환, password 인코딩)
+
 }

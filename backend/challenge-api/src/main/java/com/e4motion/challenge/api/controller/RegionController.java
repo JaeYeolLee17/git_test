@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @Tag(name = "5. Region")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "v1")
+@RequestMapping(path = "v2")
 public class RegionController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

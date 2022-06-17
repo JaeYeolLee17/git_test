@@ -45,57 +45,54 @@ class LoginDtoTest {
     @Test
     public void validateOk() throws Exception {
 
-        LoginDto loginDto = getGoodLoginDto();
+        String userId = "user1";
+        String password = "challenge12!@";
         AuthorityName authority = AuthorityName.ROLE_USER;
 
-        doReturn(getUserDetails(loginDto.getUserId(), loginDto.getPassword(), authority)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
+        doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
 
-        assertLogin(loginDto, HttpStatus.OK, Response.OK, null, null);
+        assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
     public void validateUserId() throws Exception {
 
-        LoginDto loginDto = getGoodLoginDto();
+        String userId = null;
+        String password = "challenge12!@";
+        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setUserId(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userId = "";
+        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setUserId("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        loginDto.setUserId(" ");
-        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
-        assertLogin(loginDto, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+        userId = " ";
+        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(userId);
+        assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
     }
 
     @Test
     public void validatePassword() throws Exception {
 
-        LoginDto loginDto = getGoodLoginDto();
+        String userId = "user1";
+        String password = null;
+        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setPassword(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        password = "";
+        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setPassword("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        loginDto.setPassword(" ");
-        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
-        assertLogin(loginDto, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+        password = " ";
+        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(userId);
+        assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
     }
 
-    private LoginDto getGoodLoginDto() {
-        return LoginDto.builder()
-                .userId("user1")
-                .password("de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0")
-                .build();
-    }
-
-    private void assertLogin(LoginDto loginDto,
+    private void assertLogin(String userId, String password,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        String uri = "/v1/login";
+        String uri = "/v2/login";
+
+        LoginDto loginDto = LoginDto.builder()
+                .userId(userId)
+                .password(password)
+                .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON)

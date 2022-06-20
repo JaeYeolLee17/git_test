@@ -40,7 +40,7 @@ public class UserController {
     @Operation(summary = "회원 수정", description = "접근 권한 : 관리자, 운영자, 사용자(자기 자신만)")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @PutMapping("/user/{userId}")
-    public Response update(@PathVariable String userId, @Valid @RequestBody UserUpdateDto userUpdateDto) throws Exception {
+    public Response update(@PathVariable Long userId, @Valid @RequestBody UserUpdateDto userUpdateDto) throws Exception {
 
         // TODO: 사용자(자기 자신만) 처리.
 		return new Response("user", userService.update(userId, userUpdateDto));
@@ -49,7 +49,7 @@ public class UserController {
     @Operation(summary = "회원 삭제", description = "접근 권한 : 관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @DeleteMapping("/user/{userId}")
-    public Response delete(@PathVariable String userId) throws Exception {
+    public Response delete(@PathVariable Long userId) throws Exception {
 		
 		userService.delete(userId);
 		
@@ -59,7 +59,7 @@ public class UserController {
     @Operation(summary = "회원 조회", description = "접근 권한 : 관리자, 운영자, 사용자(자기 자신만)")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
 	@GetMapping("/user/{userId}")
-    public Response get(@PathVariable String userId) throws Exception {
+    public Response get(@PathVariable Long userId) throws Exception {
 
         // TODO: 사용자(자기 자신만) 처리.
 		return new Response("user", userService.get(userId));

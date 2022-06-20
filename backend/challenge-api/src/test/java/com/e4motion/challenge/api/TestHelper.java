@@ -12,9 +12,10 @@ public class TestHelper {
 
     public static UserDto getUserDto1() {
         return UserDto.builder()
-                .userId("user1")
+                .userId(1L)
+                .username("user1")
                 .password("challenge12!@")
-                .username("username1")
+                .nickname("nickname1")
                 .email("user1@email.com")
                 .phone("01022223333")
                 .enabled(true)
@@ -24,9 +25,10 @@ public class TestHelper {
 
     public static UserDto getUserDto2() {
         return UserDto.builder()
-                .userId("user2")
+                .userId(2L)
+                .username("user2")
                 .password("challenge12!@")
-                .username("username2")
+                .nickname("nickname2")
                 .email("user2@email.com")
                 .phone("01044445555")
                 .enabled(true)
@@ -36,9 +38,10 @@ public class TestHelper {
 
     public static UserUpdateDto getUserUpdateDto() {
         return UserUpdateDto.builder()
+                .username("user2updated")
                 .oldPassword("challenge12!@")
                 .newPassword("challenge12!@updated")
-                .username("usernameupdated")
+                .nickname("nicknameupdated")
                 .email("emailupdated@email.com")
                 .phone("01088889999")
                 .enabled(true)
@@ -48,9 +51,10 @@ public class TestHelper {
 
     public static User getUser1() {
         return User.builder()
-                .userId("user1")
+                .userId(1L)
+                .username("user1")
                 .password("challenge1123!")
-                .username("username1")
+                .nickname("nickname1")
                 .email("user1@email.com")
                 .phone("01022223333")
                 .enabled(true)
@@ -60,9 +64,10 @@ public class TestHelper {
 
     public static User getUser2() {
         return User.builder()
-                .userId("user2")
+                .userId(2L)
+                .username("user2")
                 .password("challenge12!@")
-                .username("username2")
+                .nickname("nickname2")
                 .email("user2@email.com")
                 .phone("01044445555")
                 .enabled(true)

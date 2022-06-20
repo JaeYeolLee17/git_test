@@ -46,82 +46,82 @@ public class AuthControllerTest {
 	@Test
 	public void loginWithAdminUser() throws Exception {
 		
-		String userId = "admin";
+		String username = "admin";
 		String password = "challenge1123!";
 		AuthorityName authority = AuthorityName.ROLE_ADMIN;
 		
-		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 		
-		assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
+		assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
 	public void loginWithManagerUser() throws Exception {
 		
-		String userId = "manager";
+		String username = "manager";
 		String password = "challenge1123!";
 		AuthorityName authority = AuthorityName.ROLE_MANAGER;
 		
-		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 		
-		assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
+		assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
 	}
 
 	@Test
 	public void loginWithUser() throws Exception {
 
-		String userId = "user";
+		String username = "user1";
 		String password = "challenge12!@";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 
-		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 
-		assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
+		assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
 	}
 
 	@Test
 	public void loginWithIncorrectPassword() throws Exception {
 		
-		String userId = "user";
+		String username = "user1";
 		String password = "challenge12!@";
 		AuthorityName authority = AuthorityName.ROLE_MANAGER;
 		
-		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 		
-		assertLogin(userId, "challenge1!----",		// Invalid password
+		assertLogin(username, "challenge1!----",		// Invalid password
 				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
 	}
 	
 	@Test
 	public void loginWithNonexistentUser() throws Exception {
 		
-		String userId = "anonymous";
+		String username = "anonymous";
 		String password = "challenge12!@";
 		
-		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(userId);
+		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(username);
 		
-		assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+		assertLogin(username, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USERNAME);
 	}
 
 	@Test
 	public void loginWithDisabledUser() throws Exception {
 
-		String userId = "user";
+		String username = "user1";
 		String password = "challenge12!@";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 
-		doReturn(getUserDetails(userId, password, authority, false)).when(userDetailsService).loadUserByUsername(userId);
+		doReturn(getUserDetails(username, password, authority, false)).when(userDetailsService).loadUserByUsername(username);
 
-		assertLogin(userId, password, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.DISABLED_USER);
+		assertLogin(username, password, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.DISABLED_USER);
 	}
 
-	private void assertLogin(String userId, String password,
+	private void assertLogin(String username, String password,
 			HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
 		String uri = "/v2/login";
 
 		LoginDto loginDto = LoginDto.builder()
-				.userId(userId)
+				.username(username)
 				.password(password)
 				.build();
 
@@ -146,13 +146,14 @@ public class AuthControllerTest {
 				});
 	}
 
-	private UserDetails getUserDetails(String userId, String password, AuthorityName authority) {
-		return getUserDetails(userId, password, authority, true);
+	private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
+		return getUserDetails(username, password, authority, true);
 	}
 
-	private UserDetails getUserDetails(String userId, String password, AuthorityName authority, Boolean enabled) {
+	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean enabled) {
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-		UserDetails userDetails = new CustomUser(userId,
+		UserDetails userDetails = new CustomUser(1L,
+				username,
 				passwordEncoder.encode(password),
 				null,
 				null,

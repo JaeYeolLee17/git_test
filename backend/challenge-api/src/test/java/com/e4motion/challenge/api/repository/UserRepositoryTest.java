@@ -49,7 +49,7 @@ class UserRepositoryTest {
 
 		userRepository.save(newUser);
 		
-		Optional<User> foundUser = userRepository.findByUserId(newUser.getUserId());
+		Optional<User> foundUser = userRepository.findByUsername(newUser.getUsername());
 		
 		assertThat(userRepository.count()).isEqualTo(2);
 		assertThat(foundUser.isPresent()).isTrue();
@@ -106,15 +106,24 @@ class UserRepositoryTest {
 
 	@Test
 	void findByUserId() {
-		
-		User user = TestHelper.getUser1();
 
-		userRepository.save(user);
-		
         Optional<User> foundUser = userRepository.findByUserId(savedUser.getUserId());
 
         assertThat(foundUser.isPresent()).isTrue();
         assertEqualsUsers(foundUser.get(), savedUser);
+	}
+
+	@Test
+	void findByUsername() {
+
+		User user = TestHelper.getUser2();
+
+		userRepository.save(user);
+
+		Optional<User> foundUser = userRepository.findByUsername(savedUser.getUsername());
+
+		assertThat(foundUser.isPresent()).isTrue();
+		assertEqualsUsers(foundUser.get(), savedUser);
 	}
 
 	@Test
@@ -133,11 +142,12 @@ class UserRepositoryTest {
 	}
 	
 	private void assertEqualsUsers(User user1, User user2) {
-		
-		assertThat(user1.getUserId()).isEqualTo(user2.getUserId());
+
 		assertThat(user1.getUsername()).isEqualTo(user2.getUsername());
+		assertThat(user1.getNickname()).isEqualTo(user2.getNickname());
 		assertThat(user1.getEmail()).isEqualTo(user2.getEmail());
 		assertThat(user1.getPhone()).isEqualTo(user2.getPhone());
+		assertThat(user1.getEnabled()).isEqualTo(user2.getEnabled());
 		assertThat(user1.getAuthorities().size()).isEqualTo(user2.getAuthorities().size());
 		if (user1.getAuthorities().size() > 0) {
 			assertThat(user1.getAuthorities().iterator().next().getAuthorityName())

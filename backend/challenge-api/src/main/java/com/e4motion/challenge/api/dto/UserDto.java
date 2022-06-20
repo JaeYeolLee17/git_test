@@ -20,15 +20,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserDto {
 
-    @NotBlank
-    private String userId;
-
-    @NotNull
-    @Pattern(regexp = RegExp.strongPw)
-    private String password;
+    private Long userId;
 
     @NotBlank
     private String username;
+
+    @NotNull
+    @Pattern(regexp = RegExp.strongPassword)
+    private String password;
+
+    private String nickname;
 
     @Email
     private String email;

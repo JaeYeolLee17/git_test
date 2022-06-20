@@ -63,7 +63,7 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User newUser = userMapper.toUser(userDto);
 		
-		doReturn(Optional.ofNullable(null)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.ofNullable(null)).when(userRepository).findByUsername(userDto.getUsername());
 		doReturn(newUser).when(userRepository).save(any());
 		
 		// when
@@ -83,13 +83,13 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User newUser = userMapper.toUser(userDto);
 
-		doReturn(Optional.of(newUser)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.of(newUser)).when(userRepository).findByUsername(userDto.getUsername());
 
 		// when
 		Exception ex = assertThrows(UserDuplicateException.class, () -> userService.create(userDto));
 
 		// then
-		assertThat(ex.getMessage()).isEqualTo(UserDuplicateException.USER_ID_ALREADY_EXISTS);
+		assertThat(ex.getMessage()).isEqualTo(UserDuplicateException.USERNAME_ALREADY_EXISTS);
     }
 
 	@Test
@@ -104,8 +104,9 @@ public class UserServiceTest {
 
 		User updatedUser = User.builder()
 				.userId(userDto.getUserId())
-				.password(passwordEncoder.encode(userUpdateDto.getNewPassword()))
 				.username(userUpdateDto.getUsername())
+				.password(passwordEncoder.encode(userUpdateDto.getNewPassword()))
+				.nickname(userUpdateDto.getNickname())
 				.email(userUpdateDto.getEmail())
 				.phone(userUpdateDto.getPhone())
 				.authorities(Collections.singleton(new Authority(userUpdateDto.getAuthority())))
@@ -162,7 +163,7 @@ public class UserServiceTest {
 		Exception ex = assertThrows(UserNotFoundException.class, () -> userService.update(userDto.getUserId(), userUpdateDto));
 
 		// then
-		assertThat(ex.getMessage()).isEqualTo(UserNotFoundException.INVALID_USER_ID);
+		assertThat(ex.getMessage()).isEqualTo(UserNotFoundException.INVALID_USERNAME);
     }
 	
 	@Test

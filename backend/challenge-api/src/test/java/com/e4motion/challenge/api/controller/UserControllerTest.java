@@ -82,7 +82,7 @@ public class UserControllerTest {
 		assertGet(userDto.getUserId(), false, HttpStatus.OK, Response.OK, null, null);
 	}
 
-	private void assertGet(String userId, boolean userExpected, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+	private void assertGet(Long userId, boolean userExpected, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
 		String uri = "/v2/user/" + userId;
 		
@@ -180,9 +180,9 @@ public class UserControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	public void createWithAdminRoleWithDuplicateUser() throws Exception {	// create duplicate user
 		UserDto userDto = TestHelper.getUserDto1();
-		doThrow(new UserDuplicateException(UserDuplicateException.USER_ID_ALREADY_EXISTS)).when(userService).create(any());
+		doThrow(new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS)).when(userService).create(any());
 
-		assertCreate(userDto, HttpStatus.CONFLICT, Response.FAIL, UserDuplicateException.CODE, UserDuplicateException.USER_ID_ALREADY_EXISTS);
+		assertCreate(userDto, HttpStatus.CONFLICT, Response.FAIL, UserDuplicateException.CODE, UserDuplicateException.USERNAME_ALREADY_EXISTS);
 	}
 	
 	@Test
@@ -249,9 +249,9 @@ public class UserControllerTest {
 		UserDto userDto = TestHelper.getUserDto2();
 		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
-		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userService).update(any(), any());
+		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userService).update(any(), any());
 
-		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USERNAME);
 	}
 
 	@Test
@@ -275,7 +275,7 @@ public class UserControllerTest {
 		//assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 	
-	private void assertUpdate(String userId, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+	private void assertUpdate(Long userId, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
 		String uri = "/v2/user/" + userId;
 
@@ -309,7 +309,7 @@ public class UserControllerTest {
 	public void deleteWithAdminRole() throws Exception {
 		assertDelete(TestHelper.getUserDto1().getUserId(), HttpStatus.OK, Response.OK, null, null);
 		assertDelete(TestHelper.getUserDto2().getUserId(), HttpStatus.OK, Response.OK, null, null);
-		assertDelete("user3", HttpStatus.OK, Response.OK, null, null);
+		assertDelete(3L, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
@@ -317,7 +317,7 @@ public class UserControllerTest {
 	public void deleteWithManagerRole() throws Exception {
 		assertDelete(TestHelper.getUserDto1().getUserId(), HttpStatus.OK, Response.OK, null, null);
 		assertDelete(TestHelper.getUserDto2().getUserId(), HttpStatus.OK, Response.OK, null, null);
-		assertDelete("user3", HttpStatus.OK, Response.OK, null, null);
+		assertDelete(3L, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
@@ -326,7 +326,7 @@ public class UserControllerTest {
 		assertDelete(TestHelper.getUserDto2().getUserId(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 	
-	private void assertDelete(String userId, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+	private void assertDelete(Long userId, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
 		doNothing().when(userService).delete(userId);
 		

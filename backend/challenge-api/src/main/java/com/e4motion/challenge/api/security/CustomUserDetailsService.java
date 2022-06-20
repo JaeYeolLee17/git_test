@@ -26,9 +26,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(final String username) {
 
-		return userRepository.findByUserId(username)
+		return userRepository.findByUsername(username)
 				.map(user -> createUser(user))
-				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USER_ID));
+				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USERNAME));
 	}
 
 	private UserDetails createUser(User user) {
@@ -37,9 +37,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 				.map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName().toString()))
 				.collect(Collectors.toList());
 		
-		return new CustomUser(user.getUserId(), 
-				user.getPassword(),
+		return new CustomUser(user.getUserId(),
 				user.getUsername(),
+				user.getPassword(),
+				user.getNickname(),
 				user.getEmail(),
 				user.getPhone(),
 				user.getEnabled(),

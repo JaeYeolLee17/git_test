@@ -2,13 +2,7 @@ package com.e4motion.challenge.api.domain;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.*;
 
@@ -21,16 +15,20 @@ import lombok.*;
 @Entity
 @Table(name = "nt_user")
 public class User extends BaseTimeEntity {
-	
+
 	@Id
-	@Column(name = "user_id", length = 20)
-	private String userId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Long userId;
+
+	@Column(name = "username", length = 128, unique = true, nullable = false)
+	private String username;
 
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
-	
-	@Column(name = "username", length = 20, nullable = false)
-	private String username;
+
+	@Column(name = "nickname", length = 20)
+	private String nickname;
 
 	@Column(name = "email", length = 128)
 	private String email;

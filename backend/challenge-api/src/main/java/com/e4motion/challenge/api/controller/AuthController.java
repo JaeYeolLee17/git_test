@@ -38,7 +38,7 @@ public class AuthController {
     @PostMapping("/login")
     public Response login(@Valid @RequestBody LoginDto loginDto) throws Exception {
     	UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -52,8 +52,9 @@ public class AuthController {
                 .collect(Collectors.toSet());
 
         UserDto userDto = UserDto.builder()
-        		.userId(userDetails.getUsername())
-        		.username(userDetails.getCustomUsername())
+        		.userId(userDetails.getUserId())
+        		.username(userDetails.getUsername())
+                .nickname(userDetails.getNickname())
         		.email(userDetails.getEmail())
         		.phone(userDetails.getPhone())
                 .enabled(userDetails.isEnabled())

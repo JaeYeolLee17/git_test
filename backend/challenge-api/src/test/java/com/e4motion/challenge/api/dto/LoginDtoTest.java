@@ -45,52 +45,54 @@ class LoginDtoTest {
     @Test
     public void validateOk() throws Exception {
 
-        String userId = "user1";
+        String username = "user1";
         String password = "challenge12!@";
         AuthorityName authority = AuthorityName.ROLE_USER;
 
-        doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
+        doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 
-        assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
+        assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
-    public void validateUserId() throws Exception {
+    public void validateUsername() throws Exception {
 
-        String userId = null;
+        String username = null;
         String password = "challenge12!@";
-        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userId = "";
-        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        username = "";
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userId = " ";
-        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(userId);
-        assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+        username = " ";
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        username = "not existent user";
+        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(username);
+        assertLogin(username, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USERNAME);
     }
 
     @Test
     public void validatePassword() throws Exception {
 
-        String userId = "user1";
+        String username = "user1";
         String password = null;
-        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         password = "";
-        assertLogin(userId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         password = " ";
-        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(userId);
-        assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
-    private void assertLogin(String userId, String password,
+    private void assertLogin(String username, String password,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
         String uri = "/v2/login";
 
         LoginDto loginDto = LoginDto.builder()
-                .userId(userId)
+                .username(username)
                 .password(password)
                 .build();
 
@@ -115,9 +117,10 @@ class LoginDtoTest {
                 });
     }
 
-    private UserDetails getUserDetails(String userId, String password, AuthorityName authority) {
+    private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
         Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-        UserDetails userDetails = new CustomUser(userId,
+        UserDetails userDetails = new CustomUser(1L,
+                username,
                 passwordEncoder.encode(password),
                 null,
                 null,

@@ -17,22 +17,31 @@ CREATE TABLE public.nt_authority
     CONSTRAINT nt_authority_pkey PRIMARY KEY (authority_name)
 );
 
+CREATE SEQUENCE public.nt_user_user_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
 CREATE TABLE public.nt_user
 (
-    user_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    user_id bigint NOT NULL DEFAULT nextval('nt_user_user_id_seq'::regclass),
+    username character varying(128) COLLATE pg_catalog."default" NOT NULL,
     password character varying(128) COLLATE pg_catalog."default" NOT NULL,
-    username character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    nickname character varying(20) COLLATE pg_catalog."default",
     email character varying(128) COLLATE pg_catalog."default",
     phone character varying(20) COLLATE pg_catalog."default",
     enabled boolean NOT NULL,
     created_date timestamp without time zone,
     modified_date timestamp without time zone,
-    CONSTRAINT nt_user_pkey PRIMARY KEY (user_id)
+    CONSTRAINT nt_user_pkey PRIMARY KEY (user_id),
+    CONSTRAINT uk_nx42foogoor2lh45qp0vanfwy UNIQUE (username)
 );
 
 CREATE TABLE public.nt_user_authority
 (
-    user_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    user_id bigint NOT NULL,
     authority_name character varying(20) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT nt_user_authority_pkey PRIMARY KEY (user_id, authority_name),
     CONSTRAINT fko7qe720jmjmwso354pd23oy85 FOREIGN KEY (user_id)

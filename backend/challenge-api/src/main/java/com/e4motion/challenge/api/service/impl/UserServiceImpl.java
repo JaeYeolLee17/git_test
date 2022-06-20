@@ -32,20 +32,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto create(UserDto userDto) {
 
-    	userRepository.findByUserId(userDto.getUserId())
+    	userRepository.findByUsername(userDto.getUsername())
 				.ifPresent(user -> {
-					throw new UserDuplicateException(UserDuplicateException.USER_ID_ALREADY_EXISTS);
+					throw new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS);
 				});
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		userDto.setEnabled(true);
-		User user = userMapper.toUser(userDto);
 
-        return userMapper.toUserDto(userRepository.save(user));
+		User saved = userRepository.save(userMapper.toUser(userDto));
+		entityManager.flush();
+
+        return userMapper.toUserDto(saved);
     }
     
     @Transactional
-    public UserDto update(String userId, UserUpdateDto userUpdateDto) {
+    public UserDto update(Long userId, UserUpdateDto userUpdateDto) {
 
     	return userRepository.findByUserId(userId)
 				.map(user -> {
@@ -60,12 +62,20 @@ public class UserServiceImpl implements UserService {
 						user.setUsername(userUpdateDto.getUsername());
 					}
 
+					if (userUpdateDto.getNickname() != null) {
+						user.setNickname(userUpdateDto.getNickname());
+					}
+
 					if (userUpdateDto.getEmail() != null) {
 						user.setEmail(userUpdateDto.getEmail());
 					}
 
 					if (userUpdateDto.getPhone() != null) {
 						user.setPhone(userUpdateDto.getPhone());
+					}
+
+					if (userUpdateDto.getEnabled() != null) {
+						user.setEnabled(userUpdateDto.getEnabled());
 					}
 
 					if (userUpdateDto.getAuthority() != null) {
@@ -79,17 +89,17 @@ public class UserServiceImpl implements UserService {
 
 					return userMapper.toUserDto(saved);
 				})
-				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USER_ID));
+				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USERNAME));
     }
 
     @Transactional
-    public void delete(String userId) {
+    public void delete(Long userId) {
     	
     	userRepository.deleteByUserId(userId);
     }
     
     @Transactional(readOnly = true)
-    public UserDto get(String userId) {
+    public UserDto get(Long userId) {
     	
         return userMapper.toUserDto(userRepository.findByUserId(userId).orElse(null));
     }

@@ -17,13 +17,15 @@ import javax.validation.constraints.Pattern;
 public class UserUpdateDto {
 
     @NullOrNotBlank
-    private String oldPassword;
-
-    @Pattern(regexp = RegExp.strongPw)
-    private String newPassword;
+    private String username;
 
     @NullOrNotBlank
-    private String username;
+    private String oldPassword;
+
+    @Pattern(regexp = RegExp.strongPassword)
+    private String newPassword;
+
+    private String nickname;
 
     @Email
     private String email;

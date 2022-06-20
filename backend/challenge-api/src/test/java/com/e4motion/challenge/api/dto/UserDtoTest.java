@@ -56,18 +56,37 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateUserId_Create() throws Exception {
+    public void validateUsername_Create() throws Exception {
 
         UserDto userDto = TestHelper.getUserDto1();
 
-        userDto.setUserId(null);
+        userDto.setUsername(null);
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUserId("");
+        userDto.setUsername("");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUserId(" ");
+        userDto.setUsername(" ");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void validateUsername_Update() throws Exception {
+
+        UserDto userDto = TestHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+
+        doReturn(userDto).when(userService).update(any(), any());
+
+        userUpdateDto.setUsername(null);
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+
+        userUpdateDto.setUsername("");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setUsername(" ");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -146,37 +165,39 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateUsername_Create() throws Exception {
+    public void validateNickname_Create() throws Exception {
 
         UserDto userDto = TestHelper.getUserDto1();
 
-        userDto.setUsername(null);
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        doReturn(userDto).when(userService).create(any());
 
-        userDto.setUsername("");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE,null);
+        userDto.setNickname(null);
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setUsername(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userDto.setNickname("");
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+
+        userDto.setNickname(" ");
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateUsername_Update() throws Exception {
+    public void validateNickname_Update() throws Exception {
 
         UserDto userDto = TestHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
 
-        userUpdateDto.setUsername(null);
+        userUpdateDto.setNickname(null);
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userUpdateDto.setUsername("");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE,null);
+        userUpdateDto.setNickname("");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userUpdateDto.setUsername(" ");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userUpdateDto.setNickname(" ");
+        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
     }
 
@@ -337,7 +358,7 @@ class UserDtoTest {
                 });
     }
 
-    private void assertUpdate(String userId, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+    private void assertUpdate(Long userId, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
         String uri = "/v2/user/" + userId;
 

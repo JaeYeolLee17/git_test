@@ -9,7 +9,7 @@ public class UserNotFoundException extends CustomException {
 	
 	public static final String CODE = "NONEXISTENT_USER";
 
-	public static final String INVALID_USER_ID = "Invalid user id";
+	public static final String INVALID_USERNAME = "Invalid username";
 
 	public UserNotFoundException(String message) {
 		super(CODE, message);

@@ -11,9 +11,13 @@ public interface UserRepository extends JpaRepository<User, String> {
 	
 	@Transactional(readOnly = true)
 	@EntityGraph(attributePaths = "authorities")
-	Optional<User> findByUserId(String userId);
+	Optional<User> findByUserId(Long userId);
+
+	@Transactional(readOnly = true)
+	@EntityGraph(attributePaths = "authorities")
+	Optional<User> findByUsername(String username);
 	
 	@Transactional
-	void deleteByUserId(String userId);
+	void deleteByUserId(Long userId);
 	
 }

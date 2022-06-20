@@ -38,20 +38,25 @@ public class JwtTokenProvider {
     	      this.secret = Base64.getEncoder().encodeToString(secret.getBytes());
     	      this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
-    
+
     public String createToken(Authentication authentication) {
-    	String authorities = authentication.getAuthorities().stream()
-    	         .map(GrantedAuthority::getAuthority)
-    	         .collect(Collectors.joining(","));
-    	
-    	long now = (new Date()).getTime();
-    	Date validity = new Date(now + tokenValidityInMilliseconds);
-    	      
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        long now = (new Date()).getTime();
+        Date validity = new Date(now + tokenValidityInMilliseconds);
+
+        return createToken(authentication.getName(), authorities, validity);
+    }
+
+    public String createToken(String subject, String authorities, Date expiredDate) {
+
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(subject)
                 .claim(AUTHORITIES_KEY, authorities)
                 .setIssuedAt(new Date())
-                .setExpiration(validity)
+                .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }

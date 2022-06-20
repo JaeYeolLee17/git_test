@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Data
@@ -13,10 +14,10 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class LoginDto {
 
-    @NotEmpty
-    private String userId;
+    @NotBlank
+    private String username;
 
-    @NotEmpty
+    @NotBlank
     private String password;
     
 }

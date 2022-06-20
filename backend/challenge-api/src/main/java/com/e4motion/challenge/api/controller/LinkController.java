@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @Tag(name = "6. Link")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "v1")
+@RequestMapping(path = "v2")
 public class LinkController {
 
     private final LinkService linkService;

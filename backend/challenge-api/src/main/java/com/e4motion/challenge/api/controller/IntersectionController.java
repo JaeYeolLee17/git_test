@@ -1,6 +1,5 @@
 package com.e4motion.challenge.api.controller;
 
-import com.e4motion.challenge.api.dto.CameraDto;
 import com.e4motion.challenge.api.dto.IntersectionDto;
 import com.e4motion.challenge.api.service.IntersectionService;
 import com.e4motion.challenge.common.response.Response;
@@ -16,7 +15,7 @@ import javax.validation.Valid;
 @Tag(name = "4. Intersection")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "v1")
+@RequestMapping(path = "v2")
 public class IntersectionController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

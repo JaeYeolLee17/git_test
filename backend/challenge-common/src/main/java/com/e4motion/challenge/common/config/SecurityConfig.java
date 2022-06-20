@@ -90,8 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	    .antMatchers(format("%s/**", actuatorPath)).permitAll()	// TODO: apply secure.
                 .antMatchers(format("%s/**", apiDocsPath)).permitAll()	// TODO: apply secure.
                 .antMatchers(format("%s/**", swaggerPath)).permitAll()	// TODO: apply secure.
-                .antMatchers("/v1/login").permitAll()
-                .antMatchers("/v1/camera/login").permitAll()
+                .antMatchers("/v2/login").permitAll()
+                .antMatchers("/v2/camera/login").permitAll()
         	    .anyRequest().authenticated()
 
         	    .and()

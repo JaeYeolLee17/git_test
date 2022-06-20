@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		return userRepository.findByUserId(username)
 				.map(user -> createUser(user))
-				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USER_ID));
+				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USERNAME));
 	}
 
 	private UserDetails createUser(User user) {

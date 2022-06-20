@@ -88,9 +88,9 @@ public class AuthControllerTest extends HBaseMockBaseTest {
 		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 		
-		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USER_ID)).when(userDetailsService).loadUserByUsername(userId);
+		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(userId);
 		
-		assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USER_ID);
+		assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USERNAME);
 	}
 	
 	private void assertLogin(String userId, String password,

@@ -9,7 +9,7 @@ public class UserDuplicateException extends CustomException {
 	
 	public static final String CODE = "ALREADY_EXISTENT_USER";
 
-	public static final String USER_ID_ALREADY_EXISTS = "User id already exists";
+	public static final String USERNAME_ALREADY_EXISTS = "Username already exists";
 
 	public UserDuplicateException(String message) {
 		super(CODE, message);

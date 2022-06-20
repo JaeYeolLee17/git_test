@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @Tag(name = "3. Camera")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "v1")
+@RequestMapping(path = "v2")
 public class CameraController {
 
     private final CameraService cameraService;

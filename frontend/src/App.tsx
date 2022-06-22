@@ -12,6 +12,12 @@ import StatTraffic from "./pages/StatTraffic";
 import Login from "./pages/Login";
 import DashboardLayout from "./layout/DashboardLayout";
 
+// declare global {
+//     interface Window {
+//         kakao: any;
+//     }
+// }
+
 // type Props = {
 //   children: React.ReactElement<any>;
 //   // any props that come into the component

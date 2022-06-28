@@ -27,7 +27,7 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
     );
 
     const data = useMemo(() => {
-        let defaultData = [
+        const defaultData = [
             {
                 category: String.chart_veh_pass,
                 today: 0,

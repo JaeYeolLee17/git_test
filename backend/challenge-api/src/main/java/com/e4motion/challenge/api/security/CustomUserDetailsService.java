@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(final String username) {
 
 		return userRepository.findByUsername(username)
-				.map(user -> createUser(user))
+				.map(this::createUser)
 				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USERNAME));
 	}
 

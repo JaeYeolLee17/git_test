@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.dto;
 
 import com.e4motion.challenge.api.TestHelper;
+import com.e4motion.challenge.api.security.SecurityHelper;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
@@ -30,6 +32,9 @@ class UserDtoTest {
 
     @MockBean
     UserService userService;
+
+    @MockBean
+    SecurityHelper securityHelper;
 
     @Test
     @WithMockUser(roles = "ADMIN")
@@ -50,6 +55,7 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
@@ -78,6 +84,7 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
         userUpdateDto.setUsername(null);
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
@@ -125,6 +132,7 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
         String oldPassword = userUpdateDto.getOldPassword();
 
@@ -189,6 +197,7 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
         userUpdateDto.setNickname(null);
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
@@ -236,6 +245,7 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
         userUpdateDto.setEmail(null);
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
@@ -291,6 +301,7 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
         userUpdateDto.setPhone(null);
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
@@ -329,6 +340,7 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
         userUpdateDto.setAuthority(null);
         assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);

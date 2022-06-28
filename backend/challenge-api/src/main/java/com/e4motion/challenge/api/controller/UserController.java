@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.api.dto.UserUpdateDto;
+import com.e4motion.challenge.api.security.SecurityHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 public class UserController {
     
 	private final UserService userService;
+    private final SecurityHelper securityHelper;
 
     @Operation(summary = "회원 추가", description = "접근 권한 : 관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
@@ -42,7 +44,8 @@ public class UserController {
     @PutMapping("/user/{userId}")
     public Response update(@PathVariable Long userId, @Valid @RequestBody UserUpdateDto userUpdateDto) throws Exception {
 
-        // TODO: 사용자(자기 자신만) 처리.
+        securityHelper.checkIfLoginUserForRoleUser(userId);
+
 		return new Response("user", userService.update(userId, userUpdateDto));
     }
 
@@ -61,7 +64,8 @@ public class UserController {
 	@GetMapping("/user/{userId}")
     public Response get(@PathVariable Long userId) throws Exception {
 
-        // TODO: 사용자(자기 자신만) 처리.
+        securityHelper.checkIfLoginUserForRoleUser(userId);
+
 		return new Response("user", userService.get(userId));
     }
 

@@ -42,12 +42,12 @@ public class UserServiceTest {
 	UserMapper userMapper;
 	
     @Mock
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
 	@Mock
 	EntityManager entityManager;
 
-    private UserService userService;
+    UserService userService;
 	
 	@BeforeEach 
 	void setup() { 

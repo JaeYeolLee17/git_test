@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import KakaoMap from "./KakaoMap";
 
 import * as Utils from "../utils/utils";
+import * as Common from "../commons/common";
 import * as Request from "../commons/request";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios, useInterval } from "../utils/customHooks";
@@ -12,34 +13,46 @@ function DashboardMap({
     currentRegionInfo,
     intersections,
     onChangedSelectedItem,
-}: {currentRegionInfo: RegionInfo; intersections: }) {
+}: {
+    currentRegionInfo: Common.RegionInfo;
+    intersections: { listIntersections: any[]; selectedIntersectionId: string };
+    onChangedSelectedItem: ({
+        cameraId,
+        intersectionId,
+    }: {
+        cameraId: string | null;
+        intersectionId: string;
+    }) => void;
+}) {
     const userDetails = useAuthState();
 
-    const [listCamera, setListCamera] = useState([]);
-    const [selectedCameraId, setSelectedCameraId] = useState("");
+    const [listCamera, setListCamera] = useState<Array<any>>([]);
+    const [selectedCameraId, setSelectedCameraId] = useState<string | null>("");
 
-    const [selectedIntersectionId, setSelectedIntersectionId] = useState("");
+    const [selectedIntersectionId, setSelectedIntersectionId] =
+        useState<string>("");
 
-    const [listLink, setListLink] = useState([]);
+    const [listLink, setListLink] = useState<Array<any>>([]);
 
-    const [listTrafficLights, setListTrafficLights] = useState([]);
-    const [blinkTrafficLights, setBlinkTrafficLights] = useState(false);
+    const [listTrafficLights, setListTrafficLights] = useState<Array<any>>([]);
+    const [blinkTrafficLights, setBlinkTrafficLights] =
+        useState<boolean>(false);
 
-    const [listAvlDatas, setListAvlDatas] = useState([]);
-    const [selectedAvl, setSelectedAvl] = useState("");
+    const [listAvlDatas, setListAvlDatas] = useState<Array<any>>([]);
+    const [selectedAvl, setSelectedAvl] = useState<string>("");
 
-    const [showRegion, setShowRegion] = useState(true);
-    const [showCameras, setShowCameras] = useState(true);
-    const [showLinks, setShowLinks] = useState(true);
-    const [showTrafficLights, setShowTrafficLights] = useState(true);
-    const [showAvlDatas, setShowAvlDatas] = useState(true);
+    const [showRegion, setShowRegion] = useState<boolean>(true);
+    const [showCameras, setShowCameras] = useState<boolean>(true);
+    const [showLinks, setShowLinks] = useState<boolean>(true);
+    const [showTrafficLights, setShowTrafficLights] = useState<boolean>(true);
+    const [showAvlDatas, setShowAvlDatas] = useState<boolean>(true);
 
-    const [streamIntersectionCameras, setStreamIntersectionCameras] = useState(
-        []
-    );
+    const [streamIntersectionCameras, setStreamIntersectionCameras] = useState<
+        Array<any>
+    >([]);
 
     const requestData = () => {
-        let now = new Date();
+        const now = new Date();
         if (now.getSeconds() === 0) {
             requestCameras();
             requestLink();
@@ -54,6 +67,9 @@ function DashboardMap({
     }, 1000);
 
     const requestAxiosCameras = async () => {
+        if (userDetails === null) return null;
+        if (userDetails?.token === null) return null;
+
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
             Request.CAMERA_URL
         );
@@ -94,15 +110,18 @@ function DashboardMap({
     // };
 
     const requestAxiosLink = async () => {
-        var now = new Date();
-        var nowMinute = now.getMinutes();
-        var offsetMinute = nowMinute % 15;
+        const now = new Date();
+        const nowMinute = now.getMinutes();
+        const offsetMinute = nowMinute % 15;
 
-        var end = new Date(now.getTime() - offsetMinute * (60 * 1000));
-        let endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
+        const end = new Date(now.getTime() - offsetMinute * (60 * 1000));
+        const endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
 
-        var start = new Date(end.getTime() - 15 * (60 * 1000));
-        let startTime = Utils.utilFormatDateYYYYMMDDHHmm00(start);
+        const start = new Date(end.getTime() - 15 * (60 * 1000));
+        const startTime = Utils.utilFormatDateYYYYMMDDHHmm00(start);
+
+        if (userDetails === null) return null;
+        if (userDetails?.token === null) return null;
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
             Request.STAT_LINK_URL,
@@ -167,6 +186,9 @@ function DashboardMap({
     // };
 
     const requestAxiosTrafficLight = async () => {
+        if (userDetails === null) return null;
+        if (userDetails?.token === null) return null;
+
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
             Request.TSI_URL
         );
@@ -210,6 +232,9 @@ function DashboardMap({
     // };
 
     const requestAxiosAvlDatas = async () => {
+        if (userDetails === null) return null;
+        if (userDetails?.token === null) return null;
+
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
             Request.AVL_URL
         );
@@ -309,7 +334,7 @@ function DashboardMap({
         );
     }, [selectedIntersectionId]);
 
-    const handleClickCamera = (cameraId, intersectionId) => {
+    const handleClickCamera = (cameraId: string, intersectionId: string) => {
         setSelectedCameraId(cameraId);
         setSelectedIntersectionId(intersectionId);
 
@@ -332,7 +357,7 @@ function DashboardMap({
         //console.log("intersectionId", intersectionId);
     };
 
-    const handleClickIntersection = (intersectionId) => {
+    const handleClickIntersection = (intersectionId: string) => {
         //console.log("intersectionId", intersectionId);
         setSelectedCameraId(null);
         setSelectedIntersectionId(intersectionId);
@@ -345,23 +370,23 @@ function DashboardMap({
         }
     };
 
-    const onClickRegion = (e) => {
+    const onClickRegion = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowRegion(!showRegion);
     };
 
-    const onClickCamera = (e) => {
+    const onClickCamera = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowCameras(!showCameras);
     };
 
-    const onClickLinks = (e) => {
+    const onClickLinks = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowLinks(!showLinks);
     };
 
-    const onClickTrafficLight = (e) => {
+    const onClickTrafficLight = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowTrafficLights(!showTrafficLights);
     };
 
-    const onClickAvl = (e) => {
+    const onClickAvl = (e: React.MouseEvent<HTMLButtonElement>) => {
         setShowAvlDatas(!showAvlDatas);
     };
 

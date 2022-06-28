@@ -29,7 +29,7 @@ export type KakaoMapIntersectionsType = {
 export type KakaoMapCamerasType = {
     list: any[];
     isShow: boolean;
-    selected: string;
+    selected: string | null;
     clickEvent: (cameraId: string, intersectionId: string) => void;
 };
 

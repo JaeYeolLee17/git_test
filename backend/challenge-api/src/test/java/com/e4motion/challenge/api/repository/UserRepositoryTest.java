@@ -25,9 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserRepositoryTest {
 
 	@Autowired
-	private UserRepository userRepository;
+	UserRepository userRepository;
 	
-	private User savedUser;
+	User savedUser;
 	
 	@BeforeEach
 	void setUp() throws Exception {

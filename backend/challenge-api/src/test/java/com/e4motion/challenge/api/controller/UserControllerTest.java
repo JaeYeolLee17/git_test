@@ -3,6 +3,7 @@ package com.e4motion.challenge.api.controller;
 import com.e4motion.challenge.api.TestHelper;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
+import com.e4motion.challenge.api.security.SecurityHelper;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
@@ -38,6 +39,9 @@ public class UserControllerTest {
 	@MockBean
 	UserService userService;
 
+	@MockBean
+	SecurityHelper securityHelper;
+
 	@Test
 	public void getWithoutRole() throws Exception {
 		assertGet(TestHelper.getUserDto1().getUserId(), true, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
@@ -48,6 +52,7 @@ public class UserControllerTest {
 	public void getWithAdminRole() throws Exception {
 		UserDto userDto = TestHelper.getUserDto1();
 		doReturn(userDto).when(userService).get(userDto.getUserId());
+		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
 		assertGet(userDto.getUserId(), true, HttpStatus.OK, Response.OK, null, null);
 	}
@@ -57,6 +62,7 @@ public class UserControllerTest {
 	public void getWithManagerRole() throws Exception {
 		UserDto userDto = TestHelper.getUserDto1();
 		doReturn(userDto).when(userService).get(userDto.getUserId());
+		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
 		assertGet(userDto.getUserId(), true, HttpStatus.OK, Response.OK, null, null);
 	}
@@ -66,18 +72,20 @@ public class UserControllerTest {
 	public void getWithUserRole() throws Exception {
 		UserDto userDto = TestHelper.getUserDto1();
 		doReturn(userDto).when(userService).get(userDto.getUserId());
+		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
 		assertGet(userDto.getUserId(), true, HttpStatus.OK, Response.OK, null, null);
 
-		// TODO: 사용자(자기 자신만) 처리
-		//assertGet("other-user", false, HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+		doThrow(new InaccessibleException(InaccessibleException.ACCESS_DENIED)).when(securityHelper).checkIfLoginUserForRoleUser(10L);
+		assertGet(10L, false, HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	public void getWithUserRoleWithNonexistentUserId() throws Exception {	// Nonexistent user id
 		UserDto userDto = TestHelper.getUserDto1();
 		doReturn(null).when(userService).get(userDto.getUserId());
+		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
 		assertGet(userDto.getUserId(), false, HttpStatus.OK, Response.OK, null, null);
 	}
@@ -239,6 +247,7 @@ public class UserControllerTest {
 		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
 		doReturn(userDto).when(userService).update(any(), any());
+		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
 		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 	}
@@ -261,6 +270,7 @@ public class UserControllerTest {
 		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
 		doReturn(userDto).when(userService).update(any(), any());
+		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
 		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 	}
@@ -271,8 +281,13 @@ public class UserControllerTest {
 		UserDto userDto = TestHelper.getUserDto2();
 		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
 
-		// TODO: 사용자(자기 자신만) 처리
-		//assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+		doReturn(userDto).when(userService).update(any(), any());
+		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+
+		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+
+		doThrow(new InaccessibleException(InaccessibleException.ACCESS_DENIED)).when(securityHelper).checkIfLoginUserForRoleUser(10L);
+		assertUpdate(10L, userUpdateDto, HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 	
 	private void assertUpdate(Long userId, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {

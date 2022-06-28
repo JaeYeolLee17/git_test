@@ -74,4 +74,26 @@ public class TestHelper {
                 .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
                 .build();
     }
+
+    public static UserDto getAdminUserDto() {
+        return UserDto.builder()
+                .userId(3L)
+                .username("admin")
+                .password("challenge1123!")
+                .nickname("adminname1")
+                .enabled(true)
+                .authority(AuthorityName.ROLE_ADMIN)
+                .build();
+    }
+
+    public static UserDto getManagerUserDto() {
+        return UserDto.builder()
+                .userId(4L)
+                .username("manager")
+                .password("challenge1123!")
+                .nickname("managername1")
+                .enabled(true)
+                .authority(AuthorityName.ROLE_MANAGER)
+                .build();
+    }
 }

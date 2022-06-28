@@ -5,11 +5,8 @@ import com.e4motion.challenge.common.exception.customexception.InvalidParamExcep
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
-import com.e4motion.challenge.data.common.dto.LaneDataDto;
-import com.e4motion.challenge.data.common.dto.TrafficDataDto;
-import com.e4motion.challenge.data.provider.HBaseMockBaseTest;
-import com.e4motion.challenge.data.provider.dto.DataDto;
-import com.e4motion.challenge.data.provider.dto.DataListDto;
+import com.e4motion.challenge.data.provider.HBaseMockTest;
+import com.e4motion.challenge.data.provider.TestDataHelper;
 import com.e4motion.challenge.data.provider.service.DataService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +20,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.any;
@@ -33,7 +28,7 @@ import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DataControllerTest extends HBaseMockBaseTest {
+class DataControllerTest extends HBaseMockTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -43,28 +38,28 @@ class DataControllerTest extends HBaseMockBaseTest {
 
     @Test
     public void queryWithoutRole() throws Exception {
-        assertQuery(getGoodHashMap(),
+        assertQuery(TestDataHelper.getQueryHashMap(),
                 HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void queryWithAdminRole() throws Exception {
-        assertQuery(getGoodHashMap(),
+        assertQuery(TestDataHelper.getQueryHashMap(),
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
     @WithMockUser(roles = "CAMERA")
     public void queryWithCameraRole() throws Exception {
-        assertQuery(getGoodHashMap(),
+        assertQuery(TestDataHelper.getQueryHashMap(),
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
     @WithMockUser(roles = "DATA")
     public void queryWithDataRole() throws Exception {
-        assertQuery(getGoodHashMap(), HttpStatus.OK, Response.OK, null, null);
+        assertQuery(TestDataHelper.getQueryHashMap(), HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -72,7 +67,7 @@ class DataControllerTest extends HBaseMockBaseTest {
     public void validateQueryParam() throws Exception {
 
         // startTime
-        HashMap<String, Object> map = getGoodHashMap();
+        HashMap<String, Object> map = TestDataHelper.getQueryHashMap();
         map.remove("startTime");                // missing
         assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
@@ -80,7 +75,7 @@ class DataControllerTest extends HBaseMockBaseTest {
         assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // endTime
-        map = getGoodHashMap();
+        map = TestDataHelper.getQueryHashMap();
         map.remove("endTime");                  // missing
         assertQuery(map, HttpStatus.OK, Response.OK, null, null);
 
@@ -88,7 +83,7 @@ class DataControllerTest extends HBaseMockBaseTest {
         assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // limit
-        map = getGoodHashMap();
+        map = TestDataHelper.getQueryHashMap();
         map.remove("limit");        // missing
         assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
@@ -102,73 +97,19 @@ class DataControllerTest extends HBaseMockBaseTest {
         assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // filterBy, filterId
-        map = getGoodHashMap();
+        map = TestDataHelper.getQueryHashMap();
         map.remove("filterBy");     // missing
         map.remove("filterId");
         assertQuery(map, HttpStatus.OK, Response.OK, null, null);
     }
 
-    private HashMap getGoodHashMap() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("startTime", "2022-04-01 12:00:00");
-        map.put("endTime", "2022-04-01 12:01:00");
-        map.put("limit", 1);
-        map.put("filterBy", "camera");
-        map.put("filterId", "C0001");
-        return map;
-    }
-
-    private DataListDto getDataListDto() {
-        List<LaneDataDto> ld = new ArrayList<>();
-        ld.add(LaneDataDto.builder()
-                .ln(1)
-                .qml(5)
-                .qm(new Integer[5])
-                .qal(6.3f)
-                .qa(new Float[5] )
-                .s(new Integer[5])
-                .l(new Integer[5])
-                .r(new Integer[5])
-                .build());
-
-        TrafficDataDto td = TrafficDataDto.builder()
-                .st("2022-04-01 11:59:00")
-                .et("2022-04-01 12:00:00")
-                .p(1)
-                .u(new Integer[5])
-                .ld(ld)
-                .build();
-
-        List<DataDto> dataDto = new ArrayList<>();
-        dataDto.add(DataDto.builder()
-                .v("1.0")
-                .c("C0001")
-                .i("I0001")
-                .r("R01")
-                .t("2022-04-01 12:00:00")
-                .td(td)
-                .build());
-        dataDto.add(DataDto.builder()
-                .v("1.0")
-                .c("C0001")
-                .i("I0001")
-                .r("R01")
-                .t("2022-04-01 12:01:00")
-                .td(td)
-                .build());
-
-        return DataListDto.builder()
-                .nextTime("2022-04-01 12:00:00 C0001 I0001 R01")
-                .data(dataDto)
-                .build();
-    }
-
     private void assertQuery(HashMap map,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        doReturn(getDataListDto()).when(dataService).query(any());
+        doReturn(TestDataHelper.getDataListDto()).when(dataService).query(any());
 
-        String uri = "/v1/data?";
+        String uri = "/v2/data?";
+
         if (map.get("startTime") != null) {
             uri += ("startTime=" + map.get("startTime"));
         }

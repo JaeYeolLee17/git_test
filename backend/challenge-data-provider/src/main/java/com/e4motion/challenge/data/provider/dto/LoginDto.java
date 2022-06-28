@@ -1,22 +1,21 @@
 package com.e4motion.challenge.data.provider.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginDto {
 
-    @NotEmpty
-    private String userId;
+    @NotBlank
+    private String username;
 
-    @NotEmpty
+    @NotBlank
     private String password;
-    
+
 }

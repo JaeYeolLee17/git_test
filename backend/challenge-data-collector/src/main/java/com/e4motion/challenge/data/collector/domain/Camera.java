@@ -5,9 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "nt_camera")
 public class Camera {
@@ -18,8 +23,8 @@ public class Camera {
 
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
-   
-   	@Column(name = "settings_updated")
-   	private boolean settingsUpdated;
+
+	@Column(name = "settings_updated")
+	private Boolean settingsUpdated;
    
 }

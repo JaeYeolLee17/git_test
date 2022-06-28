@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.e4motion.challenge.api.TestHelper;
+import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +58,7 @@ public class UserServiceTest {
 	public void create() throws Exception {
 		
 		// given
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User newUser = userMapper.toUser(userDto);
@@ -78,7 +78,7 @@ public class UserServiceTest {
 	public void createDuplicateUser() throws Exception {
 		
 		// given
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User newUser = userMapper.toUser(userDto);
@@ -96,8 +96,8 @@ public class UserServiceTest {
    	public void update() throws Exception {
 		
 		// given
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User user = userMapper.toUser(userDto);
@@ -133,8 +133,8 @@ public class UserServiceTest {
 	public void updateWithInvalidOldPassword() throws Exception {
 
 		// given
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		userUpdateDto.setOldPassword("wrong old password...");
 
@@ -154,8 +154,8 @@ public class UserServiceTest {
    	public void updateNonexistentUser() throws Exception {
 		
 		// given		
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		doReturn(Optional.ofNullable(null)).when(userRepository).findByUserId(userDto.getUserId());
 
@@ -169,7 +169,7 @@ public class UserServiceTest {
 	@Test
    	public void delete() throws Exception {
 
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 
 		// given
 		doNothing().when(userRepository).deleteByUserId(userDto.getUserId());
@@ -184,7 +184,7 @@ public class UserServiceTest {
    	public void get() throws Exception {
 		
 		// given
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User user = userMapper.toUser(userDto);
@@ -202,9 +202,9 @@ public class UserServiceTest {
    	public void getList() throws Exception {
 		
 		// given
-		UserDto userDto1 = TestHelper.getUserDto1();
+		UserDto userDto1 = TestDataHelper.getUserDto1();
 		
-		UserDto userDto2 = TestHelper.getUserDto2();
+		UserDto userDto2 = TestDataHelper.getUserDto2();
 		
 		List<UserDto> userDtos = new ArrayList<>();
 		userDtos.add(userDto1);

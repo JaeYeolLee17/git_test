@@ -14,10 +14,10 @@ public class CustomUser extends User {
 
 	private boolean settingsUpdated;
    	
-   	public CustomUser(String cameraId, String password, boolean settingsUpdated, 
-   			Collection<? extends GrantedAuthority> grantedAuthorities) {
+   	public CustomUser(String cameraId, String password, boolean settingsUpdated,
+					  Collection<? extends GrantedAuthority> authorities) {
    		
-   		super(cameraId, password, grantedAuthorities);
+   		super(cameraId, password, authorities);
    		this.settingsUpdated = settingsUpdated;
    	}
 

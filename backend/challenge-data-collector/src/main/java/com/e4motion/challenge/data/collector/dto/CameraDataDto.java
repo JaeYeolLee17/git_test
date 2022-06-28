@@ -2,28 +2,24 @@ package com.e4motion.challenge.data.collector.dto;
 
 import com.e4motion.challenge.common.utils.RegExp;
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CameraDataDto {
 
-    @NotEmpty
+    @NotBlank
     private String v;
 
-    @NotEmpty
+    @NotBlank
     private String c;
 
     private String i;

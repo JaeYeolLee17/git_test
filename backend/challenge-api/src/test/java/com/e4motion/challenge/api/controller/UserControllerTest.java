@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.controller;
 
-import com.e4motion.challenge.api.TestHelper;
+import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.security.SecurityHelper;
@@ -44,13 +44,13 @@ public class UserControllerTest {
 
 	@Test
 	public void getWithoutRole() throws Exception {
-		assertGet(TestHelper.getUserDto1().getUserId(), true, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+		assertGet(TestDataHelper.getUserDto1().getUserId(), true, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 	}
 	
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void getWithAdminRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doReturn(userDto).when(userService).get(userDto.getUserId());
 		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
@@ -60,7 +60,7 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "MANAGER")
 	public void getWithManagerRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doReturn(userDto).when(userService).get(userDto.getUserId());
 		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
@@ -70,7 +70,7 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "USER")
 	public void getWithUserRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doReturn(userDto).when(userService).get(userDto.getUserId());
 		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
@@ -83,7 +83,7 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void getWithUserRoleWithNonexistentUserId() throws Exception {	// Nonexistent user id
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doReturn(null).when(userService).get(userDto.getUserId());
 		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
 
@@ -141,8 +141,8 @@ public class UserControllerTest {
 	
 	private void assertGetList(HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 		
-		UserDto userDto1 = TestHelper.getUserDto1();
-		UserDto userDto2 = TestHelper.getUserDto2();
+		UserDto userDto1 = TestDataHelper.getUserDto1();
+		UserDto userDto2 = TestDataHelper.getUserDto2();
 		
 		List<UserDto> userDtos = new ArrayList<>();
 		userDtos.add(userDto1);
@@ -172,13 +172,13 @@ public class UserControllerTest {
 	
 	@Test
 	public void createWithoutRole() throws Exception {
-		assertCreate(TestHelper.getUserDto1(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+		assertCreate(TestDataHelper.getUserDto1(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 	}
 	
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void createWithAdminRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doReturn(userDto).when(userService).create(any());
 
 		assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
@@ -187,7 +187,7 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void createWithAdminRoleWithDuplicateUser() throws Exception {	// create duplicate user
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doThrow(new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS)).when(userService).create(any());
 
 		assertCreate(userDto, HttpStatus.CONFLICT, Response.FAIL, UserDuplicateException.CODE, UserDuplicateException.USERNAME_ALREADY_EXISTS);
@@ -196,7 +196,7 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "MANAGER")
 	public void createWithManagerRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doReturn(userDto).when(userService).create(any());
 
 		assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
@@ -205,7 +205,7 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "USER")
 	public void createWithUserRole() throws Exception {
-		assertCreate(TestHelper.getUserDto1(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+		assertCreate(TestDataHelper.getUserDto1(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 
 	private void assertCreate(UserDto userDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
@@ -234,8 +234,8 @@ public class UserControllerTest {
 	
 	@Test
 	public void updateWithoutRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 	}
@@ -243,8 +243,8 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void updateWithAdminRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		doReturn(userDto).when(userService).update(any(), any());
 		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -255,8 +255,8 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void updateWithAdminRoleWithNonexistentUser() throws Exception {		// update nonexistent user
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userService).update(any(), any());
 
@@ -266,8 +266,8 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "MANAGER")
 	public void updateWithManagerRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		doReturn(userDto).when(userService).update(any(), any());
 		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -278,8 +278,8 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(roles = "USER")
 	public void updateWithUserRole() throws Exception {
-		UserDto userDto = TestHelper.getUserDto2();
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserDto userDto = TestDataHelper.getUserDto2();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
 		doReturn(userDto).when(userService).update(any(), any());
 		doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -316,29 +316,29 @@ public class UserControllerTest {
 	
 	@Test
 	public void deleteWithoutRole() throws Exception {
-		assertDelete(TestHelper.getUserDto2().getUserId(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+		assertDelete(TestDataHelper.getUserDto2().getUserId(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 	}
 	
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void deleteWithAdminRole() throws Exception {
-		assertDelete(TestHelper.getUserDto1().getUserId(), HttpStatus.OK, Response.OK, null, null);
-		assertDelete(TestHelper.getUserDto2().getUserId(), HttpStatus.OK, Response.OK, null, null);
+		assertDelete(TestDataHelper.getUserDto1().getUserId(), HttpStatus.OK, Response.OK, null, null);
+		assertDelete(TestDataHelper.getUserDto2().getUserId(), HttpStatus.OK, Response.OK, null, null);
 		assertDelete(3L, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
 	@WithMockUser(roles = "MANAGER")
 	public void deleteWithManagerRole() throws Exception {
-		assertDelete(TestHelper.getUserDto1().getUserId(), HttpStatus.OK, Response.OK, null, null);
-		assertDelete(TestHelper.getUserDto2().getUserId(), HttpStatus.OK, Response.OK, null, null);
+		assertDelete(TestDataHelper.getUserDto1().getUserId(), HttpStatus.OK, Response.OK, null, null);
+		assertDelete(TestDataHelper.getUserDto2().getUserId(), HttpStatus.OK, Response.OK, null, null);
 		assertDelete(3L, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
 	@WithMockUser(roles = "USER")
 	public void deleteWithUserRole() throws Exception {
-		assertDelete(TestHelper.getUserDto2().getUserId(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+		assertDelete(TestDataHelper.getUserDto2().getUserId(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 	
 	private void assertDelete(Long userId, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {

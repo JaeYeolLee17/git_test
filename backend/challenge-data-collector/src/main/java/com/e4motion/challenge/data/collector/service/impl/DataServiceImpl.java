@@ -18,7 +18,7 @@ public class DataServiceImpl implements DataService {
 
         dataRepository.insert(cameraDataDto);
 
-        // TODO: save stat to postgresql.
+        // TODO: save stat to postgresql. -> StatRepository
 
     }
 

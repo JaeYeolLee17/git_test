@@ -4,6 +4,7 @@ import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.DateTimeHelper;
 import com.e4motion.challenge.data.provider.dto.DataListDto;
 import com.e4motion.challenge.data.provider.service.DataService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,17 +20,18 @@ import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-@Tag(name = "2. Data")
+@Tag(name = "2. 교통 데이터")
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping(path = "v1")
+@RequestMapping(path = "v2")
 public class DataController {
 
     private final static int MAX_LIMIT = 100000;
 
     private final DataService dataService;
 
+    @Operation(summary = "데이터", description = "접근 권한 : 데이터 사용자")
     @PreAuthorize("hasRole('ROLE_DATA')")
     @GetMapping("/data")
     public Response query(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
@@ -39,9 +41,9 @@ public class DataController {
                           @RequestParam(value = "filterId", required = false) String filterId) {
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("startTime", startTime);
+        map.put("startTime", startTime.toString());
         if (endTime != null) {
-            map.put("endTime", endTime);
+            map.put("endTime", endTime.toString());
         }
         map.put("limit", limit);
         if (filterBy != null) {

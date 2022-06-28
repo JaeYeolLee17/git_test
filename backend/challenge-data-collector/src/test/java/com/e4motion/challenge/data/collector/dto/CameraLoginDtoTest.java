@@ -5,7 +5,7 @@ import com.e4motion.challenge.common.exception.customexception.CameraNotFoundExc
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
-import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
+import com.e4motion.challenge.data.collector.HBaseMockTest;
 import com.e4motion.challenge.data.collector.security.CustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CameraLoginDtoTest extends HBaseMockBaseTest {
+class CameraLoginDtoTest extends HBaseMockTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -46,56 +46,55 @@ class CameraLoginDtoTest extends HBaseMockBaseTest {
     @Test
     public void validateOk() throws Exception {
 
-        CameraLoginDto loginDto = getGoodLoginDto();
+        String cameraId = "C0012";
+        String password = "camera12!@";
 
-        doReturn(getUserDetails(loginDto.getCameraId(), loginDto.getPassword())).when(userDetailsService).loadUserByUsername(loginDto.getCameraId());
+        doReturn(getUserDetails(cameraId, password)).when(userDetailsService).loadUserByUsername(cameraId);
 
-        assertLogin(loginDto, HttpStatus.OK, Response.OK, null, null);
+        assertLogin(cameraId, password, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
     public void validateCameraId() throws Exception {
 
-        CameraLoginDto loginDto = getGoodLoginDto();
+        String cameraId = null;
+        String password = "camera12!@";
+        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setCameraId(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        cameraId = "";
+        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setCameraId("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        cameraId = " ";
+        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setCameraId(" ");
-        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(loginDto.getCameraId());
-        assertLogin(loginDto, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
+        cameraId = "not existent camera";
+        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(cameraId);
+        assertLogin(cameraId, password, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
     }
 
     @Test
     public void validatePassword() throws Exception {
 
-        CameraLoginDto loginDto = getGoodLoginDto();
+        String cameraId = "C0012";
+        String password = null;
+        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setPassword(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        password = "";
+        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setPassword("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        loginDto.setPassword(" ");
-        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(loginDto.getCameraId());
-        assertLogin(loginDto, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
+        password = " ";
+        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
-    private CameraLoginDto getGoodLoginDto() {
-        return CameraLoginDto.builder()
-                .cameraId("C0012")
-                .password("de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0")
-                .build();
-    }
-
-    private void assertLogin(CameraLoginDto loginDto,
+    private void assertLogin(String cameraId, String password,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        String uri = "/v1/camera/login";
+        String uri = "/v2/camera/login";
+
+        CameraLoginDto loginDto = CameraLoginDto.builder()
+                .cameraId(cameraId)
+                .password(password)
+                .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON)

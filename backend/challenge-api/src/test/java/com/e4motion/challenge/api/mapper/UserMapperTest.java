@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.mapper;
 
-import com.e4motion.challenge.api.TestHelper;
+import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserDto;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class UserMapperTest {
 	@Test
     public void toUserDto() {
 		
-		User user = TestHelper.getUser1();
+		User user = TestDataHelper.getUser1();
 		
 		UserDto userDto = mapper.toUserDto(user);
 		
@@ -28,8 +28,8 @@ public class UserMapperTest {
 	@Test
     public void toUserDtoList() {
 		
-		User user1 = TestHelper.getUser1();
-		User user2 = TestHelper.getUser2();
+		User user1 = TestDataHelper.getUser1();
+		User user2 = TestDataHelper.getUser2();
 		
 		List<User> users = new ArrayList<>();
 		users.add(user1);
@@ -49,7 +49,7 @@ public class UserMapperTest {
 	@Test
 	public void toUser() {
 
-		UserDto userDto = TestHelper.getUserDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 
 		User user = mapper.toUser(userDto);
 

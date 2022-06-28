@@ -37,6 +37,7 @@ public class AuthController {
     @Operation(summary = "로그인", description = "접근 권한 : 전체")
     @PostMapping("/login")
     public Response login(@Valid @RequestBody LoginDto loginDto) throws Exception {
+
     	UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 

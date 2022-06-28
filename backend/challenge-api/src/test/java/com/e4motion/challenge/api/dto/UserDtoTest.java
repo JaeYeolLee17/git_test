@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.dto;
 
-import com.e4motion.challenge.api.TestHelper;
+import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.security.SecurityHelper;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
@@ -40,7 +40,7 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateOk_Create() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         doReturn(userDto).when(userService).create(any());
 
@@ -51,8 +51,8 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateOk_Update() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -64,7 +64,7 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateUsername_Create() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         userDto.setUsername(null);
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
@@ -80,8 +80,8 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateUsername_Update() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -100,7 +100,7 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validatePassword_Create() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         userDto.setPassword(null);
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
@@ -128,8 +128,8 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validatePassword_Update() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -175,7 +175,7 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateNickname_Create() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         doReturn(userDto).when(userService).create(any());
 
@@ -193,8 +193,8 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateNickname_Update() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -214,7 +214,7 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateEmail_Create() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         doReturn(userDto).when(userService).create(any());
 
@@ -241,8 +241,8 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateEmail_Update() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -270,7 +270,7 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validatePhone_Create() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         doReturn(userDto).when(userService).create(any());
 
@@ -297,8 +297,8 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validatePhone_Update() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
@@ -326,7 +326,7 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateAuthority_Create() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         userDto.setAuthority(null);
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
@@ -336,8 +336,8 @@ class UserDtoTest {
     @WithMockUser(roles = "ADMIN")
     public void validateAuthority_Update() throws Exception {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());

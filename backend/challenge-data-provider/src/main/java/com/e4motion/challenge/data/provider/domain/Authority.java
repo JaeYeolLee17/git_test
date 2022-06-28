@@ -1,22 +1,22 @@
 package com.e4motion.challenge.data.provider.domain;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "nt_authority")
 public class Authority {
-	
+
 	@Id
-	@Column(name = "authority_name")
+	@Column(name = "authority_name", length = 20)
 	@Enumerated(EnumType.STRING)
 	private AuthorityName authorityName;
-   
+
 }

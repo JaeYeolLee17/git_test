@@ -26,8 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(final String username) {
 
-		return userRepository.findByUserId(username)
-				.map(user -> createUser(user))
+		return userRepository.findByUsername(username)
+				.map(this::createUser)
 				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USERNAME));
 	}
 
@@ -38,10 +38,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 				.collect(Collectors.toList());
 
 		return new CustomUser(user.getUserId(),
-				user.getPassword(),
 				user.getUsername(),
+				user.getPassword(),
+				user.getNickname(),
 				user.getEmail(),
 				user.getPhone(),
+				user.getEnabled(),
 				grantedAuthorities);
 	}
 

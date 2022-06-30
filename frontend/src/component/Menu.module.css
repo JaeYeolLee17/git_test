@@ -1,0 +1,72 @@
+.wrapper {
+    background: var(--menu);
+    height: calc(100% - 80px);
+}
+
+.menuListItem {
+    color: var(--table2);
+
+    padding: 12px 0px 12px 20px;
+
+    line-height: 28px;
+    vertical-align: middle;
+}
+.menuListItem:hover,
+.menuListItem:active {
+    background: var(--fontBlack2);
+}
+
+.menuListItemActive {
+    background: var(--fontBlack2);
+}
+
+.menuListDiv {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.menuLinkItem {
+    fill: #cccccc;
+}
+
+.menuLinkItem:active,
+.menuLinkItem:hover {
+    fill: #ffffff;
+}
+
+.menuLinkItemActive {
+    fill: #ffffff;
+}
+
+.menuLinkItemActive:visited,
+.menuLinkItem:visited {
+    color: var(--table2);
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 28px;
+    width: 28px;
+
+    margin-right: 8px;
+}
+
+.menuText {
+    display: inline-block;
+    font-family: "NotoSansCJKKR";
+    font-weight: 200;
+    font-size: 16px;
+    letter-spacing: -0.8px;
+
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.menuTextActive,
+.menuText:hover {
+    color: #ffffff;
+}

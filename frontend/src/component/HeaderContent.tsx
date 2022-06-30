@@ -6,9 +6,9 @@ import { useAuthDispatch } from "../provider/AuthProvider";
 
 import * as Common from "../commons/common";
 
-// import styles from "./HeaderContent.module.css";
-// import smartCityLogo from "../assets/images/header/logo_smartcitychallenge.png";
-// import daeguLogo from "../assets/images/header/logo_daegu.png";
+import styles from "./HeaderContent.module.css";
+import smartCityLogo from "../assets/images/logo_smartcitychallenge.png";
+import daeguLogo from "../assets/images/logo_daegu.png";
 
 const HeaderContent = () => {
     const [time, setTime] = useState<string>();
@@ -31,9 +31,24 @@ const HeaderContent = () => {
     }, 1000);
 
     return (
-        <header>
-            <Link to={Common.PAGE_DASHBOARD}>
-                <img alt='logo for smart city' />
+        <header className={styles.header}>
+            <Link to={Common.PAGE_DASHBOARD} className={styles.logoSection}>
+                <img
+                    className={styles.challengeLogo}
+                    src={smartCityLogo}
+                    alt='logo for smart city'
+                />
+                <div className={styles.appTitle}>
+                    <img
+                        className={styles.daeguLogo}
+                        src={daeguLogo}
+                        alt='logo for smart city'
+                    />
+                    <div>
+                        <span className={styles.blue}>AI</span>
+                        스마트교통관제플랫폼
+                    </div>
+                </div>
                 {/* <MediaQuery smallerThan='xs' styles={{ width: 0, opacity: 0 }}>
                     <div className={styles.appTitle}>
                         <img
@@ -49,7 +64,10 @@ const HeaderContent = () => {
                 </MediaQuery> */}
             </Link>
 
-            <div>
+            <div className={styles.rightSection}>
+                <div className={styles.timeBox}>
+                    <div>{date + " " + time}</div>
+                </div>
                 {/* <MediaQuery smallerThan='sm' styles={{ width: 0, opacity: 0 }}>
                     <div className={styles.timeBox}>
                         <div className={styles.time}>{date}</div>
@@ -63,7 +81,7 @@ const HeaderContent = () => {
                         <div className={styles.date}>{time}</div>
                     </div>
                 </MediaQuery> */}
-                <div>
+                <div className={styles.userBox}>
                     <div>
                         안녕하세요{" "}
                         {
@@ -73,7 +91,9 @@ const HeaderContent = () => {
                         }
                         님
                     </div>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button className={styles.logoutBtn} onClick={handleLogout}>
+                        Logout
+                    </button>
                 </div>
             </div>
         </header>

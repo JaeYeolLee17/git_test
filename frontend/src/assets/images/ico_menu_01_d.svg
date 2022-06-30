@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+    <defs>
+        <clipPath id="1tmq0k4jla">
+            <path data-name="사각형 2844" style="fill:current" d="M0 0h24v17.365H0z"/>
+        </clipPath>
+    </defs>
+    <g data-name="그룹 2531">
+        <g data-name="그룹 2533" style="clip-path:url(#1tmq0k4jla)" transform="translate(2 5.318)">
+            <path data-name="패스 1596" d="M22 5.942a.5.5 0 0 1 .5.5v8.923a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V6.442a.5.5 0 0 1 .5-.5zm0-1.5H2a2 2 0 0 0-2 2v8.923a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V6.442a2 2 0 0 0-2-2" style="fill:current"/>
+            <path data-name="패스 1597" d="M12 9.634a1.269 1.269 0 1 1-1.269 1.266A1.27 1.27 0 0 1 12 9.634m0-1.5a2.769 2.769 0 1 0 2.769 2.766A2.769 2.769 0 0 0 12 8.134" style="fill:current"/>
+            <path data-name="패스 1598" d="M5.5 9.634A1.269 1.269 0 1 1 4.229 10.9 1.27 1.27 0 0 1 5.5 9.634m0-1.5A2.769 2.769 0 1 0 8.267 10.9 2.769 2.769 0 0 0 5.5 8.134" style="fill:current"/>
+            <path data-name="패스 1599" d="M18.5 9.634a1.269 1.269 0 1 1-1.267 1.266A1.27 1.27 0 0 1 18.5 9.634m0-1.5a2.769 2.769 0 1 0 2.771 2.766A2.769 2.769 0 0 0 18.5 8.134" style="fill:current"/>
+            <path data-name="선 9" d="M20.308.75H0v-1.5h20.308z" transform="translate(1.846 .75)" style="fill:current"/>
+            <path data-name="선 10" d="M.75 3.692h-1.5V0h1.5z" transform="translate(17.037 .75)" style="fill:current"/>
+            <path data-name="선 11" d="M.75 3.692h-1.5V0h1.5z" transform="translate(6.963 .75)" style="fill:current"/>
+        </g>
+    </g>
+</svg>

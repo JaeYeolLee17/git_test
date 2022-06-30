@@ -1,1 +1,29 @@
+:root {
+    --pointMain: #1f5499;
+    --pointSub1: #0766b6;
+    --pointSub2: #4de1ff;
 
+    --menu: #262626;
+    --menuSub: #404040;
+    --content1: #ebebeb;
+    --content2: #f7f7f7;
+    --bgWhite: #ffffff;
+
+    --fontBlack1: #000;
+    --fontBlack2: #333;
+    --fontBlack3: #555;
+    --fontBlack4: #777;
+    --fontBlack5: #999;
+    --fontWhite: #fff;
+
+    --line1: #b3b3b3;
+    --line2: #e6e6e6;
+    --table1: #212121;
+    --table2: #aaa;
+    --table3: #ddd;
+}
+
+body {
+    font-family: "NotoSansCJKKR";
+    margin: 0;
+}

@@ -12,11 +12,11 @@ import * as Utils from "../utils/utils";
 
 import { useAsyncAxios } from "../utils/customHooks";
 
-// import "../assets/font/font.icon.css";
-// import styles from "./Login.module.css";
-// import loginIcon from "../assets/images/login/login_ico.png";
-// import daeguLogo from "../assets/images/login/logo_daegu.png";
-// import emgLogo from "../assets/images/login/logo_emg.png";
+import "../assets/font/font.css";
+import styles from "./Login.module.css";
+import loginIcon from "../assets/images/login_ico.png";
+import daeguLogo from "../assets/images/logo_daegu.png";
+import emgLogo from "../assets/images/logo_emg.png";
 
 const Login = () => {
     const dispatch = useAuthDispatch();
@@ -100,27 +100,27 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <section>
-                <div>
-                    <div>
+        <div className={styles.page}>
+            <section className={styles.left}>
+                <div className={styles.appNameWrapper}>
+                    <div className={styles.appName}>
                         대구광역시 <br />
                         AI 스마트교통관제플랫폼
                     </div>
                 </div>
-                <div>
-                    {/* <img src={daeguLogo} alt='daegu' />
-                    <img src={emgLogo} alt='emg' /> */}
+                <div className={styles.logos}>
+                    <img src={daeguLogo} alt='daegu' />
+                    <img src={emgLogo} alt='emg' />
                 </div>
             </section>
 
-            <section>
-                <div>
-                    {/* <img src={loginIcon} alt='login-icon' /> */}
+            <section className={styles.right}>
+                <div className={styles.loginCard}>
+                    <img src={loginIcon} alt='login-icon' />
                     <h1>로그인하기</h1>
                     <p>등록된 아이디ㆍ비밀번호를 입력하여 로그인해 주세요.</p>
                     <form onSubmit={handleSubmit}>
-                        <div>
+                        <div className={styles.formGroup}>
                             <label htmlFor='username'>아이디</label>
                             <input
                                 type='text'
@@ -134,7 +134,7 @@ const Login = () => {
                             />
                         </div>
 
-                        <div>
+                        <div className={styles.formGroup}>
                             <label htmlFor='password'>비밀번호</label>
                             <input
                                 type='password'
@@ -145,7 +145,7 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <button>로그인</button>
+                        <button className={styles.loginBtn}>로그인</button>
                     </form>
                 </div>
             </section>

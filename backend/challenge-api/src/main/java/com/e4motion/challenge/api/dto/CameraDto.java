@@ -1,16 +1,13 @@
 package com.e4motion.challenge.api.dto;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

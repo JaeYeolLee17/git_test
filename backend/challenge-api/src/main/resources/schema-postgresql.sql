@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS public.nt_camera CASCADE;
 DROP TABLE IF EXISTS public.nt_camera_road CASCADE;
 DROP TABLE IF EXISTS public.nt_camera_road_direction CASCADE;
 DROP TABLE IF EXISTS public.nt_camera_road_lane CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_user_user_id_seq CASCADE;
 
 CREATE TABLE public.nt_authority
 (
@@ -27,9 +28,9 @@ CREATE SEQUENCE public.nt_user_user_id_seq
 CREATE TABLE public.nt_user
 (
     user_id bigint NOT NULL DEFAULT nextval('nt_user_user_id_seq'::regclass),
-    username character varying(128) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(32) COLLATE pg_catalog."default" NOT NULL,
     password character varying(128) COLLATE pg_catalog."default" NOT NULL,
-    nickname character varying(20) COLLATE pg_catalog."default",
+    nickname character varying(32) COLLATE pg_catalog."default",
     email character varying(128) COLLATE pg_catalog."default",
     phone character varying(20) COLLATE pg_catalog."default",
     enabled boolean NOT NULL,

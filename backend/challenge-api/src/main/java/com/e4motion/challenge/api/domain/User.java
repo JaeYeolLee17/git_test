@@ -21,13 +21,13 @@ public class User extends BaseTimeEntity {
 	@Column(name = "user_id")
 	private Long userId;
 
-	@Column(name = "username", length = 128, unique = true, nullable = false)
+	@Column(name = "username", length = 32, unique = true, nullable = false)
 	private String username;
 
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 
-	@Column(name = "nickname", length = 20)
+	@Column(name = "nickname", length = 32)
 	private String nickname;
 
 	@Column(name = "email", length = 128)

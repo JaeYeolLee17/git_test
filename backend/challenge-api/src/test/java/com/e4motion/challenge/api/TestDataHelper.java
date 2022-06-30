@@ -8,7 +8,7 @@ import com.e4motion.challenge.common.domain.AuthorityName;
 
 import java.util.Collections;
 
-public class TestHelper {
+public class TestDataHelper {
 
     public static UserDto getUserDto1() {
         return UserDto.builder()

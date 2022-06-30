@@ -3,7 +3,8 @@ package com.e4motion.challenge.data.collector.controller;
 import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
-import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
+import com.e4motion.challenge.data.collector.HBaseMockTest;
+import com.e4motion.challenge.data.collector.TestDataHelper;
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DataControllerTest extends HBaseMockBaseTest {
+class DataControllerTest extends HBaseMockTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -45,35 +46,35 @@ class DataControllerTest extends HBaseMockBaseTest {
 
     @Test
     public void insertWithoutRole() throws Exception {
-        assertInsert(getDataDto(), false,
+        assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void insertWithAdminRole() throws Exception {
-        assertInsert(getDataDto(), false,
+        assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
     @WithMockUser(roles = "MANAGER")
     public void insertWithManagerRole() throws Exception {
-        assertInsert(getDataDto(), false,
+        assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
     @WithMockUser(roles = "USER")
     public void insertWithUserRole() throws Exception {
-        assertInsert(getDataDto(), false,
+        assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
     @WithMockUser(roles = "DATA")
     public void insertWithDataRole() throws Exception {
-        assertInsert(getDataDto(), false,
+        assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
@@ -81,7 +82,7 @@ class DataControllerTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRole() throws Exception {
 
-        CameraDataDto dataDto = getDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
 
         doNothing().when(dataService).insert(dataDto);
         doReturn(true).when(cameraService).getSettingsUpdated(dataDto.getC());
@@ -96,7 +97,8 @@ class DataControllerTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRoleWithNonexistentCamera() throws Exception {
 
-        CameraDataDto dataDto = getDataDto();
+        // TODO: insert 시 로그인 카메라가 자기 자신인지 체크한다면 camera not found 뜨기 전에 권한 없음이 뜰 것이다. 처리!!!
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
 
         doNothing().when(dataService).insert(dataDto);
 
@@ -106,42 +108,10 @@ class DataControllerTest extends HBaseMockBaseTest {
         assertInsert(dataDto, false, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE,CameraNotFoundException.INVALID_CAMERA_ID);
     }
 
-    private CameraDataDto getDataDto() {
-        List<LaneDataDto> ld = new ArrayList<>();
-        ld.add(LaneDataDto.builder()
-                .ln(1)
-                .qml(5)
-                .qm(new Integer[5])
-                .qal(6.3f)
-                .qa(new Float[5] )
-                .s(new Integer[5])
-                .l(new Integer[5])
-                .r(new Integer[5])
-                .build());
-
-        List<TrafficDataDto> td = new ArrayList<>();
-        td.add(TrafficDataDto.builder()
-                .st("2022-04-01 11:59:00")
-                .et("2022-04-01 12:00:00")
-                .p(1)
-                .u(new Integer[5])
-                .ld(ld)
-                .build());
-
-        return CameraDataDto.builder()
-                .v("1.0")
-                .c("C0001")
-                .i("I0001")
-                .r("R01")
-                .t("2022-04-01 12:00:00")
-                .td(td)
-                .build();
-    }
-
     private void assertInsert(CameraDataDto dataDto, boolean expectedSettingsUpdated,
                               HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        String uri = "/v1/data";
+        String uri = "/v2/data";
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -156,8 +126,12 @@ class DataControllerTest extends HBaseMockBaseTest {
                         assertThat(body.get("settingsUpdated")).isEqualTo(expectedSettingsUpdated);
                     } else {
                         assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-                        assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        if (expectedMessage != null) {
+                            assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+                        }
                     }
                 });
     }
+
+
 }

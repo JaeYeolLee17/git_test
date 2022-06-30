@@ -19,7 +19,7 @@ public class Camera {
 	@Column(name = "camera_id", length = 10)
 	private String cameraId;
 
-	@Column(name = "password", length = 256, nullable = false)
+	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 
 	@ManyToOne
@@ -76,7 +76,7 @@ public class Camera {
 	private Integer degree;
 
    	@Column(name = "settings_updated")
-   	private boolean settingsUpdated;
+   	private Boolean settingsUpdated;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "camera_id")

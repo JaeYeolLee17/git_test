@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.security;
 
-import com.e4motion.challenge.api.TestHelper;
+import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.mapper.UserMapper;
 import com.e4motion.challenge.api.repository.UserRepository;
@@ -38,7 +38,7 @@ class SecurityHelperTest {
     @WithMockUser(username = "user1", roles = "USER")
     void checkIfLoginUserForRoleUser_loggedInWithUser() {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         doReturn(Optional.of(userMapper.toUser(userDto))).when(userRepository).findByUsername(userDto.getUsername());
 
@@ -54,8 +54,8 @@ class SecurityHelperTest {
     @WithMockUser(username = "admin", roles = "ADMIN")
     void checkIfLoginUserForRoleUser_loggedInWithAdmin () {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserDto adminUserDto = TestHelper.getAdminUserDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserDto adminUserDto = TestDataHelper.getAdminUserDto();
 
         doReturn(Optional.of(userMapper.toUser(adminUserDto))).when(userRepository).findByUsername(adminUserDto.getUsername());
 
@@ -68,8 +68,8 @@ class SecurityHelperTest {
     @WithMockUser(username = "manager", roles = "MANAGER")
     void checkIfLoginUserForRoleUser_loggedInWithManager () {
 
-        UserDto userDto = TestHelper.getUserDto1();
-        UserDto managerUserDto = TestHelper.getManagerUserDto();
+        UserDto userDto = TestDataHelper.getUserDto1();
+        UserDto managerUserDto = TestDataHelper.getManagerUserDto();
 
         doReturn(Optional.of(userMapper.toUser(managerUserDto))).when(userRepository).findByUsername(managerUserDto.getUsername());
 
@@ -82,7 +82,7 @@ class SecurityHelperTest {
     @WithMockUser(username = "admin", roles = "ADMIN")
     void getLoginUser_loggedInWithAdmin() {
 
-        UserDto adminUserDto = TestHelper.getAdminUserDto();
+        UserDto adminUserDto = TestDataHelper.getAdminUserDto();
 
         doReturn(Optional.of(userMapper.toUser(adminUserDto))).when(userRepository).findByUsername(adminUserDto.getUsername());
 
@@ -96,7 +96,7 @@ class SecurityHelperTest {
     @WithMockUser(username = "manager", roles = "MANAGER")
     void getLoginUser_loggedInWithManager() {
 
-        UserDto managerUserDto = TestHelper.getManagerUserDto();
+        UserDto managerUserDto = TestDataHelper.getManagerUserDto();
 
         doReturn(Optional.of(userMapper.toUser(managerUserDto))).when(userRepository).findByUsername(managerUserDto.getUsername());
 
@@ -110,7 +110,7 @@ class SecurityHelperTest {
     @WithMockUser(username = "user1", roles = "USER")
     void getLoginUser_loggedInWithUser() {
 
-        UserDto userDto = TestHelper.getUserDto1();
+        UserDto userDto = TestDataHelper.getUserDto1();
 
         doReturn(Optional.of(userMapper.toUser(userDto))).when(userRepository).findByUsername(userDto.getUsername());
 

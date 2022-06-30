@@ -1,11 +1,11 @@
 package com.e4motion.challenge.data.provider.dto;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
-import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
+import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
-import com.e4motion.challenge.data.provider.HBaseMockBaseTest;
+import com.e4motion.challenge.data.provider.HBaseMockTest;
 import com.e4motion.challenge.data.provider.security.CustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class LoginDtoTest extends HBaseMockBaseTest {
+class LoginDtoTest extends HBaseMockTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -46,57 +46,56 @@ class LoginDtoTest extends HBaseMockBaseTest {
     @Test
     public void validateOk() throws Exception {
 
-        LoginDto loginDto = getGoodLoginDto();
-        AuthorityName authority = AuthorityName.ROLE_USER;
+        String username = "simulator";
+        String password = "challenge12!@";
+        AuthorityName authority = AuthorityName.ROLE_DATA;
 
-        doReturn(getUserDetails(loginDto.getUserId(), loginDto.getPassword(), authority)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
+        doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 
-        assertLogin(loginDto, HttpStatus.OK, Response.OK, null, null);
+        assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
-    public void validateUserId() throws Exception {
+    public void validateUsername() throws Exception {
 
-        LoginDto loginDto = getGoodLoginDto();
+        String username = null;
+        String password = "challenge12!@";
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setUserId(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        username = "";
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setUserId("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        username = " ";
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setUserId(" ");
-        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
-        assertLogin(loginDto, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
+        username = "not existent user";
+        doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(username);
+        assertLogin(username, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USERNAME);
     }
 
     @Test
     public void validatePassword() throws Exception {
 
-        LoginDto loginDto = getGoodLoginDto();
+        String username = "simulator";
+        String password = null;
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setPassword(null);
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        password = "";
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        loginDto.setPassword("");
-        assertLogin(loginDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        loginDto.setPassword(" ");
-        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(loginDto.getUserId());
-        assertLogin(loginDto, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
+        password = " ";
+        assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
-    private LoginDto getGoodLoginDto() {
-        return LoginDto.builder()
-                .userId("simulator")
-                .password("de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0")
-                .build();
-    }
-
-    private void assertLogin(LoginDto loginDto,
+    private void assertLogin(String username, String password,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        String uri = "/v1/login";
+        String uri = "/v2/login";
+
+        LoginDto loginDto = LoginDto.builder()
+                .username(username)
+                .password(password)
+                .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -119,13 +118,15 @@ class LoginDtoTest extends HBaseMockBaseTest {
                 });
     }
 
-    private UserDetails getUserDetails(String userId, String password, AuthorityName authority) {
+    private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
         Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-        UserDetails userDetails = new CustomUser(userId,
+        UserDetails userDetails = new CustomUser(1L,
+                username,
                 passwordEncoder.encode(password),
-                "username",
-                "email",
-                "phone",
+                null,
+                null,
+                null,
+                true,
                 grantedAuthorities);
         return userDetails;
     }

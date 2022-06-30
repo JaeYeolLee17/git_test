@@ -3,6 +3,7 @@ package com.e4motion.challenge.data.provider.controller;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,19 +25,21 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.Valid;
 
-@Tag(name = "1. Auth")
+@Tag(name = "1. 인증")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "v1")
+@RequestMapping(path = "v2")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Operation(summary = "로그인", description = "접근 권한 : 전체")
     @PostMapping("/login")
     public Response login(@Valid @RequestBody LoginDto loginDto) throws Exception {
+
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -50,10 +53,12 @@ public class AuthController {
                 .collect(Collectors.toSet());
 
         UserDto userDto = UserDto.builder()
-                .userId(userDetails.getUsername())
-                .username(userDetails.getCustomUsername())
+                .userId(userDetails.getUserId())
+                .username(userDetails.getUsername())
+                .nickname(userDetails.getNickname())
                 .email(userDetails.getEmail())
                 .phone(userDetails.getPhone())
+                .enabled(userDetails.isEnabled())
                 .authority(authorities.isEmpty() ? null : authorities.iterator().next())
                 .build();
 

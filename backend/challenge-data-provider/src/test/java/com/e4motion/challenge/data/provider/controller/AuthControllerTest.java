@@ -5,7 +5,7 @@ import com.e4motion.challenge.common.exception.customexception.UnauthorizedExcep
 import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
-import com.e4motion.challenge.data.provider.HBaseMockBaseTest;
+import com.e4motion.challenge.data.provider.HBaseMockTest;
 import com.e4motion.challenge.data.provider.dto.LoginDto;
 import com.e4motion.challenge.data.provider.security.CustomUser;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest extends HBaseMockBaseTest {
+public class AuthControllerTest extends HBaseMockTest {
 
 	@Autowired 
 	MockMvc mockMvc;
@@ -43,92 +43,136 @@ public class AuthControllerTest extends HBaseMockBaseTest {
 	
 	@MockBean
 	UserDetailsService userDetailsService;
-	
+
 	@Test
 	public void loginWithAdminUser() throws Exception {
-		
-		String userId = "admin";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
+
+		String username = "admin";
+		String password = "challenge1123!";
 		AuthorityName authority = AuthorityName.ROLE_ADMIN;
-		
-		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
-		
-		assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
+
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
+
+		assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
+	}
+
+	@Test
+	public void loginWithManagerUser() throws Exception {
+
+		String username = "manager";
+		String password = "challenge1123!";
+		AuthorityName authority = AuthorityName.ROLE_MANAGER;
+
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
+
+		assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
+	}
+
+	@Test
+	public void loginWithUser() throws Exception {
+
+		String username = "user1";
+		String password = "challenge12!@";
+		AuthorityName authority = AuthorityName.ROLE_USER;
+
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
+
+		assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
 	public void loginWithDataUser() throws Exception {
 		
-		String userId = "algorithm";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
+		String username = "algorithm";
+		String password = "challenge12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 		
-		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 		
-		assertLogin(userId, password, HttpStatus.OK, Response.OK, null, null);
+		assertLogin(username, password, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
 	public void loginWithIncorrectPassword() throws Exception {
 		
-		String userId = "simulator";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
+		String username = "simulator";
+		String password = "challenge12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 		
-		doReturn(getUserDetails(userId, password, authority)).when(userDetailsService).loadUserByUsername(userId);
+		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 		
-		assertLogin(userId, "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3------",	 	// Invalid password
+		assertLogin(username, "challenge12!@----",	 	// Invalid password
 				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
 	}
 	
 	@Test
 	public void loginWithNonexistentUser() throws Exception {
+
+		String username = "anonymous";
+		String password = "challenge12!@";
+		AuthorityName authority = AuthorityName.ROLE_DATA;
 		
-		String userId = "anonymous";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
-		AuthorityName authority = AuthorityName.ROLE_USER;
+		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(username);
 		
-		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(userId);
-		
-		assertLogin(userId, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USERNAME);
+		assertLogin(username, password, HttpStatus.NOT_FOUND, Response.FAIL, UserNotFoundException.CODE, UserNotFoundException.INVALID_USERNAME);
+	}
+
+	@Test
+	public void loginWithDisabledUser() throws Exception {
+
+		String username = "simulator";
+		String password = "challenge12!@";
+		AuthorityName authority = AuthorityName.ROLE_DATA;
+
+		doReturn(getUserDetails(username, password, authority, false)).when(userDetailsService).loadUserByUsername(username);
+
+		assertLogin(username, password, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.DISABLED_USER);
 	}
 	
-	private void assertLogin(String userId, String password,
+	private void assertLogin(String username, String password,
 			HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
-		
-		String uri = "/v1/login";
-		
+
+		String uri = "/v2/login";
+
 		LoginDto loginDto = LoginDto.builder()
-				.userId(userId)
+				.username(username)
 				.password(password)
 				.build();
-	    
-	    mockMvc.perform(MockMvcRequestBuilders.post(uri)
-	    		.contentType(MediaType.APPLICATION_JSON)
-	    		.content(JsonHelper.toJson(loginDto)))
-	    .andExpect(result -> {
-	    		MockHttpServletResponse response = result.getResponse();
-	    		assertThat(response.getStatus()).isEqualTo(expectedStatus.value());
-	    	
-	    		Response body = JsonHelper.fromJson(response.getContentAsString(), Response.class);
-	    		assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
-	    		if (expectedResult.equals(Response.OK)) {
-	    			assertThat(body.get("user")).isNotNull();
-	    			assertThat(body.get("token")).isNotNull();
-	    		} else {
-	    			assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-					assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
-	    		}
-	    });
+
+		mockMvc.perform(MockMvcRequestBuilders.post(uri)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(JsonHelper.toJson(loginDto)))
+				.andExpect(result -> {
+					MockHttpServletResponse response = result.getResponse();
+					assertThat(response.getStatus()).isEqualTo(expectedStatus.value());
+
+					Response body = JsonHelper.fromJson(response.getContentAsString(), Response.class);
+					assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
+					if (expectedResult.equals(Response.OK)) {
+						assertThat(body.get("user")).isNotNull();
+						assertThat(body.get("token")).isNotNull();
+					} else {
+						assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
+						if (expectedMessage != null) {
+							assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
+						}
+					}
+				});
 	}
-	
-	private UserDetails getUserDetails(String userId, String password, AuthorityName authority) {
+
+	private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
+		return getUserDetails(username, password, authority, true);
+	}
+
+	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean enabled) {
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-		UserDetails userDetails = new CustomUser(userId, 
+		UserDetails userDetails = new CustomUser(1L,
+				username,
 				passwordEncoder.encode(password),
-				"username",
-				"email",
-				"phone",
+				null,
+				null,
+				null,
+				enabled,
 				grantedAuthorities);
 		return userDetails;
 	}

@@ -21,7 +21,7 @@ public class TrafficDataDto {
     public final static int CAR_TYPE = 5;
 
     public final static int MIN_LANE = 1;
-    public final static int MAX_LANE = 10;
+    public final static int MAX_LANE = 12;
 
     @NotNull
     @Pattern(regexp = RegExp.dateTime)
@@ -34,11 +34,11 @@ public class TrafficDataDto {
     private Integer p;
 
     @NotNull
-    @Size(min = TrafficDataDto.CAR_TYPE, max = TrafficDataDto.CAR_TYPE)
+    @Size(min = CAR_TYPE, max = CAR_TYPE)
     private Integer[] u;
 
     @NotNull
-    @Size(min = 1)
+    @Size(min = MIN_LANE, max = MAX_LANE)
     private @Valid List<LaneDataDto> ld;
 
 }

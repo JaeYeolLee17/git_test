@@ -1,7 +1,7 @@
 package com.e4motion.challenge.data.collector.controller;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
-import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
+import com.e4motion.challenge.data.collector.HBaseMockTest;
 import com.e4motion.challenge.data.collector.dto.CameraLoginDto;
 import com.e4motion.challenge.data.collector.security.CustomUser;
 import com.e4motion.challenge.common.response.Response;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest extends HBaseMockBaseTest {
+public class AuthControllerTest extends HBaseMockTest {
 	
 	@Autowired 
 	MockMvc mockMvc;
@@ -48,7 +48,7 @@ public class AuthControllerTest extends HBaseMockBaseTest {
 	public void login() throws Exception {
 	
 		String cameraId = "C0001";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
+		String password = "camera12!@";
 		boolean settingsUpdated = false;
 		
 		doReturn(getUserDetails(cameraId, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraId);
@@ -60,7 +60,7 @@ public class AuthControllerTest extends HBaseMockBaseTest {
 	public void loginSettingsUpdatedTrue() throws Exception {
 
 		String cameraId = "C0002";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
+		String password = "camera12!@";
 		boolean settingsUpdated = true;
 
 		doReturn(getUserDetails(cameraId, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraId);
@@ -72,28 +72,30 @@ public class AuthControllerTest extends HBaseMockBaseTest {
 	public void loginWithIncorrectPassword() throws Exception {
 		
 		String cameraId = "C0002";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
+		String password = "camera12!@";
+		boolean settingsUpdated = false;
 
-		doReturn(getUserDetails(cameraId, password, false)).when(userDetailsService).loadUserByUsername(cameraId);
+		doReturn(getUserDetails(cameraId, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraId);
 		
-		assertLogin(cameraId, "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3------", false,	// Invalid password
+		assertLogin(cameraId, "camera12------", settingsUpdated,	// Invalid password
 				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
 	}
 	
 	@Test
 	public void loginWithNonexistentCamera() throws Exception {
 		String cameraId = "C0100";
-		String password = "de27ad6167310d667c33d6e6f3fd2050eaa4941bc5cf5a2c820c5a35f3a292a0";
-		
+		String password = "camera12!@";
+		boolean settingsUpdated = false;
+
 		doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(cameraId);
 		
-		assertLogin(cameraId, password, false, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
+		assertLogin(cameraId, password, settingsUpdated, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
 	}
 	
 	private void assertLogin(String cameraId, String password, boolean expectedSettingsUpdated,
-			HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+							 HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 		
-		String uri = "/v1/camera/login";
+		String uri = "/v2/camera/login";
 		
 		CameraLoginDto loginDto = CameraLoginDto.builder()
 				.cameraId(cameraId)

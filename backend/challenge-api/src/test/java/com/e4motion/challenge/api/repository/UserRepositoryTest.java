@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.repository;
 
-import com.e4motion.challenge.api.TestHelper;
+import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
@@ -34,7 +34,7 @@ class UserRepositoryTest {
 
 		userRepository.deleteAll();
 
-		User user = TestHelper.getUser1();
+		User user = TestDataHelper.getUser1();
 
 		savedUser = userRepository.save(user);
 
@@ -45,7 +45,7 @@ class UserRepositoryTest {
 	@Test
 	void save() {
 		
-		User newUser = TestHelper.getUser2();
+		User newUser = TestDataHelper.getUser2();
 
 		userRepository.save(newUser);
 		
@@ -59,7 +59,7 @@ class UserRepositoryTest {
 	@Test
 	void update() {
 
-		UserUpdateDto userUpdateDto = TestHelper.getUserUpdateDto();
+		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
     	savedUser.setUsername(userUpdateDto.getUsername());
     	savedUser.setEmail(userUpdateDto.getEmail());
     	savedUser.setPhone(userUpdateDto.getPhone());
@@ -79,7 +79,7 @@ class UserRepositoryTest {
 	@Test
 	void findAll() {
 
-		User user = TestHelper.getUser2();
+		User user = TestDataHelper.getUser2();
 
 		userRepository.save(user);
 		
@@ -93,7 +93,7 @@ class UserRepositoryTest {
 	@Test
 	void deleteAll() {
 
-		User user = TestHelper.getUser2();
+		User user = TestDataHelper.getUser2();
 
 		userRepository.save(user);
 		
@@ -116,7 +116,7 @@ class UserRepositoryTest {
 	@Test
 	void findByUsername() {
 
-		User user = TestHelper.getUser2();
+		User user = TestDataHelper.getUser2();
 
 		userRepository.save(user);
 

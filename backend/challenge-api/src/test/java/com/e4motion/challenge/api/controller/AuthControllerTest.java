@@ -84,7 +84,7 @@ public class AuthControllerTest {
 		
 		String username = "user1";
 		String password = "challenge12!@";
-		AuthorityName authority = AuthorityName.ROLE_MANAGER;
+		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 		
@@ -97,6 +97,7 @@ public class AuthControllerTest {
 		
 		String username = "anonymous";
 		String password = "challenge12!@";
+		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(username);
 		

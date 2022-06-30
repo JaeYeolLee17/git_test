@@ -2,11 +2,10 @@ package com.e4motion.challenge.data.collector.repository.impl;
 
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.repository.DataRepository;
-import com.e4motion.challenge.data.common.repository.HBaseHelper;
 import com.e4motion.challenge.data.common.dto.LaneDataDto;
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
+import com.e4motion.challenge.data.common.repository.HBaseHelper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -17,13 +16,11 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class HBaseDataRepository implements DataRepository, InitializingBean {
 
     private final Admin hbaseAdmin;
-
     private final HbaseTemplate hbaseTemplate;
 
     @Override

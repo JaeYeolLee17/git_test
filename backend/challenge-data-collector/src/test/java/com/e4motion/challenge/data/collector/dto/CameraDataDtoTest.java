@@ -3,7 +3,8 @@ package com.e4motion.challenge.data.collector.dto;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
-import com.e4motion.challenge.data.collector.HBaseMockBaseTest;
+import com.e4motion.challenge.data.collector.HBaseMockTest;
+import com.e4motion.challenge.data.collector.TestDataHelper;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
 import com.e4motion.challenge.data.common.dto.LaneDataDto;
@@ -20,16 +21,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CameraDataDtoTest extends HBaseMockBaseTest {
+class CameraDataDtoTest extends HBaseMockTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -44,7 +42,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateOk() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
 
         assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
     }
@@ -53,7 +51,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateV_C() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
 
         dataDto.setV(null);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
@@ -62,6 +60,9 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setV(" ");
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        dataDto.setV("version");
         assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
 
         dataDto.setC(null);
@@ -71,14 +72,14 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         dataDto.setC(" ");
-        assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
+        assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
     @WithMockUser(roles = "CAMERA")
     public void validateT() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
 
         dataDto.setT(null);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
@@ -100,7 +101,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateTd() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
 
         dataDto.getTd().clear();    // size 0
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
@@ -113,7 +114,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateTd_St_Et() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
         TrafficDataDto td = dataDto.getTd().get(0);
 
         // St
@@ -162,7 +163,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateTd_U() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
         TrafficDataDto td = dataDto.getTd().get(0);
 
         td.setU(null);
@@ -179,7 +180,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateTd_Ld() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
         TrafficDataDto td = dataDto.getTd().get(0);
 
         td.getLd().clear();     // size 0
@@ -193,17 +194,17 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateTd_Ld_Ln() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
         TrafficDataDto td = dataDto.getTd().get(0);
         LaneDataDto ld = td.getLd().get(0);
 
         ld.setLn(0);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        ld.setLn(11);
+        ld.setLn(13);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        ld.setLn(10);
+        ld.setLn(12);
         assertInsert(dataDto, HttpStatus.OK, Response.OK, null, null);
     }
 
@@ -211,7 +212,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
     @WithMockUser(roles = "CAMERA")
     public void validateTd_Ld_Qm_Qa_S_L_R() throws Exception {
 
-        CameraDataDto dataDto = getGoodDataDto();
+        CameraDataDto dataDto = TestDataHelper.getDataDto();
         TrafficDataDto td = dataDto.getTd().get(0);
         LaneDataDto ld = td.getLd().get(0);
 
@@ -266,42 +267,10 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
-    private CameraDataDto getGoodDataDto() {
-        List<LaneDataDto> ld = new ArrayList<>();
-        ld.add(LaneDataDto.builder()
-                .ln(1)
-                .qml(5)
-                .qm(new Integer[5])
-                .qal(6.3f)
-                .qa(new Float[5] )
-                .s(new Integer[5])
-                .l(new Integer[5])
-                .r(new Integer[5])
-                .build());
-
-        List<TrafficDataDto> td = new ArrayList<>();
-        td.add(TrafficDataDto.builder()
-                .st("2022-04-01 11:59:00")
-                .et("2022-04-01 12:00:00")
-                .p(1)
-                .u(new Integer[5])
-                .ld(ld)
-                .build());
-
-        return CameraDataDto.builder()
-                .v("1.0")
-                .c("C0001")
-                .i("I0001")
-                .r("R01")
-                .t("2022-04-01 12:00:00")
-                .td(td)
-                .build();
-    }
-
     private void assertInsert(CameraDataDto dataDto,
                               HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        String uri = "/v1/data";
+        String uri = "/v2/data";
 
         doNothing().when(dataService).insert(dataDto);
         doReturn(true).when(cameraService).getSettingsUpdated(dataDto.getC());
@@ -316,7 +285,7 @@ class CameraDataDtoTest extends HBaseMockBaseTest {
                     Response body = JsonHelper.fromJson(response.getContentAsString(), Response.class);
                     assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
                     if (expectedResult.equals(Response.OK)) {
-                        //
+                        assertThat(body.get("settingsUpdated")).isEqualTo(true);
                     } else {
                         assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
                         if (expectedMessage != null) {

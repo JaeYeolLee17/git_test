@@ -59,19 +59,8 @@ class UserRepositoryTest {
 		entityManager.flush();
 		entityManager.clear();
 
-        Optional<User> found = userRepository.findByUserId(user.getUserId());
+        Optional<User> found = userRepository.findByUsername(user.getUsername());
         
-        assertThat(found.isPresent()).isTrue();
-        assertEqualsUsers(found.get(), user);
-	}
-
-	@Test
-	void findByUserId() {
-
-		User user = saveUser1();
-
-        Optional<User> found = userRepository.findByUserId(user.getUserId());
-
         assertThat(found.isPresent()).isTrue();
         assertEqualsUsers(found.get(), user);
 	}
@@ -88,18 +77,18 @@ class UserRepositoryTest {
 	}
 
 	@Test
-	void deleteByUserId() {
+	void deleteByUsername() {
 
 		User user = saveUser1();
 
-		Optional<User> found = userRepository.findByUserId(user.getUserId());
+		Optional<User> found = userRepository.findByUsername(user.getUsername());
     	assertThat(found.isPresent()).isTrue();
     	
-        userRepository.deleteByUserId(found.get().getUserId());
+        userRepository.deleteByUsername(found.get().getUsername());
 		entityManager.flush();
 		entityManager.clear();
 
-        found = userRepository.findByUserId(user.getUserId());
+        found = userRepository.findByUsername(user.getUsername());
         assertThat(found.isPresent()).isFalse();
         assertThat(userRepository.count()).isEqualTo(0);
 	}

@@ -58,7 +58,6 @@ public class UserMapperTest {
 
 	private void assertEquals(User user, UserDto userDto) {
 
-		assertThat(userDto.getUserId()).isEqualTo(user.getUserId());
 		assertThat(userDto.getUsername()).isEqualTo(user.getUsername());
 		assertThat(userDto.getPassword()).isNull();
 		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());
@@ -70,7 +69,6 @@ public class UserMapperTest {
 
 	private void assertEquals(UserDto userDto, User user) {
 
-		assertThat(userDto.getUserId()).isEqualTo(user.getUserId());
 		assertThat(userDto.getUsername()).isEqualTo(user.getUsername());
 		assertThat(userDto.getPassword()).isEqualTo(user.getPassword());
 		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());

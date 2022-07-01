@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
     }
     
     @Transactional
-    public UserDto update(Long userId, UserUpdateDto userUpdateDto) {
+    public UserDto update(String username, UserUpdateDto userUpdateDto) {
 
-    	return userRepository.findByUserId(userId)
+    	return userRepository.findByUsername(username)
 				.map(user -> {
 					if (userUpdateDto.getNewPassword() != null) {
 						if (userUpdateDto.getOldPassword() == null || !passwordEncoder.matches(userUpdateDto.getOldPassword(), user.getPassword())) {
@@ -93,15 +93,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void delete(Long userId) {
+    public void delete(String username) {
     	
-    	userRepository.deleteByUserId(userId);
+    	userRepository.deleteByUsername(username);
     }
     
     @Transactional(readOnly = true)
-    public UserDto get(Long userId) {
+    public UserDto get(String username) {
     	
-        return userMapper.toUserDto(userRepository.findByUserId(userId).orElse(null));
+        return userMapper.toUserDto(userRepository.findByUsername(username).orElse(null));
     }
     
     @Transactional(readOnly = true)

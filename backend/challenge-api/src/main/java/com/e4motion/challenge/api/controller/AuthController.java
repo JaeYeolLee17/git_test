@@ -53,7 +53,6 @@ public class AuthController {
                 .collect(Collectors.toSet());
 
         UserDto userDto = UserDto.builder()
-        		.userId(userDetails.getUserId())
         		.username(userDetails.getUsername())
                 .nickname(userDetails.getNickname())
         		.email(userDetails.getEmail())

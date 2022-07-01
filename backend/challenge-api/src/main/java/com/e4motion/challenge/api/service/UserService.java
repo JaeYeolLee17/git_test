@@ -9,11 +9,11 @@ public interface UserService {
 	
     UserDto create(UserDto userDto);
     
-    UserDto update(Long userId, UserUpdateDto userUpdateDto);
+    UserDto update(String username, UserUpdateDto userUpdateDto);
     
-    void delete(Long userId);
+    void delete(String username);
     
-    UserDto get(Long userId);
+    UserDto get(String username);
     
     List<UserDto> getList();
     

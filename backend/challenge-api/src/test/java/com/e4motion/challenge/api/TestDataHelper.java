@@ -15,7 +15,6 @@ public class TestDataHelper {
 
     public static UserDto getUserDto1() {
         return UserDto.builder()
-                .userId(1L)
                 .username("user1")
                 .password("challenge12!@")
                 .nickname("nickname1")
@@ -28,7 +27,6 @@ public class TestDataHelper {
 
     public static UserDto getUserDto2() {
         return UserDto.builder()
-                .userId(2L)
                 .username("user2")
                 .password("challenge12!@")
                 .nickname("nickname2")
@@ -80,7 +78,6 @@ public class TestDataHelper {
 
     public static UserDto getAdminUserDto() {
         return UserDto.builder()
-                .userId(3L)
                 .username("admin")
                 .password("challenge1123!")
                 .nickname("adminname1")
@@ -91,7 +88,6 @@ public class TestDataHelper {
 
     public static UserDto getManagerUserDto() {
         return UserDto.builder()
-                .userId(4L)
                 .username("manager")
                 .password("challenge1123!")
                 .nickname("managername1")

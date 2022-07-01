@@ -63,7 +63,7 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User newUser = userMapper.toUser(userDto);
 		
-		doReturn(Optional.ofNullable(null)).when(userRepository).findByUsername(userDto.getUsername());
+		doReturn(Optional.empty()).when(userRepository).findByUsername(userDto.getUsername());
 		doReturn(newUser).when(userRepository).save(any());
 		
 		// when
@@ -103,7 +103,7 @@ public class UserServiceTest {
 		User user = userMapper.toUser(userDto);
 
 		User updatedUser = User.builder()
-				.userId(userDto.getUserId())
+				.userId(1L)
 				.username(userUpdateDto.getUsername())
 				.password(passwordEncoder.encode(userUpdateDto.getNewPassword()))
 				.nickname(userUpdateDto.getNickname())
@@ -112,15 +112,16 @@ public class UserServiceTest {
 				.authorities(Collections.singleton(new Authority(userUpdateDto.getAuthority())))
 				.build();
 		
-		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 		doReturn(updatedUser).when(userRepository).save(any());
 		doNothing().when(entityManager).flush();
 		
 		// when
-		UserDto updatedUserDto = userService.update(userDto.getUserId(), userUpdateDto);
+		UserDto updatedUserDto = userService.update(userDto.getUsername(), userUpdateDto);
  
 		// then
 		userDto.setUsername(userUpdateDto.getUsername());
+		userDto.setNickname(userUpdateDto.getNickname());
 		userDto.setEmail(userUpdateDto.getEmail());
 		userDto.setPhone(userUpdateDto.getPhone());
 		userDto.setAuthority(userUpdateDto.getAuthority());
@@ -141,10 +142,10 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User user = userMapper.toUser(userDto);
 
-		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 
 		// when
-		Exception ex = assertThrows(UnauthorizedException.class, () -> userService.update(userDto.getUserId(), userUpdateDto));
+		Exception ex = assertThrows(UnauthorizedException.class, () -> userService.update(userDto.getUsername(), userUpdateDto));
 
 		// then
 		assertThat(ex.getMessage()).isEqualTo(UnauthorizedException.INVALID_PASSWORD);
@@ -157,10 +158,10 @@ public class UserServiceTest {
 		UserDto userDto = TestDataHelper.getUserDto2();
 		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
-		doReturn(Optional.ofNullable(null)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.empty()).when(userRepository).findByUsername(userDto.getUsername());
 
 		// when
-		Exception ex = assertThrows(UserNotFoundException.class, () -> userService.update(userDto.getUserId(), userUpdateDto));
+		Exception ex = assertThrows(UserNotFoundException.class, () -> userService.update(userDto.getUsername(), userUpdateDto));
 
 		// then
 		assertThat(ex.getMessage()).isEqualTo(UserNotFoundException.INVALID_USERNAME);
@@ -172,10 +173,10 @@ public class UserServiceTest {
 		UserDto userDto = TestDataHelper.getUserDto1();
 
 		// given
-		doNothing().when(userRepository).deleteByUserId(userDto.getUserId());
+		doNothing().when(userRepository).deleteByUsername(userDto.getUsername());
 
 		// when
-		userService.delete(userDto.getUserId());
+		userService.delete(userDto.getUsername());
 		
 		// then
     }
@@ -189,10 +190,10 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User user = userMapper.toUser(userDto);
 		
-		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 		
 		// when
-		UserDto foundUserDto = userService.get(userDto.getUserId());
+		UserDto foundUserDto = userService.get(userDto.getUsername());
 		
 		// then
 		assertEquals(foundUserDto, userDto);
@@ -232,9 +233,9 @@ public class UserServiceTest {
     }
 
 	private void assertEquals(UserDto userDto1, UserDto userDto2) {
-		
-		assertThat(userDto1.getUserId()).isEqualTo(userDto2.getUserId());
+
 		assertThat(userDto1.getUsername()).isEqualTo(userDto2.getUsername());
+		assertThat(userDto1.getNickname()).isEqualTo(userDto2.getNickname());
 		assertThat(userDto1.getEmail()).isEqualTo(userDto2.getEmail());
 		assertThat(userDto1.getPhone()).isEqualTo(userDto2.getPhone());
 		assertThat(userDto1.getAuthority()).isEqualTo(userDto2.getAuthority());

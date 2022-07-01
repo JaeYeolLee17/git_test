@@ -19,6 +19,7 @@ public interface UserMapper {
 
     List<UserDto> toUserDto(List<User> users);
 
+    @Mapping(target = "userId", ignore = true)
     @Mapping(target = "authorities", expression = "java(Collections.singleton(new Authority(userDto.getAuthority())))")
     User toUser(UserDto userDto);
 

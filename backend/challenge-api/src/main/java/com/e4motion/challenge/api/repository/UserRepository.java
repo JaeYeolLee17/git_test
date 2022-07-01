@@ -7,17 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, String> {
-	
-	@Transactional(readOnly = true)
-	@EntityGraph(attributePaths = "authorities")
-	Optional<User> findByUserId(Long userId);
+public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Transactional(readOnly = true)
-	@EntityGraph(attributePaths = "authorities")	// TODO: FetchType.EAGER 와 @EntityGraph 차이점 파악.
+	@EntityGraph(attributePaths = "authorities")
 	Optional<User> findByUsername(String username);
-	
+
 	@Transactional
-	void deleteByUserId(Long userId);
+	void deleteByUsername(String username);
 	
 }

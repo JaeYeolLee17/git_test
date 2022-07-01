@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.e4motion.challenge.api.domain.Authority;
@@ -220,8 +221,9 @@ public class UserServiceTest {
 		List<User> users = new ArrayList<>();
 		users.add(user1);
 		users.add(user2);
-		
-		doReturn(users).when(userRepository).findAll();
+
+		Sort sort = Sort.by("userId").ascending();
+		doReturn(users).when(userRepository).findAll(sort);
 		
 		// when
 		List<UserDto> foundUserDtos = userService.getList();

@@ -134,10 +134,13 @@ class RegionRepositoryTest {
 		List<RegionGps> gps = new ArrayList<>();
 		gps.add(RegionGps.builder().region(found.get()).latitude(35.9).longitude(128.9).gpsOrder(1).build());
 		gps.add(RegionGps.builder().region(found.get()).latitude(35.8).longitude(128.8).gpsOrder(2).build());
+		gps.add(RegionGps.builder().region(found.get()).latitude(35.3).longitude(128.3).gpsOrder(3).build());	// already exists gps.
 
-		found.get().getGps().clear();			// to change list, you should not replace list itself. just clear and add.
+		found.get().getGps().clear();			// To change list, you should not replace list itself. just clear and add.
+		regionRepository.save(found.get());		// If duplicated region_id, latitude, longitude exists, save and flush first before add.
+		entityManager.flush();
+
 		found.get().getGps().addAll(gps);
-
 		regionRepository.save(found.get());
 		entityManager.flush();
 		entityManager.clear();
@@ -145,14 +148,14 @@ class RegionRepositoryTest {
 		found = regionRepository.findByRegionNo(region.getRegionNo());
 		assertThat(found.isPresent()).isTrue();
 
-		assertThat(found.get().getGps().size()).isEqualTo(2);
+		assertThat(found.get().getGps().size()).isEqualTo(3);
 		assertThat(found.get().getGps().get(0).getLatitude()).isEqualTo(gps.get(0).getLatitude());
 		assertThat(found.get().getGps().get(0).getLongitude()).isEqualTo(gps.get(0).getLongitude());
 		assertThat(found.get().getGps().get(1).getLatitude()).isEqualTo(gps.get(1).getLatitude());
 		assertThat(found.get().getGps().get(1).getLongitude()).isEqualTo(gps.get(1).getLongitude());
 
 		List<RegionGps> regionGps = regionGpsRepository.findByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
-		assertThat(regionGps.size()).isEqualTo(2);
+		assertThat(regionGps.size()).isEqualTo(3);
 	}
 
 	@Test
@@ -166,8 +169,8 @@ class RegionRepositoryTest {
 		// update no, name, empty gps
 		found.get().setRegionNo("R99");
 		found.get().setRegionName("변경리전");
-		found.get().getGps().clear();			// to change list, you should not replace list itself. just clear and add.
-		//found.get().setGps(null);				// do not use set null to remove gps.
+		found.get().getGps().clear();			// To change list, you should not replace list itself. just clear and add.
+		//found.get().setGps(null);				// Do not set null, set null to update will occur exception.
 
 		regionRepository.save(found.get());
 		entityManager.flush();

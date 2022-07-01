@@ -9,6 +9,7 @@ import com.e4motion.challenge.api.service.RegionService;
 import com.e4motion.challenge.common.exception.customexception.RegionDuplicateException;
 import com.e4motion.challenge.common.exception.customexception.RegionNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +57,11 @@ public class RegionServiceImpl implements RegionService {
                     }
 
                     if (regionDto.getGps() != null) {
-                        List<RegionGps> regionGps = getRegionGps(regionDto, region);
                         region.getGps().clear();
+                        regionRepository.save(region);
+                        entityManager.flush();
+
+                        List<RegionGps> regionGps = getRegionGps(regionDto, region);
                         region.getGps().addAll(regionGps);
                     }
 
@@ -84,7 +88,8 @@ public class RegionServiceImpl implements RegionService {
     @Transactional
     public List<RegionDto> getList() {
 
-        return regionMapper.toRegionDto(regionRepository.findAll());
+        Sort sort = Sort.by("regionNo").ascending();
+        return regionMapper.toRegionDto(regionRepository.findAll(sort));
     }
 
     public List<RegionGps> getRegionGps(RegionDto regionDto, Region region) {

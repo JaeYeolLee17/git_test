@@ -11,6 +11,7 @@ import com.e4motion.challenge.common.exception.customexception.UnauthorizedExcep
 import com.e4motion.challenge.common.exception.customexception.UserDuplicateException;
 import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +107,8 @@ public class UserServiceImpl implements UserService {
     
     @Transactional(readOnly = true)
     public List<UserDto> getList() {
-    	
-        return userMapper.toUserDto(userRepository.findAll());
+
+		Sort sort = Sort.by("userId").ascending();
+        return userMapper.toUserDto(userRepository.findAll(sort));
     }
 }

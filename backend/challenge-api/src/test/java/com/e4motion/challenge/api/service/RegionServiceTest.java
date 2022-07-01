@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -239,7 +240,8 @@ public class RegionServiceTest {
 		regions.add(region1);
 		regions.add(region2);
 
-		doReturn(regions).when(regionRepository).findAll();
+		Sort sort = Sort.by("regionNo").ascending();
+		doReturn(regions).when(regionRepository).findAll(sort);
 
 		List<RegionDto> foundRegionDtos = regionService.getList();
 

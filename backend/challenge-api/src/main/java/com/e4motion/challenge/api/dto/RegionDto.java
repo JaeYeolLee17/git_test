@@ -14,10 +14,11 @@ import java.util.List;
 public class RegionDto {
 
     @NotBlank
-    private String regionId;
+    private String regionNo;
 
-    @NotBlank
     private String regionName;
+
+    //private List<Intersection> intersections;
 
     private List<GpsDto> gps;
 }

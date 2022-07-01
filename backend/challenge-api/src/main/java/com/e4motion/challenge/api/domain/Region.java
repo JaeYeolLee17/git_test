@@ -13,19 +13,23 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "nt_region")
-public class Region {
+public class Region extends BaseTimeEntity {
 
     @Id
-    @Column(name = "region_id", length = 10)
-    private String regionId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "region_id")
+    private Long regionId;
 
-    @Column(name = "region_name", length = 20)
+    @Column(name = "region_no", length = 10, unique = true, nullable = false)
+    private String regionNo;
+
+    @Column(name = "region_name", length = 32)
     private String regionName;
 
-    @OneToMany(mappedBy = "region")
-    private List<Intersection> intersections;
+    //@OneToMany(mappedBy = "region")
+    //private List<Intersection> intersections;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "region_id")
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("gps_order ASC")
     private List<RegionGps> gps;
 }

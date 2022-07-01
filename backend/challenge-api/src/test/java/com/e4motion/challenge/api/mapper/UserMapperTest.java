@@ -22,7 +22,7 @@ public class UserMapperTest {
 		
 		UserDto userDto = mapper.toUserDto(user);
 		
-		assertEqualsUserDtoWithUser(userDto, user, true);
+		assertEquals(user, userDto);
 	}
 	
 	@Test
@@ -41,9 +41,9 @@ public class UserMapperTest {
 		
 		assertThat(userDtos.get(0).getPassword()).isNull();
 		assertThat(userDtos.get(1).getPassword()).isNull();
-		
-		assertEqualsUserDtoWithUser(userDtos.get(0), user1, true);
-		assertEqualsUserDtoWithUser(userDtos.get(1), user2, true);
+
+		assertEquals(users.get(0), userDtos.get(0));
+		assertEquals(users.get(1),userDtos.get(1));
 	}
 
 	@Test
@@ -53,18 +53,26 @@ public class UserMapperTest {
 
 		User user = mapper.toUser(userDto);
 
-		assertEqualsUserDtoWithUser(userDto, user, false);
+		assertEquals(userDto, user);
 	}
-	
-	private void assertEqualsUserDtoWithUser(UserDto userDto, User user, Boolean ignorePassword) {
+
+	private void assertEquals(User user, UserDto userDto) {
 
 		assertThat(userDto.getUserId()).isEqualTo(user.getUserId());
 		assertThat(userDto.getUsername()).isEqualTo(user.getUsername());
-		if (ignorePassword) {
-			assertThat(userDto.getPassword()).isNull();
-		} else {
-			assertThat(userDto.getPassword()).isEqualTo(user.getPassword());
-		}
+		assertThat(userDto.getPassword()).isNull();
+		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());
+		assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
+		assertThat(userDto.getPhone()).isEqualTo(user.getPhone());
+		assertThat(userDto.getEnabled()).isEqualTo(user.getEnabled());
+		assertThat(userDto.getAuthority()).isEqualTo(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName());
+	}
+
+	private void assertEquals(UserDto userDto, User user) {
+
+		assertThat(userDto.getUserId()).isEqualTo(user.getUserId());
+		assertThat(userDto.getUsername()).isEqualTo(user.getUsername());
+		assertThat(userDto.getPassword()).isEqualTo(user.getPassword());
 		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());
 		assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
 		assertThat(userDto.getPhone()).isEqualTo(user.getPhone());

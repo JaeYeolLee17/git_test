@@ -39,6 +39,7 @@ public class UserController {
     	return new Response("user", userService.create(userDto));
     }
 
+    // TODO: user로 찾을 떄 userId -> username 으로 변경.
     @Operation(summary = "회원 수정", description = "접근 권한 : 최고관리자, 운영자, 사용자(자기 자신만)")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @PutMapping("/user/{userId}")

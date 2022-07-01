@@ -71,7 +71,7 @@ public class UserServiceTest {
 		
 		// then
 		assertThat(createdUserDto).isNotNull();
-		assertEqualsUserDtos(createdUserDto, userDto);
+		assertEquals(createdUserDto, userDto);
     }
 	
 	@Test
@@ -126,7 +126,7 @@ public class UserServiceTest {
 		userDto.setAuthority(userUpdateDto.getAuthority());
 
 		assertThat(updatedUserDto).isNotNull();
-		assertEqualsUserDtos(updatedUserDto, userDto);
+		assertEquals(updatedUserDto, userDto);
     }
 
 	@Test
@@ -195,7 +195,7 @@ public class UserServiceTest {
 		UserDto foundUserDto = userService.get(userDto.getUserId());
 		
 		// then
-		assertEqualsUserDtos(foundUserDto, userDto);
+		assertEquals(foundUserDto, userDto);
     }
 	
 	@Test
@@ -227,11 +227,11 @@ public class UserServiceTest {
 		
 		// then
 		assertThat(foundUserDtos.size()).isEqualTo(userDtos.size());
-		assertEqualsUserDtos(foundUserDtos.get(0), userDtos.get(0));
-		assertEqualsUserDtos(foundUserDtos.get(1), userDtos.get(1));
+		assertEquals(foundUserDtos.get(0), userDtos.get(0));
+		assertEquals(foundUserDtos.get(1), userDtos.get(1));
     }
 
-	private void assertEqualsUserDtos(UserDto userDto1, UserDto userDto2) {
+	private void assertEquals(UserDto userDto1, UserDto userDto2) {
 		
 		assertThat(userDto1.getUserId()).isEqualTo(userDto2.getUserId());
 		assertThat(userDto1.getUsername()).isEqualTo(userDto2.getUsername());

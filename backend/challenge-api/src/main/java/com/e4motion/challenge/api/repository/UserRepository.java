@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 	Optional<User> findByUserId(Long userId);
 
 	@Transactional(readOnly = true)
-	@EntityGraph(attributePaths = "authorities")
+	@EntityGraph(attributePaths = "authorities")	// TODO: FetchType.EAGER 와 @EntityGraph 차이점 파악.
 	Optional<User> findByUsername(String username);
 	
 	@Transactional

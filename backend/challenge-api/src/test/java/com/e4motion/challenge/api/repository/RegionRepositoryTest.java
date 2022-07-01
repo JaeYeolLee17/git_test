@@ -46,6 +46,46 @@ class RegionRepositoryTest {
 	}
 
 	@Test
+	void save_withNullRegionGps() {
+
+		Region region = TestDataHelper.getRegion1();
+		region.setGps(null);
+
+		Region saved = regionRepository.save(region);
+		entityManager.flush();
+		entityManager.clear();
+
+		Optional<Region> found = regionRepository.findByRegionNo(region.getRegionNo());
+		assertThat(found.isPresent()).isTrue();
+		assertThat(found.get().getGps().size()).isEqualTo(0);
+
+		assertEquals(found.get(), region);
+
+		List<RegionGps> regionGps = regionGpsRepository.findByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
+		assertThat(regionGps.size()).isEqualTo(0);
+	}
+
+	@Test
+	void save_withEmptyRegionGps() {
+
+		Region region = TestDataHelper.getRegion1();
+		region.getGps().clear();
+
+		Region saved = regionRepository.save(region);
+		entityManager.flush();
+		entityManager.clear();
+
+		Optional<Region> found = regionRepository.findByRegionNo(region.getRegionNo());
+		assertThat(found.isPresent()).isTrue();
+		assertThat(found.get().getGps().size()).isEqualTo(0);
+
+		assertEquals(found.get(), region);
+
+		List<RegionGps> regionGps = regionGpsRepository.findByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
+		assertThat(regionGps.size()).isEqualTo(0);
+	}
+
+	@Test
 	void save_withDisorderRegionGps() {
 
 		Region region = TestDataHelper.getRegion2();
@@ -83,34 +123,6 @@ class RegionRepositoryTest {
 	}
 
 	@Test
-	void update_withEmptyGps() {
-
-		Region region = saveRegion1();
-
-		Optional<Region> found = regionRepository.findByRegionNo(region.getRegionNo());
-		assertThat(found.isPresent()).isTrue();
-
-		// update no, name, empty gps
-		found.get().setRegionNo("R99");
-		found.get().setRegionName("변경리전");
-		found.get().getGps().clear();
-
-		regionRepository.save(found.get());
-		entityManager.flush();
-		entityManager.clear();
-
-		found = regionRepository.findByRegionNo(found.get().getRegionNo());
-		assertThat(found.isPresent()).isTrue();
-
-		assertThat(found.get().getRegionNo()).isEqualTo("R99");
-		assertThat(found.get().getRegionName()).isEqualTo("변경리전");
-		assertThat(found.get().getGps().size()).isEqualTo(0);
-
-		List<RegionGps> regionGps = regionGpsRepository.findByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
-		assertThat(regionGps.size()).isEqualTo(0);
-	}
-
-	@Test
 	void update_withAnotherGps() {
 
 		Region region = saveRegion1();
@@ -141,6 +153,35 @@ class RegionRepositoryTest {
 
 		List<RegionGps> regionGps = regionGpsRepository.findByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(2);
+	}
+
+	@Test
+	void update_withEmptyGps() {
+
+		Region region = saveRegion1();
+
+		Optional<Region> found = regionRepository.findByRegionNo(region.getRegionNo());
+		assertThat(found.isPresent()).isTrue();
+
+		// update no, name, empty gps
+		found.get().setRegionNo("R99");
+		found.get().setRegionName("변경리전");
+		found.get().getGps().clear();			// to change list, you should not replace list itself. just clear and add.
+		//found.get().setGps(null);				// do not use set null to remove gps.
+
+		regionRepository.save(found.get());
+		entityManager.flush();
+		entityManager.clear();
+
+		found = regionRepository.findByRegionNo(found.get().getRegionNo());
+		assertThat(found.isPresent()).isTrue();
+
+		assertThat(found.get().getRegionNo()).isEqualTo("R99");
+		assertThat(found.get().getRegionName()).isEqualTo("변경리전");
+		assertThat(found.get().getGps().size()).isEqualTo(0);
+
+		List<RegionGps> regionGps = regionGpsRepository.findByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
+		assertThat(regionGps.size()).isEqualTo(0);
 	}
 
 	@Test

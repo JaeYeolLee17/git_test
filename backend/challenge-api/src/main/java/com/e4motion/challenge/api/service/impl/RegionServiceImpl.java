@@ -1,14 +1,21 @@
 package com.e4motion.challenge.api.service.impl;
 
+import com.e4motion.challenge.api.domain.Region;
+import com.e4motion.challenge.api.domain.RegionGps;
 import com.e4motion.challenge.api.dto.RegionDto;
 import com.e4motion.challenge.api.mapper.RegionMapper;
 import com.e4motion.challenge.api.repository.RegionRepository;
 import com.e4motion.challenge.api.service.RegionService;
+import com.e4motion.challenge.common.exception.customexception.RegionDuplicateException;
+import com.e4motion.challenge.common.exception.customexception.RegionNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -18,28 +25,79 @@ public class RegionServiceImpl implements RegionService {
     private final RegionMapper regionMapper;
     private final EntityManager entityManager;
 
-    @Override
+    @Transactional
     public RegionDto create(RegionDto regionDto) {
-        return null;
+
+        regionRepository.findByRegionNo(regionDto.getRegionNo())
+                .ifPresent(region -> {
+                    throw new RegionDuplicateException(RegionDuplicateException.REGION_NO_ALREADY_EXISTS);
+                });
+
+        Region region = regionMapper.toRegion(regionDto);
+        region.setGps(getRegionGps(regionDto, region));
+
+        Region saved = regionRepository.save(region);
+        entityManager.flush();
+
+        return regionMapper.toRegionDto(saved);
     }
 
-    @Override
+    @Transactional
     public RegionDto update(String regionNo, RegionDto regionDto) {
-        return null;
+
+        return regionRepository.findByRegionNo(regionNo)
+                .map(region -> {
+                    if (regionDto.getRegionNo() != null) {
+                        region.setRegionNo(region.getRegionNo());
+                    }
+
+                    if (regionDto.getRegionName() != null) {
+                        region.setRegionName(region.getRegionName());
+                    }
+
+                    if (regionDto.getGps() != null) {
+                        List<RegionGps> regionGps = getRegionGps(regionDto, region);
+                        region.getGps().clear();
+                        region.getGps().addAll(regionGps);
+                    }
+
+                    Region saved = regionRepository.save(region);
+                    entityManager.flush();
+
+                    return regionMapper.toRegionDto(saved);
+                })
+                .orElseThrow(() -> new RegionNotFoundException(RegionNotFoundException.INVALID_REGION_NO));
     }
 
-    @Override
+    @Transactional
     public void delete(String regionNo) {
 
+        regionRepository.deleteByRegionNo(regionNo);
     }
 
-    @Override
+    @Transactional
     public RegionDto get(String regionNo) {
-        return null;
+
+        return regionMapper.toRegionDto(regionRepository.findByRegionNo(regionNo).orElse(null));
     }
 
-    @Override
+    @Transactional
     public List<RegionDto> getList() {
+
+        return regionMapper.toRegionDto(regionRepository.findAll());
+    }
+
+    public List<RegionGps> getRegionGps(RegionDto regionDto, Region region) {
+        if (regionDto.getGps() != null) {
+            AtomicInteger order = new AtomicInteger();
+            return regionDto.getGps().stream().map(gps ->
+                    RegionGps.builder()
+                            .region(region)
+                            .latitude(gps.getLatitude())
+                            .longitude(gps.getLongitude())
+                            .gpsOrder(order.incrementAndGet())
+                            .build()).collect(Collectors.toList());
+        }
         return null;
     }
 }

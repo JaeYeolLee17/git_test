@@ -110,25 +110,36 @@ const Dashboard = () => {
                                     O
                                 </button>
                                 <Box className={styles.mapSelectWrap}>
-                                    <SelectorRegion
-                                        selectedRegionId={selectedRegionId}
-                                        onChangedCurrentRegion={
-                                            onChangedCurrentRegion
-                                        }
-                                    />
-
-                                    <SelectorIntersection
-                                        currentRegionInfo={currentRegionInfo}
-                                        selectedIntersectionId={
-                                            selectedIntersectionId
-                                        }
-                                        onChangedIntersectionList={(list) => {
-                                            setListIntersections(list);
-                                        }}
-                                        onChangedCurrentIntersection={
-                                            onChangedCurrentIntersection
-                                        }
-                                    />
+                                    <ul>
+                                        <li>
+                                            <SelectorRegion
+                                                selectedRegionId={
+                                                    selectedRegionId
+                                                }
+                                                onChangedCurrentRegion={
+                                                    onChangedCurrentRegion
+                                                }
+                                            />
+                                        </li>
+                                        <li>
+                                            <SelectorIntersection
+                                                currentRegionInfo={
+                                                    currentRegionInfo
+                                                }
+                                                selectedIntersectionId={
+                                                    selectedIntersectionId
+                                                }
+                                                onChangedIntersectionList={(
+                                                    list
+                                                ) => {
+                                                    setListIntersections(list);
+                                                }}
+                                                onChangedCurrentIntersection={
+                                                    onChangedCurrentIntersection
+                                                }
+                                            />
+                                        </li>
+                                    </ul>
                                 </Box>
                             </Box>
                             <Box

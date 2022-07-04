@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import Selector, { SelectorItemType } from "./Selector";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
@@ -7,6 +7,9 @@ import * as Common from "../commons/common";
 
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
+import { SelectChangeEvent } from "@mui/material/Select";
+
+import styles from "./Selector.module.css";
 
 function SelectorIntersection({
     currentRegionInfo,
@@ -150,11 +153,10 @@ function SelectorIntersection({
         }
     }, [selectedIntersectionId]);
 
-    const onChangeIntersections = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        //console.log(e);
+    const onChangeIntersections = (e: SelectChangeEvent) => {
         setListSelectIntersectionItem({
             value: e.target.value,
-            innerHTML: e.target[e.target.selectedIndex].innerHTML,
+            innerHTML: "",
         });
     };
 
@@ -162,6 +164,7 @@ function SelectorIntersection({
         <>
             {listSelectIntersections.length > 0 ? (
                 <Selector
+                    className={styles.mapSelectorWrapper}
                     list={listSelectIntersections}
                     selected={listSelectIntersectionItem}
                     onChange={onChangeIntersections}

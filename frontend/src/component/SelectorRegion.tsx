@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import Selector, { SelectorItemType } from "./Selector";
 
 import * as Utils from "../utils/utils";
@@ -7,6 +7,9 @@ import * as String from "../commons/string";
 import * as Common from "../commons/common";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
+import { SelectChangeEvent } from "@mui/material/Select";
+
+import styles from "./Selector.module.css";
 
 function SelectorRegion({
     selectedRegionId,
@@ -134,10 +137,10 @@ function SelectorRegion({
         }
     }, [selectedRegionId]);
 
-    const onChangeRegions = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const onChangeRegions = (e: SelectChangeEvent) => {
         setListSelectRegionItem({
             value: e.target.value,
-            innerHTML: e.target[e.target.selectedIndex].innerHTML,
+            innerHTML: "",
         });
     };
 
@@ -145,6 +148,7 @@ function SelectorRegion({
         <>
             {listSelectRegions.length > 0 ? (
                 <Selector
+                    className={styles.mapSelectorWrapper}
                     list={listSelectRegions}
                     selected={listSelectRegionItem}
                     onChange={onChangeRegions}

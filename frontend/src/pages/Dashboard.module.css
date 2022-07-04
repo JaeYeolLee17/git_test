@@ -36,6 +36,15 @@
     padding: 0px;
 }
 
+.mapSelectWrap ul li {
+    display: inline-block;
+    margin-right: 8px;
+}
+.mapSelectWrap ul {
+    padding: 0;
+    margin: 0;
+}
+
 .btnExpansion {
     background: #fff;
 

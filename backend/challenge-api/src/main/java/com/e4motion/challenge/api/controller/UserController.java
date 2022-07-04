@@ -41,32 +41,32 @@ public class UserController {
 
     @Operation(summary = "회원 수정", description = "접근 권한 : 최고관리자, 운영자, 사용자(자기 자신만)")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
-    @PutMapping("/user/{userId}")
-    public Response update(@PathVariable Long userId, @Valid @RequestBody UserUpdateDto userUpdateDto) throws Exception {
+    @PutMapping("/user/{username}")
+    public Response update(@PathVariable String username, @Valid @RequestBody UserUpdateDto userUpdateDto) throws Exception {
 
-        securityHelper.checkIfLoginUserForRoleUser(userId);
+        securityHelper.checkIfLoginUserForRoleUser(username);
 
-		return new Response("user", userService.update(userId, userUpdateDto));
+		return new Response("user", userService.update(username, userUpdateDto));
     }
 
     @Operation(summary = "회원 삭제", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @DeleteMapping("/user/{userId}")
-    public Response delete(@PathVariable Long userId) throws Exception {
+    @DeleteMapping("/user/{username}")
+    public Response delete(@PathVariable String username) throws Exception {
 		
-		userService.delete(userId);
+		userService.delete(username);
 		
         return new Response();
     }
 
     @Operation(summary = "회원 조회", description = "접근 권한 : 최고관리자, 운영자, 사용자(자기 자신만)")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
-	@GetMapping("/user/{userId}")
-    public Response get(@PathVariable Long userId) throws Exception {
+	@GetMapping("/user/{username}")
+    public Response get(@PathVariable String username) throws Exception {
 
-        securityHelper.checkIfLoginUserForRoleUser(userId);
+        securityHelper.checkIfLoginUserForRoleUser(username);
 
-		return new Response("user", userService.get(userId));
+		return new Response("user", userService.get(username));
     }
 
     @Operation(summary = "회원 목록 조회", description = "접근 권한 : 최고관리자, 운영자")

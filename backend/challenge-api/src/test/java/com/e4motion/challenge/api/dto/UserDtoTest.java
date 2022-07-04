@@ -55,9 +55,9 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
-        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -84,16 +84,16 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
-        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
         userUpdateDto.setUsername(null);
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setUsername("");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setUsername(" ");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -132,43 +132,43 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
-        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
         String oldPassword = userUpdateDto.getOldPassword();
 
         // old password
         userUpdateDto.setOldPassword(null);
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setOldPassword("");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setOldPassword(" ");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setOldPassword(oldPassword);
 
         // new password
         userUpdateDto.setNewPassword(null);
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setNewPassword("");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setNewPassword(" ");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setNewPassword("challenge");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setNewPassword("challenge1123");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setNewPassword("1123!@1123");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setNewPassword("cha112!");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -197,16 +197,16 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
-        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
         userUpdateDto.setNickname(null);
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setNickname("");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setNickname(" ");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
     }
 
@@ -245,25 +245,25 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
-        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
         userUpdateDto.setEmail(null);
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setEmail("");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setEmail(" ");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setUsername("user1@email...");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setUsername("user1email.com");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setUsername("user1@emailcom");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -301,25 +301,25 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
-        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
         userUpdateDto.setPhone(null);
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setPhone("");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
         userUpdateDto.setPhone(" ");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setPhone("010-2222-3333");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setPhone("01022223333-");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         userUpdateDto.setPhone("01022223");
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -340,10 +340,10 @@ class UserDtoTest {
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
         doReturn(userDto).when(userService).update(any(), any());
-        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUserId());
+        doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
         userUpdateDto.setAuthority(null);
-        assertUpdate(userDto.getUserId(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     private void assertCreate(UserDto userDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
@@ -370,9 +370,9 @@ class UserDtoTest {
                 });
     }
 
-    private void assertUpdate(Long userId, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+    private void assertUpdate(String username, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        String uri = "/v2/user/" + userId;
+        String uri = "/v2/user/" + username;
 
         mockMvc.perform(MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON)

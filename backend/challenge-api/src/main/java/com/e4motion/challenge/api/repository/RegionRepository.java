@@ -6,11 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface RegionRepository extends JpaRepository<Region, String> {
+public interface RegionRepository extends JpaRepository<Region, Long> {
 
     @Transactional(readOnly = true)
-    Optional<Region> findByRegionId(String regionId);
+    Optional<Region> findByRegionNo(String regionNo);
 
     @Transactional
-    void deleteByRegionId(String regionId);
+    void deleteByRegionNo(String regionNo);
+
 }

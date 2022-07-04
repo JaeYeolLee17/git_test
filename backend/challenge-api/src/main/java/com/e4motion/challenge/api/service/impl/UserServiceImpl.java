@@ -11,6 +11,7 @@ import com.e4motion.challenge.common.exception.customexception.UnauthorizedExcep
 import com.e4motion.challenge.common.exception.customexception.UserDuplicateException;
 import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +48,9 @@ public class UserServiceImpl implements UserService {
     }
     
     @Transactional
-    public UserDto update(Long userId, UserUpdateDto userUpdateDto) {
+    public UserDto update(String username, UserUpdateDto userUpdateDto) {
 
-    	return userRepository.findByUserId(userId)
+    	return userRepository.findByUsername(username)
 				.map(user -> {
 					if (userUpdateDto.getNewPassword() != null) {
 						if (userUpdateDto.getOldPassword() == null || !passwordEncoder.matches(userUpdateDto.getOldPassword(), user.getPassword())) {
@@ -93,20 +94,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void delete(Long userId) {
+    public void delete(String username) {
     	
-    	userRepository.deleteByUserId(userId);
+    	userRepository.deleteByUsername(username);
     }
     
     @Transactional(readOnly = true)
-    public UserDto get(Long userId) {
+    public UserDto get(String username) {
     	
-        return userMapper.toUserDto(userRepository.findByUserId(userId).orElse(null));
+        return userMapper.toUserDto(userRepository.findByUsername(username).orElse(null));
     }
     
     @Transactional(readOnly = true)
     public List<UserDto> getList() {
-    	
-        return userMapper.toUserDto(userRepository.findAll());
+
+		Sort sort = Sort.by("userId").ascending();
+        return userMapper.toUserDto(userRepository.findAll(sort));
     }
 }

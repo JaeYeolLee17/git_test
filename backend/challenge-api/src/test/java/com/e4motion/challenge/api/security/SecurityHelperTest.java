@@ -31,7 +31,7 @@ class SecurityHelperTest {
 
     @BeforeEach
     void setup() {
-        securityHelper = new SecurityHelper(userRepository, userMapper);
+        securityHelper = new SecurityHelper();
     }
 
     @Test
@@ -42,10 +42,10 @@ class SecurityHelperTest {
 
         doReturn(Optional.of(userMapper.toUser(userDto))).when(userRepository).findByUsername(userDto.getUsername());
 
-        securityHelper.checkIfLoginUserForRoleUser(userDto.getUserId());    // Nothing should happen.
+        securityHelper.checkIfLoginUserForRoleUser(userDto.getUsername());    // Nothing should happen.
 
         // Exception should happen.
-        Exception ex = assertThrows(InaccessibleException.class, () -> securityHelper.checkIfLoginUserForRoleUser(10L));
+        Exception ex = assertThrows(InaccessibleException.class, () -> securityHelper.checkIfLoginUserForRoleUser("other_user"));
 
         assertThat(ex.getMessage()).isEqualTo(InaccessibleException.ACCESS_DENIED);
     }
@@ -59,9 +59,9 @@ class SecurityHelperTest {
 
         doReturn(Optional.of(userMapper.toUser(adminUserDto))).when(userRepository).findByUsername(adminUserDto.getUsername());
 
-        securityHelper.checkIfLoginUserForRoleUser(userDto.getUserId());    // Nothing should happen.
+        securityHelper.checkIfLoginUserForRoleUser(userDto.getUsername());    // Nothing should happen.
 
-        securityHelper.checkIfLoginUserForRoleUser(10L);    // Nothing should happen.
+        securityHelper.checkIfLoginUserForRoleUser("other_user");    // Nothing should happen.
     }
 
     @Test
@@ -73,9 +73,9 @@ class SecurityHelperTest {
 
         doReturn(Optional.of(userMapper.toUser(managerUserDto))).when(userRepository).findByUsername(managerUserDto.getUsername());
 
-        securityHelper.checkIfLoginUserForRoleUser(userDto.getUserId());    // Nothing should happen.
+        securityHelper.checkIfLoginUserForRoleUser(userDto.getUsername());    // Nothing should happen.
 
-        securityHelper.checkIfLoginUserForRoleUser(10L);    // Nothing should happen.
+        securityHelper.checkIfLoginUserForRoleUser("other_user");    // Nothing should happen.
     }
 
     @Test
@@ -87,7 +87,6 @@ class SecurityHelperTest {
         doReturn(Optional.of(userMapper.toUser(adminUserDto))).when(userRepository).findByUsername(adminUserDto.getUsername());
 
         UserDto loginUserDto = securityHelper.getLoginUser();
-        assertThat(loginUserDto.getUserId()).isEqualTo(adminUserDto.getUserId());
         assertThat(loginUserDto.getUsername()).isEqualTo(adminUserDto.getUsername());
         assertThat(loginUserDto.getAuthority()).isEqualTo(adminUserDto.getAuthority());
     }
@@ -101,7 +100,6 @@ class SecurityHelperTest {
         doReturn(Optional.of(userMapper.toUser(managerUserDto))).when(userRepository).findByUsername(managerUserDto.getUsername());
 
         UserDto loginUserDto = securityHelper.getLoginUser();
-        assertThat(loginUserDto.getUserId()).isEqualTo(managerUserDto.getUserId());
         assertThat(loginUserDto.getUsername()).isEqualTo(managerUserDto.getUsername());
         assertThat(loginUserDto.getAuthority()).isEqualTo(managerUserDto.getAuthority());
     }
@@ -115,7 +113,6 @@ class SecurityHelperTest {
         doReturn(Optional.of(userMapper.toUser(userDto))).when(userRepository).findByUsername(userDto.getUsername());
 
         UserDto loginUserDto = securityHelper.getLoginUser();
-        assertThat(loginUserDto.getUserId()).isEqualTo(userDto.getUserId());
         assertThat(loginUserDto.getUsername()).isEqualTo(userDto.getUsername());
         assertThat(loginUserDto.getAuthority()).isEqualTo(userDto.getAuthority());
     }

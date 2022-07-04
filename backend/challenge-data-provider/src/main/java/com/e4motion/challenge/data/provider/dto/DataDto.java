@@ -2,12 +2,11 @@ package com.e4motion.challenge.data.provider.dto;
 
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

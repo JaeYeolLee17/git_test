@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.e4motion.challenge.api.domain.Authority;
@@ -63,7 +64,7 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User newUser = userMapper.toUser(userDto);
 		
-		doReturn(Optional.ofNullable(null)).when(userRepository).findByUsername(userDto.getUsername());
+		doReturn(Optional.empty()).when(userRepository).findByUsername(userDto.getUsername());
 		doReturn(newUser).when(userRepository).save(any());
 		
 		// when
@@ -71,7 +72,7 @@ public class UserServiceTest {
 		
 		// then
 		assertThat(createdUserDto).isNotNull();
-		assertEqualsUserDtos(createdUserDto, userDto);
+		assertEquals(createdUserDto, userDto);
     }
 	
 	@Test
@@ -103,7 +104,7 @@ public class UserServiceTest {
 		User user = userMapper.toUser(userDto);
 
 		User updatedUser = User.builder()
-				.userId(userDto.getUserId())
+				.userId(1L)
 				.username(userUpdateDto.getUsername())
 				.password(passwordEncoder.encode(userUpdateDto.getNewPassword()))
 				.nickname(userUpdateDto.getNickname())
@@ -112,21 +113,22 @@ public class UserServiceTest {
 				.authorities(Collections.singleton(new Authority(userUpdateDto.getAuthority())))
 				.build();
 		
-		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 		doReturn(updatedUser).when(userRepository).save(any());
 		doNothing().when(entityManager).flush();
 		
 		// when
-		UserDto updatedUserDto = userService.update(userDto.getUserId(), userUpdateDto);
+		UserDto updatedUserDto = userService.update(userDto.getUsername(), userUpdateDto);
  
 		// then
 		userDto.setUsername(userUpdateDto.getUsername());
+		userDto.setNickname(userUpdateDto.getNickname());
 		userDto.setEmail(userUpdateDto.getEmail());
 		userDto.setPhone(userUpdateDto.getPhone());
 		userDto.setAuthority(userUpdateDto.getAuthority());
 
 		assertThat(updatedUserDto).isNotNull();
-		assertEqualsUserDtos(updatedUserDto, userDto);
+		assertEquals(updatedUserDto, userDto);
     }
 
 	@Test
@@ -141,10 +143,10 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User user = userMapper.toUser(userDto);
 
-		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 
 		// when
-		Exception ex = assertThrows(UnauthorizedException.class, () -> userService.update(userDto.getUserId(), userUpdateDto));
+		Exception ex = assertThrows(UnauthorizedException.class, () -> userService.update(userDto.getUsername(), userUpdateDto));
 
 		// then
 		assertThat(ex.getMessage()).isEqualTo(UnauthorizedException.INVALID_PASSWORD);
@@ -157,10 +159,10 @@ public class UserServiceTest {
 		UserDto userDto = TestDataHelper.getUserDto2();
 		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 
-		doReturn(Optional.ofNullable(null)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.empty()).when(userRepository).findByUsername(userDto.getUsername());
 
 		// when
-		Exception ex = assertThrows(UserNotFoundException.class, () -> userService.update(userDto.getUserId(), userUpdateDto));
+		Exception ex = assertThrows(UserNotFoundException.class, () -> userService.update(userDto.getUsername(), userUpdateDto));
 
 		// then
 		assertThat(ex.getMessage()).isEqualTo(UserNotFoundException.INVALID_USERNAME);
@@ -172,10 +174,10 @@ public class UserServiceTest {
 		UserDto userDto = TestDataHelper.getUserDto1();
 
 		// given
-		doNothing().when(userRepository).deleteByUserId(userDto.getUserId());
+		doNothing().when(userRepository).deleteByUsername(userDto.getUsername());
 
 		// when
-		userService.delete(userDto.getUserId());
+		userService.delete(userDto.getUsername());
 		
 		// then
     }
@@ -189,13 +191,13 @@ public class UserServiceTest {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		User user = userMapper.toUser(userDto);
 		
-		doReturn(Optional.of(user)).when(userRepository).findByUserId(userDto.getUserId());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 		
 		// when
-		UserDto foundUserDto = userService.get(userDto.getUserId());
+		UserDto foundUserDto = userService.get(userDto.getUsername());
 		
 		// then
-		assertEqualsUserDtos(foundUserDto, userDto);
+		assertEquals(foundUserDto, userDto);
     }
 	
 	@Test
@@ -219,22 +221,23 @@ public class UserServiceTest {
 		List<User> users = new ArrayList<>();
 		users.add(user1);
 		users.add(user2);
-		
-		doReturn(users).when(userRepository).findAll();
+
+		Sort sort = Sort.by("userId").ascending();
+		doReturn(users).when(userRepository).findAll(sort);
 		
 		// when
 		List<UserDto> foundUserDtos = userService.getList();
 		
 		// then
 		assertThat(foundUserDtos.size()).isEqualTo(userDtos.size());
-		assertEqualsUserDtos(foundUserDtos.get(0), userDtos.get(0));
-		assertEqualsUserDtos(foundUserDtos.get(1), userDtos.get(1));
+		assertEquals(foundUserDtos.get(0), userDtos.get(0));
+		assertEquals(foundUserDtos.get(1), userDtos.get(1));
     }
 
-	private void assertEqualsUserDtos(UserDto userDto1, UserDto userDto2) {
-		
-		assertThat(userDto1.getUserId()).isEqualTo(userDto2.getUserId());
+	private void assertEquals(UserDto userDto1, UserDto userDto2) {
+
 		assertThat(userDto1.getUsername()).isEqualTo(userDto2.getUsername());
+		assertThat(userDto1.getNickname()).isEqualTo(userDto2.getNickname());
 		assertThat(userDto1.getEmail()).isEqualTo(userDto2.getEmail());
 		assertThat(userDto1.getPhone()).isEqualTo(userDto2.getPhone());
 		assertThat(userDto1.getAuthority()).isEqualTo(userDto2.getAuthority());

@@ -5,15 +5,14 @@ import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.common.domain.AuthorityName;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,124 +25,91 @@ class UserRepositoryTest {
 
 	@Autowired
 	UserRepository userRepository;
-	
-	User savedUser;
-	
-	@BeforeEach
-	void setUp() throws Exception {
 
-		userRepository.deleteAll();
-
-		User user = TestDataHelper.getUser1();
-
-		savedUser = userRepository.save(user);
-
-		assertThat(userRepository.count()).isEqualTo(1);
-		assertEqualsUsers(user, savedUser);
-	}
+	@Autowired
+	EntityManager entityManager;
 
 	@Test
 	void save() {
 		
-		User newUser = TestDataHelper.getUser2();
+		User user = saveUser1();
+		
+		Optional<User> found = userRepository.findByUsername(user.getUsername());
+		assertThat(found.isPresent()).isTrue();
 
-		userRepository.save(newUser);
-		
-		Optional<User> foundUser = userRepository.findByUsername(newUser.getUsername());
-		
-		assertThat(userRepository.count()).isEqualTo(2);
-		assertThat(foundUser.isPresent()).isTrue();
-        assertEqualsUsers(foundUser.get(), newUser);
+        assertEqualsUsers(found.get(), user);
 	}
 
 	@Test
 	void update() {
 
+		User user = saveUser1();
+
 		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
-    	savedUser.setUsername(userUpdateDto.getUsername());
-    	savedUser.setEmail(userUpdateDto.getEmail());
-    	savedUser.setPhone(userUpdateDto.getPhone());
+		user.setUsername(userUpdateDto.getUsername());
+		user.setPassword(userUpdateDto.getNewPassword());
+		user.setEmail(userUpdateDto.getEmail());
+		user.setPhone(userUpdateDto.getPhone());
     	
 		Set<Authority> authorities = new HashSet<>();		// Do not use Collections.singleton when save for update.
 		authorities.add(new Authority(AuthorityName.ROLE_USER));
-        savedUser.setAuthorities(authorities);
+		user.setAuthorities(authorities);
         
-        userRepository.save(savedUser);
+        userRepository.save(user);
+		entityManager.flush();
+		entityManager.clear();
 
-        Optional<User> foundUser = userRepository.findByUserId(savedUser.getUserId());
+        Optional<User> found = userRepository.findByUsername(user.getUsername());
         
-        assertThat(foundUser.isPresent()).isTrue();
-        assertEqualsUsers(foundUser.get(), savedUser);
-	}
-	
-	@Test
-	void findAll() {
-
-		User user = TestDataHelper.getUser2();
-
-		userRepository.save(user);
-		
-		List<User> users = userRepository.findAll();
-		
-		assertThat(users.size()).isEqualTo(2);
-        assertEqualsUsers(users.get(0), savedUser);
-        assertEqualsUsers(users.get(1), user);
-	}
-
-	@Test
-	void deleteAll() {
-
-		User user = TestDataHelper.getUser2();
-
-		userRepository.save(user);
-		
-		assertThat(userRepository.count()).isEqualTo(2);
-		
-		userRepository.deleteAll();
-		
-		assertThat(userRepository.count()).isEqualTo(0);
-	}
-
-	@Test
-	void findByUserId() {
-
-        Optional<User> foundUser = userRepository.findByUserId(savedUser.getUserId());
-
-        assertThat(foundUser.isPresent()).isTrue();
-        assertEqualsUsers(foundUser.get(), savedUser);
+        assertThat(found.isPresent()).isTrue();
+        assertEqualsUsers(found.get(), user);
 	}
 
 	@Test
 	void findByUsername() {
 
-		User user = TestDataHelper.getUser2();
+		User user = saveUser1();
 
-		userRepository.save(user);
+		Optional<User> found = userRepository.findByUsername(user.getUsername());
 
-		Optional<User> foundUser = userRepository.findByUsername(savedUser.getUsername());
-
-		assertThat(foundUser.isPresent()).isTrue();
-		assertEqualsUsers(foundUser.get(), savedUser);
+		assertThat(found.isPresent()).isTrue();
+		assertEqualsUsers(found.get(), user);
 	}
 
 	@Test
-	void deleteByUserId() {
-		
-		Optional<User> foundUser = userRepository.findByUserId(savedUser.getUserId());
-    	
-    	assertThat(foundUser.isPresent()).isTrue();
-    	
-        userRepository.deleteByUserId(foundUser.get().getUserId());
+	void deleteByUsername() {
 
-        foundUser = userRepository.findByUserId(savedUser.getUserId());
-        
-        assertThat(foundUser.isPresent()).isFalse();
+		User user = saveUser1();
+
+		Optional<User> found = userRepository.findByUsername(user.getUsername());
+    	assertThat(found.isPresent()).isTrue();
+    	
+        userRepository.deleteByUsername(found.get().getUsername());
+		entityManager.flush();
+		entityManager.clear();
+
+        found = userRepository.findByUsername(user.getUsername());
+        assertThat(found.isPresent()).isFalse();
         assertThat(userRepository.count()).isEqualTo(0);
+	}
+
+	private User saveUser1() {
+
+		User user = TestDataHelper.getUser1();
+
+		User saved = userRepository.save(user);
+		entityManager.flush();
+		entityManager.clear();
+
+		assertThat(userRepository.count()).isEqualTo(1);
+
+		return saved;
 	}
 	
 	private void assertEqualsUsers(User user1, User user2) {
 
 		assertThat(user1.getUsername()).isEqualTo(user2.getUsername());
+		assertThat(user1.getPassword()).isEqualTo(user2.getPassword());
 		assertThat(user1.getNickname()).isEqualTo(user2.getNickname());
 		assertThat(user1.getEmail()).isEqualTo(user2.getEmail());
 		assertThat(user1.getPhone()).isEqualTo(user2.getPhone());

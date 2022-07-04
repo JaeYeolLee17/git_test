@@ -1,17 +1,21 @@
 package com.e4motion.challenge.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class GpsDto {
 
-    private double latitude;
+    @NotNull
+    private Double latitude;
 
-    private double longitude;
+    @NotNull
+    private Double longitude;
+
 }

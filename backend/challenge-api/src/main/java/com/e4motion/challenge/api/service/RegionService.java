@@ -8,11 +8,11 @@ public interface RegionService {
 
     RegionDto create(RegionDto regionDto);
 
-    RegionDto update(String regionId, RegionDto regionDto);
+    RegionDto update(String regionNo, RegionDto regionDto);
 
-    void delete(String regionId);
+    void delete(String regionNo);
 
-    RegionDto get(String regionId);
+    RegionDto get(String regionNo);
 
     List<RegionDto> getList();
 }

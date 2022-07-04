@@ -9,11 +9,16 @@ import { useAsyncAxios, useInterval } from "../utils/customHooks";
 import StreamIntersection from "./StreamIntersection";
 import ToggleImageButton from "./ToggleImageButton";
 
+import styles from "./DashboardMap.module.css";
+import { Box } from "@mui/material";
+
 function DashboardMap({
+    transitionState,
     currentRegionInfo,
     intersections,
     onChangedSelectedItem,
 }: {
+    transitionState: string;
     currentRegionInfo: Common.RegionInfo;
     intersections: { listIntersections: any[]; selectedIntersectionId: string };
     onChangedSelectedItem: ({
@@ -392,37 +397,41 @@ function DashboardMap({
 
     return (
         <div>
-            <ToggleImageButton
-                bOn={showRegion}
-                onClick={onClickRegion}
-                text={"region"}
-            />
-            <ToggleImageButton
-                bOn={showCameras}
-                onClick={onClickCamera}
-                text={"camera"}
-            />
-            <ToggleImageButton
-                bOn={showLinks}
-                onClick={onClickLinks}
-                text={"links"}
-            />
-            <ToggleImageButton
-                bOn={showTrafficLights}
-                onClick={onClickTrafficLight}
-                text={"TrafficLight"}
-            />
-            <ToggleImageButton
-                bOn={showAvlDatas}
-                onClick={onClickAvl}
-                text={"avl"}
-            />
+            <Box className={styles.mapBtnsWrap}>
+                <ToggleImageButton
+                    bOn={showRegion}
+                    onClick={onClickRegion}
+                    text={"region"}
+                />
+                <ToggleImageButton
+                    bOn={showCameras}
+                    onClick={onClickCamera}
+                    text={"camera"}
+                />
+                <ToggleImageButton
+                    bOn={showLinks}
+                    onClick={onClickLinks}
+                    text={"links"}
+                />
+                <ToggleImageButton
+                    bOn={showTrafficLights}
+                    onClick={onClickTrafficLight}
+                    text={"TrafficLight"}
+                />
+                <ToggleImageButton
+                    bOn={showAvlDatas}
+                    onClick={onClickAvl}
+                    text={"avl"}
+                />
+            </Box>
 
             <KakaoMap
                 style={{
                     width: "100%",
-                    height: "100vh",
+                    height: "calc(100vh - 80px)",
+                    zIndex: "0",
                 }}
+                transitionState={transitionState}
                 region={{
                     current: currentRegionInfo,
                     isShow: showRegion,

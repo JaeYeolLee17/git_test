@@ -1,0 +1,57 @@
+.dashboardMap {
+    position: relative;
+
+    width: 75%;
+    order: 0;
+    transition: width 0.4s;
+}
+
+.dashboardMapExtend {
+    width: 100%;
+}
+
+.dashboardChart {
+    width: 25%;
+    z-index: 1;
+    overflow: hidden;
+    transition: width 0.4s ease;
+    /* background: #fff;
+    box-shadow: -3px 0px 3px 0 rgba(0, 0, 0, 0.2); */
+}
+
+.dashboardChartHidden {
+    width: 0%;
+}
+
+.mapSelectWrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1;
+
+    padding: 0px;
+}
+
+.btnExpansion {
+    background: #fff;
+
+    position: absolute;
+    top: calc(50% - 80px);
+    right: 0px;
+    z-index: 2;
+
+    width: 20px;
+    height: 120px;
+
+    margin: 0;
+    padding: 0;
+    border-radius: 2px 0 0 2px;
+    border: none;
+    box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.3);
+
+    transition: 0.4s;
+}

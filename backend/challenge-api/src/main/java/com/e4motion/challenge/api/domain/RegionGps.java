@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-//@ToString         // remove circular reference.
+//@ToString                             // remove circular reference.
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

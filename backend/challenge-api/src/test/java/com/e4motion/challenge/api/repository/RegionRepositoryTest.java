@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.repository;
 
 import com.e4motion.challenge.api.TestDataHelper;
+import com.e4motion.challenge.api.domain.Intersection;
 import com.e4motion.challenge.api.domain.Region;
 import com.e4motion.challenge.api.domain.RegionGps;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ class RegionRepositoryTest {
 
 	@Autowired
 	RegionGpsRepository regionGpsRepository;
+
+	@Autowired
+	IntersectionRepository intersectionRepository;
 
 	@Autowired
 	EntityManager entityManager;
@@ -202,6 +206,37 @@ class RegionRepositoryTest {
 
 		List<RegionGps> regionGps = regionGpsRepository.findByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(0);
+	}
+
+	@Test
+	void get_withIntersection() {
+
+		Region region = saveRegion1();
+
+		Optional<Region> found = regionRepository.findByRegionNo(region.getRegionNo());
+		assertThat(found.isPresent()).isTrue();
+		assertThat(found.get().getGps().size()).isEqualTo(region.getGps().size());
+		assertThat(found.get().getIntersections().size()).isEqualTo(0);
+
+		saveIntersection1_2(region);
+		found = regionRepository.findByRegionNo(region.getRegionNo());
+		assertThat(found.get().getIntersections().size()).isEqualTo(2);
+	}
+
+	private void saveIntersection1_2(Region region) {
+
+		Intersection intersection = TestDataHelper.getIntersection1();
+		intersection.setRegion(region);
+
+		intersectionRepository.save(intersection);
+
+		intersection = TestDataHelper.getIntersection2();
+		intersection.setRegion(region);
+		intersectionRepository.save(intersection);
+		entityManager.flush();
+		entityManager.clear();
+
+		assertThat(intersectionRepository.count()).isEqualTo(2);
 	}
 
 	private Region saveRegion1() {

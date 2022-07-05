@@ -37,7 +37,7 @@ class UserRepositoryTest {
 		Optional<User> found = userRepository.findByUsername(user.getUsername());
 		assertThat(found.isPresent()).isTrue();
 
-        assertEqualsUsers(found.get(), user);
+        assertEquals(found.get(), user);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ class UserRepositoryTest {
         Optional<User> found = userRepository.findByUsername(user.getUsername());
         
         assertThat(found.isPresent()).isTrue();
-        assertEqualsUsers(found.get(), user);
+        assertEquals(found.get(), user);
 	}
 
 	@Test
@@ -73,7 +73,7 @@ class UserRepositoryTest {
 		Optional<User> found = userRepository.findByUsername(user.getUsername());
 
 		assertThat(found.isPresent()).isTrue();
-		assertEqualsUsers(found.get(), user);
+		assertEquals(found.get(), user);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ class UserRepositoryTest {
 		return saved;
 	}
 	
-	private void assertEqualsUsers(User user1, User user2) {
+	private void assertEquals(User user1, User user2) {
 
 		assertThat(user1.getUsername()).isEqualTo(user2.getUsername());
 		assertThat(user1.getPassword()).isEqualTo(user2.getPassword());

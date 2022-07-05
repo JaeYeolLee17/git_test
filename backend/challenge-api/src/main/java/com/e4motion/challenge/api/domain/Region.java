@@ -26,10 +26,11 @@ public class Region extends BaseTimeEntity {
     @Column(name = "region_name", length = 32)
     private String regionName;
 
-    //@OneToMany(mappedBy = "region")
-    //private List<Intersection> intersections;
-
     @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("gps_order ASC")
     private List<RegionGps> gps;
+
+    @OneToMany(mappedBy = "region")
+    private List<Intersection> intersections;
+
 }

@@ -2,7 +2,6 @@ package com.e4motion.challenge.api.mapper;
 
 import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.domain.Intersection;
-import com.e4motion.challenge.api.domain.RegionGps;
 import com.e4motion.challenge.api.dto.IntersectionDto;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -94,17 +93,7 @@ public class IntersectionMapperTest {
 		} else {
 			assertThat(intersection.getRegion().getRegionNo()).isEqualTo(intersectionDto.getRegion().getRegionNo());
 			assertThat(intersection.getRegion().getRegionName()).isEqualTo(intersectionDto.getRegion().getRegionName());
-
-			if (intersection.getRegion().getGps() == null) {
-				assertThat(intersection.getRegion().getGps()).isNull();
-			} else {
-				int i = 0;
-				for (RegionGps gps : intersection.getRegion().getGps()) {
-					assertThat(gps.getLatitude()).isEqualTo(intersectionDto.getRegion().getGps().get(i).getLatitude());
-					assertThat(gps.getLongitude()).isEqualTo(intersectionDto.getRegion().getGps().get(i).getLongitude());
-					i++;
-				}
-			}
+			assertThat(intersectionDto.getRegion().getGps()).isNull();
 			assertThat(intersectionDto.getRegion().getIntersections()).isNull();
 		}
 	}

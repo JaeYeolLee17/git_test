@@ -18,6 +18,8 @@ public class MappingExpression {
     public final static String TO_CAMERA_DTO_ROAD_LANE = "java(new ObjectMapper().readValue(cameraRoad.getLane(), String[].class))";
     public final static String TO_CAMERA_DTO_ROAD_DIRECTION = "java(new ObjectMapper().readValue(cameraRoad.getDirection(), Boolean[][].class))";
 
+    public final static String TO_CAMERA_DTO_DIRECTION = "java(IntersectionDto.builder().intersectionNo(camera.getDirection().getIntersectionNo()).intersectionName(camera.getDirection().getIntersectionName()).build())";
+
     public final static String TO_CAMERA_ROAD_LANE = "java(new ObjectMapper().writeValueAsString(cameraRoadDto.getLane()))";
     public final static String TO_CAMERA_ROAD_DIRECTION = "java(new ObjectMapper().writeValueAsString(cameraRoadDto.getDirection()))";
 }

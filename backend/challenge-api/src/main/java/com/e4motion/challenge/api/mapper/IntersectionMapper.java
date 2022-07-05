@@ -1,19 +1,19 @@
 package com.e4motion.challenge.api.mapper;
 
 import com.e4motion.challenge.api.domain.Camera;
-import com.e4motion.challenge.api.domain.CameraRoad;
 import com.e4motion.challenge.api.domain.Intersection;
 import com.e4motion.challenge.api.domain.Region;
-import com.e4motion.challenge.api.dto.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.e4motion.challenge.api.dto.CameraDto;
+import com.e4motion.challenge.api.dto.GpsDto;
+import com.e4motion.challenge.api.dto.IntersectionDto;
+import com.e4motion.challenge.api.dto.RegionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", imports = {GpsDto.class, Collectors.class, ObjectMapper.class})
+@Mapper(componentModel = "spring", imports = {GpsDto.class, Collectors.class})
 public interface IntersectionMapper {
 
     @Mapping(target = "gps", expression = MappingExpression.TO_INTERSECTION_DTO_GPS)
@@ -26,12 +26,9 @@ public interface IntersectionMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "gps", expression = MappingExpression.TO_CAMERA_DTO_GPS)
     @Mapping(target = "intersection", ignore = true)            // remove circular reference.
-    @Mapping(target = "direction", ignore = true)               // remove circular reference.
+    @Mapping(target = "direction", expression = MappingExpression.TO_CAMERA_DTO_DIRECTION)  // remove circular reference.
+    @Mapping(target = "road", ignore = true)
     CameraDto toCameraDto(Camera camera);
-
-    @Mapping(target = "lane", expression = MappingExpression.TO_CAMERA_DTO_ROAD_LANE)
-    @Mapping(target = "direction", expression = MappingExpression.TO_CAMERA_DTO_ROAD_DIRECTION)
-    CameraRoadDto toCameraRoadDto(CameraRoad cameraRoad) throws JsonProcessingException;
 
     List<IntersectionDto> toIntersectionDto(List<Intersection> regions);
 

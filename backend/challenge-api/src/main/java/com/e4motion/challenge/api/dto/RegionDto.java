@@ -26,6 +26,7 @@ public class RegionDto {
 
     private List<IntersectionDto> intersections;
 
+    // TODO: 모든 DTO 의 createDate, modifiedDate : create, update 시 변경되는 것 확인 후 삭제.
     @JsonFormat(pattern = DateTimeHelper.dateTimeFormat, shape = JsonFormat.Shape.STRING)
     private LocalDateTime createdDate;
 

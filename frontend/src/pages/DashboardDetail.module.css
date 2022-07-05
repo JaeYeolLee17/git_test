@@ -1,0 +1,24 @@
+.dashboardMap {
+    position: relative;
+
+    width: 75%;
+    order: 0;
+    transition: width 0.4s;
+}
+
+.dashboardMapExtend {
+    width: 100%;
+}
+
+.dashboardChart {
+    width: 25%;
+    z-index: 1;
+    overflow: hidden;
+    transition: width 0.4s ease;
+    /* background: #fff;
+    box-shadow: -3px 0px 3px 0 rgba(0, 0, 0, 0.2); */
+}
+
+.dashboardChartHidden {
+    width: 0%;
+}

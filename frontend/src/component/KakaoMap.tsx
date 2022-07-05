@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Map,
     MapMarker,
@@ -12,6 +12,7 @@ import * as Common from "../commons/common";
 export type KakaoMapStyleType = {
     width: string | number;
     height: string | number;
+    zIndex: string;
 };
 
 export type KakaoMapRegionType = {
@@ -586,6 +587,7 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
 
 function KakaoMap({
     style,
+    transitionState,
     region,
     intersections,
     cameras,
@@ -594,6 +596,7 @@ function KakaoMap({
     avl,
 }: {
     style: KakaoMapStyleType;
+    transitionState?: string;
     region: KakaoMapRegionType;
     intersections: KakaoMapIntersectionsType;
     cameras: KakaoMapCamerasType;
@@ -603,6 +606,24 @@ function KakaoMap({
 }) {
     const [kakaoMap, setKakaoMap] = useState<kakao.maps.Map>();
     const [level, setLevel] = useState<number>(7);
+
+    const [tempCenter, setTempCenter] = useState<kakao.maps.LatLng>();
+
+    useEffect(() => {
+        if (transitionState === "entering" || transitionState === "exiting") {
+            //console.log(transitionState, kakaoMap?.getCenter());
+            setTempCenter(kakaoMap?.getCenter());
+        } else if (
+            transitionState === "entered" ||
+            transitionState === "exited"
+        ) {
+            if (tempCenter != undefined) {
+                //console.log(transitionState, tempCenter);
+                kakaoMap?.relayout();
+                kakaoMap?.setCenter(tempCenter);
+            }
+        }
+    }, [transitionState]);
 
     // const displayRegion = () => {
     //     if (region === undefined) return null;

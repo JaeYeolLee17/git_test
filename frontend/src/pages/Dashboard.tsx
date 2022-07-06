@@ -8,9 +8,10 @@ import DashboardMap from "../component/DashboardMap";
 import DashboardMfd from "../component/DashboardMfd";
 
 import styles from "./Dashboard.module.css";
-import { Transition } from "react-transition-group";
+import { CSSTransition, Transition } from "react-transition-group";
 import { Box, FormControlLabel, Switch, ToggleButton } from "@mui/material";
-import ToggleImageButton from "../component/ToggleImageButton";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const transitionMap: { [key: string]: string } = {
     entering: styles.dashboardMapExtend,
@@ -24,6 +25,13 @@ const transitionChart: { [key: string]: string } = {
     entered: styles.dashboardChartHidden,
     exiting: "",
     exited: "",
+};
+
+const transitionExpension: { [key: string]: string } = {
+    entering: styles.btnExpansion,
+    entered: styles.btnExpansion,
+    exiting: styles.btnExpansionRotate,
+    exited: styles.btnExpansionRotate,
 };
 
 const Dashboard = () => {
@@ -107,7 +115,11 @@ const Dashboard = () => {
                                     className={styles.btnExpansion}
                                     onClick={handleChartOpen}
                                 >
-                                    O
+                                    {chartOpen ? (
+                                        <ArrowBackIosNewIcon fontSize='small' />
+                                    ) : (
+                                        <ArrowForwardIosIcon fontSize='small' />
+                                    )}
                                 </button>
                                 <Box className={styles.mapSelectWrap}>
                                     <ul>

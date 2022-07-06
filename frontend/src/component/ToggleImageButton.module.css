@@ -9,8 +9,15 @@
     padding: 0;
 }
 
+.btnMapToggle:hover {
+    cursor: pointer;
+}
+
 .btnMapTogglePressed {
     background-color: #1f5499;
+}
+.btnMapTogglePressed:hover {
+    cursor: pointer;
 }
 
 .btnMapTooltip {

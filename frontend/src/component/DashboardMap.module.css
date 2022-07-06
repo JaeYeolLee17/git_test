@@ -22,6 +22,10 @@
     margin-right: 0;
 }
 
+.mapZoombtns:hover {
+    cursor: pointer;
+}
+
 .mapZoombtnsWrap {
     display: flex;
     flex-direction: column;

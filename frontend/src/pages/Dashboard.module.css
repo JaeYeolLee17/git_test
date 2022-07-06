@@ -64,3 +64,13 @@
 
     transition: 0.4s;
 }
+
+.btnExpansion {
+    transform: rotate(0deg);
+    transition: transform 0.4s;
+}
+
+.btnExpansionRotate {
+    transform: rotate(180deg);
+    transition: transform 0.4s;
+}

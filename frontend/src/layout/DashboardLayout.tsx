@@ -45,7 +45,10 @@ function DashboardLayout(props: any) {
                         <Menu />
                     </Box>
                 </Drawer>
-                <Box component='main' sx={{ flexGrow: 1, p: 0 }}>
+                <Box
+                    component='main'
+                    sx={{ flexGrow: 1, p: 0, overflow: "hidden" }}
+                >
                     <Toolbar sx={{ height: appBarHeight }} />
                     {props.children}
                 </Box>

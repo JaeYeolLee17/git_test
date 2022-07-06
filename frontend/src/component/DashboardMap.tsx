@@ -10,7 +10,7 @@ import StreamIntersection from "./StreamIntersection";
 import ToggleImageButton from "./ToggleImageButton";
 
 import styles from "./DashboardMap.module.css";
-import { Box } from "@mui/material";
+import { Box, Slide } from "@mui/material";
 
 import btnTrafficOn from "../assets/images/ico_map_traffic_f.svg";
 import btnTrafficOff from "../assets/images/ico_map_traffic_n.svg";
@@ -25,6 +25,7 @@ import btnAreaOff from "../assets/images/ico_map_area_n.svg";
 
 import btnZoomPlus from "../assets/images/ico_plus_b.svg";
 import btnZoomMinus from "../assets/images/ico_minus_b.svg";
+import TrafficInformation from "./TrafficInformation";
 
 function DashboardMap({
     transitionState,
@@ -71,6 +72,8 @@ function DashboardMap({
     >([]);
 
     const [mapZoomLevel, setMapZoomLevel] = useState<number>(7);
+
+    const [requestLinkEndTime, setRequestLinkEndTime] = useState<string>("");
 
     const requestData = () => {
         const now = new Date();
@@ -143,6 +146,8 @@ function DashboardMap({
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
+
+        setRequestLinkEndTime(endTime);
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
             Request.STAT_LINK_URL,
@@ -430,11 +435,11 @@ function DashboardMap({
                 <ul>
                     <li>
                         <ToggleImageButton
-                            bOn={showRegion}
-                            onClick={onClickRegion}
+                            bOn={showLinks}
+                            onClick={onClickLinks}
                             imageOn={btnTrafficOn}
                             imageOff={btnTrafficOff}
-                            tooltip={"region"}
+                            tooltip={"links"}
                         />
                     </li>
                     <li>
@@ -448,19 +453,10 @@ function DashboardMap({
                     </li>
                     <li>
                         <ToggleImageButton
-                            bOn={showLinks}
-                            onClick={onClickLinks}
-                            imageOn={btnSignalLampOn}
-                            imageOff={btnSignalLampOff}
-                            tooltip={"links"}
-                        />
-                    </li>
-                    <li>
-                        <ToggleImageButton
                             bOn={showTrafficLights}
                             onClick={onClickTrafficLight}
-                            imageOn={btnEmergencyVehicleOn}
-                            imageOff={btnEmergencyVehicleOff}
+                            imageOn={btnSignalLampOn}
+                            imageOff={btnSignalLampOff}
                             tooltip={"TrafficLight"}
                         />
                     </li>
@@ -468,9 +464,18 @@ function DashboardMap({
                         <ToggleImageButton
                             bOn={showAvlDatas}
                             onClick={onClickAvl}
+                            imageOn={btnEmergencyVehicleOn}
+                            imageOff={btnEmergencyVehicleOff}
+                            tooltip={"avl"}
+                        />
+                    </li>
+                    <li>
+                        <ToggleImageButton
+                            bOn={showRegion}
+                            onClick={onClickRegion}
                             imageOn={btnAreaOn}
                             imageOff={btnAreaOff}
-                            tooltip={"avl"}
+                            tooltip={"region"}
                         />
                     </li>
                 </ul>
@@ -479,17 +484,25 @@ function DashboardMap({
             <Box className={styles.mapZoombtnsWrap}>
                 <ul>
                     <li>
-                        <button onClick={onClickZoomPlus}>
+                        <button
+                            className={styles.mapZoombtns}
+                            onClick={onClickZoomPlus}
+                        >
                             <img src={btnZoomPlus} />
                         </button>
                     </li>
                     <li>
-                        <button onClick={onClickZoomMinus}>
+                        <button
+                            className={styles.mapZoombtns}
+                            onClick={onClickZoomMinus}
+                        >
                             <img src={btnZoomMinus} />
                         </button>
                     </li>
                 </ul>
             </Box>
+
+            <TrafficInformation show={showLinks} time={requestLinkEndTime} />
 
             <KakaoMap
                 style={{

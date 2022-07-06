@@ -1,0 +1,37 @@
+<svg id="btn_map_cctv_40_14_f" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="패스_2877" data-name="패스 2877" class="cls-1" d="M8.812 0A14.943 14.943 0 0 0 0 2.893L7.812 10.7h2l7.812-7.812A14.944 14.944 0 0 0 8.812 0z"/>
+        </clipPath>
+        <clipPath id="clip-path-2">
+            <path id="사각형_3660" data-name="사각형 3660" style="fill:none" d="M0 0h17.625v25.705H0z"/>
+        </clipPath>
+        <linearGradient id="linear-gradient" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#0766b6"/>
+            <stop offset="1" stop-color="#c1e3ff"/>
+        </linearGradient>
+        <filter id="패스_229" x="1" y="2" width="38" height="38" filterUnits="userSpaceOnUse">
+            <feOffset dy="1"/>
+            <feGaussianBlur stdDeviation="1" result="blur"/>
+            <feFlood flood-opacity=".302"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .cls-1{stroke:transparent;fill:url(#linear-gradient)}.cls-7{fill:#fff}
+        </style>
+    </defs>
+    <g style="filter:url(#패스_229)" id="그룹_2859" data-name="그룹 2859">
+        <g id="패스_229-2" data-name="패스 229" style="fill:#0766b6">
+            <path d="M16 31.5c-4.14 0-8.033-1.612-10.96-4.54A15.399 15.399 0 0 1 .5 16c0-4.14 1.612-8.033 4.54-10.96A15.399 15.399 0 0 1 16 .5c4.14 0 8.033 1.612 10.96 4.54A15.399 15.399 0 0 1 31.5 16c0 4.14-1.612 8.033-4.54 10.96A15.399 15.399 0 0 1 16 31.5z" style="stroke:none" transform="translate(4 4)"/>
+            <path d="M16 1C11.993 1 8.227 2.56 5.393 5.393A14.902 14.902 0 0 0 1 16c0 4.007 1.56 7.773 4.393 10.607A14.902 14.902 0 0 0 16 31c4.007 0 7.773-1.56 10.607-4.393A14.902 14.902 0 0 0 31 16c0-4.007-1.56-7.773-4.393-10.607A14.902 14.902 0 0 0 16 1m0-1c8.837 0 16 7.163 16 16s-7.163 16-16 16S0 24.837 0 16 7.163 0 16 0z" style="fill:#1f5499;stroke:none" transform="translate(4 4)"/>
+        </g>
+    </g>
+    <g id="그룹_3035" data-name="그룹 3035" transform="rotate(140 13.59 19.502)" style="clip-path:url(#clip-path)">
+        <path id="사각형_3658" data-name="사각형 3658" class="cls-1" d="M0 0h17.625v10.705H0z"/>
+    </g>
+    <g id="그룹_3037" data-name="그룹 3037" transform="rotate(140 13.59 19.502)" style="clip-path:url(#clip-path-2)">
+        <path id="패스_2878" data-name="패스 2878" class="cls-7" d="M7.812 10.705h2l4-4h-10z"/>
+        <path id="사각형_3659" data-name="사각형 3659" class="cls-7" transform="translate(3.812 12.705)" d="M0 0h10v13H0z"/>
+    </g>
+</svg>

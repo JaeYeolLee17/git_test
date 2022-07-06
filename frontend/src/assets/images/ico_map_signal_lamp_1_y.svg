@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <clipPath id="ohd90c6gaa">
+            <path data-name="사각형 2461" style="fill:#fff;stroke:#707070;opacity:0" d="M0 0h40v40H0z"/>
+        </clipPath>
+        <filter id="dfi0u4jiwb" x="1.358" y="3.358" width="37.284" height="37.284" filterUnits="userSpaceOnUse">
+            <feOffset dy="2"/>
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feFlood flood-opacity=".302"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g style="clip-path:url(#ohd90c6gaa)">
+        <g style="filter:url(#dfi0u4jiwb)" data-name="마스크 그룹 15">
+            <g data-name="사각형 2457" transform="rotate(45 2.926 27.072)" style="fill:#3f4a4a;stroke:#fff">
+                <rect width="20" height="20" rx="4" style="stroke:none"/>
+                <rect x=".5" y=".5" width="19" height="19" rx="3.5" style="fill:none"/>
+            </g>
+        </g>
+    </g>
+    <g data-name="그룹 2132" transform="rotate(45 1513.16 -1826.487)">
+        <circle data-name="타원 42" cx="7" cy="7" r="7" transform="translate(1756 528)" style="fill:#ffbf00"/>
+    </g>
+</svg>

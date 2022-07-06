@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="67" height="89" viewBox="0 0 67 89">
+  <defs>
+    <style>
+      .cls-1, .cls-12 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #1f5499;
+        opacity: 0.9;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-4 {
+        fill: #fc0;
+      }
+
+      .cls-5 {
+        isolation: isolate;
+      }
+
+      .cls-6 {
+        clip-path: url(#clip-path-2);
+      }
+
+      .cls-7 {
+        fill: #e6e6e6;
+      }
+
+      .cls-8 {
+        clip-path: url(#clip-path-3);
+      }
+
+      .cls-16, .cls-9 {
+        fill: #fff;
+      }
+
+      .cls-10 {
+        fill: #262626;
+      }
+
+      .cls-11 {
+        fill: #6c6f6f;
+      }
+
+      .cls-12 {
+        stroke: #474747;
+        stroke-miterlimit: 10;
+        stroke-width: 0.198px;
+      }
+
+      .cls-13 {
+        fill: #8ed6f3;
+      }
+
+      .cls-14 {
+        fill: #ff001e;
+      }
+
+      .cls-15 {
+        fill: #7fd400;
+      }
+
+      .cls-16 {
+        font-size: 14px;
+        font-family: NanumSquareB, NanumSquare;
+      }
+
+      .cls-17 {
+        filter: url(#병원도착);
+      }
+
+      .cls-18 {
+        filter: url(#사각형_3746);
+      }
+
+      .cls-19 {
+        filter: url(#패스_2969);
+      }
+    </style>
+    <filter id="패스_2969" x="0" y="0" width="67" height="89" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-opacity="0.302"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <rect id="사각형_3745" data-name="사각형 3745" class="cls-1" width="38" height="30.4"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="사각형_3742" data-name="사각형 3742" class="cls-1" width="37.166" height="5.248"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <rect id="사각형_3743" data-name="사각형 3743" class="cls-1" width="37.166" height="16.107"/>
+    </clipPath>
+    <filter id="사각형_3746" x="8.5" y="58.477" width="50" height="5.5" filterUnits="userSpaceOnUse">
+      <feOffset dy="0.5" input="SourceAlpha"/>
+      <feGaussianBlur result="blur-2"/>
+      <feFlood flood-opacity="0.302"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="병원도착" x="7.976" y="40.5" width="52" height="16.5" filterUnits="userSpaceOnUse">
+      <feOffset dy="0.5" input="SourceAlpha"/>
+      <feGaussianBlur result="blur-3"/>
+      <feFlood flood-opacity="0.302"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="btn_map_emergency_g_n" transform="translate(4.5 2.5)">
+    <g id="그룹_3165" data-name="그룹 3165" transform="translate(-745 -238)">
+      <g class="cls-19" transform="matrix(1, 0, 0, 1, 740.5, 235.5)">
+        <path id="패스_2969-2" data-name="패스 2969" class="cls-2" d="M52.476,0H5.524A5.39,5.39,0,0,0,0,5.246V60.328a5.39,5.39,0,0,0,5.524,5.246H23.573L29,80l5.427-14.426H52.476A5.39,5.39,0,0,0,58,60.328V5.246A5.39,5.39,0,0,0,52.476,0" transform="translate(4.5 2.5)"/>
+      </g>
+      <g id="그룹_3148" data-name="그룹 3148" class="cls-3" transform="translate(755.476 243)">
+        <path id="패스_2970" data-name="패스 2970" class="cls-4" d="M14.053,4.394H9.825V2.3a2.114,2.114,0,0,1,4.228,0Z" transform="translate(10.68 0.214)"/>
+        <g id="그룹_3144" data-name="그룹 3144" class="cls-5" transform="translate(0.417 20.447)">
+          <g id="그룹_3143" data-name="그룹 3143">
+            <g id="그룹_3142" data-name="그룹 3142" class="cls-6">
+              <path id="패스_2971" data-name="패스 2971" class="cls-7" d="M36.962,15.125H.6a.4.4,0,0,1-.4-.4V9.878H37.367v4.846a.4.4,0,0,1-.4.4" transform="translate(-0.2 -9.877)"/>
+            </g>
+          </g>
+        </g>
+        <g id="그룹_3147" data-name="그룹 3147" class="cls-5" transform="translate(0.417 4.34)">
+          <g id="그룹_3146" data-name="그룹 3146">
+            <g id="그룹_3145" data-name="그룹 3145" class="cls-8">
+              <path id="패스_2972" data-name="패스 2972" class="cls-9" d="M35.118,10.222H32.2L28.566,2.807a1.276,1.276,0,0,0-1.146-.71H1.473A1.268,1.268,0,0,0,.2,3.36V18.2H37.365v-5.75a2.238,2.238,0,0,0-2.248-2.229" transform="translate(-0.2 -2.096)"/>
+            </g>
+          </g>
+        </g>
+        <path id="패스_2973" data-name="패스 2973" class="cls-10" d="M5.662,19.009a4.375,4.375,0,1,1,4.41-4.376,4.4,4.4,0,0,1-4.41,4.376" transform="translate(1.359 10.977)"/>
+        <path id="패스_2974" data-name="패스 2974" class="cls-11" d="M4.56,11.273a2.277,2.277,0,1,0,2.3,2.277,2.288,2.288,0,0,0-2.3-2.277" transform="translate(2.461 12.062)"/>
+        <ellipse id="타원_79" data-name="타원 79" class="cls-12" cx="2.296" cy="2.277" rx="2.296" ry="2.277" transform="translate(4.726 23.334)"/>
+        <path id="패스_2975" data-name="패스 2975" class="cls-10" d="M16.061,19.009a4.375,4.375,0,1,1,4.412-4.376,4.4,4.4,0,0,1-4.412,4.376" transform="translate(12.662 10.977)"/>
+        <path id="패스_2976" data-name="패스 2976" class="cls-11" d="M14.959,11.273a2.277,2.277,0,1,0,2.3,2.277,2.288,2.288,0,0,0-2.3-2.277" transform="translate(13.765 12.062)"/>
+        <ellipse id="타원_80" data-name="타원 80" class="cls-12" cx="2.296" cy="2.277" rx="2.296" ry="2.277" transform="translate(26.427 23.334)"/>
+        <path id="패스_2977" data-name="패스 2977" class="cls-13" d="M9.12,3.1V9.151H20.181L17.216,3.1Z" transform="translate(9.914 3.313)"/>
+        <rect id="사각형_3744" data-name="사각형 3744" class="cls-14" width="37.165" height="2.265" transform="translate(0.417 18.183)"/>
+        <path id="패스_2978" data-name="패스 2978" class="cls-14" d="M5.4,11.17V8.442H2.669V6.136H5.4V3.4H7.7V6.136h2.736V8.442H7.7V11.17Z" transform="translate(2.901 3.637)"/>
+        <path id="패스_2979" data-name="패스 2979" class="cls-9" d="M11.246,1.025A.454.454,0,1,1,10.79.573a.455.455,0,0,1,.455.452" transform="translate(11.373 0.613)"/>
+        <path id="패스_2980" data-name="패스 2980" class="cls-9" d="M10.583,1.076a.193.193,0,1,1-.193-.191.191.191,0,0,1,.193.191" transform="translate(11.085 1.247)"/>
+      </g>
+      <g class="cls-18" transform="matrix(1, 0, 0, 1, 740.5, 235.5)">
+        <rect id="사각형_3746-2" data-name="사각형 3746" class="cls-15" width="50" height="5" rx="2.5" transform="translate(8.5 58.48)"/>
+      </g>
+      <g class="cls-17" transform="matrix(1, 0, 0, 1, 740.5, 235.5)">
+        <text id="병원도착-2" data-name="병원도착" class="cls-16" transform="translate(33.98 52.5)"><tspan x="-25.48" y="0">병원도착</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

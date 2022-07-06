@@ -16,6 +16,7 @@
 .btnMapTogglePressed {
     background-color: #1f5499;
 }
+
 .btnMapTogglePressed:hover {
     cursor: pointer;
 }

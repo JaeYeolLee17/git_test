@@ -735,3 +735,376 @@ export const getCurrentDateTime = () => {
 
     return { date: today, time: time };
 };
+
+import imgCamera_0_n from "../assets/images/btn_map_cctv_40_0_n.svg";
+import imgCamera_0_f from "../assets/images/btn_map_cctv_40_0_f.svg";
+import imgCamera_1_n from "../assets/images/btn_map_cctv_40_1_n.svg";
+import imgCamera_1_f from "../assets/images/btn_map_cctv_40_1_f.svg";
+import imgCamera_2_n from "../assets/images/btn_map_cctv_40_2_n.svg";
+import imgCamera_2_f from "../assets/images/btn_map_cctv_40_2_f.svg";
+import imgCamera_3_n from "../assets/images/btn_map_cctv_40_3_n.svg";
+import imgCamera_3_f from "../assets/images/btn_map_cctv_40_3_f.svg";
+import imgCamera_4_n from "../assets/images/btn_map_cctv_40_4_n.svg";
+import imgCamera_4_f from "../assets/images/btn_map_cctv_40_4_f.svg";
+import imgCamera_5_n from "../assets/images/btn_map_cctv_40_5_n.svg";
+import imgCamera_5_f from "../assets/images/btn_map_cctv_40_5_f.svg";
+import imgCamera_6_n from "../assets/images/btn_map_cctv_40_6_n.svg";
+import imgCamera_6_f from "../assets/images/btn_map_cctv_40_6_f.svg";
+import imgCamera_7_n from "../assets/images/btn_map_cctv_40_7_n.svg";
+import imgCamera_7_f from "../assets/images/btn_map_cctv_40_7_f.svg";
+import imgCamera_8_n from "../assets/images/btn_map_cctv_40_8_n.svg";
+import imgCamera_8_f from "../assets/images/btn_map_cctv_40_8_f.svg";
+import imgCamera_9_n from "../assets/images/btn_map_cctv_40_9_n.svg";
+import imgCamera_9_f from "../assets/images/btn_map_cctv_40_9_f.svg";
+import imgCamera_10_f from "../assets/images/btn_map_cctv_40_10_f.svg";
+import imgCamera_10_n from "../assets/images/btn_map_cctv_40_10_n.svg";
+import imgCamera_11_n from "../assets/images/btn_map_cctv_40_11_n.svg";
+import imgCamera_11_f from "../assets/images/btn_map_cctv_40_11_f.svg";
+import imgCamera_12_n from "../assets/images/btn_map_cctv_40_12_n.svg";
+import imgCamera_12_f from "../assets/images/btn_map_cctv_40_12_f.svg";
+import imgCamera_13_n from "../assets/images/btn_map_cctv_40_13_n.svg";
+import imgCamera_13_f from "../assets/images/btn_map_cctv_40_13_f.svg";
+import imgCamera_14_n from "../assets/images/btn_map_cctv_40_14_n.svg";
+import imgCamera_14_f from "../assets/images/btn_map_cctv_40_14_f.svg";
+import imgCamera_15_n from "../assets/images/btn_map_cctv_40_15_n.svg";
+import imgCamera_15_f from "../assets/images/btn_map_cctv_40_15_f.svg";
+import imgCamera_16_n from "../assets/images/btn_map_cctv_40_16_n.svg";
+import imgCamera_16_f from "../assets/images/btn_map_cctv_40_16_f.svg";
+import imgCamera_17_n from "../assets/images/btn_map_cctv_40_17_n.svg";
+import imgCamera_17_f from "../assets/images/btn_map_cctv_40_17_f.svg";
+import imgCamera_18_n from "../assets/images/btn_map_cctv_40_18_n.svg";
+import imgCamera_18_f from "../assets/images/btn_map_cctv_40_18_f.svg";
+import imgCamera_19_n from "../assets/images/btn_map_cctv_40_19_n.svg";
+import imgCamera_19_f from "../assets/images/btn_map_cctv_40_19_f.svg";
+import imgCamera_20_n from "../assets/images/btn_map_cctv_40_20_n.svg";
+import imgCamera_20_f from "../assets/images/btn_map_cctv_40_20_f.svg";
+import imgCamera_21_n from "../assets/images/btn_map_cctv_40_21_n.svg";
+import imgCamera_21_f from "../assets/images/btn_map_cctv_40_21_f.svg";
+import imgCamera_22_n from "../assets/images/btn_map_cctv_40_22_n.svg";
+import imgCamera_22_f from "../assets/images/btn_map_cctv_40_22_f.svg";
+import imgCamera_23_n from "../assets/images/btn_map_cctv_40_23_n.svg";
+import imgCamera_23_f from "../assets/images/btn_map_cctv_40_23_f.svg";
+import imgCamera_24_n from "../assets/images/btn_map_cctv_40_24_n.svg";
+import imgCamera_24_f from "../assets/images/btn_map_cctv_40_24_f.svg";
+import imgCamera_25_n from "../assets/images/btn_map_cctv_40_25_n.svg";
+import imgCamera_25_f from "../assets/images/btn_map_cctv_40_25_f.svg";
+import imgCamera_26_n from "../assets/images/btn_map_cctv_40_26_n.svg";
+import imgCamera_26_f from "../assets/images/btn_map_cctv_40_26_f.svg";
+import imgCamera_27_n from "../assets/images/btn_map_cctv_40_27_n.svg";
+import imgCamera_27_f from "../assets/images/btn_map_cctv_40_27_f.svg";
+import imgCamera_28_n from "../assets/images/btn_map_cctv_40_28_n.svg";
+import imgCamera_28_f from "../assets/images/btn_map_cctv_40_28_f.svg";
+import imgCamera_29_n from "../assets/images/btn_map_cctv_40_29_n.svg";
+import imgCamera_29_f from "../assets/images/btn_map_cctv_40_29_f.svg";
+import imgCamera_30_n from "../assets/images/btn_map_cctv_40_30_n.svg";
+import imgCamera_30_f from "../assets/images/btn_map_cctv_40_30_f.svg";
+import imgCamera_31_n from "../assets/images/btn_map_cctv_40_31_n.svg";
+import imgCamera_31_f from "../assets/images/btn_map_cctv_40_31_f.svg";
+import imgCamera_32_n from "../assets/images/btn_map_cctv_40_32_n.svg";
+import imgCamera_32_f from "../assets/images/btn_map_cctv_40_32_f.svg";
+import imgCamera_33_n from "../assets/images/btn_map_cctv_40_33_n.svg";
+import imgCamera_33_f from "../assets/images/btn_map_cctv_40_33_f.svg";
+import imgCamera_34_n from "../assets/images/btn_map_cctv_40_34_n.svg";
+import imgCamera_34_f from "../assets/images/btn_map_cctv_40_34_f.svg";
+import imgCamera_35_n from "../assets/images/btn_map_cctv_40_35_n.svg";
+import imgCamera_35_f from "../assets/images/btn_map_cctv_40_35_f.svg";
+
+import imgCamera_e_0_n from "../assets/images/btn_map_cctv_e_40_0_n.svg";
+import imgCamera_e_0_f from "../assets/images/btn_map_cctv_e_40_0_f.svg";
+import imgCamera_e_1_n from "../assets/images/btn_map_cctv_e_40_1_n.svg";
+import imgCamera_e_1_f from "../assets/images/btn_map_cctv_e_40_1_f.svg";
+import imgCamera_e_2_n from "../assets/images/btn_map_cctv_e_40_2_n.svg";
+import imgCamera_e_2_f from "../assets/images/btn_map_cctv_e_40_2_f.svg";
+import imgCamera_e_3_n from "../assets/images/btn_map_cctv_e_40_3_n.svg";
+import imgCamera_e_3_f from "../assets/images/btn_map_cctv_e_40_3_f.svg";
+import imgCamera_e_4_n from "../assets/images/btn_map_cctv_e_40_4_n.svg";
+import imgCamera_e_4_f from "../assets/images/btn_map_cctv_e_40_4_f.svg";
+import imgCamera_e_5_n from "../assets/images/btn_map_cctv_e_40_5_n.svg";
+import imgCamera_e_5_f from "../assets/images/btn_map_cctv_e_40_5_f.svg";
+import imgCamera_e_6_n from "../assets/images/btn_map_cctv_e_40_6_n.svg";
+import imgCamera_e_6_f from "../assets/images/btn_map_cctv_e_40_6_f.svg";
+import imgCamera_e_7_n from "../assets/images/btn_map_cctv_e_40_7_n.svg";
+import imgCamera_e_7_f from "../assets/images/btn_map_cctv_e_40_7_f.svg";
+import imgCamera_e_8_n from "../assets/images/btn_map_cctv_e_40_8_n.svg";
+import imgCamera_e_8_f from "../assets/images/btn_map_cctv_e_40_8_f.svg";
+import imgCamera_e_9_n from "../assets/images/btn_map_cctv_e_40_9_n.svg";
+import imgCamera_e_9_f from "../assets/images/btn_map_cctv_e_40_9_f.svg";
+import imgCamera_e_10_f from "../assets/images/btn_map_cctv_e_40_10_f.svg";
+import imgCamera_e_10_n from "../assets/images/btn_map_cctv_e_40_10_n.svg";
+import imgCamera_e_11_n from "../assets/images/btn_map_cctv_e_40_11_n.svg";
+import imgCamera_e_11_f from "../assets/images/btn_map_cctv_e_40_11_f.svg";
+import imgCamera_e_12_n from "../assets/images/btn_map_cctv_e_40_12_n.svg";
+import imgCamera_e_12_f from "../assets/images/btn_map_cctv_e_40_12_f.svg";
+import imgCamera_e_13_n from "../assets/images/btn_map_cctv_e_40_13_n.svg";
+import imgCamera_e_13_f from "../assets/images/btn_map_cctv_e_40_13_f.svg";
+import imgCamera_e_14_n from "../assets/images/btn_map_cctv_e_40_14_n.svg";
+import imgCamera_e_14_f from "../assets/images/btn_map_cctv_e_40_14_f.svg";
+import imgCamera_e_15_n from "../assets/images/btn_map_cctv_e_40_15_n.svg";
+import imgCamera_e_15_f from "../assets/images/btn_map_cctv_e_40_15_f.svg";
+import imgCamera_e_16_n from "../assets/images/btn_map_cctv_e_40_16_n.svg";
+import imgCamera_e_16_f from "../assets/images/btn_map_cctv_e_40_16_f.svg";
+import imgCamera_e_17_n from "../assets/images/btn_map_cctv_e_40_17_n.svg";
+import imgCamera_e_17_f from "../assets/images/btn_map_cctv_e_40_17_f.svg";
+import imgCamera_e_18_n from "../assets/images/btn_map_cctv_e_40_18_n.svg";
+import imgCamera_e_18_f from "../assets/images/btn_map_cctv_e_40_18_f.svg";
+import imgCamera_e_19_n from "../assets/images/btn_map_cctv_e_40_19_n.svg";
+import imgCamera_e_19_f from "../assets/images/btn_map_cctv_e_40_19_f.svg";
+import imgCamera_e_20_n from "../assets/images/btn_map_cctv_e_40_20_n.svg";
+import imgCamera_e_20_f from "../assets/images/btn_map_cctv_e_40_20_f.svg";
+import imgCamera_e_21_n from "../assets/images/btn_map_cctv_e_40_21_n.svg";
+import imgCamera_e_21_f from "../assets/images/btn_map_cctv_e_40_21_f.svg";
+import imgCamera_e_22_n from "../assets/images/btn_map_cctv_e_40_22_n.svg";
+import imgCamera_e_22_f from "../assets/images/btn_map_cctv_e_40_22_f.svg";
+import imgCamera_e_23_n from "../assets/images/btn_map_cctv_e_40_23_n.svg";
+import imgCamera_e_23_f from "../assets/images/btn_map_cctv_e_40_23_f.svg";
+import imgCamera_e_24_n from "../assets/images/btn_map_cctv_e_40_24_n.svg";
+import imgCamera_e_24_f from "../assets/images/btn_map_cctv_e_40_24_f.svg";
+import imgCamera_e_25_n from "../assets/images/btn_map_cctv_e_40_25_n.svg";
+import imgCamera_e_25_f from "../assets/images/btn_map_cctv_e_40_25_f.svg";
+import imgCamera_e_26_n from "../assets/images/btn_map_cctv_e_40_26_n.svg";
+import imgCamera_e_26_f from "../assets/images/btn_map_cctv_e_40_26_f.svg";
+import imgCamera_e_27_n from "../assets/images/btn_map_cctv_e_40_27_n.svg";
+import imgCamera_e_27_f from "../assets/images/btn_map_cctv_e_40_27_f.svg";
+import imgCamera_e_28_n from "../assets/images/btn_map_cctv_e_40_28_n.svg";
+import imgCamera_e_28_f from "../assets/images/btn_map_cctv_e_40_28_f.svg";
+import imgCamera_e_29_n from "../assets/images/btn_map_cctv_e_40_29_n.svg";
+import imgCamera_e_29_f from "../assets/images/btn_map_cctv_e_40_29_f.svg";
+import imgCamera_e_30_n from "../assets/images/btn_map_cctv_e_40_30_n.svg";
+import imgCamera_e_30_f from "../assets/images/btn_map_cctv_e_40_30_f.svg";
+import imgCamera_e_31_n from "../assets/images/btn_map_cctv_e_40_31_n.svg";
+import imgCamera_e_31_f from "../assets/images/btn_map_cctv_e_40_31_f.svg";
+import imgCamera_e_32_n from "../assets/images/btn_map_cctv_e_40_32_n.svg";
+import imgCamera_e_32_f from "../assets/images/btn_map_cctv_e_40_32_f.svg";
+import imgCamera_e_33_n from "../assets/images/btn_map_cctv_e_40_33_n.svg";
+import imgCamera_e_33_f from "../assets/images/btn_map_cctv_e_40_33_f.svg";
+import imgCamera_e_34_n from "../assets/images/btn_map_cctv_e_40_34_n.svg";
+import imgCamera_e_34_f from "../assets/images/btn_map_cctv_e_40_34_f.svg";
+import imgCamera_e_35_n from "../assets/images/btn_map_cctv_e_40_35_n.svg";
+import imgCamera_e_35_f from "../assets/images/btn_map_cctv_e_40_35_f.svg";
+
+const imagesCamera: { [key: string]: any } = {
+    imgCamera_0_n,
+    imgCamera_0_f,
+    imgCamera_1_n,
+    imgCamera_1_f,
+    imgCamera_2_n,
+    imgCamera_2_f,
+    imgCamera_3_n,
+    imgCamera_3_f,
+    imgCamera_4_n,
+    imgCamera_4_f,
+    imgCamera_5_n,
+    imgCamera_5_f,
+    imgCamera_6_n,
+    imgCamera_6_f,
+    imgCamera_7_n,
+    imgCamera_7_f,
+    imgCamera_8_n,
+    imgCamera_8_f,
+    imgCamera_9_n,
+    imgCamera_9_f,
+    imgCamera_10_f,
+    imgCamera_10_n,
+    imgCamera_11_n,
+    imgCamera_11_f,
+    imgCamera_12_n,
+    imgCamera_12_f,
+    imgCamera_13_n,
+    imgCamera_13_f,
+    imgCamera_14_n,
+    imgCamera_14_f,
+    imgCamera_15_n,
+    imgCamera_15_f,
+    imgCamera_16_n,
+    imgCamera_16_f,
+    imgCamera_17_n,
+    imgCamera_17_f,
+    imgCamera_18_n,
+    imgCamera_18_f,
+    imgCamera_19_n,
+    imgCamera_19_f,
+    imgCamera_20_n,
+    imgCamera_20_f,
+    imgCamera_21_n,
+    imgCamera_21_f,
+    imgCamera_22_n,
+    imgCamera_22_f,
+    imgCamera_23_n,
+    imgCamera_23_f,
+    imgCamera_24_n,
+    imgCamera_24_f,
+    imgCamera_25_n,
+    imgCamera_25_f,
+    imgCamera_26_n,
+    imgCamera_26_f,
+    imgCamera_27_n,
+    imgCamera_27_f,
+    imgCamera_28_n,
+    imgCamera_28_f,
+    imgCamera_29_n,
+    imgCamera_29_f,
+    imgCamera_30_n,
+    imgCamera_30_f,
+    imgCamera_31_n,
+    imgCamera_31_f,
+    imgCamera_32_n,
+    imgCamera_32_f,
+    imgCamera_33_n,
+    imgCamera_33_f,
+    imgCamera_34_n,
+    imgCamera_34_f,
+    imgCamera_35_n,
+    imgCamera_35_f,
+    imgCamera_e_0_n,
+    imgCamera_e_0_f,
+    imgCamera_e_1_n,
+    imgCamera_e_1_f,
+    imgCamera_e_2_n,
+    imgCamera_e_2_f,
+    imgCamera_e_3_n,
+    imgCamera_e_3_f,
+    imgCamera_e_4_n,
+    imgCamera_e_4_f,
+    imgCamera_e_5_n,
+    imgCamera_e_5_f,
+    imgCamera_e_6_n,
+    imgCamera_e_6_f,
+    imgCamera_e_7_n,
+    imgCamera_e_7_f,
+    imgCamera_e_8_n,
+    imgCamera_e_8_f,
+    imgCamera_e_9_n,
+    imgCamera_e_9_f,
+    imgCamera_e_10_f,
+    imgCamera_e_10_n,
+    imgCamera_e_11_n,
+    imgCamera_e_11_f,
+    imgCamera_e_12_n,
+    imgCamera_e_12_f,
+    imgCamera_e_13_n,
+    imgCamera_e_13_f,
+    imgCamera_e_14_n,
+    imgCamera_e_14_f,
+    imgCamera_e_15_n,
+    imgCamera_e_15_f,
+    imgCamera_e_16_n,
+    imgCamera_e_16_f,
+    imgCamera_e_17_n,
+    imgCamera_e_17_f,
+    imgCamera_e_18_n,
+    imgCamera_e_18_f,
+    imgCamera_e_19_n,
+    imgCamera_e_19_f,
+    imgCamera_e_20_n,
+    imgCamera_e_20_f,
+    imgCamera_e_21_n,
+    imgCamera_e_21_f,
+    imgCamera_e_22_n,
+    imgCamera_e_22_f,
+    imgCamera_e_23_n,
+    imgCamera_e_23_f,
+    imgCamera_e_24_n,
+    imgCamera_e_24_f,
+    imgCamera_e_25_n,
+    imgCamera_e_25_f,
+    imgCamera_e_26_n,
+    imgCamera_e_26_f,
+    imgCamera_e_27_n,
+    imgCamera_e_27_f,
+    imgCamera_e_28_n,
+    imgCamera_e_28_f,
+    imgCamera_e_29_n,
+    imgCamera_e_29_f,
+    imgCamera_e_30_n,
+    imgCamera_e_30_f,
+    imgCamera_e_31_n,
+    imgCamera_e_31_f,
+    imgCamera_e_32_n,
+    imgCamera_e_32_f,
+    imgCamera_e_33_n,
+    imgCamera_e_33_f,
+    imgCamera_e_34_n,
+    imgCamera_e_34_f,
+    imgCamera_e_35_n,
+    imgCamera_e_35_f,
+};
+
+export const getCameraImageByKey = (key: string) => {
+    return imagesCamera[key];
+};
+
+import imgSignalLamp_0_d from "../assets/images/ico_map_signal_lamp_0_d.svg";
+import imgSignalLamp_0_e from "../assets/images/ico_map_signal_lamp_0_e.svg";
+import imgSignalLamp_0_g from "../assets/images/ico_map_signal_lamp_0_g.svg";
+import imgSignalLamp_0_l from "../assets/images/ico_map_signal_lamp_0_l.svg";
+import imgSignalLamp_0_r from "../assets/images/ico_map_signal_lamp_0_r.svg";
+import imgSignalLamp_0_s from "../assets/images/ico_map_signal_lamp_0_s.svg";
+import imgSignalLamp_0_sl from "../assets/images/ico_map_signal_lamp_0_sl.svg";
+import imgSignalLamp_0_y from "../assets/images/ico_map_signal_lamp_0_y.svg";
+import imgSignalLamp_1_d from "../assets/images/ico_map_signal_lamp_1_d.svg";
+import imgSignalLamp_1_e from "../assets/images/ico_map_signal_lamp_1_e.svg";
+import imgSignalLamp_1_g from "../assets/images/ico_map_signal_lamp_1_g.svg";
+import imgSignalLamp_1_l from "../assets/images/ico_map_signal_lamp_1_l.svg";
+import imgSignalLamp_1_r from "../assets/images/ico_map_signal_lamp_1_r.svg";
+import imgSignalLamp_1_s from "../assets/images/ico_map_signal_lamp_1_s.svg";
+import imgSignalLamp_1_sl from "../assets/images/ico_map_signal_lamp_1_sl.svg";
+import imgSignalLamp_1_y from "../assets/images/ico_map_signal_lamp_1_y.svg";
+import imgSignalLamp_2_l from "../assets/images/ico_map_signal_lamp_2_l.svg";
+import imgSignalLamp_2_s from "../assets/images/ico_map_signal_lamp_2_s.svg";
+import imgSignalLamp_2_sl from "../assets/images/ico_map_signal_lamp_2_sl.svg";
+import imgSignalLamp_3_l from "../assets/images/ico_map_signal_lamp_3_l.svg";
+import imgSignalLamp_3_s from "../assets/images/ico_map_signal_lamp_3_s.svg";
+import imgSignalLamp_3_sl from "../assets/images/ico_map_signal_lamp_3_sl.svg";
+import imgSignalLamp_4_l from "../assets/images/ico_map_signal_lamp_4_l.svg";
+import imgSignalLamp_4_s from "../assets/images/ico_map_signal_lamp_4_s.svg";
+import imgSignalLamp_4_sl from "../assets/images/ico_map_signal_lamp_4_sl.svg";
+import imgSignalLamp_5_l from "../assets/images/ico_map_signal_lamp_5_l.svg";
+import imgSignalLamp_5_s from "../assets/images/ico_map_signal_lamp_5_s.svg";
+import imgSignalLamp_5_sl from "../assets/images/ico_map_signal_lamp_5_sl.svg";
+import imgSignalLamp_6_l from "../assets/images/ico_map_signal_lamp_6_l.svg";
+import imgSignalLamp_6_s from "../assets/images/ico_map_signal_lamp_6_s.svg";
+import imgSignalLamp_6_sl from "../assets/images/ico_map_signal_lamp_6_sl.svg";
+import imgSignalLamp_7_l from "../assets/images/ico_map_signal_lamp_7_l.svg";
+import imgSignalLamp_7_s from "../assets/images/ico_map_signal_lamp_7_s.svg";
+import imgSignalLamp_7_sl from "../assets/images/ico_map_signal_lamp_7_sl.svg";
+
+const imagesSignalLamp: { [key: string]: any } = {
+    imgSignalLamp_0_d,
+    imgSignalLamp_0_e,
+    imgSignalLamp_0_g,
+    imgSignalLamp_0_l,
+    imgSignalLamp_0_r,
+    imgSignalLamp_0_s,
+    imgSignalLamp_0_sl,
+    imgSignalLamp_0_y,
+    imgSignalLamp_1_d,
+    imgSignalLamp_1_e,
+    imgSignalLamp_1_g,
+    imgSignalLamp_1_l,
+    imgSignalLamp_1_r,
+    imgSignalLamp_1_s,
+    imgSignalLamp_1_sl,
+    imgSignalLamp_1_y,
+    imgSignalLamp_2_l,
+    imgSignalLamp_2_s,
+    imgSignalLamp_2_sl,
+    imgSignalLamp_3_l,
+    imgSignalLamp_3_s,
+    imgSignalLamp_3_sl,
+    imgSignalLamp_4_l,
+    imgSignalLamp_4_s,
+    imgSignalLamp_4_sl,
+    imgSignalLamp_5_l,
+    imgSignalLamp_5_s,
+    imgSignalLamp_5_sl,
+    imgSignalLamp_6_l,
+    imgSignalLamp_6_s,
+    imgSignalLamp_6_sl,
+    imgSignalLamp_7_l,
+    imgSignalLamp_7_s,
+    imgSignalLamp_7_sl,
+};
+
+export const getTrafficLightImageByKey = (key: string) => {
+    return imagesSignalLamp[key];
+};

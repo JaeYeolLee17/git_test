@@ -9,6 +9,9 @@ import {
 import * as Utils from "../utils/utils";
 import * as Common from "../commons/common";
 
+// import imgCamera_0_n from "../assets/images/btn_map_cctv_40_0_n.svg";
+// import imgCamera_0_f from "../assets/images/btn_map_cctv_40_0_f.svg";
+
 export type KakaoMapStyleType = {
     width: string | number;
     height: string | number;
@@ -129,6 +132,15 @@ export const displayIntersection = (
     return null;
 };
 
+// const imagesCamera: { [key: string]: any } = {
+//     imgCamera_0_n: imgCamera_0_n,
+//     imgCamera_0_f: imgCamera_0_f,
+// };
+
+// const getImageCameraByKey = (key: string): any => {
+//     return imagesCamera[key];
+// };
+
 export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
     if (cameras === undefined) return null;
 
@@ -137,20 +149,28 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
     return cameras.list?.map((camera) => {
         const normalState = true; // TODO
         const isSelected = camera.cameraId === cameras.selected;
+        // const imageUrl =
+        //     "../assets/images/btn_map_cctv" +
+        //     (normalState ? "" : "_e") +
+        //     "_40_" +
+        //     (camera.degree ? camera.degree : "0") +
+        //     (isSelected ? "_f" : "_n") +
+        //     ".svg";
         const imageUrl =
-            "/images/btn_map_cctv" +
+            "imgCamera" +
             (normalState ? "" : "_e") +
-            "_40_" +
+            "_" +
             (camera.degree ? camera.degree : "0") +
-            (isSelected ? "_f" : "_n") +
-            ".svg";
+            (isSelected ? "_f" : "_n");
+
+        const imageData = Utils.getCameraImageByKey(imageUrl);
 
         return (
             <MapMarker
                 key={camera.cameraId}
                 position={camera.gps}
                 image={{
-                    src: `${imageUrl}`,
+                    src: imageData,
                     size: {
                         width: level < 4 ? 40 : 30,
                         height: level < 4 ? 40 : 30,
@@ -435,7 +455,8 @@ export const displayTrafficLights = (
                     );
                 }
 
-                let imageUrl = "/images/ico_map_signal_lamp_";
+                //let imageUrl = "../assets/images/ico_map_signal_lamp_";
+                let imageUrl = "imgSignalLamp_";
                 const signalDirectionType = signalData.direction / 45;
                 let imageType = 4;
                 if (
@@ -449,7 +470,9 @@ export const displayTrafficLights = (
                 } else {
                     imageType = signalDirectionType % 2;
                 }
-                imageUrl += String(imageType) + "_" + signalType + ".svg";
+                //imageUrl += String(imageType) + "_" + signalType + ".svg";
+                imageUrl += String(imageType) + "_" + signalType;
+                const imageData = Utils.getTrafficLightImageByKey(imageUrl);
 
                 const position = getMoveGPSPosition(
                     tsiData.gps,
@@ -464,7 +487,7 @@ export const displayTrafficLights = (
                         key={tsiData.nodeId + "_" + signalData.direction}
                         position={position}
                         image={{
-                            src: imageUrl,
+                            src: imageData,
                             size: {
                                 width: 40,
                                 height: 40,

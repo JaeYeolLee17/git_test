@@ -8,3 +8,57 @@
     z-index: 2;
     padding: 0px;
 }
+
+.mapBtnsWrap ul {
+    padding: 0px;
+    margin: 0;
+}
+.mapBtnsWrap ul li {
+    display: inline-block;
+    padding: 0;
+    margin-right: 8px;
+}
+.mapBtnsWrap ul li:last-child {
+    margin-right: 0;
+}
+
+.mapZoombtnsWrap {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+
+    top: 74px;
+    right: 16px;
+    z-index: 1;
+
+    padding: 0px;
+}
+
+.mapZoombtnsWrap ul {
+    padding: 0px;
+    margin: 0;
+    list-style-type: none;
+}
+.mapZoombtnsWrap ul li button {
+    width: 32px;
+    height: 32px;
+    background-color: #ffffff;
+    border-radius: 0 0 2px 2px;
+    border-style: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+.mapZoombtnsWrap ul li:first-child button {
+    border-bottom: 1px solid #888;
+    border-radius: 2px 2px 0 0;
+}
+.mapZoombtnsWrap ul li button i::before {
+    font-size: 14px;
+    color: #222;
+}

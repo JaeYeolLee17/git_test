@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+    <defs>
+        <clipPath id="fjcmanoida">
+            <path data-name="사각형 2859" style="fill:#fff" d="M0 0h22v21.999H0z"/>
+        </clipPath>
+    </defs>
+    <path data-name="사각형 733" style="fill:none" d="M0 0h28v28H0z"/>
+    <g data-name="그룹 2589">
+        <path data-name="사각형 2856" transform="translate(9.418 6.622)" style="fill:#fff" d="M0 0h1.658v2.211H0z"/>
+        <path data-name="사각형 2857" transform="translate(9.418 14.615)" style="fill:#fff" d="M0 0h1.658v2.211H0z"/>
+        <path data-name="사각형 2858" transform="translate(9.418 19.213)" style="fill:#fff" d="M0 0h1.658v2.211H0z"/>
+        <g data-name="그룹 2590">
+            <g data-name="그룹 2589" style="clip-path:url(#fjcmanoida)" transform="translate(3 3)">
+                <path data-name="패스 1623" d="M0 22h22V0H0zM20.262 1.737v3.87h-3.471c-.148 0-3.48.14-4.528-3.871zm-18.525 0h8.749c1.137 5.343 5.47 5.609 6.241 5.609h3.534V16.9a9.471 9.471 0 0 1-5.321-3.12c-2.409-3.465-4.9-5.418-7.4-5.8a7.515 7.515 0 0 0-5.803 1.88zm0 10.187a5 5 0 0 0 .877-.548A6.145 6.145 0 0 1 7.28 9.7c2.012.314 4.11 2.02 6.235 5.079a10.384 10.384 0 0 0 6.747 3.9v1.581H1.737z" style="fill:#fff"/>
+            </g>
+        </g>
+    </g>
+</svg>

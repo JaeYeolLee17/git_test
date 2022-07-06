@@ -594,6 +594,8 @@ function KakaoMap({
     links,
     trafficLights,
     avl,
+    zoomLevel,
+    onChangedZoomLevel,
 }: {
     style: KakaoMapStyleType;
     transitionState?: string;
@@ -603,9 +605,11 @@ function KakaoMap({
     links: KakaoMapLinksType;
     trafficLights: KakaoMapTrafficLightsType;
     avl: KakaoMapAvlType;
+    zoomLevel?: number;
+    onChangedZoomLevel?: (level: number) => void;
 }) {
     const [kakaoMap, setKakaoMap] = useState<kakao.maps.Map>();
-    const [level, setLevel] = useState<number>(7);
+    const [level, setLevel] = useState<number>(0);
 
     const [tempCenter, setTempCenter] = useState<kakao.maps.LatLng>();
 
@@ -624,6 +628,10 @@ function KakaoMap({
             }
         }
     }, [transitionState]);
+
+    useEffect(() => {
+        if (zoomLevel !== undefined) setLevel(zoomLevel);
+    }, [zoomLevel]);
 
     // const displayRegion = () => {
     //     if (region === undefined) return null;
@@ -1134,6 +1142,13 @@ function KakaoMap({
         setKakaoMap(map);
     };
 
+    const onZoomChanged = (map: kakao.maps.Map) => {
+        setLevel(map.getLevel());
+
+        if (onChangedZoomLevel !== undefined)
+            onChangedZoomLevel(map.getLevel());
+    };
+
     return (
         <Map
             center={{
@@ -1144,7 +1159,7 @@ function KakaoMap({
             style={style}
             level={level}
             onCreate={(map) => handleMap(map)}
-            onZoomChanged={(map) => setLevel(map.getLevel())}
+            onZoomChanged={(map) => onZoomChanged(map)}
         >
             {region?.isShow && displayRegion(region)}
             {displayIntersection(intersections)}

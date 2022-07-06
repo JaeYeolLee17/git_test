@@ -12,6 +12,20 @@ import ToggleImageButton from "./ToggleImageButton";
 import styles from "./DashboardMap.module.css";
 import { Box } from "@mui/material";
 
+import btnTrafficOn from "../assets/images/ico_map_traffic_f.svg";
+import btnTrafficOff from "../assets/images/ico_map_traffic_n.svg";
+import btnCameraOn from "../assets/images/ico_map_camera_f.svg";
+import btnCameraOff from "../assets/images/ico_map_camera_n.svg";
+import btnSignalLampOn from "../assets/images/ico_map_signal_lamp_f.svg";
+import btnSignalLampOff from "../assets/images/ico_map_signal_lamp_n.svg";
+import btnEmergencyVehicleOn from "../assets/images/ico_map_emergency_vehicle_f.svg";
+import btnEmergencyVehicleOff from "../assets/images/ico_map_emergency_vehicle_n.svg";
+import btnAreaOn from "../assets/images/ico_map_area_f.svg";
+import btnAreaOff from "../assets/images/ico_map_area_n.svg";
+
+import btnZoomPlus from "../assets/images/ico_plus_b.svg";
+import btnZoomMinus from "../assets/images/ico_minus_b.svg";
+
 function DashboardMap({
     transitionState,
     currentRegionInfo,
@@ -55,6 +69,8 @@ function DashboardMap({
     const [streamIntersectionCameras, setStreamIntersectionCameras] = useState<
         Array<any>
     >([]);
+
+    const [mapZoomLevel, setMapZoomLevel] = useState<number>(7);
 
     const requestData = () => {
         const now = new Date();
@@ -395,34 +411,84 @@ function DashboardMap({
         setShowAvlDatas(!showAvlDatas);
     };
 
+    const onClickZoomPlus = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (mapZoomLevel !== undefined) setMapZoomLevel(mapZoomLevel + 1);
+    };
+
+    const onClickZoomMinus = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (mapZoomLevel !== undefined) setMapZoomLevel(mapZoomLevel - 1);
+    };
+
+    const onChangedZoomLevel = (level: number) => {
+        console.log("level", level);
+        setMapZoomLevel(level);
+    };
+
     return (
         <div>
             <Box className={styles.mapBtnsWrap}>
-                <ToggleImageButton
-                    bOn={showRegion}
-                    onClick={onClickRegion}
-                    text={"region"}
-                />
-                <ToggleImageButton
-                    bOn={showCameras}
-                    onClick={onClickCamera}
-                    text={"camera"}
-                />
-                <ToggleImageButton
-                    bOn={showLinks}
-                    onClick={onClickLinks}
-                    text={"links"}
-                />
-                <ToggleImageButton
-                    bOn={showTrafficLights}
-                    onClick={onClickTrafficLight}
-                    text={"TrafficLight"}
-                />
-                <ToggleImageButton
-                    bOn={showAvlDatas}
-                    onClick={onClickAvl}
-                    text={"avl"}
-                />
+                <ul>
+                    <li>
+                        <ToggleImageButton
+                            bOn={showRegion}
+                            onClick={onClickRegion}
+                            imageOn={btnTrafficOn}
+                            imageOff={btnTrafficOff}
+                            tooltip={"region"}
+                        />
+                    </li>
+                    <li>
+                        <ToggleImageButton
+                            bOn={showCameras}
+                            onClick={onClickCamera}
+                            imageOn={btnCameraOn}
+                            imageOff={btnCameraOff}
+                            tooltip={"camera"}
+                        />
+                    </li>
+                    <li>
+                        <ToggleImageButton
+                            bOn={showLinks}
+                            onClick={onClickLinks}
+                            imageOn={btnSignalLampOn}
+                            imageOff={btnSignalLampOff}
+                            tooltip={"links"}
+                        />
+                    </li>
+                    <li>
+                        <ToggleImageButton
+                            bOn={showTrafficLights}
+                            onClick={onClickTrafficLight}
+                            imageOn={btnEmergencyVehicleOn}
+                            imageOff={btnEmergencyVehicleOff}
+                            tooltip={"TrafficLight"}
+                        />
+                    </li>
+                    <li>
+                        <ToggleImageButton
+                            bOn={showAvlDatas}
+                            onClick={onClickAvl}
+                            imageOn={btnAreaOn}
+                            imageOff={btnAreaOff}
+                            tooltip={"avl"}
+                        />
+                    </li>
+                </ul>
+            </Box>
+
+            <Box className={styles.mapZoombtnsWrap}>
+                <ul>
+                    <li>
+                        <button onClick={onClickZoomPlus}>
+                            <img src={btnZoomPlus} />
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={onClickZoomMinus}>
+                            <img src={btnZoomMinus} />
+                        </button>
+                    </li>
+                </ul>
             </Box>
 
             <KakaoMap
@@ -462,6 +528,8 @@ function DashboardMap({
                     selected: selectedAvl,
                     isShow: showAvlDatas,
                 }}
+                zoomLevel={mapZoomLevel}
+                onChangedZoomLevel={onChangedZoomLevel}
             />
             <StreamIntersection
                 streamIntersectionCameras={streamIntersectionCameras}

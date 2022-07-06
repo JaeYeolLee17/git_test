@@ -1,0 +1,53 @@
+.btnMapToggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 2px;
+    border-style: none;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+
+    padding: 0;
+}
+
+.btnMapTogglePressed {
+    background-color: #1f5499;
+}
+
+.btnMapTooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.btnMapTooltip .btnMapTooltipText {
+    visibility: hidden;
+    width: 80px;
+    background-color: black;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    margin-left: -40px;
+}
+
+.btnMapTooltip .btnMapTooltipText::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.btnMapTooltip:hover .btnMapTooltipText {
+    visibility: visible;
+}
+
+*:focus {
+    outline: none;
+}

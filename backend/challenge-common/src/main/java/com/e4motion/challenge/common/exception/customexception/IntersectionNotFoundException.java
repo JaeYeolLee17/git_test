@@ -9,7 +9,7 @@ public class IntersectionNotFoundException extends CustomException {
 
     public static final String CODE = "NONEXISTENT_INTERSECTION";
 
-    public static final String INVALID_INTERSECTION_ID = "Invalid intersection id";
+    public static final String INVALID_INTERSECTION_NO = "Invalid intersection no";
 
     public IntersectionNotFoundException(String message) {
         super(CODE, message);

@@ -3,16 +3,17 @@ DROP TABLE IF EXISTS public.nt_authority CASCADE;
 DROP TABLE IF EXISTS public.nt_user CASCADE;
 DROP TABLE IF EXISTS public.nt_region_gps CASCADE;
 DROP TABLE IF EXISTS public.nt_region CASCADE;
---DROP TABLE IF EXISTS public.nt_intersection CASCADE;
+DROP TABLE IF EXISTS public.nt_intersection CASCADE;
+DROP TABLE IF EXISTS public.nt_camera_road CASCADE;
+DROP TABLE IF EXISTS public.nt_camera CASCADE;
 --DROP TABLE IF EXISTS public.nt_link CASCADE;
 --DROP TABLE IF EXISTS public.nt_link_gps CASCADE;
---DROP TABLE IF EXISTS public.nt_camera CASCADE;
---DROP TABLE IF EXISTS public.nt_camera_road CASCADE;
---DROP TABLE IF EXISTS public.nt_camera_road_direction CASCADE;
---DROP TABLE IF EXISTS public.nt_camera_road_lane CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_user_user_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_region_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_gps_region_gps_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_intersection_intersection_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_camera_camera_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_camera_road_camera_road_id_seq CASCADE;
 
 CREATE TABLE public.nt_authority
 (
@@ -99,21 +100,101 @@ CREATE TABLE public.nt_region_gps
         ON DELETE NO ACTION
 );
 
---CREATE TABLE public.nt_intersection
---(
---    intersection_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
---    intersection_name character varying(20) COLLATE pg_catalog."default",
---    latitude double precision,
---    longitude double precision,
---    national_id integer,
---    region_id character varying(10) COLLATE pg_catalog."default",
---    CONSTRAINT nt_intersection_pkey PRIMARY KEY (intersection_id),
---    CONSTRAINT fko183g0oa94so37xvycapa4f8p FOREIGN KEY (region_id)
---        REFERENCES public.nt_region (region_id) MATCH SIMPLE
---        ON UPDATE NO ACTION
---        ON DELETE NO ACTION
---);
---
+CREATE SEQUENCE public.nt_intersection_intersection_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_intersection
+(
+    intersection_id bigint NOT NULL DEFAULT nextval('nt_intersection_intersection_id_seq'::regclass),
+    intersection_no character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    intersection_name character varying(32) COLLATE pg_catalog."default",
+    latitude double precision,
+    longitude double precision,
+    region_id bigint,
+    national_id bigint,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_intersection_pkey PRIMARY KEY (intersection_id),
+    CONSTRAINT uk_sjj5pddc56ktd3to8fq925q94 UNIQUE (intersection_no),
+    CONSTRAINT fko183g0oa94so37xvycapa4f8p FOREIGN KEY (region_id)
+        REFERENCES public.nt_region (region_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+CREATE SEQUENCE public.nt_camera_camera_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_camera
+(
+    camera_id bigint NOT NULL DEFAULT nextval('nt_camera_camera_id_seq'::regclass),
+    camera_no character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(128) COLLATE pg_catalog."default" NOT NULL,
+    intersection_id bigint,
+    direction_id bigint,
+    latitude double precision,
+    longitude double precision,
+    distance integer,
+    rtsp_url character varying(128) COLLATE pg_catalog."default",
+    rtsp_id character varying(32) COLLATE pg_catalog."default",
+    rtsp_password character varying(128) COLLATE pg_catalog."default",
+    server_url character varying(128) COLLATE pg_catalog."default",
+    send_cycle integer,
+    collect_cycle integer,
+    small_width integer,
+    small_height integer,
+    large_width integer,
+    large_height integer,
+    degree integer,
+    settings_updated boolean NOT NULL,
+    last_data_time timestamp without time zone,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_camera_pkey PRIMARY KEY (camera_id),
+    CONSTRAINT uk_y13pydn7ymn8kss496aj8db9 UNIQUE (camera_no),
+    CONSTRAINT fk2d5cbcly0o41qwb2q6ryp23uo FOREIGN KEY (intersection_id)
+        REFERENCES public.nt_intersection (intersection_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fkkyl4shx8srdcs77m0qdit2s8y FOREIGN KEY (direction_id)
+        REFERENCES public.nt_intersection (intersection_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+CREATE SEQUENCE public.nt_camera_road_camera_road_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_camera_road
+(
+    camera_road_id bigint NOT NULL DEFAULT nextval('nt_camera_road_camera_road_id_seq'::regclass),
+    camera_id bigint,
+    start_line character varying(255) COLLATE pg_catalog."default",
+    lane character varying(255) COLLATE pg_catalog."default",
+    uturn character varying(255) COLLATE pg_catalog."default",
+    crosswalk character varying(255) COLLATE pg_catalog."default",
+    direction character varying(255) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_camera_road_pkey PRIMARY KEY (camera_road_id),
+    CONSTRAINT fk7fa1kh4fs21pw6ol52npu4wml FOREIGN KEY (camera_id)
+        REFERENCES public.nt_camera (camera_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
 --CREATE TABLE public.nt_link
 --(
 --    link_id character varying(10) COLLATE pg_catalog."default" NOT NULL,

@@ -19,7 +19,7 @@ public class RegionController {
     
 	private final RegionService regionService;
 
-    @Operation(summary = "구역 추가", description = "접근 권한 : 최고관리자, 운영자")
+    @Operation(summary = "구역 등록", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/region")
     public Response create(@Valid @RequestBody RegionDto regionDto) throws Exception {
@@ -45,16 +45,16 @@ public class RegionController {
         return new Response();
     }
 
-    @Operation(summary = "구역 조회", description = "접근 권한 : 최고관리자, 운영자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @Operation(summary = "구역 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA')")
 	@GetMapping("/region/{regionNo}")
     public Response get(@PathVariable String regionNo) throws Exception {
 
 		return new Response("region", regionService.get(regionNo));
     }
 
-    @Operation(summary = "구역 목록 조회", description = "접근 권한 : 최고관리자, 운영자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @Operation(summary = "구역 목록 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA')")
 	@GetMapping("/regions")
     public Response getList() throws Exception {
 		

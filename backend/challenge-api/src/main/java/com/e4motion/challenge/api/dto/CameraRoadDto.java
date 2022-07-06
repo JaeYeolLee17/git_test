@@ -4,9 +4,7 @@ import com.e4motion.challenge.common.utils.DateTimeHelper;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,22 +12,22 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegionDto {
+public class CameraRoadDto {
 
-    @NotBlank
-    private String regionNo;
+    private String startLine;
 
-    @NotBlank
-    private String regionName;
+    private String[] lane;
 
-    private List<GpsDto> gps;
+    private String uturn;
 
-    private List<IntersectionDto> intersections;
+    private String crosswalk;
 
-    // TODO: 모든 DTO 의 createDate, modifiedDate : create, update 시 변경되는 것 확인 후 삭제.
+    private Boolean[][] direction;
+
     @JsonFormat(pattern = DateTimeHelper.dateTimeFormat, shape = JsonFormat.Shape.STRING)
     private LocalDateTime createdDate;
 
     @JsonFormat(pattern = DateTimeHelper.dateTimeFormat, shape = JsonFormat.Shape.STRING)
     private LocalDateTime modifiedDate;
+
 }

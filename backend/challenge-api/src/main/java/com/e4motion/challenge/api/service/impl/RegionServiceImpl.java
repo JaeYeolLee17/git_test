@@ -92,6 +92,7 @@ public class RegionServiceImpl implements RegionService {
         return regionMapper.toRegionDto(regionRepository.findAll(sort));
     }
 
+    // public for unit test.
     public List<RegionGps> getRegionGps(RegionDto regionDto, Region region) {
         if (regionDto.getGps() != null) {
             AtomicInteger order = new AtomicInteger();

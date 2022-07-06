@@ -21,8 +21,7 @@ public class UserMapperTest {
 		User user = TestDataHelper.getUser1();
 		
 		UserDto userDto = mapper.toUserDto(user);
-		
-		assertEquals(user, userDto);
+		assertMapTo(user, userDto);
 	}
 	
 	@Test
@@ -30,20 +29,15 @@ public class UserMapperTest {
 		
 		User user1 = TestDataHelper.getUser1();
 		User user2 = TestDataHelper.getUser2();
-		
+
 		List<User> users = new ArrayList<>();
 		users.add(user1);
 		users.add(user2);
 		
 		List<UserDto> userDtos = mapper.toUserDto(users);
-		
 		assertThat(userDtos.size()).isEqualTo(2);
-		
-		assertThat(userDtos.get(0).getPassword()).isNull();
-		assertThat(userDtos.get(1).getPassword()).isNull();
-
-		assertEquals(users.get(0), userDtos.get(0));
-		assertEquals(users.get(1),userDtos.get(1));
+		assertMapTo(users.get(0), userDtos.get(0));
+		assertMapTo(users.get(1), userDtos.get(1));
 	}
 
 	@Test
@@ -52,11 +46,10 @@ public class UserMapperTest {
 		UserDto userDto = TestDataHelper.getUserDto1();
 
 		User user = mapper.toUser(userDto);
-
-		assertEquals(userDto, user);
+		assertMapTo(userDto, user);
 	}
 
-	private void assertEquals(User user, UserDto userDto) {
+	private void assertMapTo(User user, UserDto userDto) {
 
 		assertThat(userDto.getUsername()).isEqualTo(user.getUsername());
 		assertThat(userDto.getPassword()).isNull();
@@ -67,8 +60,9 @@ public class UserMapperTest {
 		assertThat(userDto.getAuthority()).isEqualTo(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName());
 	}
 
-	private void assertEquals(UserDto userDto, User user) {
+	private void assertMapTo(UserDto userDto, User user) {
 
+		assertThat(user.getUserId()).isNull();
 		assertThat(userDto.getUsername()).isEqualTo(user.getUsername());
 		assertThat(userDto.getPassword()).isEqualTo(user.getPassword());
 		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());

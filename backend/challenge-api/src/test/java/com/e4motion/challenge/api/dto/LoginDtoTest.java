@@ -46,7 +46,7 @@ class LoginDtoTest {
     public void validateOk() throws Exception {
 
         String username = "user1";
-        String password = "challenge12!@";
+        String password = "user12!@";
         AuthorityName authority = AuthorityName.ROLE_USER;
 
         doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
@@ -58,7 +58,7 @@ class LoginDtoTest {
     public void validateUsername() throws Exception {
 
         String username = null;
-        String password = "challenge12!@";
+        String password = "user12!@";
         assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         username = "";
@@ -119,7 +119,7 @@ class LoginDtoTest {
 
     private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
         Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-        UserDetails userDetails = new CustomUser(1L,
+        return new CustomUser(1L,
                 username,
                 passwordEncoder.encode(password),
                 null,
@@ -127,6 +127,5 @@ class LoginDtoTest {
                 null,
                 true,
                 grantedAuthorities);
-        return userDetails;
     }
 }

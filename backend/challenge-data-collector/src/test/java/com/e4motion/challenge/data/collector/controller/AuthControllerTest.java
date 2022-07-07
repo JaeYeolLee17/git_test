@@ -47,58 +47,59 @@ public class AuthControllerTest extends HBaseMockTest {
 	@Test
 	public void login() throws Exception {
 	
-		String cameraId = "C0001";
+		String cameraNo = "C0001";
 		String password = "camera12!@";
 		boolean settingsUpdated = false;
+
+		doReturn(getUserDetails(cameraNo, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraNo);
 		
-		doReturn(getUserDetails(cameraId, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraId);
-		
-		assertLogin(cameraId, password, settingsUpdated, HttpStatus.OK, Response.OK, null, null);
+		assertLogin(cameraNo, password, settingsUpdated, HttpStatus.OK, Response.OK, null, null);
 	}
 
 	@Test
 	public void loginSettingsUpdatedTrue() throws Exception {
 
-		String cameraId = "C0002";
+		String cameraNo = "C0002";
 		String password = "camera12!@";
 		boolean settingsUpdated = true;
 
-		doReturn(getUserDetails(cameraId, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraId);
+		doReturn(getUserDetails(cameraNo, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraNo);
 
-		assertLogin(cameraId, password, settingsUpdated, HttpStatus.OK, Response.OK, null, null);
+		assertLogin(cameraNo, password, settingsUpdated, HttpStatus.OK, Response.OK, null, null);
 	}
 	
 	@Test
 	public void loginWithIncorrectPassword() throws Exception {
 		
-		String cameraId = "C0002";
+		String cameraNo = "C0002";
 		String password = "camera12!@";
 		boolean settingsUpdated = false;
 
-		doReturn(getUserDetails(cameraId, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraId);
+		doReturn(getUserDetails(cameraNo, password, settingsUpdated)).when(userDetailsService).loadUserByUsername(cameraNo);
 		
-		assertLogin(cameraId, "camera12------", settingsUpdated,	// Invalid password
+		assertLogin(cameraNo, "camera12------", settingsUpdated,	// Invalid password
 				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
 	}
 	
 	@Test
 	public void loginWithNonexistentCamera() throws Exception {
-		String cameraId = "C0100";
+
+		String cameraNo = "C0100";
 		String password = "camera12!@";
 		boolean settingsUpdated = false;
 
-		doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO)).when(userDetailsService).loadUserByUsername(cameraId);
+		doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO)).when(userDetailsService).loadUserByUsername(cameraNo);
 		
-		assertLogin(cameraId, password, settingsUpdated, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
+		assertLogin(cameraNo, password, settingsUpdated, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
 	}
 	
-	private void assertLogin(String cameraId, String password, boolean expectedSettingsUpdated,
+	private void assertLogin(String cameraNo, String password, boolean expectedSettingsUpdated,
 							 HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 		
 		String uri = "/v2/camera/login";
 		
 		CameraLoginDto loginDto = CameraLoginDto.builder()
-				.cameraId(cameraId)
+				.cameraNo(cameraNo)
 				.password(password)
 				.build();
 	    
@@ -121,13 +122,11 @@ public class AuthControllerTest extends HBaseMockTest {
 				});
 	}
 	
-	private UserDetails getUserDetails(String cameraId, String password, boolean settingsUpdated) {
+	private UserDetails getUserDetails(String cameraNo, String password, boolean settingsUpdated) {
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(AuthorityName.ROLE_CAMERA.toString()));
-		UserDetails userDetails = new CustomUser(cameraId, 
+		return new CustomUser(cameraNo,
 				passwordEncoder.encode(password),
 				settingsUpdated,
 				grantedAuthorities);
-		return userDetails;
 	}
-
 }

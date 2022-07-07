@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserByUsername(final String username) {
 
-		return cameraRepository.findByCameraId(username)
+		return cameraRepository.findByCameraNo(username)
 				.map(this::createUser)
 				.orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO));
 	}
@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(
 				new SimpleGrantedAuthority(AuthorityName.ROLE_CAMERA.toString()));
 
-		return new CustomUser(camera.getCameraId(), 
+		return new CustomUser(camera.getCameraNo(),
 				camera.getPassword(),
 				camera.getSettingsUpdated(),
 				grantedAuthorities);

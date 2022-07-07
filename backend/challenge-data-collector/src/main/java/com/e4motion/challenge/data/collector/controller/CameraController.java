@@ -18,10 +18,10 @@ public class CameraController {
 
     @Operation(summary = "카메라 정보 조회", description = "접근 권한 : 카메라(자기 자신만)")
     @PreAuthorize("hasRole('ROLE_CAMERA')")
-    @GetMapping("/camera/{cameraId}")
-    public Response get(@PathVariable String cameraId) throws Exception {
+    @GetMapping("/camera/{cameraNo}")
+    public Response get(@PathVariable String cameraNo) throws Exception {
 
-        // TODO: 자기 자신만 처리. login 한 camera 와 데이터의 camera 가 동일한지 체크.
+        // TODO: 자기 자신만 처리.
 
         // TODO: redirect or get camera info from api.
 

@@ -70,7 +70,7 @@ class CameraRepositoryTest {
         assertThat(found.isPresent()).isTrue();
         assertThat(found.get().getRoad().getCamera().getCameraId()).isEqualTo(camera1.getCameraId());
 
-        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraId(found.get().getCameraId());
+        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraNo(found.get().getCameraNo());
         assertThat(cameraRoad.isPresent()).isTrue();
         assertThat(cameraRoad.get().getCamera().getCameraNo()).isEqualTo(camera1.getCameraNo());
     }
@@ -103,7 +103,7 @@ class CameraRepositoryTest {
         assertThat(found.isPresent()).isTrue();
         assertThat(found.get().getRoad()).isNull();
 
-        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraId(found.get().getCameraId());
+        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraNo(found.get().getCameraNo());
         assertThat(cameraRoad.isPresent()).isFalse();
     }
 

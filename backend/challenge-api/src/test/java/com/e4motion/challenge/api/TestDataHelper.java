@@ -13,7 +13,7 @@ public class TestDataHelper {
     public static UserDto getUserDto1() {
         return UserDto.builder()
                 .username("user1")
-                .password("challenge12!@")
+                .password("user12!@")
                 .nickname("nickname1")
                 .email("user1@email.com")
                 .phone("01022223333")
@@ -25,7 +25,7 @@ public class TestDataHelper {
     public static UserDto getUserDto2() {
         return UserDto.builder()
                 .username("user2")
-                .password("challenge12!@")
+                .password("user12!@")
                 .nickname("nickname2")
                 .email("user2@email.com")
                 .phone("01044445555")
@@ -37,8 +37,8 @@ public class TestDataHelper {
     public static UserUpdateDto getUserUpdateDto() {
         return UserUpdateDto.builder()
                 .username("user2updated")
-                .oldPassword("challenge12!@")
-                .newPassword("challenge12!@updated")
+                .oldPassword("user12!@")
+                .newPassword("challenge1123!")
                 .nickname("nicknameupdated")
                 .email("emailupdated@email.com")
                 .phone("01088889999")
@@ -51,12 +51,12 @@ public class TestDataHelper {
         return User.builder()
                 .userId(1L)
                 .username("user1")
-                .password("challenge1123!")
+                .password("user12!@")
                 .nickname("nickname1")
                 .email("user1@email.com")
                 .phone("01022223333")
                 .enabled(true)
-                .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_ADMIN)))
+                .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
                 .build();
     }
 
@@ -64,7 +64,7 @@ public class TestDataHelper {
         return User.builder()
                 .userId(2L)
                 .username("user2")
-                .password("challenge12!@")
+                .password("user12!@")
                 .nickname("nickname2")
                 .email("user2@email.com")
                 .phone("01044445555")

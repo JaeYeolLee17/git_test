@@ -71,7 +71,7 @@ public class AuthControllerTest {
 	public void loginWithUser() throws Exception {
 
 		String username = "user1";
-		String password = "challenge12!@";
+		String password = "user12!@";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 
 		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
@@ -83,7 +83,7 @@ public class AuthControllerTest {
 	public void loginWithIncorrectPassword() throws Exception {
 		
 		String username = "user1";
-		String password = "challenge12!@";
+		String password = "user12!@";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
@@ -96,7 +96,7 @@ public class AuthControllerTest {
 	public void loginWithNonexistentUser() throws Exception {
 		
 		String username = "anonymous";
-		String password = "challenge12!@";
+		String password = "user12!@";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 		
 		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(username);
@@ -108,7 +108,7 @@ public class AuthControllerTest {
 	public void loginWithDisabledUser() throws Exception {
 
 		String username = "user1";
-		String password = "challenge12!@";
+		String password = "user12!@";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 
 		doReturn(getUserDetails(username, password, authority, false)).when(userDetailsService).loadUserByUsername(username);
@@ -153,7 +153,7 @@ public class AuthControllerTest {
 
 	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean enabled) {
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-		UserDetails userDetails = new CustomUser(1L,
+		return new CustomUser(1L,
 				username,
 				passwordEncoder.encode(password),
 				null,
@@ -161,6 +161,5 @@ public class AuthControllerTest {
 				null,
 				enabled,
 				grantedAuthorities);
-		return userDetails;
 	}
 }

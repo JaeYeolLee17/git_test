@@ -46,53 +46,53 @@ class CameraLoginDtoTest extends HBaseMockTest {
     @Test
     public void validateOk() throws Exception {
 
-        String cameraId = "C0012";
+        String cameraNo = "C0012";
         String password = "camera12!@";
 
-        doReturn(getUserDetails(cameraId, password)).when(userDetailsService).loadUserByUsername(cameraId);
+        doReturn(getUserDetails(cameraNo, password)).when(userDetailsService).loadUserByUsername(cameraNo);
 
-        assertLogin(cameraId, password, HttpStatus.OK, Response.OK, null, null);
+        assertLogin(cameraNo, password, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
-    public void validateCameraId() throws Exception {
+    public void validateCameraNo() throws Exception {
 
-        String cameraId = null;
+        String cameraNo = null;
         String password = "camera12!@";
-        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertLogin(cameraNo, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        cameraId = "";
-        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        cameraNo = "";
+        assertLogin(cameraNo, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        cameraId = " ";
-        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        cameraNo = " ";
+        assertLogin(cameraNo, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        cameraId = "not existent camera";
-        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO)).when(userDetailsService).loadUserByUsername(cameraId);
-        assertLogin(cameraId, password, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
+        cameraNo = "not existent camera";
+        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO)).when(userDetailsService).loadUserByUsername(cameraNo);
+        assertLogin(cameraNo, password, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
     }
 
     @Test
     public void validatePassword() throws Exception {
 
-        String cameraId = "C0012";
+        String cameraNo = "C0012";
         String password = null;
-        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertLogin(cameraNo, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         password = "";
-        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertLogin(cameraNo, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         password = " ";
-        assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertLogin(cameraNo, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
-    private void assertLogin(String cameraId, String password,
+    private void assertLogin(String cameraNo, String password,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
         String uri = "/v2/camera/login";
 
         CameraLoginDto loginDto = CameraLoginDto.builder()
-                .cameraId(cameraId)
+                .cameraNo(cameraNo)
                 .password(password)
                 .build();
 
@@ -116,12 +116,11 @@ class CameraLoginDtoTest extends HBaseMockTest {
                 });
     }
 
-    private UserDetails getUserDetails(String cameraId, String password) {
+    private UserDetails getUserDetails(String cameraNo, String password) {
         Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(AuthorityName.ROLE_CAMERA.toString()));
-        UserDetails userDetails = new CustomUser(cameraId,
+        return new CustomUser(cameraNo,
                 passwordEncoder.encode(password),
                 false,
                 grantedAuthorities);
-        return userDetails;
     }
 }

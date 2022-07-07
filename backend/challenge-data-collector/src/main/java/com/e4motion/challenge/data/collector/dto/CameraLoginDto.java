@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 public class CameraLoginDto {
 
     @NotBlank
-    private String cameraId;
+    private String cameraId;    // TODO: cameraNo 로 변경
 
     @NotBlank
     private String password;

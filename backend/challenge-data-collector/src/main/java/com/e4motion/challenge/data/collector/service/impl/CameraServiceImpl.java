@@ -19,6 +19,6 @@ public class CameraServiceImpl implements CameraService {
 
         return cameraRepository.findByCameraId(cameraId)
                 .map(Camera::getSettingsUpdated)
-                .orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID));
+                .orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO));
     }
 }

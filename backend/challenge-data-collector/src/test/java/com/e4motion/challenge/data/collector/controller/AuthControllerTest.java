@@ -87,9 +87,9 @@ public class AuthControllerTest extends HBaseMockTest {
 		String password = "camera12!@";
 		boolean settingsUpdated = false;
 
-		doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(cameraId);
+		doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO)).when(userDetailsService).loadUserByUsername(cameraId);
 		
-		assertLogin(cameraId, password, settingsUpdated, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
+		assertLogin(cameraId, password, settingsUpdated, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
 	}
 	
 	private void assertLogin(String cameraId, String password, boolean expectedSettingsUpdated,

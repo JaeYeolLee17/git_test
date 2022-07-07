@@ -7,7 +7,7 @@ import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
+@SpringBootTest
 @ActiveProfiles("test")
 @Transactional
 class UserRepositoryTest {
@@ -55,8 +55,7 @@ class UserRepositoryTest {
 		authorities.add(new Authority(AuthorityName.ROLE_USER));
 		user.setAuthorities(authorities);
         
-        userRepository.save(user);
-		entityManager.flush();
+        userRepository.saveAndFlush(user);
 		entityManager.clear();
 
         Optional<User> found = userRepository.findByUsername(user.getUsername());
@@ -97,8 +96,7 @@ class UserRepositoryTest {
 
 		User user = TestDataHelper.getUser1();
 
-		User saved = userRepository.save(user);
-		entityManager.flush();
+		User saved = userRepository.saveAndFlush(user);
 		entityManager.clear();
 
 		assertThat(userRepository.count()).isEqualTo(1);

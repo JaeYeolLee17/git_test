@@ -19,6 +19,7 @@ public class IntersectionController {
     
 	private final IntersectionService intersectionService;
 
+    // TODO: 파일 일괄 등록 및 수정
     @Operation(summary = "교차로 등록", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/intersection")
@@ -45,20 +46,19 @@ public class IntersectionController {
         return new Response();
     }
 
-    @Operation(summary = "교차로 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA')")
+    @Operation(summary = "교차로 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자, 카메라 관리자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA', 'ROLE_CAMERA_ADMIN')")
 	@GetMapping("/intersection/{intersectionNo}")
     public Response get(@PathVariable String intersectionNo) throws Exception {
 
 		return new Response("intersection", intersectionService.get(intersectionNo));
     }
 
-    // TODO: regionNo 파라미터 처리.
-    @Operation(summary = "교차로 목록 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA')")
+    @Operation(summary = "교차로 목록 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자, 카메라 관리자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA', 'ROLE_CAMERA_ADMIN')")
 	@GetMapping("/intersections")
-    public Response getList() throws Exception {
+    public Response getList(@RequestParam(required = false) String regionNo) throws Exception {
 		
-        return new Response("intersections", intersectionService.getList());
+        return new Response("intersections", intersectionService.getList(regionNo));
     }
 }

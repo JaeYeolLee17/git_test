@@ -68,8 +68,8 @@ class CameraLoginDtoTest extends HBaseMockTest {
         assertLogin(cameraId, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         cameraId = "not existent camera";
-        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID)).when(userDetailsService).loadUserByUsername(cameraId);
-        assertLogin(cameraId, password, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_ID);
+        doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO)).when(userDetailsService).loadUserByUsername(cameraId);
+        assertLogin(cameraId, password, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
     }
 
     @Test

@@ -46,6 +46,34 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(value = RegionNotFoundException.class)
+	public Response handleRegionNotFoundException(RegionNotFoundException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	@ExceptionHandler(value = RegionDuplicateException.class)
+	public Response handleRegionDuplicateException(RegionDuplicateException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(value = IntersectionNotFoundException.class)
+	public Response handleIntersectionNotFoundException(IntersectionNotFoundException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	@ExceptionHandler(value = IntersectionDuplicateException.class)
+	public Response handleIntersectionDuplicateException(IntersectionDuplicateException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = CameraNotFoundException.class)
 	public Response handleCameraNotFoundException(CameraNotFoundException ex) {
 

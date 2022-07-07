@@ -7,7 +7,6 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
-public class HBaseHelper implements InitializingBean {
+public class HBaseHelper {
 
     public static final String TABLE_NAME = "traffic_data_2";
 
@@ -46,8 +45,7 @@ public class HBaseHelper implements InitializingBean {
     public static final byte[] Q_L = Bytes.toBytes("l");
     public static final byte[] Q_R = Bytes.toBytes("r");
 
-    @Override
-    public void afterPropertiesSet() {
+    static {
         for (int i = TrafficDataDto.MIN_LANE; i <= TrafficDataDto.MAX_LANE; i++) {
             CF_L.add(Bytes.toBytes("l" + i));
         }

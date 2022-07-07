@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		return cameraRepository.findByCameraId(username)
 				.map(this::createUser)
-				.orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID));
+				.orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO));
 	}
 
 	private UserDetails createUser(Camera camera) {

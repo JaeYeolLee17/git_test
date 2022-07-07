@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,10 +24,9 @@ public class IntersectionServiceImpl implements IntersectionService {
     private final IntersectionRepository intersectionRepository;
     private final RegionRepository regionRepository;
     private final IntersectionMapper intersectionMapper;
-    private final EntityManager entityManager;
 
     @Transactional
-    public IntersectionDto create(IntersectionDto intersectionDto) {    // TODO: test create, update...
+    public IntersectionDto create(IntersectionDto intersectionDto) {
 
         intersectionRepository.findByIntersectionNo(intersectionDto.getIntersectionNo())
                 .ifPresent(intersection -> {
@@ -40,10 +38,7 @@ public class IntersectionServiceImpl implements IntersectionService {
             intersection.setRegion(getRegion(intersection.getRegion().getRegionNo()));
         }
 
-        Intersection saved = intersectionRepository.save(intersection);
-        entityManager.flush();
-
-        return intersectionMapper.toIntersectionDto(saved);
+        return intersectionMapper.toIntersectionDto(intersectionRepository.save(intersection));
     }
 
     @Transactional
@@ -72,10 +67,7 @@ public class IntersectionServiceImpl implements IntersectionService {
                         intersection.setNationalId(intersectionDto.getNationalId());
                     }
 
-                    Intersection saved = intersectionRepository.save(intersection);
-                    entityManager.flush();
-
-                    return intersectionMapper.toIntersectionDto(saved);
+                    return intersectionMapper.toIntersectionDto(intersectionRepository.saveAndFlush(intersection));
                 })
                 .orElseThrow(() -> new IntersectionNotFoundException(IntersectionNotFoundException.INVALID_INTERSECTION_NO));
     }
@@ -93,10 +85,13 @@ public class IntersectionServiceImpl implements IntersectionService {
     }
 
     @Transactional
-    public List<IntersectionDto> getList() {
+    public List<IntersectionDto> getList(String regionNo) {
 
         Sort sort = Sort.by("intersectionNo").ascending();
-        return intersectionMapper.toIntersectionDto(intersectionRepository.findAll(sort));
+        List<Intersection> intersections = regionNo != null ?
+                intersectionRepository.findAllByRegion_RegionNo(regionNo, sort) : intersectionRepository.findAll(sort);
+
+        return intersectionMapper.toIntersectionDto(intersections);
     }
 
     private Region getRegion(String regionNo) {

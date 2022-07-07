@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -24,7 +23,6 @@ public class RegionServiceImpl implements RegionService {
 
     private final RegionRepository regionRepository;
     private final RegionMapper regionMapper;
-    private final EntityManager entityManager;
 
     @Transactional
     public RegionDto create(RegionDto regionDto) {
@@ -37,10 +35,7 @@ public class RegionServiceImpl implements RegionService {
         Region region = regionMapper.toRegion(regionDto);
         region.setGps(getRegionGps(regionDto, region));
 
-        Region saved = regionRepository.save(region);
-        entityManager.flush();
-
-        return regionMapper.toRegionDto(saved);
+        return regionMapper.toRegionDto(regionRepository.save(region));
     }
 
     @Transactional
@@ -49,26 +44,22 @@ public class RegionServiceImpl implements RegionService {
         return regionRepository.findByRegionNo(regionNo)
                 .map(region -> {
                     if (regionDto.getRegionNo() != null) {
-                        region.setRegionNo(region.getRegionNo());
+                        region.setRegionNo(regionDto.getRegionNo());
                     }
 
                     if (regionDto.getRegionName() != null) {
-                        region.setRegionName(region.getRegionName());
+                        region.setRegionName(regionDto.getRegionName());
                     }
 
                     if (regionDto.getGps() != null) {
                         region.getGps().clear();
-                        regionRepository.save(region);
-                        entityManager.flush();
+                        regionRepository.saveAndFlush(region);
 
                         List<RegionGps> regionGps = getRegionGps(regionDto, region);
                         region.getGps().addAll(regionGps);
                     }
 
-                    Region saved = regionRepository.save(region);
-                    entityManager.flush();
-
-                    return regionMapper.toRegionDto(saved);
+                    return regionMapper.toRegionDto(regionRepository.saveAndFlush(region));
                 })
                 .orElseThrow(() -> new RegionNotFoundException(RegionNotFoundException.INVALID_REGION_NO));
     }

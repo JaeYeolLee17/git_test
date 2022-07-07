@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +38,11 @@ public class RegionServiceTest {
     @Mock
 	RegionRepository regionRepository;
 
-	@Mock
-	EntityManager entityManager;
-
     RegionService regionService;
 	
 	@BeforeEach 
 	void setup() { 
-		regionService = new RegionServiceImpl(regionRepository, regionMapper, entityManager);
+		regionService = new RegionServiceImpl(regionRepository, regionMapper);
 	}
     
 	@Test
@@ -152,8 +148,7 @@ public class RegionServiceTest {
 		}
 
 		doReturn(Optional.of(region)).when(regionRepository).findByRegionNo(regionDto.getRegionNo());
-		doReturn(region).when(regionRepository).save(any());
-		doNothing().when(entityManager).flush();
+		doReturn(region).when(regionRepository).saveAndFlush(any());
 
 		RegionDto updateRegionDto = regionService.update(regionDto.getRegionNo(), regionDto);
 

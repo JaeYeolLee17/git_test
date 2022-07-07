@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "5. 카메라 관리")
+@Tag(name = "3. 카메라 관리")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")
@@ -19,6 +19,7 @@ public class CameraController {
     
 	private final CameraService cameraService;
 
+    // TODO: 파일 일괄 등록 및 수정
     @Operation(summary = "카메라 등록", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/camera")
@@ -45,20 +46,21 @@ public class CameraController {
         return new Response();
     }
 
-    @Operation(summary = "카메라 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자, 카메라 관리자, 카메라")
+    @Operation(summary = "카메라 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자, 카메라 관리자, 카메라(자기 자신만)")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA', 'ROLE_CAMERA_ADMIN', 'ROLE_CAMERA')")
 	@GetMapping("/camera/{cameraNo}")
     public Response get(@PathVariable String cameraNo) throws Exception {
 
+        // TODO: 카메라(자기 자신만) 처리
+
 		return new Response("camera", cameraService.get(cameraNo));
     }
 
-    // TODO: regionNo, IntersectionNo 파라미터 처리.
     @Operation(summary = "카메라 목록 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자, 카메라 관리자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CAMERA_ADMIN', 'ROLE_DATA')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA', 'ROLE_CAMERA_ADMIN')")
 	@GetMapping("/cameras")
-    public Response getList() throws Exception {
+    public Response getList(@RequestParam(required = false) String regionNo, @RequestParam(required = false) String intersectionNo) throws Exception {
 		
-        return new Response("cameras", cameraService.getList());
+        return new Response("cameras", cameraService.getList(regionNo, intersectionNo));
     }
 }

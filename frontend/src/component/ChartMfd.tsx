@@ -205,10 +205,11 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                     show: false,
                 },
                 title: {
+                    text: "총 차량 이동거리 (veh x h)",
                     style: {
                         fontSize: "13px",
                         padding: "12px",
-                        fontFamily: "Noto Sans KR, sans-serif",
+                        fontFamily: "NotoSansCJKKR",
                     },
                 },
                 axisBorder: {
@@ -220,7 +221,7 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                 labels: {
                     style: {
                         fontSize: "13px",
-                        fontFamily: "Noto Sans KR, sans-serif",
+                        fontFamily: "NotoSansCJKKR",
                     },
                     formatter: function (val: number, index: number) {
                         return val
@@ -244,16 +245,17 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                     width: 1,
                 }, */
                 title: {
+                    text: "총 차량 이동시간 (veh x km)",
                     style: {
                         fontSize: "13px",
                         padding: "12px",
-                        fontFamily: "Noto Sans KR, sans-serif",
+                        fontFamily: "NotoSansCJKKR",
                     },
                 },
                 labels: {
                     style: {
                         fontSize: "13px",
-                        fontFamily: "Noto Sans KR, sans-serif",
+                        fontFamily: "NotoSansCJKKR",
                     },
                     formatter: function (val: number, index: number) {
                         return val
@@ -300,7 +302,7 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                 style: {
                     color: "#8b0000",
                     fontSize: "32px",
-                    fontFamily: "Noto Sans KR",
+                    fontFamily: "NotoSansCJKKR",
                 },
             },
             tooltip: {
@@ -475,8 +477,8 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
             options={chartOption}
             series={chartSeries}
             type='line'
-            width='500'
-            height='500'
+            width='100%'
+            height='100%'
         ></Chart>
     );
 }

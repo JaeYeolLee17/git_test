@@ -1,0 +1,133 @@
+.chartTitle {
+    text-align: center;
+    margin: 0 0 0 0;
+}
+
+.chartTitleTop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #000;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -1.65px;
+
+    margin-top: 15px;
+    min-height: 65px;
+
+    background: center center/contain no-repeat
+        url("../assets/images/bg_traffic.svg");
+}
+
+.chartTitleBottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18px;
+    font-weight: 400;
+    color: white;
+
+    margin: 0 15px;
+
+    min-height: 50px;
+    background: center center/cover no-repeat
+        url("../assets/images/bg_traffic_title.svg");
+}
+
+.chartMiddle {
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 531px);
+    /* 15 m + 65 title top  + 50 title b + 15 m + 36 label + 251 table + 15 m*/
+}
+
+.chartMiddleWrapper {
+    position: relative;
+
+    height: 100%;
+    width: calc(100% - 30px);
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1px;
+    background: #f7f7f7;
+}
+
+.chartLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: calc(100% - 30px);
+    height: 36px;
+    margin: 0 auto;
+    color: #666;
+    font-size: 13px;
+    font-weight: normal;
+    letter-spacing: normal;
+
+    background: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+    border-top: none;
+}
+
+.chartLabelLegend {
+    height: 14px;
+    width: 14px;
+
+    display: inline-block;
+}
+
+.chartTableWapper {
+    height: 266px;
+    width: calc(100% - 30px);
+    margin: 15px 15px 0 15px;
+}
+
+.chartLoadingSpinner {
+    z-index: 0;
+    position: absolute;
+    bottom: calc(50%);
+    left: calc(50% - 35px);
+
+    width: 70px;
+    height: 70px;
+
+    border: 8px solid #306fd9;
+    border-top: 8px solid transparent;
+    border-radius: 50%;
+
+    animation: spin 1.5s linear infinite;
+}
+
+.chartLoadingSpinnerOverlay {
+    position: absolute;
+    top: 0;
+    z-index: 3;
+    opacity: 0;
+
+    background: rgba(0, 0, 0, 0.1);
+    height: 100%;
+    width: 100%;
+}
+.chartLoadingSpinnerFade {
+    display: block;
+    opacity: 1;
+    animation: fade-in 1s;
+    animation-fill-mode: forwards;
+}
+.chartLoadingSpinnerFadeEnd {
+    display: none;
+    opacity: 0;
+    animation: fade-out 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

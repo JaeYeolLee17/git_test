@@ -1,10 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useTable, Column, HeaderGroup, Cell } from "react-table";
 
 import * as Utils from "../utils/utils";
 import * as String from "../commons/string";
 
+import styles from "./TableMfd.module.css";
+import { Box } from "@mui/material";
+
 function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
-    const columns = useMemo(
+    const round = (num: number) => {
+        const m = Number((Math.abs(num) * 100).toPrecision(15));
+        return (Math.round(m) / 100) * Math.sign(num);
+    };
+
+    const columns: Column[] = useMemo(
         () => [
             {
                 accessor: "category",
@@ -66,11 +75,11 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
             const lastStatDataMinute =
                 dataMfd.data[dataMfd.data.length - 1].min;
 
-            //console.log("Today", todayPassCar, todayAvgWaitCar, todaySpeed);
+            // console.log("Today", todayPassCar, todayAvgWaitCar, todaySpeed);
 
-            defaultData[0].today = todayPassCar;
-            defaultData[1].today = todayAvgWaitCar;
-            defaultData[2].today = todaySpeed;
+            defaultData[0].today = round(todayPassCar);
+            defaultData[1].today = round(todayAvgWaitCar);
+            defaultData[2].today = round(todaySpeed);
 
             if (!Utils.utilIsEmptyObj(dataLastWeekMfd)) {
                 const lastWeekMfd = dataLastWeekMfd.data.filter((data: any) => {
@@ -102,9 +111,9 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                     //     lastWeekAvgWaitCar,
                     //     lastWeekSpeed
                     // );
-                    defaultData[0].lastweek = lastWeekPassCar;
-                    defaultData[1].lastweek = lastWeekAvgWaitCar;
-                    defaultData[2].lastweek = lastWeekSpeed;
+                    defaultData[0].lastweek = round(lastWeekPassCar);
+                    defaultData[1].lastweek = round(lastWeekAvgWaitCar);
+                    defaultData[2].lastweek = round(lastWeekSpeed);
                 }
             }
 
@@ -142,9 +151,9 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                     //     lastMonthSpeed
                     // );
 
-                    defaultData[0].lastmonthavg = lastMonthPassCar;
-                    defaultData[1].lastmonthavg = lastMonthAvgWaitCar;
-                    defaultData[2].lastmonthavg = lastMonthSpeed;
+                    defaultData[0].lastmonthavg = round(lastMonthPassCar);
+                    defaultData[1].lastmonthavg = round(lastMonthAvgWaitCar);
+                    defaultData[2].lastmonthavg = round(lastMonthSpeed);
                 }
             }
         }
@@ -152,11 +161,112 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
         return defaultData;
     }, [dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd]);
 
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+        useTable({ columns, data });
+
+    const handleIndicate = (column: HeaderGroup) => {
+        let color = null;
+        switch (column.Header) {
+            case String.chart_today:
+                color = "#ffcc00";
+                break;
+
+            case String.chart_lastweek:
+                color = "#306fd9";
+                break;
+
+            case String.chart_lastmonthavg:
+                color = "#9500ff";
+                break;
+            default:
+                break;
+        }
+        return color ? (
+            <span
+                className={styles.circleIndicator}
+                style={{ backgroundColor: `${color}` }}
+            />
+        ) : null;
+    };
+
+    const handleCell = (cell: Cell) => {
+        const text: string = cell.value;
+
+        switch (cell.value) {
+            case String.chart_veh_pass:
+            case String.chart_avg_veh_que:
+            case String.chart_avg_speed:
+                {
+                    const newText = text.split("\n");
+                    return (
+                        <span>
+                            {newText[0]}
+                            <br />
+                            {newText[1]}
+                        </span>
+                    );
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return cell.render("Cell");
+    };
+
     // using material UI - table
     return (
         <div>
-            TABLE
             {/* <ReactTable columns={columns} data={data} /> */}
+            <table className={styles.chartTable} {...getTableProps()}>
+                <thead>
+                    {headerGroups.map((headerGroup) => {
+                        const { key, ...restHeaderGroupProps } =
+                            headerGroup.getHeaderGroupProps();
+                        return (
+                            <tr key={key} {...restHeaderGroupProps}>
+                                {headerGroup.headers.map((column) => {
+                                    const { key, ...restHeaderProps } =
+                                        column.getHeaderProps();
+                                    return (
+                                        <th key={key} {...restHeaderProps}>
+                                            <Box
+                                                className={
+                                                    styles.indicatorContainer
+                                                }
+                                            >
+                                                {handleIndicate(column)}
+                                                {column.render("Header")}
+                                            </Box>
+                                        </th>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                    {rows.map((row) => {
+                        prepareRow(row);
+                        const { key, ...restRowProps } = row.getRowProps();
+
+                        return (
+                            <tr key={key} {...restRowProps}>
+                                {row.cells.map((cell) => {
+                                    const { key, ...restCellProps } =
+                                        cell.getCellProps();
+                                    return (
+                                        <td key={key} {...restCellProps}>
+                                            {handleCell(cell)}
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
         </div>
     );
 }

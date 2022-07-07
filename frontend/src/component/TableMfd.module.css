@@ -1,0 +1,61 @@
+.chartTable {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+
+    font-size: 15px;
+    font-family: "NotoSansCJKKR";
+    font-weight: normal;
+    letter-spacing: normal;
+    text-align: center;
+    overflow-wrap: break-word;
+
+    color: #333;
+    border-top: 2px solid #212121;
+}
+
+.chartTable tbody th {
+    font-weight: 500;
+}
+.chartTable thead {
+    font-size: 14px;
+    font-weight: bold;
+
+    background: white;
+    border-bottom: 1px solid #bfbfbf;
+}
+
+.chartTable thead th {
+    width: 20%;
+    height: 44px;
+
+    font-size: 13px;
+}
+
+.chartTable tbody tr {
+    border-bottom: 1px solid #bfbfbf;
+    padding: 0 10px;
+}
+.chartTable tbody td {
+    height: 70px;
+}
+.chartTable tbody th {
+    font-size: 15px;
+}
+.bottom-table th td {
+    padding: 20px 20px;
+}
+
+.indicatorContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.circleIndicator {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+
+    margin-right: 4px;
+}

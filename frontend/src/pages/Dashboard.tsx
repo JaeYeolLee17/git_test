@@ -27,27 +27,27 @@ const transitionChart: { [key: string]: string } = {
     exited: "",
 };
 
-const transitionExpension: { [key: string]: string } = {
-    entering: styles.btnExpansion,
-    entered: styles.btnExpansion,
-    exiting: styles.btnExpansionRotate,
-    exited: styles.btnExpansionRotate,
-};
-
 const Dashboard = () => {
     const [chartOpen, setChartOpen] = useState<boolean>(false);
     const [selectedRegionId, setSelectedRegionId] = useState<string>("");
+    const [selectedRegionName, setSelectedRegionName] = useState<
+        string | undefined
+    >("");
     const [currentRegionInfo, setCurrentRegionInfo] =
         useState<Common.RegionInfo>({ regionId: "all" });
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
     const [selectedIntersectionId, setSelectedIntersectionId] =
         useState<string>("");
+    const [selectedIntersectionName, setSelectedIntersectionName] = useState<
+        string | undefined
+    >("");
 
     const [transitionState, setTransitionState] = useState<string>("");
 
     const onChangedCurrentRegion = (regionItem: Common.RegionInfo) => {
         //console.log("regionItem", regionItem);
         setSelectedRegionId(regionItem.regionId);
+        setSelectedRegionName(regionItem.regionName);
         setCurrentRegionInfo(regionItem);
     };
 
@@ -56,6 +56,7 @@ const Dashboard = () => {
     ) => {
         //console.log("intersectionItem", intersectionItem);
         setSelectedIntersectionId(intersectionItem.intersectionId);
+        setSelectedIntersectionName(intersectionItem.intersectionName);
     };
 
     const handleChartOpen = () => {
@@ -78,6 +79,7 @@ const Dashboard = () => {
                             sx={{
                                 display: "flex",
                                 height: "100%",
+                                overflow: "hidden",
                             }}
                         >
                             <Box
@@ -162,7 +164,9 @@ const Dashboard = () => {
                             >
                                 <DashboardMfd
                                     regionId={selectedRegionId}
+                                    regionName={selectedRegionName}
                                     intersectionId={selectedIntersectionId}
+                                    intersectionName={selectedIntersectionName}
                                 />
                             </Box>
                         </Box>

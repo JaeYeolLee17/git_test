@@ -8,12 +8,19 @@ import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import TableMfd from "./TableMfd";
 
+import styles from "./DashboardMfd.module.css";
+import { Box } from "@mui/material";
+
 function DashboardMfd({
     regionId,
+    regionName,
     intersectionId,
+    intersectionName,
 }: {
     regionId: string;
+    regionName: string | undefined;
     intersectionId: string;
+    intersectionName: string | undefined;
 }) {
     const userDetails = useAuthState();
 
@@ -334,22 +341,75 @@ function DashboardMfd({
         requestLastMonthAvgMfd();
     }, [regionId, intersectionId]);
 
+    const showLoading = () => {
+        let showClass = styles.chartLoadingSpinnerFadeEnd;
+        if (loadingMfd || loadingLastWeekMfd || loadingLastMonthAvgMfd) {
+            showClass = styles.chartLoadingSpinnerFade;
+        }
+
+        return (
+            <div
+                className={[styles.chartLoadingSpinnerOverlay, showClass].join(
+                    " "
+                )}
+            >
+                <div className={styles.chartLoadingSpinner}></div>
+            </div>
+        );
+    };
+
     // TODO: loadingMfd || loadingLastWeekMfd || loadingLastMonthAvgMfd => loading image
     // console.log("loadingMfd", loadingMfd);
     // console.log("loadingLastWeekMfd", loadingLastWeekMfd);
     // console.log("loadingLastMonthAvgMfd", loadingLastMonthAvgMfd);
     return (
         <div>
-            <ChartMfd
-                dataMfd={dataMfd}
-                dataLastWeekMfd={dataLastWeekMfd}
-                dataLastMonthAvgMfd={dataLastMonthAvgMfd}
-            />
-            <TableMfd
-                dataMfd={dataMfd}
-                dataLastWeekMfd={dataLastWeekMfd}
-                dataLastMonthAvgMfd={dataLastMonthAvgMfd}
-            />
+            <Box className={styles.chartTitle}>
+                <Box className={styles.chartTitleTop}>교통흐름현황</Box>
+                <Box className={styles.chartTitleBottom}>
+                    {intersectionName !== undefined ? (
+                        <span>{intersectionName}</span>
+                    ) : regionName !== undefined ? (
+                        <span>{regionName}</span>
+                    ) : (
+                        <span>대구광역시 전체</span>
+                    )}
+                </Box>
+            </Box>
+            <Box className={styles.chartMiddle}>
+                <Box className={styles.chartMiddleWrapper}>
+                    {showLoading()}
+                    <ChartMfd
+                        dataMfd={dataMfd}
+                        dataLastWeekMfd={dataLastWeekMfd}
+                        dataLastMonthAvgMfd={dataLastMonthAvgMfd}
+                    />
+                </Box>
+            </Box>
+            <Box className={styles.chartLabel}>
+                <span
+                    className={styles.chartLabelLegend}
+                    style={{ backgroundColor: "#00e025" }}
+                ></span>
+                <span>원활(30km/h▲)</span>
+                <span
+                    className={styles.chartLabelLegend}
+                    style={{ backgroundColor: "#ff8800" }}
+                ></span>
+                <span>정체(25km/h▲)</span>
+                <span
+                    className={styles.chartLabelLegend}
+                    style={{ backgroundColor: "#df0900" }}
+                ></span>
+                <span>혼잡(25km/h▼)</span>
+            </Box>
+            <Box className={styles.chartTableWapper}>
+                <TableMfd
+                    dataMfd={dataMfd}
+                    dataLastWeekMfd={dataLastWeekMfd}
+                    dataLastMonthAvgMfd={dataLastMonthAvgMfd}
+                />
+            </Box>
         </div>
     );
 }

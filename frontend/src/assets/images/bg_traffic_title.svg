@@ -1,0 +1,13 @@
+<svg id="bg_traffic_title" xmlns="http://www.w3.org/2000/svg" width="400" height="51" viewBox="0 0 400 51">
+    <defs>
+        <style>
+            .cls-2{fill:#104992}.cls-3{fill:#08428e}
+        </style>
+    </defs>
+    <path id="사각형_3360" data-name="사각형 3360" style="fill:#1f5499" d="M0 0h400v51H0z"/>
+    <path id="패스_2664" data-name="패스 2664" class="cls-2" d="M204 51 102 0h102z" transform="translate(196)"/>
+    <path id="패스_2666" data-name="패스 2666" class="cls-3" d="M0-30.4 48.213 51H0z" transform="rotate(90 25.485 25.516)"/>
+    <path id="패스_2665" data-name="패스 2665" class="cls-3" d="M150-12.969 102.016 38h47.839z" transform="translate(249.984 13)"/>
+    <path id="패스_2664-2" data-name="패스 2664" class="cls-2" d="m102 0 135.809 51H102z" transform="translate(-102)"/>
+    <path id="패스_2665-2" data-name="패스 2665" class="cls-3" d="M102.016-12.969 150 38h-47.839z" transform="translate(-102 13)"/>
+</svg>

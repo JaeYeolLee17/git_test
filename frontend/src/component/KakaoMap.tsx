@@ -9,7 +9,7 @@ import {
 import * as Utils from "../utils/utils";
 import * as Common from "../commons/common";
 
-// import imgCamera_0_n from "../assets/images/btn_map_cctv_40_0_n.svg";
+import imgEmergencyVehiclePin from "../assets/images/ico_map_emergency_vehicle_pin.png";
 // import imgCamera_0_f from "../assets/images/btn_map_cctv_40_0_f.svg";
 
 export type KakaoMapStyleType = {
@@ -538,11 +538,19 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
                 병원도착: "g",
             };
 
+            // const vehicleImageUrl =
+            //     "/images/btn_map_emergency_" +
+            //     statusInfo[status] +
+            //     (avlData.carNo === avl.selected ? "_p" : "_n") +
+            //     ".svg";
+
             const vehicleImageUrl =
-                "/images/btn_map_emergency_" +
+                "imgEmergencyVehicle_" +
                 statusInfo[status] +
-                (avlData.carNo === avl.selected ? "_p" : "_n") +
-                ".svg";
+                (avlData.carNo === avl.selected ? "_p" : "_n");
+
+            const vehicleImageData =
+                Utils.getEmergencyVehicleImageByKey(vehicleImageUrl);
 
             //console.log(vehicleImageUrl);
 
@@ -567,7 +575,7 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
                     <MapMarker
                         position={destPosition}
                         image={{
-                            src: "/images/ico_map_emergency_vehicle_pin.png",
+                            src: imgEmergencyVehiclePin,
                             size: {
                                 width: 40,
                                 height: 40,
@@ -585,7 +593,7 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
                         <MapMarker
                             position={currPosition}
                             image={{
-                                src: vehicleImageUrl,
+                                src: vehicleImageData,
                                 size: {
                                     width: 67,
                                     height: 89,

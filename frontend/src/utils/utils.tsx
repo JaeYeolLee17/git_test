@@ -1108,3 +1108,27 @@ const imagesSignalLamp: { [key: string]: any } = {
 export const getTrafficLightImageByKey = (key: string) => {
     return imagesSignalLamp[key];
 };
+
+import imgEmergencyVehicle_b_n from "../assets/images/btn_map_emergency_b_n.svg";
+import imgEmergencyVehicle_b_p from "../assets/images/btn_map_emergency_b_p.svg";
+import imgEmergencyVehicle_g_n from "../assets/images/btn_map_emergency_g_n.svg";
+import imgEmergencyVehicle_g_p from "../assets/images/btn_map_emergency_g_p.svg";
+import imgEmergencyVehicle_r_n from "../assets/images/btn_map_emergency_r_n.svg";
+import imgEmergencyVehicle_r_p from "../assets/images/btn_map_emergency_r_p.svg";
+import imgEmergencyVehicle_y_n from "../assets/images/btn_map_emergency_y_n.svg";
+import imgEmergencyVehicle_y_p from "../assets/images/btn_map_emergency_y_p.svg";
+
+const imagesEmergencyVehicle: { [key: string]: any } = {
+    imgEmergencyVehicle_b_n,
+    imgEmergencyVehicle_b_p,
+    imgEmergencyVehicle_g_n,
+    imgEmergencyVehicle_g_p,
+    imgEmergencyVehicle_r_n,
+    imgEmergencyVehicle_r_p,
+    imgEmergencyVehicle_y_n,
+    imgEmergencyVehicle_y_p,
+};
+
+export const getEmergencyVehicleImageByKey = (key: string) => {
+    return imagesEmergencyVehicle[key];
+};

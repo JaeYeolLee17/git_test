@@ -434,6 +434,10 @@ function DashboardMap({
         setMapZoomLevel(level);
     };
 
+    const handleRTSPStreamerHeight = (height: number) => {
+        console.log(height);
+    };
+
     return (
         <div>
             <Box className={styles.mapBtnsWrap}>
@@ -509,6 +513,13 @@ function DashboardMap({
 
             <TrafficInformation show={showLinks} time={requestLinkEndTime} />
 
+            {intersections?.selectedIntersectionName !== undefined ? (
+                <RTSPStreamer
+                    intersectionName={intersections?.selectedIntersectionName}
+                    onChangedHeight={handleRTSPStreamerHeight}
+                />
+            ) : null}
+
             <KakaoMap
                 style={{
                     width: "100%",
@@ -551,10 +562,6 @@ function DashboardMap({
             />
             <StreamIntersection
                 streamIntersectionCameras={streamIntersectionCameras}
-            />
-
-            <RTSPStreamer
-                intersectionName={intersections?.selectedIntersectionName}
             />
         </div>
     );

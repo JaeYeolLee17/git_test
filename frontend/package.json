@@ -7,6 +7,7 @@
         "@emotion/styled": "^11.9.3",
         "@mui/icons-material": "^5.8.4",
         "@mui/material": "^5.8.6",
+        "@react-hook/resize-observer": "^1.2.5",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^13.3.0",
         "@testing-library/user-event": "^13.5.0",
@@ -28,6 +29,7 @@
         "react-table": "^7.8.0",
         "react-transition-group": "^4.4.2",
         "sha256": "^0.2.0",
+        "use-resize-observer": "^9.0.2",
         "web-vitals": "^2.1.4"
     },
     "scripts": {

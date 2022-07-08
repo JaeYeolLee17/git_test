@@ -106,6 +106,8 @@ const Dashboard = () => {
                                         listIntersections: listIntersections,
                                         selectedIntersectionId:
                                             selectedIntersectionId,
+                                        selectedIntersectionName:
+                                            selectedIntersectionName,
                                     }}
                                     onChangedSelectedItem={(item) => {
                                         setSelectedIntersectionId(

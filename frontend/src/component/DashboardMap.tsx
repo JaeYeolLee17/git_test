@@ -26,6 +26,7 @@ import btnAreaOff from "../assets/images/ico_map_area_n.svg";
 import btnZoomPlus from "../assets/images/ico_plus_b.svg";
 import btnZoomMinus from "../assets/images/ico_minus_b.svg";
 import TrafficInformation from "./TrafficInformation";
+import RTSPStreamer from "./RTSPStreamer";
 
 function DashboardMap({
     transitionState,
@@ -35,7 +36,11 @@ function DashboardMap({
 }: {
     transitionState: string;
     currentRegionInfo: Common.RegionInfo;
-    intersections: { listIntersections: any[]; selectedIntersectionId: string };
+    intersections: {
+        listIntersections: any[];
+        selectedIntersectionId: string;
+        selectedIntersectionName: string | undefined;
+    };
     onChangedSelectedItem: ({
         cameraId,
         intersectionId,
@@ -546,6 +551,10 @@ function DashboardMap({
             />
             <StreamIntersection
                 streamIntersectionCameras={streamIntersectionCameras}
+            />
+
+            <RTSPStreamer
+                intersectionName={intersections?.selectedIntersectionName}
             />
         </div>
     );

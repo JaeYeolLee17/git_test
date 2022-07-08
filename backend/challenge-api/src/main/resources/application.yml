@@ -21,7 +21,7 @@ spring:
     defer-datasource-initialization: true
     properties: 
       format_sql: true
-    show-sql: true
+    show-sql: false
     open-in-view: true
   
 jwt:

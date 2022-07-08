@@ -46,12 +46,13 @@ public class CameraController {
         return new Response();
     }
 
-    @Operation(summary = "카메라 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자, 카메라 관리자, 카메라(자기 자신만)")
+    @Operation(summary = "카메라 조회", description = "접근 권한 : 최고관리자, 운영자, 데이터 사용자, 카메라 관리자, 카메라")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_DATA', 'ROLE_CAMERA_ADMIN', 'ROLE_CAMERA')")
 	@GetMapping("/camera/{cameraNo}")
     public Response get(@PathVariable String cameraNo) throws Exception {
 
-        // TODO: 카메라(자기 자신만) 처리
+        // 카메라의 경우 : data-collector 에서 redirect 된 요청을 처리한다.
+        // 로그인 카메라와 동일한 자기 자신 정보만 응답 해주어야 하나, api 는 카메라 로그인을 지원하지 않으므로 data-collector 에서 자기 자신만 체크 후 요청 리다이렉트 하도록 한다.
 
 		return new Response("camera", cameraService.get(cameraNo));
     }

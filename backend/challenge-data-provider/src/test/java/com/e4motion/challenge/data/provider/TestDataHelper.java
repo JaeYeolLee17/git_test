@@ -12,6 +12,7 @@ import java.util.List;
 public class TestDataHelper {
 
     public static HashMap<String, Object> getQueryHashMap() {
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("startTime", "2022-04-01 12:00:00");
         map.put("endTime", "2022-04-01 12:01:00");
@@ -22,6 +23,7 @@ public class TestDataHelper {
     }
 
     public static DataListDto getDataListDto() {
+
         List<LaneDataDto> ld = new ArrayList<>();
         ld.add(LaneDataDto.builder()
                 .ln(1)

@@ -148,11 +148,14 @@ public class AuthControllerTest {
 	}
 
 	private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
+
 		return getUserDetails(username, password, authority, true);
 	}
 
 	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean enabled) {
+
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
+
 		return new CustomUser(1L,
 				username,
 				passwordEncoder.encode(password),

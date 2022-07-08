@@ -118,7 +118,9 @@ class LoginDtoTest {
     }
 
     private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
+
         Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
+
         return new CustomUser(1L,
                 username,
                 passwordEncoder.encode(password),

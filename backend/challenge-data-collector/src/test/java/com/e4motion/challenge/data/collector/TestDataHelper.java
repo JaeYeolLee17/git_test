@@ -10,6 +10,7 @@ import java.util.List;
 public class TestDataHelper {
 
     public static CameraDataDto getDataDto() {
+
         List<LaneDataDto> ld = new ArrayList<>();
         ld.add(LaneDataDto.builder()
                 .ln(1)

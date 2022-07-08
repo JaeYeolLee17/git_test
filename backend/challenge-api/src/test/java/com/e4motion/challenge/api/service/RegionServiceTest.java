@@ -250,15 +250,21 @@ public class RegionServiceTest {
 		assertThat(regionDto1.getRegionNo()).isEqualTo(regionDto2.getRegionNo());
 		assertThat(regionDto1.getRegionName()).isEqualTo(regionDto2.getRegionName());
 
-		if (regionDto1.getGps() == null) {
-			assertThat(regionDto2.getGps()).isNull();
-		} else {
-			int i = 0;
-			for (GpsDto gps : regionDto1.getGps()) {
-				assertThat(gps.getLatitude()).isEqualTo(regionDto2.getGps().get(i).getLatitude());
-				assertThat(gps.getLongitude()).isEqualTo(regionDto2.getGps().get(i).getLongitude());
-				i++;
-			}
+		assertEquals(regionDto1.getGps(), regionDto2.getGps());
+	}
+
+	private void assertEquals(List<GpsDto> gpsDto1, List<GpsDto> gpsDto2) {
+
+		if (gpsDto1 == null) {
+			assertThat(gpsDto2).isNull();
+			return;
+		}
+
+		int i = 0;
+		for (GpsDto gps : gpsDto2) {
+			assertThat(gps.getLatitude()).isEqualTo(gpsDto2.get(i).getLatitude());
+			assertThat(gps.getLongitude()).isEqualTo(gpsDto2.get(i).getLongitude());
+			i++;
 		}
 	}
 }

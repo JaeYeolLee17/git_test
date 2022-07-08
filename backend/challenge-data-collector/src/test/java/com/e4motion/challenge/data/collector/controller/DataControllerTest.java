@@ -41,6 +41,7 @@ class DataControllerTest extends HBaseMockTest {
 
     @Test
     public void insertWithoutRole() throws Exception {
+
         assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
@@ -48,6 +49,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void insertWithAdminRole() throws Exception {
+
         assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
@@ -55,6 +57,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     @WithMockUser(roles = "MANAGER")
     public void insertWithManagerRole() throws Exception {
+
         assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
@@ -62,6 +65,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     @WithMockUser(roles = "USER")
     public void insertWithUserRole() throws Exception {
+
         assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
@@ -69,6 +73,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     @WithMockUser(roles = "DATA")
     public void insertWithDataRole() throws Exception {
+
         assertInsert(TestDataHelper.getDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
@@ -127,6 +132,5 @@ class DataControllerTest extends HBaseMockTest {
                     }
                 });
     }
-
 
 }

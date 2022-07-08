@@ -38,6 +38,7 @@ class DataControllerTest extends HBaseMockTest {
 
     @Test
     public void queryWithoutRole() throws Exception {
+
         assertQuery(TestDataHelper.getQueryHashMap(),
                 HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
@@ -45,6 +46,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void queryWithAdminRole() throws Exception {
+
         assertQuery(TestDataHelper.getQueryHashMap(),
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
@@ -52,6 +54,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     @WithMockUser(roles = "CAMERA")
     public void queryWithCameraRole() throws Exception {
+
         assertQuery(TestDataHelper.getQueryHashMap(),
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
@@ -59,6 +62,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     @WithMockUser(roles = "DATA")
     public void queryWithDataRole() throws Exception {
+
         assertQuery(TestDataHelper.getQueryHashMap(), HttpStatus.OK, Response.OK, null, null);
     }
 

@@ -11,6 +11,7 @@ import java.util.List;
 public class TestDataHelper {
 
     public static UserDto getUserDto1() {
+
         return UserDto.builder()
                 .username("user1")
                 .password("user12!@")
@@ -23,6 +24,7 @@ public class TestDataHelper {
     }
 
     public static UserDto getUserDto2() {
+
         return UserDto.builder()
                 .username("user2")
                 .password("user12!@")
@@ -35,6 +37,7 @@ public class TestDataHelper {
     }
 
     public static UserUpdateDto getUserUpdateDto() {
+
         return UserUpdateDto.builder()
                 .username("user2updated")
                 .oldPassword("user12!@")
@@ -48,6 +51,7 @@ public class TestDataHelper {
     }
 
     public static User getUser1() {
+
         return User.builder()
                 .userId(1L)
                 .username("user1")
@@ -61,6 +65,7 @@ public class TestDataHelper {
     }
 
     public static User getUser2() {
+
         return User.builder()
                 .userId(2L)
                 .username("user2")
@@ -74,6 +79,7 @@ public class TestDataHelper {
     }
 
     public static UserDto getAdminUserDto() {
+
         return UserDto.builder()
                 .username("admin")
                 .password("challenge1123!")
@@ -84,6 +90,7 @@ public class TestDataHelper {
     }
 
     public static UserDto getManagerUserDto() {
+
         return UserDto.builder()
                 .username("manager")
                 .password("challenge1123!")
@@ -94,6 +101,7 @@ public class TestDataHelper {
     }
 
     public static RegionDto getRegionDto1() {
+
         RegionDto regionDto = RegionDto.builder()
                 .regionNo("R01")
                 .regionName("예비사업구역")
@@ -109,6 +117,7 @@ public class TestDataHelper {
     }
 
     public static RegionDto getRegionDto2() {
+
         RegionDto regionDto = RegionDto.builder()
                 .regionNo("R02")
                 .regionName("구역02")
@@ -124,6 +133,7 @@ public class TestDataHelper {
     }
 
     public static Region getRegion1() {
+
         Region region = Region.builder()
                 .regionId(1L)
                 .regionNo("R01")
@@ -140,6 +150,7 @@ public class TestDataHelper {
     }
 
     public static Region getRegion2() {
+
         Region region = Region.builder()
                 .regionId(2L)
                 .regionNo("R02")
@@ -156,6 +167,7 @@ public class TestDataHelper {
     }
 
     public static IntersectionDto getIntersectionDto1() {
+
         return IntersectionDto.builder()
                 .intersectionNo("I0001")
                 .intersectionName("이현삼거리")
@@ -166,6 +178,7 @@ public class TestDataHelper {
     }
 
     public static IntersectionDto getIntersectionDto2() {
+
         return IntersectionDto.builder()
                 .intersectionNo("I0002")
                 .intersectionName("배고개삼거리")
@@ -176,6 +189,7 @@ public class TestDataHelper {
     }
 
     public static Intersection getIntersection1() {
+
         return Intersection.builder()
                 .intersectionId(1L)
                 .intersectionNo("I0001")
@@ -188,6 +202,7 @@ public class TestDataHelper {
     }
 
     public static Intersection getIntersection2() {
+
         return Intersection.builder()
                 .intersectionId(2L)
                 .intersectionNo("I0002")

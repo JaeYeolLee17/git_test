@@ -1,7 +1,6 @@
 package com.e4motion.challenge.api.service.impl;
 
 import com.e4motion.challenge.api.domain.Authority;
-import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.mapper.UserMapper;
@@ -16,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +26,6 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-	private final EntityManager entityManager;
     
     @Transactional
     public UserDto create(UserDto userDto) {
@@ -41,10 +38,7 @@ public class UserServiceImpl implements UserService {
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		userDto.setEnabled(true);
 
-		User saved = userRepository.save(userMapper.toUser(userDto));
-		entityManager.flush();
-
-        return userMapper.toUserDto(saved);
+        return userMapper.toUserDto(userRepository.save(userMapper.toUser(userDto)));
     }
     
     @Transactional
@@ -85,10 +79,7 @@ public class UserServiceImpl implements UserService {
 						user.setAuthorities(authorities);
 					}
 
-					User saved = userRepository.save(user);
-					entityManager.flush();
-
-					return userMapper.toUserDto(saved);
+					return userMapper.toUserDto(userRepository.saveAndFlush(user));
 				})
 				.orElseThrow(() -> new UserNotFoundException(UserNotFoundException.INVALID_USERNAME));
     }

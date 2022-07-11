@@ -32,7 +32,7 @@ public class AuthController {
     public Response login(@Valid @RequestBody CameraLoginDto loginDto) throws Exception {
 
     	UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getCameraId(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDto.getCameraNo(), loginDto.getPassword());
 
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -45,14 +45,11 @@ public class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
-	@Mock
-	EntityManager entityManager;
-
     UserService userService;
 	
 	@BeforeEach 
 	void setup() { 
-		userService = new UserServiceImpl(userRepository, passwordEncoder, userMapper, entityManager);
+		userService = new UserServiceImpl(userRepository, passwordEncoder, userMapper);
 	}
     
 	@Test
@@ -114,8 +111,7 @@ public class UserServiceTest {
 				.build();
 		
 		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
-		doReturn(updatedUser).when(userRepository).save(any());
-		doNothing().when(entityManager).flush();
+		doReturn(updatedUser).when(userRepository).saveAndFlush(any());
 		
 		// when
 		UserDto updatedUserDto = userService.update(userDto.getUsername(), userUpdateDto);

@@ -14,5 +14,5 @@ public interface IntersectionService {
 
     IntersectionDto get(String intersectionNo);
 
-    List<IntersectionDto> getList();
+    List<IntersectionDto> getList(String regionNo);
 }

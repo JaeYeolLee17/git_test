@@ -15,10 +15,10 @@ public class CameraServiceImpl implements CameraService {
     private final CameraRepository cameraRepository;
 
     @Transactional(readOnly = true)
-    public boolean getSettingsUpdated(String cameraId) {
+    public boolean getSettingsUpdated(String cameraNo) {
 
-        return cameraRepository.findByCameraId(cameraId)
+        return cameraRepository.findByCameraNo(cameraNo)
                 .map(Camera::getSettingsUpdated)
-                .orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_ID));
+                .orElseThrow(() -> new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO));
     }
 }

@@ -6,14 +6,16 @@ DROP TABLE IF EXISTS public.nt_region CASCADE;
 DROP TABLE IF EXISTS public.nt_intersection CASCADE;
 DROP TABLE IF EXISTS public.nt_camera_road CASCADE;
 DROP TABLE IF EXISTS public.nt_camera CASCADE;
---DROP TABLE IF EXISTS public.nt_link CASCADE;
---DROP TABLE IF EXISTS public.nt_link_gps CASCADE;
+DROP TABLE IF EXISTS public.nt_link_gps CASCADE;
+DROP TABLE IF EXISTS public.nt_link CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_user_user_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_region_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_gps_region_gps_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_intersection_intersection_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_camera_camera_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_camera_road_camera_road_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_link_link_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_link_gps_link_gps_id_seq CASCADE;
 
 CREATE TABLE public.nt_authority
 (
@@ -195,89 +197,52 @@ CREATE TABLE public.nt_camera_road
         ON DELETE NO ACTION
 );
 
---CREATE TABLE public.nt_link
---(
---    link_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
---    end_id character varying(10) COLLATE pg_catalog."default",
---    end_name character varying(30) COLLATE pg_catalog."default",
---    start_id character varying(10) COLLATE pg_catalog."default",
---    start_name character varying(30) COLLATE pg_catalog."default",
---    CONSTRAINT nt_link_pkey PRIMARY KEY (link_id)
---);
---
---CREATE TABLE public.nt_link_gps
---(
---    latitude double precision NOT NULL,
---    longitude double precision,
---    link_id character varying(10) COLLATE pg_catalog."default",
---    CONSTRAINT nt_link_gps_pkey PRIMARY KEY (latitude),
---    CONSTRAINT fk141vf5mygaaj07tjbyurbohu5 FOREIGN KEY (link_id)
---        REFERENCES public.nt_link (link_id) MATCH SIMPLE
---        ON UPDATE NO ACTION
---        ON DELETE NO ACTION
---);
---
---CREATE TABLE public.nt_camera
---(
---    camera_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
---    collect_cycle integer,
---    degree integer,
---    distance integer,
---    l_height integer,
---    l_width integer,
---    last_data_time timestamp without time zone,
---    latitude double precision,
---    longitude double precision,
---    password character varying(256) COLLATE pg_catalog."default" NOT NULL,
---    rtsp_id character varying(10) COLLATE pg_catalog."default",
---    rtsp_password character varying(256) COLLATE pg_catalog."default" NOT NULL,
---    rtsp_url character varying(128) COLLATE pg_catalog."default",
---    send_cycle integer,
---    server_url character varying(128) COLLATE pg_catalog."default",
---    settings_updated boolean,
---    s_height integer,
---    s_width integer,
---    direction_id character varying(10) COLLATE pg_catalog."default",
---    intersection_id character varying(10) COLLATE pg_catalog."default",
---    CONSTRAINT nt_camera_pkey PRIMARY KEY (camera_id),
---    CONSTRAINT fk2d5cbcly0o41qwb2q6ryp23uo FOREIGN KEY (intersection_id)
---        REFERENCES public.nt_intersection (intersection_id) MATCH SIMPLE
---        ON UPDATE NO ACTION
---        ON DELETE NO ACTION,
---    CONSTRAINT fkkyl4shx8srdcs77m0qdit2s8y FOREIGN KEY (direction_id)
---        REFERENCES public.nt_intersection (intersection_id) MATCH SIMPLE
---        ON UPDATE NO ACTION
---        ON DELETE NO ACTION
---);
---
---CREATE TABLE public.nt_camera_road
---(
---    road_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
---    camera_id character varying(10) COLLATE pg_catalog."default",
---    crosswalk character varying(128) COLLATE pg_catalog."default",
---    start_line character varying(128) COLLATE pg_catalog."default",
---    uturn character varying(128) COLLATE pg_catalog."default",
---    CONSTRAINT nt_camera_road_pkey PRIMARY KEY (road_id)
---);
---
---CREATE TABLE public.nt_camera_road_direction
---(
---    road_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
---    direction boolean,
---    CONSTRAINT nt_camera_road_direction_pkey PRIMARY KEY (road_id),
---    CONSTRAINT fkpua1lfdkreen0gtvvg1pdnjmd FOREIGN KEY (road_id)
---        REFERENCES public.nt_camera_road (road_id) MATCH SIMPLE
---        ON UPDATE NO ACTION
---        ON DELETE NO ACTION
---);
---
---CREATE TABLE public.nt_camera_road_lane
---(
---    road_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
---    lane character varying(255) COLLATE pg_catalog."default",
---    CONSTRAINT nt_camera_road_lane_pkey PRIMARY KEY (road_id),
---    CONSTRAINT fk872ya75vajbnsnvecglom0ynt FOREIGN KEY (road_id)
---        REFERENCES public.nt_camera_road (road_id) MATCH SIMPLE
---        ON UPDATE NO ACTION
---        ON DELETE NO ACTION
---);
+CREATE SEQUENCE public.nt_link_link_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_link
+(
+    link_id bigint NOT NULL DEFAULT nextval('nt_link_link_id_seq'::regclass),
+    start_id bigint,
+    end_id bigint,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_link_pkey PRIMARY KEY (link_id),
+    CONSTRAINT ukc1sdrv1f58r8jta7my772b7ss UNIQUE (start_id, end_id),
+    CONSTRAINT fkgkkfk8o0t3sw1edm72axkprfa FOREIGN KEY (start_id)
+        REFERENCES public.nt_intersection (intersection_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fkolot7x2h0y5ivccvn2096xsgr FOREIGN KEY (end_id)
+        REFERENCES public.nt_intersection (intersection_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+CREATE SEQUENCE public.nt_link_gps_link_gps_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_link_gps
+(
+    link_gps_id bigint NOT NULL DEFAULT nextval('nt_link_gps_link_gps_id_seq'::regclass),
+    link_id bigint,
+    latitude double precision,
+    longitude double precision,
+    gps_order integer,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_link_gps_pkey PRIMARY KEY (link_gps_id),
+    CONSTRAINT ukj5asivtra90oxw4tc2hkhv4w0 UNIQUE (link_id, latitude, longitude),
+    CONSTRAINT fk141vf5mygaaj07tjbyurbohu5 FOREIGN KEY (link_id)
+        REFERENCES public.nt_link (link_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);

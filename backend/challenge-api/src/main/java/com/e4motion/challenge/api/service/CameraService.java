@@ -14,5 +14,5 @@ public interface CameraService {
 
     CameraDto get(String cameraNo);
 
-    List<CameraDto> getList();
+    List<CameraDto> getList(String regionNo, String intersectionNo);
 }

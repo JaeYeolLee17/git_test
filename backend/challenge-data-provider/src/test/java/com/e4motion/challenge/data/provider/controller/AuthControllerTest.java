@@ -72,7 +72,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	public void loginWithUser() throws Exception {
 
 		String username = "user1";
-		String password = "challenge12!@";
+		String password = "user12!@";
 		AuthorityName authority = AuthorityName.ROLE_USER;
 
 		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
@@ -84,7 +84,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	public void loginWithDataUser() throws Exception {
 		
 		String username = "algorithm";
-		String password = "challenge12!@";
+		String password = "data12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 		
 		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
@@ -96,12 +96,12 @@ public class AuthControllerTest extends HBaseMockTest {
 	public void loginWithIncorrectPassword() throws Exception {
 		
 		String username = "simulator";
-		String password = "challenge12!@";
+		String password = "data12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 		
 		doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
 		
-		assertLogin(username, "challenge12!@----",	 	// Invalid password
+		assertLogin(username, "data12!@----",	 	// Invalid password
 				HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
 	}
 	
@@ -109,7 +109,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	public void loginWithNonexistentUser() throws Exception {
 
 		String username = "anonymous";
-		String password = "challenge12!@";
+		String password = "data12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 		
 		doThrow(new UserNotFoundException(UserNotFoundException.INVALID_USERNAME)).when(userDetailsService).loadUserByUsername(username);
@@ -121,7 +121,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	public void loginWithDisabledUser() throws Exception {
 
 		String username = "simulator";
-		String password = "challenge12!@";
+		String password = "data12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 
 		doReturn(getUserDetails(username, password, authority, false)).when(userDetailsService).loadUserByUsername(username);
@@ -161,12 +161,15 @@ public class AuthControllerTest extends HBaseMockTest {
 	}
 
 	private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
+
 		return getUserDetails(username, password, authority, true);
 	}
 
 	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean enabled) {
+
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-		UserDetails userDetails = new CustomUser(1L,
+
+		return new CustomUser(1L,
 				username,
 				passwordEncoder.encode(password),
 				null,
@@ -174,6 +177,5 @@ public class AuthControllerTest extends HBaseMockTest {
 				null,
 				enabled,
 				grantedAuthorities);
-		return userDetails;
 	}
 }

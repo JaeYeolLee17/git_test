@@ -9,7 +9,7 @@ public class CameraNotFoundException extends CustomException {
 	
 	public static final String CODE = "NONEXISTENT_CAMERA";
 
-	public static final String INVALID_CAMERA_ID = "Invalid camera id";
+	public static final String INVALID_CAMERA_NO = "Invalid camera no";
 
 	public CameraNotFoundException(String message) {
 		super(CODE, message);

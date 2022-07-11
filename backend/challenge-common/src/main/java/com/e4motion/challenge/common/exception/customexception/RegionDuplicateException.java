@@ -9,7 +9,7 @@ public class RegionDuplicateException extends CustomException {
 
     public static final String CODE = "ALREADY_EXISTENT_REGION";
 
-    public static final String REGION_NO_ALREADY_EXISTS = "Region id already exists";
+    public static final String REGION_NO_ALREADY_EXISTS = "Region no already exists";
 
     public RegionDuplicateException(String message) {
         super(CODE, message);

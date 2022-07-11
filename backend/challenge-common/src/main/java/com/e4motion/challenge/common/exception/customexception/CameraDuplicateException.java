@@ -9,7 +9,7 @@ public class CameraDuplicateException extends CustomException {
 	
 	public static final String CODE = "ALREADY_EXISTENT_CAMERA";
 
-	public static final String CAMERA_ID_ALREADY_EXISTS = "Camera id already exists";
+	public static final String CAMERA_NO_ALREADY_EXISTS = "Camera no already exists";
 
 	public CameraDuplicateException(String message) {
 		super(CODE, message);

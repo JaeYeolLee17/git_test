@@ -1,9 +1,6 @@
 package com.e4motion.challenge.data.collector.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.*;
 
@@ -18,13 +15,17 @@ import lombok.*;
 public class Camera {
 
 	@Id
-	@Column(name = "camera_id", length = 10)
-	private String cameraId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "camera_id")
+	private Long cameraId;
+
+	@Column(name = "camera_no", length = 10, unique = true, nullable = false)
+	private String cameraNo;
 
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 
-	@Column(name = "settings_updated")
+	@Column(name = "settings_updated", nullable = false)
 	private Boolean settingsUpdated;
    
 }

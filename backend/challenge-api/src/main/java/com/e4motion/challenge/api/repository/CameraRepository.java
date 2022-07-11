@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface CameraRepository extends JpaRepository<Camera, Long> {
+public interface CameraRepository extends JpaRepository<Camera, Long>, CameraRepositoryCustom {
 
     @Transactional(readOnly = true)
     Optional<Camera> findByCameraNo(String cameraNo);

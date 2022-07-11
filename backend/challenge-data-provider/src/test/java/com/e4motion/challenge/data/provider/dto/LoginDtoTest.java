@@ -47,7 +47,7 @@ class LoginDtoTest extends HBaseMockTest {
     public void validateOk() throws Exception {
 
         String username = "simulator";
-        String password = "challenge12!@";
+        String password = "data12!@";
         AuthorityName authority = AuthorityName.ROLE_DATA;
 
         doReturn(getUserDetails(username, password, authority)).when(userDetailsService).loadUserByUsername(username);
@@ -59,7 +59,7 @@ class LoginDtoTest extends HBaseMockTest {
     public void validateUsername() throws Exception {
 
         String username = null;
-        String password = "challenge12!@";
+        String password = "data12!@";
         assertLogin(username, password, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         username = "";
@@ -119,8 +119,10 @@ class LoginDtoTest extends HBaseMockTest {
     }
 
     private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
+
         Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
-        UserDetails userDetails = new CustomUser(1L,
+
+        return new CustomUser(1L,
                 username,
                 passwordEncoder.encode(password),
                 null,
@@ -128,6 +130,5 @@ class LoginDtoTest extends HBaseMockTest {
                 null,
                 true,
                 grantedAuthorities);
-        return userDetails;
     }
 }

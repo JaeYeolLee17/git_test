@@ -1,7 +1,7 @@
 .mapTrafficInformation {
     position: absolute;
     right: 16px;
-    bottom: 16px;
+    /* bottom: 16px; */
     width: 174px;
     height: 109px;
     z-index: 1;

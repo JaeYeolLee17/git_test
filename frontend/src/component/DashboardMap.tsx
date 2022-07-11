@@ -80,6 +80,9 @@ function DashboardMap({
 
     const [requestLinkEndTime, setRequestLinkEndTime] = useState<string>("");
 
+    const [trafficInformationBottom, setTrafficInformationBottom] =
+        useState<number>(0);
+
     const requestData = () => {
         const now = new Date();
         if (now.getSeconds() === 0) {
@@ -349,6 +352,10 @@ function DashboardMap({
 
     useEffect(() => {
         setSelectedIntersectionId(intersections?.selectedIntersectionId);
+
+        if (intersections?.selectedIntersectionName === undefined) {
+            setTrafficInformationBottom(0);
+        }
     }, [intersections]);
 
     useEffect(() => {
@@ -436,6 +443,7 @@ function DashboardMap({
 
     const handleRTSPStreamerHeight = (height: number) => {
         console.log(height);
+        setTrafficInformationBottom(height);
     };
 
     return (
@@ -511,7 +519,11 @@ function DashboardMap({
                 </ul>
             </Box>
 
-            <TrafficInformation show={showLinks} time={requestLinkEndTime} />
+            <TrafficInformation
+                show={showLinks}
+                time={requestLinkEndTime}
+                bottom={trafficInformationBottom}
+            />
 
             {intersections?.selectedIntersectionName !== undefined ? (
                 <RTSPStreamer

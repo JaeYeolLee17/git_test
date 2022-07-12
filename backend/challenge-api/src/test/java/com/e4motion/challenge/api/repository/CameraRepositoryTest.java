@@ -70,7 +70,7 @@ class CameraRepositoryTest {
         assertThat(found.isPresent()).isTrue();
         assertThat(found.get().getRoad().getCamera().getCameraId()).isEqualTo(camera1.getCameraId());
 
-        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraNo(found.get().getCameraNo());
+        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraId(found.get().getCameraId());
         assertThat(cameraRoad.isPresent()).isTrue();
         assertThat(cameraRoad.get().getCamera().getCameraNo()).isEqualTo(camera1.getCameraNo());
     }
@@ -103,7 +103,7 @@ class CameraRepositoryTest {
         assertThat(found.isPresent()).isTrue();
         assertThat(found.get().getRoad()).isNull();
 
-        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraNo(found.get().getCameraNo());
+        Optional<CameraRoad> cameraRoad = cameraRoadRepository.findByCamera_CameraId(found.get().getCameraId());
         assertThat(cameraRoad.isPresent()).isFalse();
     }
 
@@ -219,7 +219,7 @@ class CameraRepositoryTest {
         camera1 = cameraRepository.save(camera1);
         Camera camera2 = TestDataHelper.getCamera2();
         camera2.setIntersection(intersection2);
-        camera1.setDirection(intersection1);
+        camera2.setDirection(intersection1);
         camera2 = cameraRepository.save(camera2);
 
         entityManager.flush();

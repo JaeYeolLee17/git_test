@@ -74,6 +74,20 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(value = LinkNotFoundException.class)
+	public Response handleLinkNotFoundException(LinkNotFoundException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	@ExceptionHandler(value = LinkDuplicateException.class)
+	public Response handleLinkDuplicateException(LinkDuplicateException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = CameraNotFoundException.class)
 	public Response handleCameraNotFoundException(CameraNotFoundException ex) {
 

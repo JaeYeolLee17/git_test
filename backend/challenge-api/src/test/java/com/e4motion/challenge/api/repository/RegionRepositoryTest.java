@@ -45,7 +45,7 @@ class RegionRepositoryTest {
 
 		assertEquals(found.get(), region);
 
-		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionNoOrderByGpsOrder(region.getRegionNo());
+		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(region.getGps().size());
 	}
 
@@ -65,7 +65,7 @@ class RegionRepositoryTest {
 
 		assertEquals(found.get(), region);
 
-		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionNoOrderByGpsOrder(region.getRegionNo());
+		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(0);
 	}
 
@@ -84,7 +84,7 @@ class RegionRepositoryTest {
 
 		assertEquals(found.get(), region);
 
-		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionNoOrderByGpsOrder(region.getRegionNo());
+		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(0);
 	}
 
@@ -155,8 +155,10 @@ class RegionRepositoryTest {
 		assertThat(found.get().getGps().get(0).getLongitude()).isEqualTo(gps.get(0).getLongitude());
 		assertThat(found.get().getGps().get(1).getLatitude()).isEqualTo(gps.get(1).getLatitude());
 		assertThat(found.get().getGps().get(1).getLongitude()).isEqualTo(gps.get(1).getLongitude());
+		assertThat(found.get().getGps().get(2).getLatitude()).isEqualTo(gps.get(2).getLatitude());
+		assertThat(found.get().getGps().get(2).getLongitude()).isEqualTo(gps.get(2).getLongitude());
 
-		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionNoOrderByGpsOrder(region.getRegionNo());
+		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(3);
 	}
 
@@ -184,7 +186,7 @@ class RegionRepositoryTest {
 		assertThat(found.get().getRegionName()).isEqualTo("변경리전");
 		assertThat(found.get().getGps().size()).isEqualTo(0);
 
-		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionNoOrderByGpsOrder(region.getRegionNo());
+		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(0);
 	}
 
@@ -201,7 +203,7 @@ class RegionRepositoryTest {
 		assertThat(regionRepository.count()).isEqualTo(0);
         assertThat(found.isPresent()).isFalse();
 
-		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionNoOrderByGpsOrder(region.getRegionNo());
+		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(0);
 	}
 

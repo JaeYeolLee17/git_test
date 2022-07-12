@@ -1,6 +1,6 @@
 package com.e4motion.challenge.common.exception.customexception;
 
-public class LinkDuplicationException extends CustomException {
+public class LinkDuplicateException extends CustomException {
 
     /**
      *
@@ -9,9 +9,9 @@ public class LinkDuplicationException extends CustomException {
 
     public static final String CODE = "ALREADY_EXISTENT_LINK";
 
-    public static final String LINK_ID_ALREADY_EXISTS = "Link id already exists";
+    public static final String LINK_START_END_ALREADY_EXISTS = "Link start, end already exists";
 
-    public LinkDuplicationException(String message) {
+    public LinkDuplicateException(String message) {
         super(CODE, message);
     }
 }

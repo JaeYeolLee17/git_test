@@ -39,11 +39,14 @@ public class IntersectionDto {
 
     @Override
     public String toString() {
+
+        String regionNo = (region == null) ? null : region.getRegionNo();
+
         return "IntersectionDto{" +
                 "intersectionNo='" + intersectionNo + '\'' +
                 ", intersectionName='" + intersectionName + '\'' +
                 ", gps=" + gps +
-                ", region=" + region.getRegionNo() +
+                ", region=" + regionNo +
                 ", nationalId=" + nationalId +
                 ", cameras=" + cameras +
                 ", createdDate=" + createdDate +

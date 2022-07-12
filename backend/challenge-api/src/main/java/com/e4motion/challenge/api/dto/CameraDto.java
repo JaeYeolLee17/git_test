@@ -69,11 +69,15 @@ public class CameraDto {
 
     @Override
     public String toString() {
+
+        String intersectionNo = (intersection == null) ? null : intersection.getIntersectionNo();
+        String directionNo = (direction == null) ? null : direction.getIntersectionNo();
+
         return "CameraDto{" +
                 "cameraNo='" + cameraNo + '\'' +
                 ", password='" + password + '\'' +
-                ", intersection=" + intersection.getIntersectionNo() +
-                ", direction=" + direction.getIntersectionNo() +
+                ", intersection=" + intersectionNo +
+                ", direction=" + directionNo +
                 ", gps=" + gps +
                 ", distance=" + distance +
                 ", rtspUrl='" + rtspUrl + '\'' +

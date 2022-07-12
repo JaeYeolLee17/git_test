@@ -347,4 +347,38 @@ public class TestDataHelper {
 
         return camera;
     }
+
+    public static LinkDto getLinkDto1() {
+
+        LinkDto linkDto = LinkDto.builder()
+                .linkId(1L)
+                .start(getIntersectionDto1())
+                .end(getIntersectionDto2())
+                .build();
+
+        List<GpsDto> gps = new ArrayList<>();
+        gps.add(GpsDto.builder().latitude(35.1111).longitude(128.11111).build());
+        gps.add(GpsDto.builder().latitude(35.2222).longitude(128.22222).build());
+        gps.add(GpsDto.builder().latitude(35.3333).longitude(128.33333).build());
+        linkDto.setGps(gps);
+
+        return linkDto;
+    }
+
+    public static Link getLink1() {
+
+        Link link = Link.builder()
+                .linkId(1L)
+                .start(getIntersection1())
+                .end(getIntersection2())
+                .build();
+
+        List<LinkGps> gps = new ArrayList<>();
+        gps.add(LinkGps.builder().linkGpsId(1L).link(link).latitude(35.1111).longitude(128.1111).gpsOrder(1).build());
+        gps.add(LinkGps.builder().linkGpsId(2L).link(link).latitude(35.22222).longitude(128.22222).gpsOrder(2).build());
+        gps.add(LinkGps.builder().linkGpsId(3L).link(link).latitude(35.33333).longitude(128.33333).gpsOrder(3).build());
+        link.setGps(gps);
+
+        return link;
+    }
 }

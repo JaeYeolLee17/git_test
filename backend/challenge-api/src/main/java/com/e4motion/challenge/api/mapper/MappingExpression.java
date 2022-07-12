@@ -22,4 +22,6 @@ public class MappingExpression {
 
     public final static String TO_CAMERA_ROAD_LANE = "java(new ObjectMapper().writeValueAsString(cameraRoadDto.getLane()))";
     public final static String TO_CAMERA_ROAD_DIRECTION = "java(new ObjectMapper().writeValueAsString(cameraRoadDto.getDirection()))";
+
+    public final static String TO_LINK_DTO_GPS = "java(link.getGps() == null ? null : link.getGps().stream().map(gps -> GpsDto.builder().latitude(gps.getLatitude()).longitude(gps.getLongitude()).build()).collect(Collectors.toList()))";
 }

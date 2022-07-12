@@ -1,8 +1,6 @@
 package com.e4motion.challenge.api.dto;
 
-import com.e4motion.challenge.common.utils.DateTimeHelper;
 import com.e4motion.challenge.common.utils.RegExp;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -61,12 +59,6 @@ public class CameraDto {
 
     private CameraRoadDto road;
 
-    @JsonFormat(pattern = DateTimeHelper.dateTimeFormat, shape = JsonFormat.Shape.STRING)
-    private LocalDateTime createdDate;
-
-    @JsonFormat(pattern = DateTimeHelper.dateTimeFormat, shape = JsonFormat.Shape.STRING)
-    private LocalDateTime modifiedDate;
-
     @Override
     public String toString() {
 
@@ -94,8 +86,6 @@ public class CameraDto {
                 ", settingsUpdated=" + settingsUpdated +
                 ", lastDataTime=" + lastDataTime +
                 ", road=" + road +
-                ", createdDate=" + createdDate +
-                ", modifiedDate=" + modifiedDate +
                 '}';
     }
 }

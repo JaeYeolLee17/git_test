@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 
 import * as Common from "../commons/common";
 
-// import WeatherWidget from "../component/WeatherWidget";
+import WeatherWidget from "../component/WeatherWidget";
 
 import styles from "./Menu.module.css";
 
@@ -191,7 +191,12 @@ const Menu = () => {
     });
 
     return (
-        <aside className={styles.wrapper}>{menuElements}</aside>
+        <aside className={styles.wrapper}>
+            <>
+            <WeatherWidget />
+            {menuElements}
+            </>
+        </aside>
         // <aside>
         //     {/* <WeatherWidget /> */}
         //     <ul>

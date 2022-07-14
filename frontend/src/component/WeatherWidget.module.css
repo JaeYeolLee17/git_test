@@ -1,0 +1,35 @@
+.wrapper{
+    background: url('../assets/images/bg_weather.svg');
+
+    display: flex;
+    justify-items: center;
+    align-items: center;
+
+    height: 100px;
+}
+
+.img {
+    width: 50%;
+    height: 100px;
+}
+
+.wrapper p {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #ffffff;
+
+    margin: 0;
+}
+
+.textBody{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.temperature {
+    font-size: 26px;
+}
+
+.city {
+    font-size: 14px;
+}

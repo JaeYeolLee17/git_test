@@ -1,0 +1,16 @@
+<svg id="ico_weather_mist" xmlns="http://www.w3.org/2000/svg" width="78" height="78" viewBox="0 0 78 78">
+    <defs>
+        <style>
+            .cls-2{fill:#ccc}
+        </style>
+    </defs>
+    <g id="그룹_2777" data-name="그룹 2777" transform="translate(18 24)">
+        <path id="사각형_3455" data-name="사각형 3455" class="cls-2" transform="translate(0 7.016)" d="M0 0h42v2.283H0z"/>
+        <path id="사각형_3456" data-name="사각형 3456" class="cls-2" transform="translate(5.533 14.034)" d="M0 0h30.934v2.283H0z"/>
+        <path id="사각형_3457" data-name="사각형 3457" class="cls-2" transform="translate(0 21.051)" d="M0 0h42v2.283H0z"/>
+        <path id="사각형_3458" data-name="사각형 3458" class="cls-2" transform="translate(5.533 28.067)" d="M0 0h19.868v2.283H0z"/>
+        <path id="사각형_3459" data-name="사각형 3459" class="cls-2" transform="translate(33.199 28.067)" d="M0 0h8.801v2.283H0z"/>
+        <path id="사각형_3460" data-name="사각형 3460" class="cls-2" transform="translate(22.132)" d="M0 0h14.334v2.283H0z"/>
+        <path id="사각형_3461" data-name="사각형 3461" class="cls-2" transform="translate(5.533)" d="M0 0h8.801v2.283H0z"/>
+    </g>
+</svg>

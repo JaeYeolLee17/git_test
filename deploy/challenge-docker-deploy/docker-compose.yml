@@ -5,7 +5,7 @@ services:
     image: $REGISTRY/challenge-monitor:$TAG
     ports:
       - "8090:8090"
-    mem_limit: 4096m
+    mem_limit: 8g
 
   challenge-api:
     image: $REGISTRY/challenge-api:$TAG
@@ -15,7 +15,7 @@ services:
       - /var/log/challenge-api:/logs
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-    mem_limit: 4096m
+    mem_limit: 8g 
 
   challenge-data-collector:
     image: $REGISTRY/challenge-data-collector:$TAG
@@ -25,7 +25,7 @@ services:
       - /var/log/challenge-data-collector:/logs
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-    mem_limit: 4096m
+    mem_limit: 16g 
 
   challenge-data-provider:
     image: $REGISTRY/challenge-data-provider:$TAG
@@ -35,4 +35,4 @@ services:
       - /var/log/challenge-data-provider:/logs
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-    mem_limit: 4096m
+    mem_limit: 16g 

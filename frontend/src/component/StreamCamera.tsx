@@ -1,14 +1,18 @@
+import { Box } from "@mui/material";
 import React, { useEffect } from "react";
+
+import styles from "./StreamCamera.module.css";
 
 type StreamCameraType = {
     stream: any;
+    className?: string;
 };
 
-function StreamCamera({ stream }: StreamCameraType) {
+function StreamCamera({ stream, className }: StreamCameraType) {
     //console.log("stream", stream);
 
     useEffect(() => {
-        const rtspWsUrl = "ws://localhost:" + stream.port;
+        const rtspWsUrl = process.env.REACT_APP_STREAM_WS_URI + stream.port;
 
         const jsmpeg = require("jsmpeg");
         const canvas = document.getElementById(
@@ -19,21 +23,10 @@ function StreamCamera({ stream }: StreamCameraType) {
     }, []);
 
     return (
-        <div
-            style={{
-                width: "400px",
-                height: "300px",
-                border: "solid 1px",
-            }}
-        >
-            <canvas
-                id={`stream-canvas-${stream.cameraId}`}
-                style={{
-                    width: "400px",
-                    height: "300px",
-                }}
-            ></canvas>
-        </div>
+        <canvas
+            className={className}
+            id={`stream-canvas-${stream.cameraId}`}
+        ></canvas>
     );
 }
 

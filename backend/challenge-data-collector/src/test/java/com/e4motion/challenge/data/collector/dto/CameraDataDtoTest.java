@@ -7,6 +7,7 @@ import com.e4motion.challenge.data.collector.HBaseMockTest;
 import com.e4motion.challenge.data.collector.TestDataHelper;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
+import com.e4motion.challenge.data.collector.service.DataStatsService;
 import com.e4motion.challenge.data.common.dto.LaneDataDto;
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ class CameraDataDtoTest extends HBaseMockTest {
 
     @MockBean
     DataService dataService;
+
+    @MockBean
+    DataStatsService dataStatsService;
 
     @MockBean
     CameraService cameraService;
@@ -272,7 +276,8 @@ class CameraDataDtoTest extends HBaseMockTest {
 
         String uri = "/v2/data";
 
-        doNothing().when(dataService).insert(dataDto);
+        doReturn(true).when(dataService).insert(dataDto);
+        doReturn(1L).when(dataStatsService).insert(dataDto);
         doReturn(true).when(cameraService).getSettingsUpdated(dataDto.getC());
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)

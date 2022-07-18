@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", imports = {GpsDto.class, Collectors.class})
 public interface RegionMapper {
 
-    @Mapping(target = "gps", expression = MappingExpression.TO_REGION_DTO_GPS)
+    @Mapping(target = "gps", expression = MappingExpressions.TO_REGION_DTO_GPS)
     RegionDto toRegionDto(Region region);
 
     @Mapping(target = "region", ignore = true)                  // remove circular reference.
-    @Mapping(target = "gps", expression = MappingExpression.TO_INTERSECTION_DTO_GPS)
+    @Mapping(target = "gps", expression = MappingExpressions.TO_INTERSECTION_DTO_GPS)
     @Mapping(target = "cameras", ignore = true)
     IntersectionDto toIntersectionDto(Intersection intersection);
 

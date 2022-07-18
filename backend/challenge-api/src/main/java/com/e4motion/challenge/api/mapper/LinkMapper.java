@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", imports = {GpsDto.class, Collectors.class})
 public interface LinkMapper {
 
-    @Mapping(target = "gps", expression = MappingExpression.TO_LINK_DTO_GPS)
+    @Mapping(target = "gps", expression = MappingExpressions.TO_LINK_DTO_GPS)
     LinkDto toLinkDto(Link link);
 
     @Mapping(target = "region", ignore = true)
-    @Mapping(target = "gps", expression = MappingExpression.TO_INTERSECTION_DTO_GPS)
+    @Mapping(target = "gps", expression = MappingExpressions.TO_INTERSECTION_DTO_GPS)
     @Mapping(target = "cameras", ignore = true)
     IntersectionDto toIntersectionDto(Intersection intersection);
 

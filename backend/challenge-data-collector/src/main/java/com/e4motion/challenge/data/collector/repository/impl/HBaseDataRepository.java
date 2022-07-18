@@ -29,7 +29,7 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
     }
 
     @Override
-    public void insert(CameraDataDto cameraDataDto) {
+    public Boolean insert(CameraDataDto cameraDataDto) {
 
         List<Put> puts = new ArrayList<>();
         for (TrafficDataDto td : cameraDataDto.getTd()) {
@@ -62,9 +62,9 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
             puts.add(put);
         }
 
-        hbaseTemplate.execute(HBaseHelper.TABLE_NAME, table -> {
+        return hbaseTemplate.execute(HBaseHelper.TABLE_NAME, table -> {
             table.put(puts);
-            return null;
+            return true;
         });
     }
 

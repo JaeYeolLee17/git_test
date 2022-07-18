@@ -2,7 +2,6 @@ package com.e4motion.challenge.api.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class LinkDto {
 
-    @Min(1)
     private Long linkId;
 
     @NotNull

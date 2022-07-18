@@ -4,6 +4,7 @@ import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
+import com.e4motion.challenge.data.collector.service.DataStatsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 public class DataController {
 
     private final DataService dataService;
+    private final DataStatsService dataStatsService;
     private final CameraService cameraService;
 
     @Operation(summary = "데이터", description = "접근 권한 : 카메라(자기 자신만)")
@@ -29,9 +31,10 @@ public class DataController {
     @PostMapping("/data")
     public Response insert(@Valid @RequestBody CameraDataDto cameraDataDto) {
 
-        // TODO: 자기 자신만 처리. login 한 camera 와 데이터의 camera 가 동일한지 체크.
+        // TODO: 자기 자신만 처리.
 
         dataService.insert(cameraDataDto);
+        dataStatsService.insert(cameraDataDto);
 
         return new Response("settingsUpdated", cameraService.getSettingsUpdated(cameraDataDto.getC()));
     }

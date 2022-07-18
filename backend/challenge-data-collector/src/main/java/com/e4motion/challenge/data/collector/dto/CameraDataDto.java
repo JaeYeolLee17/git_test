@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.collector.dto;
 
-import com.e4motion.challenge.common.utils.RegExp;
+import com.e4motion.challenge.common.utils.RegExpressions;
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
 import lombok.*;
 
@@ -27,7 +27,7 @@ public class CameraDataDto {
     private String r;
 
     @NotNull
-    @Pattern(regexp = RegExp.dateTime)
+    @Pattern(regexp = RegExpressions.dateTime)
     private String t;
 
     @NotNull

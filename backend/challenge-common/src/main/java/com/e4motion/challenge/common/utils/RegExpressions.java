@@ -1,6 +1,6 @@
 package com.e4motion.challenge.common.utils;
 
-public class RegExp {
+public class RegExpressions {
 
     public static final String dateTime = "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})";
 

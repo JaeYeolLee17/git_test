@@ -1,7 +1,7 @@
 package com.e4motion.challenge.api.dto;
 
 import com.e4motion.challenge.common.domain.AuthorityName;
-import com.e4motion.challenge.common.utils.RegExp;
+import com.e4motion.challenge.common.utils.RegExpressions;
 import lombok.*;
 
 import javax.validation.constraints.Email;
@@ -21,7 +21,7 @@ public class UserDto {
     private String username;
 
     @NotNull
-    @Pattern(regexp = RegExp.strongPassword)
+    @Pattern(regexp = RegExpressions.strongPassword)
     private String password;
 
     private String nickname;
@@ -29,7 +29,7 @@ public class UserDto {
     @Email
     private String email;
 
-    @Pattern(regexp = RegExp.emptyOrPhone)
+    @Pattern(regexp = RegExpressions.emptyOrPhone)
     private String phone;
 
     private Boolean enabled;

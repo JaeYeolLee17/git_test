@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.dto;
 
-import com.e4motion.challenge.common.utils.RegExp;
+import com.e4motion.challenge.common.utils.RegExpressions;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -20,7 +20,7 @@ public class CameraDto {
     private String cameraNo;
 
     @NotNull
-    @Pattern(regexp = RegExp.strongPassword)
+    @Pattern(regexp = RegExpressions.strongPassword)
     private String password;
 
     private IntersectionDto intersection;

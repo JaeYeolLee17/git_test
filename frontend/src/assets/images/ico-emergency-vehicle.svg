@@ -1,0 +1,45 @@
+<svg id="ico_map_popup_emergency_vehicle" xmlns="http://www.w3.org/2000/svg" width="24" height="19" viewBox="0 0 24 19">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="사각형_2609" data-name="사각형 2609" style="fill:none" d="M0 0h24v19H0z"/>
+        </clipPath>
+        <clipPath id="clip-path-2">
+            <path id="사각형_2606" data-name="사각형 2606" class="cls-2" d="M0 0h23.473v3.28H0z"/>
+        </clipPath>
+        <clipPath id="clip-path-3">
+            <path id="사각형_2607" data-name="사각형 2607" class="cls-3" d="M0 0h23.473v10.067H0z"/>
+        </clipPath>
+        <style>
+            .cls-11{fill:none}.cls-2{fill:#e6e6e6}.cls-3{fill:#fff}.cls-6{isolation:isolate}.cls-9{fill:#262626}.cls-10{fill:#6c6f6f}.cls-11{stroke:#474747;stroke-miterlimit:10;stroke-width:.198px}.cls-13{fill:#ff001e}
+        </style>
+    </defs>
+    <g id="그룹_2289" data-name="그룹 2289" style="clip-path:url(#clip-path)">
+        <path id="패스_1481" data-name="패스 1481" d="M12.5 2.821H9.825v-1.31a1.335 1.335 0 0 1 2.67 0z" transform="translate(3.125 .059)" style="fill:#fc0"/>
+        <g id="그룹_2285" data-name="그룹 2285" class="cls-6" transform="translate(.264 12.779)">
+            <g id="그룹_2284" data-name="그룹 2284">
+                <g id="그룹_2283" data-name="그룹 2283" style="clip-path:url(#clip-path-2)">
+                    <path id="패스_1482" data-name="패스 1482" class="cls-2" d="M23.418 13.158H.456a.254.254 0 0 1-.256-.251V9.878h23.474v3.029a.254.254 0 0 1-.256.251" transform="translate(-.2 -9.878)"/>
+                </g>
+            </g>
+        </g>
+        <g id="그룹_2288" data-name="그룹 2288" class="cls-6" transform="translate(.264 2.712)">
+            <g id="그룹_2287" data-name="그룹 2287">
+                <g id="그룹_2286" data-name="그룹 2286" style="clip-path:url(#clip-path-3)">
+                    <path id="패스_1483" data-name="패스 1483" class="cls-3" d="M22.253 7.175h-1.844l-2.293-4.634a.807.807 0 0 0-.724-.444H1a.8.8 0 0 0-.8.789v9.276h23.473V8.568a1.406 1.406 0 0 0-1.42-1.393" transform="translate(-.2 -2.097)"/>
+                </g>
+            </g>
+        </g>
+        <path id="패스_1484" data-name="패스 1484" class="cls-9" d="M4.036 15.728a2.735 2.735 0 1 1 0-5.469 2.735 2.735 0 1 1 0 5.469" transform="translate(.398 3.013)"/>
+        <path id="패스_1485" data-name="패스 1485" class="cls-10" d="M3.714 11.273a1.423 1.423 0 1 0 1.45 1.427 1.438 1.438 0 0 0-1.45-1.423" transform="translate(.72 3.311)"/>
+        <ellipse id="타원_56" data-name="타원 56" class="cls-11" cx="1.45" cy="1.423" rx="1.45" ry="1.423" transform="translate(2.985 14.584)"/>
+        <path id="패스_1486" data-name="패스 1486" class="cls-9" d="M14.435 15.728a2.735 2.735 0 1 1 2.786-2.735 2.764 2.764 0 0 1-2.786 2.735" transform="translate(3.706 3.013)"/>
+        <path id="패스_1487" data-name="패스 1487" class="cls-10" d="M14.113 11.273a1.423 1.423 0 1 0 1.45 1.423 1.438 1.438 0 0 0-1.45-1.423" transform="translate(4.028 3.311)"/>
+        <ellipse id="타원_57" data-name="타원 57" class="cls-11" cx="1.45" cy="1.423" rx="1.45" ry="1.423" transform="translate(16.691 14.584)"/>
+        <path id="패스_1488" data-name="패스 1488" d="M9.12 3.1v3.781h6.986L14.233 3.1z" transform="translate(2.901 .91)" style="fill:#8ed6f3"/>
+        <path id="패스_1517" data-name="패스 1517" class="cls-13" d="M0 0h23.473v1.415H0z" transform="translate(.264 11.364)"/>
+        <path id="패스_1489" data-name="패스 1489" class="cls-13" d="M4.4 8.307V6.584H2.669V5.128H4.4V3.4h1.449v1.728h1.728v1.456H5.849v1.723z" transform="translate(.849 .998)"/>
+        <path id="패스_1490" data-name="패스 1490" class="cls-3" d="M10.911.855a.287.287 0 1 1-.288-.282.286.286 0 0 1 .288.282" transform="translate(3.374 .168)"/>
+        <path id="패스_1491" data-name="패스 1491" class="cls-3" d="M10.441 1a.122.122 0 1 1-.121-.115.12.12 0 0 1 .121.115" transform="translate(3.244 .448)"/>
+        <path id="패스_1492" data-name="패스 1492" d="M14.286.259a1.323 1.323 0 0 1 1.335 1.311v1.143h1.835a.805.805 0 0 1 .724.444l2.295 4.634h1.844a1.407 1.407 0 0 1 1.42 1.393v6.624a.254.254 0 0 1-.256.251h-2.56a2.783 2.783 0 0 1-5.562 0H7.215a2.782 2.782 0 0 1-5.561 0H.519a.254.254 0 0 1-.256-.251V3.5a.8.8 0 0 1 .805-.789H12.95V1.569a1.323 1.323 0 0 1 1.336-1.31m0-.259a1.586 1.586 0 0 0-1.6 1.569v.885H1.069A1.06 1.06 0 0 0 0 3.5v12.308a.515.515 0 0 0 .519.51h.887a3.05 3.05 0 0 0 6.055 0h7.652a3.05 3.05 0 0 0 6.055 0h2.313a.515.515 0 0 0 .519-.51V9.184a1.67 1.67 0 0 0-1.683-1.652h-1.678l-2.222-4.488a1.076 1.076 0 0 0-.961-.59h-1.572v-.885A1.586 1.586 0 0 0 14.286 0" style="fill:#900c18;opacity:.3"/>
+    </g>
+</svg>

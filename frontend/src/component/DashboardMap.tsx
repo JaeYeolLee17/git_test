@@ -437,13 +437,15 @@ function DashboardMap({
     };
 
     const onChangedZoomLevel = (level: number) => {
-        console.log("level", level);
         setMapZoomLevel(level);
     };
 
     const handleRTSPStreamerHeight = (height: number) => {
-        console.log(height);
         setTrafficInformationBottom(height);
+    };
+
+    const onChangedSelectedCameraId = (cameraId: string) => {
+        setSelectedCameraId(cameraId);
     };
 
     return (
@@ -528,7 +530,10 @@ function DashboardMap({
             {intersections?.selectedIntersectionName !== undefined ? (
                 <RTSPStreamer
                     intersectionName={intersections?.selectedIntersectionName}
+                    streamIntersectionCameras={streamIntersectionCameras}
+                    selectedCameraId={selectedCameraId}
                     onChangedHeight={handleRTSPStreamerHeight}
+                    onChangedSelectedCameraId={onChangedSelectedCameraId}
                 />
             ) : null}
 
@@ -572,9 +577,9 @@ function DashboardMap({
                 zoomLevel={mapZoomLevel}
                 onChangedZoomLevel={onChangedZoomLevel}
             />
-            <StreamIntersection
+            {/* <StreamIntersection
                 streamIntersectionCameras={streamIntersectionCameras}
-            />
+            /> */}
         </div>
     );
 }

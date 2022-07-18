@@ -3,13 +3,14 @@ package com.e4motion.challenge.data.collector.controller;
 import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
+import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.utils.JsonHelper;
 import com.e4motion.challenge.data.collector.HBaseMockTest;
 import com.e4motion.challenge.data.collector.TestDataHelper;
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
-import com.e4motion.challenge.common.response.Response;
-import com.e4motion.challenge.common.utils.JsonHelper;
+import com.e4motion.challenge.data.collector.service.DataStatsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -37,6 +37,9 @@ class DataControllerTest extends HBaseMockTest {
     DataService dataService;
 
     @MockBean
+    DataStatsService dataStatsService;
+
+    @MockBean
     CameraService cameraService;
 
     @Test
@@ -47,44 +50,13 @@ class DataControllerTest extends HBaseMockTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    public void insertWithAdminRole() throws Exception {
-
-        assertInsert(TestDataHelper.getDataDto(), false,
-                HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
-    }
-
-    @Test
-    @WithMockUser(roles = "MANAGER")
-    public void insertWithManagerRole() throws Exception {
-
-        assertInsert(TestDataHelper.getDataDto(), false,
-                HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
-    }
-
-    @Test
-    @WithMockUser(roles = "USER")
-    public void insertWithUserRole() throws Exception {
-
-        assertInsert(TestDataHelper.getDataDto(), false,
-                HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
-    }
-
-    @Test
-    @WithMockUser(roles = "DATA")
-    public void insertWithDataRole() throws Exception {
-
-        assertInsert(TestDataHelper.getDataDto(), false,
-                HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
-    }
-
-    @Test
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRole() throws Exception {
 
         CameraDataDto dataDto = TestDataHelper.getDataDto();
 
-        doNothing().when(dataService).insert(dataDto);
+        doReturn(true).when(dataService).insert(dataDto);
+        doReturn(1L).when(dataStatsService).insert(dataDto);
         doReturn(true).when(cameraService).getSettingsUpdated(dataDto.getC());
 
         assertInsert(dataDto, true, HttpStatus.OK, Response.OK, null, null);
@@ -100,12 +72,21 @@ class DataControllerTest extends HBaseMockTest {
         // TODO: insert 시 로그인 카메라가 자기 자신인지 체크한다면 camera not found 뜨기 전에 권한 없음이 뜰 것이다. 처리!!!
         CameraDataDto dataDto = TestDataHelper.getDataDto();
 
-        doNothing().when(dataService).insert(dataDto);
+        doReturn(true).when(dataService).insert(dataDto);
+        doReturn(1L).when(dataStatsService).insert(dataDto);
 
         // Nonexistent camera id
         doThrow(new CameraNotFoundException(CameraNotFoundException.INVALID_CAMERA_NO)).when(cameraService).getSettingsUpdated(dataDto.getC());
 
         assertInsert(dataDto, false, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE,CameraNotFoundException.INVALID_CAMERA_NO);
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN", "MANAGER", "USER", "DATA"})
+    public void insertWithInaccessibleRole() throws Exception {
+
+        assertInsert(TestDataHelper.getDataDto(), false,
+                HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     private void assertInsert(CameraDataDto dataDto, boolean expectedSettingsUpdated,

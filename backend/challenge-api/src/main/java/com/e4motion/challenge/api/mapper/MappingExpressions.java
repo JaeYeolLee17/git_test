@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.mapper;
 
-public class MappingExpression {
+public class MappingExpressions {
 
     public final static String TO_USER_DTO_AUTHORITY = "java(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName())";
     public final static String TO_USER_AUTHORITIES = "java(Collections.singleton(new Authority(userDto.getAuthority())))";

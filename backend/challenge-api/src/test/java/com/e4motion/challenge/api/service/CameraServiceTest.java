@@ -6,13 +6,13 @@ import com.e4motion.challenge.api.repository.CameraRepository;
 import com.e4motion.challenge.common.exception.customexception.CameraDuplicateException;
 import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.common.exception.customexception.IntersectionNotFoundException;
+import com.e4motion.challenge.common.utils.DateTimeHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -148,7 +148,7 @@ public class CameraServiceTest {
 				.largeWidth(1920)
 				.largeHeight(1280)
 				.degree(90)
-				.lastDataTime(LocalDateTime.parse("2022-07-01T00:00:00"))
+				.lastDataTime(DateTimeHelper.parseLocalDateTime("2022-07-01 00:00:00"))
 				.road(CameraRoadDto.builder()
 						.startLine("aaa")
 						.lane(new String[] {})
@@ -176,7 +176,7 @@ public class CameraServiceTest {
 				.largeWidth(1920)
 				.largeHeight(1280)
 				.degree(90)
-				.lastDataTime(LocalDateTime.parse("2022-07-01T00:00:00"))
+				.lastDataTime(DateTimeHelper.parseLocalDateTime("2022-07-01 00:00:00"))
 				.build();
 		cameraService.update(updateCameraDto1.getCameraNo(), updateCameraDto2);
 		found = cameraService.get(updateCameraDto1.getCameraNo());

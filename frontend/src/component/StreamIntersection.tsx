@@ -5,20 +5,34 @@ import axios from "axios";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import StreamCamera from "./StreamCamera";
+import { Box } from "@mui/material";
+
+import { useInterval } from "../utils/customHooks";
+
+import styles from "./StreamIntersection.module.css";
+import imgCameraNoShow from "../assets/images/cameraNoShow.svg";
 
 type StreamIntersectionType = {
     streamIntersectionCameras: any[];
+    selectedCameraId: string | null;
+    onChangedSelectedCameraId: (cameraId: string) => void;
 };
 
 function StreamIntersection({
     streamIntersectionCameras,
+    selectedCameraId,
+    onChangedSelectedCameraId,
 }: StreamIntersectionType) {
     const [listStreamResponse, setListStreamResponse] = useState<Array<any>>(
         []
     );
 
+    const [showNoCamera, setShowNoCamera] = useState<boolean>(false);
+
     useEffect(() => {
         requestStreamStop(listStreamResponse);
+
+        setShowNoCamera(false);
 
         //console.log("streamIntersectionCameras", streamIntersectionCameras);
 
@@ -75,12 +89,12 @@ function StreamIntersection({
                 }
             }
 
-            // For Test [[
-            camera.url =
-                "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4";
-            camera.width = 240;
-            camera.height = 160;
-            // ]]
+            // // For Test [[
+            // camera.url =
+            //     "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4";
+            // camera.width = 240;
+            // camera.height = 160;
+            // // ]]
 
             return camera;
         });
@@ -130,13 +144,79 @@ function StreamIntersection({
         }
     };
 
+    useInterval(() => {
+        setShowNoCamera(true);
+    }, 10000);
+
+    const showCameraStream = (cameraId: string) => {
+        if (
+            listStreamResponse === undefined ||
+            listStreamResponse.filter === undefined
+        )
+            return <Box className={styles.rtspVideo} />;
+
+        const streams = listStreamResponse.filter((stream) => {
+            return stream.cameraId === cameraId;
+        });
+
+        return streams[0] !== undefined ? (
+            <StreamCamera className={styles.rtspVideo} stream={streams[0]} />
+        ) : (
+            <Box className={styles.rtspVideo} />
+        );
+    };
+
+    const onCameraClicked = (cameraId: string) => {
+        onChangedSelectedCameraId(cameraId);
+    };
+
     return (
-        <div>
-            {listStreamResponse &&
-                listStreamResponse.map((stream) => (
-                    <StreamCamera key={stream.cameraId} stream={stream} />
-                ))}
-        </div>
+        <Box className={styles.cameraCardsWrapper}>
+            {streamIntersectionCameras &&
+                streamIntersectionCameras.map((camera) => {
+                    return (
+                        <Box
+                            key={camera.cameraId}
+                            className={
+                                selectedCameraId === camera.cameraId
+                                    ? [
+                                          styles.cameraCard,
+                                          styles.cameraCardSelected,
+                                      ].join(" ")
+                                    : styles.cameraCard
+                            }
+                            onClick={() => {
+                                onCameraClicked(camera.cameraId);
+                            }}
+                        >
+                            <Box className={styles.loadingSpinner} />
+                            {showNoCamera ? (
+                                <Box className={styles.cameraCardNoshow}>
+                                    <Box className={styles.noshowContent}>
+                                        <img src={imgCameraNoShow} />
+                                        <Box className={styles.noshowText}>
+                                            카메라 준비중
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            ) : null}
+                            {showCameraStream(camera.cameraId)}
+                            <Box
+                                className={
+                                    selectedCameraId === camera.cameraId
+                                        ? [
+                                              styles.cameraCardText,
+                                              styles.cameraCardTextSelected,
+                                          ].join(" ")
+                                        : styles.cameraCardText
+                                }
+                            >
+                                {camera.direction.intersectionName} 방면
+                            </Box>
+                        </Box>
+                    );
+                })}
+        </Box>
     );
 }
 

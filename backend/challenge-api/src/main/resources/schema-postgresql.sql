@@ -1,21 +1,23 @@
 DROP TABLE IF EXISTS public.nt_user_authority CASCADE;
 DROP TABLE IF EXISTS public.nt_authority CASCADE;
 DROP TABLE IF EXISTS public.nt_user CASCADE;
-DROP TABLE IF EXISTS public.nt_region_gps CASCADE;
-DROP TABLE IF EXISTS public.nt_region CASCADE;
-DROP TABLE IF EXISTS public.nt_intersection CASCADE;
 DROP TABLE IF EXISTS public.nt_camera_road CASCADE;
 DROP TABLE IF EXISTS public.nt_camera CASCADE;
 DROP TABLE IF EXISTS public.nt_link_gps CASCADE;
 DROP TABLE IF EXISTS public.nt_link CASCADE;
+DROP TABLE IF EXISTS public.nt_intersection CASCADE;
+DROP TABLE IF EXISTS public.nt_region_gps CASCADE;
+DROP TABLE IF EXISTS public.nt_region CASCADE;
+DROP TABLE IF EXISTS public.lt_data_stats CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_user_user_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS public.nt_region_region_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS public.nt_region_gps_region_gps_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS public.nt_intersection_intersection_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_camera_camera_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_camera_road_camera_road_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_link_link_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_link_gps_link_gps_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_intersection_intersection_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_region_region_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_region_gps_region_gps_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.lt_data_stats_id_seq;
 
 CREATE TABLE public.nt_authority
 (
@@ -245,4 +247,56 @@ CREATE TABLE public.nt_link_gps
         REFERENCES public.nt_link (link_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
+);
+
+CREATE SEQUENCE public.lt_data_stats_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.lt_data_stats
+(
+    id bigint NOT NULL DEFAULT nextval('lt_data_stats_id_seq'::regclass),
+    t timestamp without time zone NOT NULL,
+    c character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    i character varying(10) COLLATE pg_catalog."default",
+    r character varying(10) COLLATE pg_catalog."default",
+    p integer,
+    sr0 integer,
+    sr1 integer,
+    sr2 integer,
+    sr3 integer,
+    sr4 integer,
+    qmsr_len integer,
+    qmsr0 integer,
+    qmsr1 integer,
+    qmsr2 integer,
+    qmsr3 integer,
+    qmsr4 integer,
+    qtsr0 integer,
+    qtsr1 integer,
+    qtsr2 integer,
+    qtsr3 integer,
+    qtsr4 integer,
+    lu0 integer,
+    lu1 integer,
+    lu2 integer,
+    lu3 integer,
+    lu4 integer,
+    qmlu_len integer,
+    qmlu0 integer,
+    qmlu1 integer,
+    qmlu2 integer,
+    qmlu3 integer,
+    qmlu4 integer,
+    qtlu0 integer,
+    qtlu1 integer,
+    qtlu2 integer,
+    qtlu3 integer,
+    qtlu4 integer,
+    qt_t integer,
+    CONSTRAINT lt_data_stats_pkey PRIMARY KEY (id),
+    CONSTRAINT ukns9kd2c11ogafqkpklblcvh39 UNIQUE (t, c)
 );

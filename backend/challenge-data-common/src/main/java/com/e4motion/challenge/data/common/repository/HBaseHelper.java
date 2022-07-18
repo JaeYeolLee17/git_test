@@ -19,7 +19,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class HBaseHelper {
 
-    public static final String TABLE_NAME = "traffic_data_2";
+    public static final String TABLE_NAME = "traffic_data";
 
     public static final String ROWKEY_DELIMITER = " ";
 

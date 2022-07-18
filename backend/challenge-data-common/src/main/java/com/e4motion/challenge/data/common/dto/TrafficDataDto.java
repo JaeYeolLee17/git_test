@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.common.dto;
 
-import com.e4motion.challenge.common.utils.RegExp;
+import com.e4motion.challenge.common.utils.RegExpressions;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -23,11 +23,11 @@ public class TrafficDataDto {
     public final static int MAX_LANE = 12;
 
     @NotNull
-    @Pattern(regexp = RegExp.dateTime)
+    @Pattern(regexp = RegExpressions.dateTime)
     private String st;
 
     @NotNull
-    @Pattern(regexp = RegExp.dateTime)
+    @Pattern(regexp = RegExpressions.dateTime)
     private String et;
 
     private Integer p;

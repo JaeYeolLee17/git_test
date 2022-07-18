@@ -27,6 +27,7 @@ import btnZoomPlus from "../assets/images/ico_plus_b.svg";
 import btnZoomMinus from "../assets/images/ico_minus_b.svg";
 import TrafficInformation from "./TrafficInformation";
 import RTSPStreamer from "./RTSPStreamer";
+import AvlInfo from "./AvlInfo";
 
 function DashboardMap({
     transitionState,
@@ -347,10 +348,17 @@ function DashboardMap({
     }, []);
 
     useEffect(() => {
+        setSelectedAvl("");
+    }, [showAvlDatas]);
+
+    useEffect(() => {
         setLocalStorageData();
     }, [showRegion, showCameras, showLinks, showTrafficLights, showAvlDatas]);
 
     useEffect(() => {
+        if (intersections?.selectedIntersectionName === undefined) {
+            setSelectedCameraId(null);
+        }
         setSelectedIntersectionId(intersections?.selectedIntersectionId);
 
         if (intersections?.selectedIntersectionName === undefined) {
@@ -446,6 +454,11 @@ function DashboardMap({
 
     const onChangedSelectedCameraId = (cameraId: string) => {
         setSelectedCameraId(cameraId);
+    };
+
+    const onChangedSelectedEmergencyCarNumber = (carNumber: string) => {
+        if (carNumber === selectedAvl) setSelectedAvl("");
+        else setSelectedAvl(carNumber);
     };
 
     return (
@@ -577,6 +590,15 @@ function DashboardMap({
                 zoomLevel={mapZoomLevel}
                 onChangedZoomLevel={onChangedZoomLevel}
             />
+            {showAvlDatas && (
+                <AvlInfo
+                    list={listAvlDatas}
+                    selected={selectedAvl}
+                    onChangedSelectedEmergencyCarNumber={
+                        onChangedSelectedEmergencyCarNumber
+                    }
+                />
+            )}
             {/* <StreamIntersection
                 streamIntersectionCameras={streamIntersectionCameras}
             /> */}

@@ -1,0 +1,190 @@
+.emergencyPop {
+    position: absolute;
+    top: calc(28px + 44px);
+    left: 16px;
+
+    height: 96px;
+    width: 100px;
+
+    background: #f90044;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+.emergencyPop .popContent {
+    color: white;
+    height: calc(100% - 8px);
+    margin: 4px 0;
+
+    cursor: pointer;
+}
+.popContent > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.popContent .popHeader {
+    font-size: 15px;
+    font-weight: 500;
+
+    height: 36px;
+
+    padding-bottom: 4px;
+    border-bottom: 1px solid #bf1f1a;
+}
+.popContent img {
+    height: 20px;
+    margin-right: 4px;
+}
+.popContent .popBody {
+    font-size: 30px;
+    height: calc(100% - 36px);
+}
+
+.emergencyBoard::-webkit-scrollbar {
+    display: none;
+}
+
+.emergencyBoard {
+    position: absolute;
+    left: 16px;
+    top: calc(118px + 60px);
+
+    padding: 12px 8px 8px 8px;
+
+    max-height: 450px;
+    width: 340px;
+
+    z-index: 5;
+
+    overflow-y: auto;
+
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.emergencyBoard .boardTitle {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.emergencyVehicle {
+    min-height: 110px;
+
+    background: #f7f7f7;
+    border: 1px solid #e6e6e6;
+    border-radius: 2px;
+
+    cursor: pointer;
+}
+
+.emergencyVehicleSelected {
+    border-color: #0766b6;
+    border-radius: 2px;
+}
+
+.emergencyVehicle .infoHeader {
+    height: 38px;
+
+    padding: 0 7px 0 13px;
+
+    color: #333;
+    font-size: 16px;
+    border-radius: 2px 2px 0 0;
+    background: white;
+
+    display: flex;
+    align-items: center;
+}
+
+.emergencyVehicle .infoHeaderSelected {
+    background: #0766b6;
+    color: white;
+}
+
+.emergencyVehicle .infoHeader img {
+    height: 20px;
+    margin-right: 10px;
+}
+
+.emergencyVehicle .infoHeader strong {
+    margin-right: auto;
+}
+
+.emergencyVehicle .status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 54px;
+    height: 24px;
+
+    color: white;
+    font-size: 12px;
+    font-weight: normal;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.emergencyVehicle .dispatch {
+    background: #ff0046; /* border: 1px solid #cc0000 */
+}
+.emergencyVehicle .siteArrive {
+    background: #ffaa00; /* border: 1px solid #c77a02 */
+}
+.emergencyVehicle .siteDepart {
+    background: #00b6f2; /* border: 1px solid #32588a */
+}
+.emergencyVehicle .hospitalDepart {
+    background: #00b6f2; /* border: 1px solid #32588a */
+}
+.emergencyVehicle .hospitalArrive {
+    background: #7fd400; /* border: 1px solid #578a31 */
+}
+
+.emergencyVehicle .route {
+    position: relative;
+    padding: 13px 16px;
+    height: calc(110px - 38px);
+}
+
+.emergencyVehicle .route .routeLine {
+    position: absolute;
+    top: calc(50% - 1px);
+    left: 22px;
+}
+.emergencyVehicle .route > * {
+    display: flex;
+    align-items: center;
+}
+.emergencyVehicle .route .routeImg {
+    justify-self: center;
+    margin-right: 8px;
+}
+
+.emergencyVehicle .route .sirenImg {
+    position: absolute;
+    width: 50px;
+    right: 10px;
+    bottom: 10px;
+}
+
+.emergencyVehicle .route .depart img {
+    height: 18px;
+}
+.emergencyVehicle .route .arrive {
+    margin-top: 2px;
+}
+.emergencyVehicle .route .arrive img {
+    margin-left: 1px;
+    margin-top: 1px;
+    height: 12px;
+}
+.emergencyVehicle .route .locationText {
+    color: #333;
+    font-size: 15px;
+}

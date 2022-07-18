@@ -1,6 +1,7 @@
 package com.e4motion.challenge.data.collector.service;
 
 import com.e4motion.challenge.common.utils.DateTimeHelper;
+import com.e4motion.challenge.data.collector.HBaseMockTest;
 import com.e4motion.challenge.data.collector.domain.DataStats;
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.repository.DataStatsRepository;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-class DataStatsServiceTest {
+class DataStatsServiceTest extends HBaseMockTest {
 
     @Autowired
     DataStatsService dataStatsService;

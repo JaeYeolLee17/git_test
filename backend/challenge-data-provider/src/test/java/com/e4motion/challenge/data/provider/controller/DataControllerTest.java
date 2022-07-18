@@ -102,7 +102,7 @@ class DataControllerTest extends HBaseMockTest {
     private void assertQuery(HashMap<String, Object> map,
                              HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
-        doReturn(TestDataHelper.getDataListDto()).when(dataService).query(any());
+        doReturn(TestDataHelper.getDataListDto()).when(dataService).get(any());
 
         String uri = "/v2/data?";
 

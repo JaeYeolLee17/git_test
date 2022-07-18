@@ -1,0 +1,26 @@
+/* .cameraCard {
+    position: relative;
+    margin-right: 16px;
+    width: 300px;
+    height: 201px;
+    padding: 1px;
+    background: white;
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.cameraCard:last-child {
+    margin-right: 24px;
+}
+
+.cameraCard.selected {
+    outline: 4px solid #306fd9;
+}
+
+.rtspVideo {
+    z-index: 2;
+    position: relative;
+    width: calc(300px - 2px);
+    height: 82.5%;
+    background-color: transparent;
+    border-bottom: 1px solid #ccc;
+} */

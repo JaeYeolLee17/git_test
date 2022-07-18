@@ -1,0 +1,131 @@
+.cameraCardsWrapper {
+    display: flex;
+    justify-content: flex-start;
+
+    /* overflow-x: hidden; */
+    scrollbar-gutter: stable;
+    padding: 10px 0;
+    padding-left: 4px;
+    margin: 0 0 0 24px;
+}
+
+/* .cameraCardsWrapper:hover {
+    overflow-x: overlay;
+} */
+
+.cameraCard {
+    position: relative;
+    margin-right: 16px;
+    width: 300px;
+    height: 201px;
+    padding: 1px;
+    background: white;
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.cameraCard:last-child {
+    margin-right: 24px;
+}
+
+.cameraCardSelected {
+    outline: 4px solid #306fd9;
+}
+
+.rtspVideo {
+    z-index: 2;
+    position: relative;
+    width: calc(300px - 2px);
+    height: 82.5%;
+    background-color: transparent;
+    border-bottom: 1px solid #ccc;
+}
+
+.cameraCardNoshow {
+    z-index: 1;
+    position: absolute;
+
+    /* display: none;
+    opacity: 0; */
+
+    animation: fade-in 0.4s;
+    animation-fill-mode: forwards;
+    display: block;
+    opacity: 1;
+
+    width: calc(300px - 2px);
+    height: calc(82.5% - 2px);
+    background: #b3b3b3;
+}
+.noshowDisplay {
+    animation: fade-in 0.4s;
+    animation-fill-mode: forwards;
+    display: block;
+    opacity: 1;
+}
+
+.cameraCardNoshow .noshowContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.cameraCardNoshow img {
+    vertical-align: middle;
+}
+.cameraCardNoshow .noshowText {
+    font-size: 19px;
+    color: var(--line2);
+    margin: 10px auto 0 auto;
+}
+
+.cameraCardText {
+    color: #333333;
+    font-size: 15px;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+}
+.cameraCardTextSelected {
+    color: #306fd9;
+}
+
+.loadingSpinner {
+    z-index: 0;
+    position: absolute;
+    bottom: calc(50%);
+    left: calc(50% - 18px);
+
+    width: 36px;
+    height: 36px;
+
+    border: 4px solid #306fd9;
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+
+    animation: spin 1.5s linear infinite;
+}
+.loadingSpinnerLg {
+    z-index: 0;
+    position: absolute;
+    bottom: calc(50%);
+    left: calc(50% - 35px);
+
+    width: 70px;
+    height: 70px;
+
+    border: 8px solid #306fd9;
+    border-top: 8px solid transparent;
+    border-radius: 50%;
+
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

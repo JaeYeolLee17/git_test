@@ -37,70 +37,106 @@ class DataControllerTest extends HBaseMockTest {
     DataService dataService;
 
     @Test
-    public void queryWithoutRole() throws Exception {
+    public void getWithoutRole() throws Exception {
 
-        assertQuery(TestDataHelper.getQueryHashMap(),
-                HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+        assertGet(getGetHashMap(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
 
     @Test
     @WithMockUser(roles = {"ADMIN", "MANAGER", "USER", "CAMERA_ADMIN", "CAMERA"})
-    public void queryWithInaccessibleRole() throws Exception {
+    public void getWithInaccessibleRole() throws Exception {
 
-        assertQuery(TestDataHelper.getQueryHashMap(),
-                HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+        assertGet(getGetHashMap(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
     @WithMockUser(roles = "DATA")
-    public void queryWithDataRole() throws Exception {
+    public void getWithDataRole() throws Exception {
 
-        assertQuery(TestDataHelper.getQueryHashMap(), HttpStatus.OK, Response.OK, null, null);
+        assertGet(getGetHashMap(), HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
     @WithMockUser(roles = "DATA")
-    public void validateQueryParam() throws Exception {
+    public void validateGetParam() throws Exception {
 
         // startTime
-        HashMap<String, Object> map = TestDataHelper.getQueryHashMap();
+        HashMap<String, Object> map = getGetHashMap();
         map.remove("startTime");                // missing
-        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        map.put("startTime", "2022-4-1 12:00:00");  // mis-format
-        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        map.put("startTime", "2022-4-1 12:00:00");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("startTime", " 2022-04-01 12:00:00");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("startTime", "2022-04-01 12:00:00 ");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("startTime", "2021-10-14 01:44:10 C0001 ");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("startTime", "2021-10-14 01:44:10 C0001 I0001 R01");
+        assertGet(map, HttpStatus.OK, Response.OK, null, null);
+
+        map.replace("startTime", "2022-04-01 12:00:00");
+        assertGet(map, HttpStatus.OK, Response.OK, null, null);
 
         // endTime
-        map = TestDataHelper.getQueryHashMap();
+        map = getGetHashMap();
         map.remove("endTime");                  // missing
-        assertQuery(map, HttpStatus.OK, Response.OK, null, null);
+        assertGet(map, HttpStatus.OK, Response.OK, null, null);
 
-        map.put("endTime", "2022-04-01");           // mis-format
-        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        map.put("endTime", "2022-04-01");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("endTime", " 2022-04-01 12:00:00");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("endTime", "2022-04-01 12:00:00 ");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("endTime", "2021-10-14 01:44:10 C0001 I0001 R01");
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        map.replace("endTime", "2022-04-01 12:00:00");
+        assertGet(map, HttpStatus.OK, Response.OK, null, null);
 
         // limit
-        map = TestDataHelper.getQueryHashMap();
+        map = getGetHashMap();
         map.remove("limit");        // missing
-        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         map.put("limit", "a");          // invalid type
-        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         map.put("limit", 0);            // out of range
-        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         map.replace("limit", 100001);   // out of range
-        assertQuery(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // filterBy, filterId
-        map = TestDataHelper.getQueryHashMap();
+        map = getGetHashMap();
         map.remove("filterBy");     // missing
         map.remove("filterId");
-        assertQuery(map, HttpStatus.OK, Response.OK, null, null);
+        assertGet(map, HttpStatus.OK, Response.OK, null, null);
     }
 
-    private void assertQuery(HashMap<String, Object> map,
-                             HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+    public static HashMap<String, Object> getGetHashMap() {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("startTime", "2022-04-01 12:00:00");
+        map.put("endTime", "2022-04-01 12:01:00");
+        map.put("limit", 1);
+        map.put("filterBy", "camera");
+        map.put("filterId", "C0001");
+        return map;
+    }
+
+    private void assertGet(HashMap<String, Object> map,
+                           HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
         doReturn(TestDataHelper.getDataListDto()).when(dataService).get(any());
 

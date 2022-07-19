@@ -11,6 +11,8 @@ import DashboardDetail from "./pages/DashboardDetail";
 import StatTraffic from "./pages/StatTraffic";
 import Login from "./pages/Login";
 import DashboardLayout from "./layout/DashboardLayout";
+import ManagementCamera from "./pages/ManagementCamera";
+import CameraDetail from "./pages/CameraDetail";
 
 // declare global {
 //     interface Window {
@@ -60,6 +62,26 @@ function App() {
                         <PrivateAdminRoute>
                             <DashboardLayout>
                                 <DashboardDetail />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_CAMERA}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <ManagementCamera />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_CAMERA_DETAIL}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <CameraDetail />
                             </DashboardLayout>
                         </PrivateAdminRoute>
                     }

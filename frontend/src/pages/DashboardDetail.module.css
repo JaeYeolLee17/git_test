@@ -1,24 +1,58 @@
-.dashboardMap {
-    position: relative;
+.searchBar {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
 
-    width: 75%;
-    order: 0;
-    transition: width 0.4s;
-}
+    position: fixed;
+    z-index: 10;
 
-.dashboardMapExtend {
     width: 100%;
+    height: 80px;
+    padding: 0;
+    background-color: #4579bd;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
 }
 
-.dashboardChart {
-    width: 25%;
-    z-index: 1;
-    overflow: hidden;
-    transition: width 0.4s ease;
-    /* background: #fff;
-    box-shadow: -3px 0px 3px 0 rgba(0, 0, 0, 0.2); */
+.searchBarUl {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    height: inherit;
+    list-style: none;
+    margin: 0 0 0 30px;
+    padding: 0;
+}
+.searchBarUl li {
+    display: inline-block;
+    margin-right: 24px;
 }
 
-.dashboardChartHidden {
-    width: 0%;
+.searchBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 120px;
+    height: 44px;
+
+    padding: 0 28px;
+
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: #294870;
+    border: none;
+    border-radius: 2px;
+    border-color: transparent;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+
+    transition: 0.3s;
+}
+.searchBtn:hover,
+.searchBtn:active,
+.searchBtn:focus {
+    background-color: #182940;
+    border: none;
 }

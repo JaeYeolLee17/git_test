@@ -1,0 +1,65 @@
+.datePickerWrapper {
+    position: relative;
+
+    font-family: "NotoSansCJKKR";
+
+    width: 220px;
+    height: 44px;
+
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+}
+
+.datePickerLabel {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: 0px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.datePickerInput {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 0 0 15px;
+
+    border-radius: 2px;
+    border: none;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    font-family: "NotoSansCJKKR";
+    font-size: "16px";
+    color: #333;
+}
+
+input[type="date"] {
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+::-webkit-calendar-picker-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: center center no-repeat
+        url("../assets/images/calendar-picker-icon.svg") #294870;
+    background-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 0 1px 1px 0;
+
+    transition: 0.3s;
+}
+::-webkit-calendar-picker-indicator:hover {
+    background-color: #182940;
+}

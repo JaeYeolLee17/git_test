@@ -79,7 +79,7 @@ export const displayRegion = (region: KakaoMapRegionType) => {
 };
 
 export const displayIntersection = (
-    intersections: KakaoMapIntersectionsType
+    intersections: KakaoMapIntersectionsType | undefined
 ) => {
     if (intersections === undefined) return null;
 
@@ -629,14 +629,14 @@ function KakaoMap({
     onChangedZoomLevel,
 }: {
     style: KakaoMapStyleType;
-    transitionState?: string;
-    region: KakaoMapRegionType;
-    intersections: KakaoMapIntersectionsType;
-    cameras: KakaoMapCamerasType;
-    links: KakaoMapLinksType;
-    trafficLights: KakaoMapTrafficLightsType;
-    avl: KakaoMapAvlType;
-    zoomLevel?: number;
+    transitionState?: string | undefined;
+    region: KakaoMapRegionType | undefined;
+    intersections: KakaoMapIntersectionsType | undefined;
+    cameras: KakaoMapCamerasType | undefined;
+    links: KakaoMapLinksType | undefined;
+    trafficLights: KakaoMapTrafficLightsType | undefined;
+    avl: KakaoMapAvlType | undefined;
+    zoomLevel?: number | undefined;
     onChangedZoomLevel?: (level: number) => void;
 }) {
     const [kakaoMap, setKakaoMap] = useState<kakao.maps.Map>();

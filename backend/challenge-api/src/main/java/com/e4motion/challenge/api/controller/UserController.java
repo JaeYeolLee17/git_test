@@ -1,7 +1,7 @@
 package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.api.dto.UserUpdateDto;
-import com.e4motion.challenge.api.security.SecurityHelper;
+import com.e4motion.challenge.common.security.SecurityHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;

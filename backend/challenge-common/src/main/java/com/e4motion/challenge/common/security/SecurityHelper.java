@@ -1,6 +1,5 @@
-package com.e4motion.challenge.api.security;
+package com.e4motion.challenge.common.security;
 
-import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import lombok.RequiredArgsConstructor;
@@ -16,27 +15,40 @@ import java.util.stream.Collectors;
 @Component
 public class SecurityHelper {
 
+
     public void checkIfLoginUserForRoleUser(String username) {
 
-        UserDto loginUser = getLoginUser();
-        if (loginUser.getAuthority().equals(AuthorityName.ROLE_USER)
-                && !loginUser.getUsername().equals(username)) {
+        checkIfLoginUserForRole(username, AuthorityName.ROLE_USER);
+    }
+
+    public void checkIfLoginCameraForRoleCamera(String cameraNo) {
+
+        checkIfLoginUserForRole(cameraNo, AuthorityName.ROLE_CAMERA);
+    }
+
+    private void checkIfLoginUserForRole(String username, AuthorityName authority) {
+
+        UserDetails loginUser = getLoginUser();
+        AuthorityName loginAuthority = getAuthority(loginUser);
+
+        if (authority.equals(loginAuthority) &&
+                !loginUser.getUsername().equals(username)) {
             throw new InaccessibleException(InaccessibleException.ACCESS_DENIED);
         }
     }
 
-    public UserDto getLoginUser() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+    private AuthorityName getAuthority(UserDetails userDetails) {
 
         Set<AuthorityName> authorities = userDetails.getAuthorities().stream()
                 .map(authority -> AuthorityName.valueOf(authority.getAuthority()))
                 .collect(Collectors.toSet());
 
-        return UserDto.builder()
-                .username(userDetails.getUsername())
-                .authority(authorities.isEmpty() ? null : authorities.iterator().next())
-                .build();
+        return authorities.isEmpty() ? null : authorities.iterator().next();
+    }
+
+    private UserDetails getLoginUser() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserDetails)authentication.getPrincipal();
     }
 }

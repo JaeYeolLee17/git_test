@@ -4,6 +4,15 @@ spring:
     username: challenge
     password: challenge1123!
 
+hbase:
+  zookeeper:
+    quorum: devchallenge01.e4motion.com,devchallenge02.e4motion.com,devchallenge03.e4motion.com
+    property:
+      clientPort: 2181
+
+challenge-api:
+  url: http://devchallenge01.e4motion.com:8091/v2/camera/
+
 logging:
   level:
     root: INFO

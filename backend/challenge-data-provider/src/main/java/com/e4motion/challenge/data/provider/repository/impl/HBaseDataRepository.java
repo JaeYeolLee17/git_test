@@ -99,7 +99,7 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
     public void write(HashMap<String, Object> map, Writer writer) throws IOException {
 
         CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
-        csvPrinter.printRecord("V", "C", "I", "R", "T", "ST", "ET", "P", "U", "LN", "QML", "QM", "QAL", "QA", "S", "L", "R");
+        csvPrinter.printRecord("NO", "V", "C", "I", "R", "T", "ST", "ET", "P", "U", "LN", "QML", "QM", "QAL", "QA", "S", "L", "R");
 
         Scan scan = getScan(map);
         final int limit = scan.getLimit();
@@ -107,7 +107,7 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
         AtomicInteger i = new AtomicInteger();
         hbaseTemplate.find(HBaseHelper.TABLE_NAME, scan, (Result row, int rowNum) -> {
 
-            if (i.get() == (limit - 1)) {   // the last
+            if ((i.get() + 1) == limit) {   // the last
                 csvPrinter.printRecord(Bytes.toString(row.getRow()));
             } else {
                 for (byte[] cf_lane : HBaseHelper.CF_L) {
@@ -116,6 +116,7 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
                         int ln = Bytes.toInt(b);
                         if (ln == 1) {
                             csvPrinter.printRecord(
+                                    i.get() + 1,
                                     Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_V)),
                                     Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_C)),
                                     Bytes.toString(row.getValue(HBaseHelper.CF_D, HBaseHelper.Q_I)),
@@ -135,6 +136,7 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
                                     Arrays.toString(HBaseHelper.toInts(row.getValue(cf_lane, HBaseHelper.Q_R))));
                         } else {
                             csvPrinter.printRecord(
+                                    i.get() + 1,
                                     null,
                                     null,
                                     null,

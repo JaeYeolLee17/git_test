@@ -74,7 +74,7 @@ const menuData: menuType[] = [
         items: [
             {
                 title: "카메라 관리",
-                link: `${Common.PAGE_STAT_TRAFFIC}`,
+                link: `${Common.PAGE_MANAGEMENT_CAMERA}`,
                 icon: "Menu06",
             },
             {

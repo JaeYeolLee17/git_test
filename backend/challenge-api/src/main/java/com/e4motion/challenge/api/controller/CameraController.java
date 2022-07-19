@@ -51,8 +51,7 @@ public class CameraController {
 	@GetMapping("/camera/{cameraNo}")
     public Response get(@PathVariable String cameraNo) throws Exception {
 
-        // 카메라의 경우 : data-collector 에서 redirect 된 요청을 처리한다.
-        // 로그인 카메라와 동일한 자기 자신 정보만 응답 해주어야 하나, api 는 카메라 로그인을 지원하지 않으므로 data-collector 에서 자기 자신만 체크 후 요청 리다이렉트 하도록 한다.
+        // ROLE_CAMERA 의 경우 data-collector 에서 오는 요청을 처리한다.
 
 		return new Response("camera", cameraService.get(cameraNo));
     }

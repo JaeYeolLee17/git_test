@@ -1,0 +1,10 @@
+<svg id="ico_calendar" xmlns="http://www.w3.org/2000/svg" width="22" height="23.001" viewBox="0 0 22 23.001">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path id="합치기_17" data-name="합치기 17" class="cls-1" d="M1.833-3484A1.836,1.836,0,0,1,0-3485.832v-18.334A1.836,1.836,0,0,1,1.833-3506H4v1.833H1.833V-3500H20.166v-4.166H18V-3506h2.166A1.836,1.836,0,0,1,22-3504.166v18.334A1.836,1.836,0,0,1,20.166-3484Zm0-1.833H20.166V-3498H1.833ZM15-3489v-2h2v2Zm-5,0v-2h2v2Zm-5,0v-2H7v2Zm10-4v-2h2v2Zm-5,0v-2h2v2Zm-5,0v-2H7v2Zm10-10v-4h2v4Zm-10,0v-4H7v4Zm9-1.166H8V-3506h6v1.832h0Z" transform="translate(0 3507)"/>
+</svg>

@@ -1,6 +1,15 @@
 .wrapper {
     background: var(--menu);
     height: calc(100% - 80px);
+
+    overflow: hidden scroll;
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .menuListItem {

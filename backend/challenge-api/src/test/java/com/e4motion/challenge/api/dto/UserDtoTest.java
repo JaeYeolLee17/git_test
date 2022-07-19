@@ -1,10 +1,10 @@
 package com.e4motion.challenge.api.dto;
 
 import com.e4motion.challenge.api.TestDataHelper;
-import com.e4motion.challenge.api.security.SecurityHelper;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.security.SecurityHelper;
 import com.e4motion.challenge.common.utils.JsonHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

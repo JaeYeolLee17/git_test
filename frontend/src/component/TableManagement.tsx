@@ -16,8 +16,7 @@ type columns = {
 
 type clickEvent = (cameraId: string) => void;
 
-function TableManagement({rows, columns, clickEvent} : {rows: rows[], columns:columns[], clickEvent:clickEvent}) {
-
+function TableManagement({rows, columns, clickEvent} : {rows: any[], columns:columns[], clickEvent:clickEvent}) {
 
   return (
       <DataGrid
@@ -25,8 +24,6 @@ function TableManagement({rows, columns, clickEvent} : {rows: rows[], columns:co
         columns={columns}
         pageSize={10}
         onRowClick={(e) => clickEvent(e.row.id)}
-        isRowSelectable={(e) => e.row.id === 'C0004'}
-        
       />
   );
 }

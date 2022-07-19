@@ -31,7 +31,7 @@ function SelectorIntersection({
         if (userDetails?.token === null) return null;
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.INTERSECTIONS_LIST_URL,
+            Request.INTERSECTION_LIST_URL,
             {
                 params: {
                     ...(currentRegionInfo.regionId !== "all"
@@ -68,7 +68,7 @@ function SelectorIntersection({
     //     try {
     //         const response = await Utils.utilAxiosWithAuth(
     //             userDetails.token
-    //         ).get(Request.INTERSECTIONS_LIST_URL, {
+    //         ).get(Request.INTERSECTION_LIST_URL, {
     //             params: {
     //                 ...(currentRegionInfo.regionId !== "all"
     //                     ? { regionId: currentRegionInfo.regionId }

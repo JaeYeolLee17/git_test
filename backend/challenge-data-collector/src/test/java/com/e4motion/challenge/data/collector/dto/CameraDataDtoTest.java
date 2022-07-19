@@ -2,6 +2,7 @@ package com.e4motion.challenge.data.collector.dto;
 
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.security.SecurityHelper;
 import com.e4motion.challenge.common.utils.JsonHelper;
 import com.e4motion.challenge.data.collector.HBaseMockTest;
 import com.e4motion.challenge.data.collector.TestDataHelper;
@@ -41,6 +42,9 @@ class CameraDataDtoTest extends HBaseMockTest {
 
     @MockBean
     CameraService cameraService;
+
+    @MockBean
+    SecurityHelper securityHelper;
 
     @Test
     @WithMockUser(roles = "CAMERA")
@@ -279,6 +283,7 @@ class CameraDataDtoTest extends HBaseMockTest {
         doReturn(true).when(dataService).insert(dataDto);
         doReturn(1L).when(dataStatsService).insert(dataDto);
         doReturn(true).when(cameraService).getSettingsUpdated(dataDto.getC());
+        doNothing().when(securityHelper).checkIfLoginCameraForRoleCamera(dataDto.getC());
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -1,6 +1,7 @@
 package com.e4motion.challenge.data.collector.controller;
 
 import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.security.SecurityHelper;
 import com.e4motion.challenge.data.collector.dto.CameraDataDto;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import com.e4motion.challenge.data.collector.service.DataService;
@@ -25,13 +26,14 @@ public class DataController {
     private final DataService dataService;
     private final DataStatsService dataStatsService;
     private final CameraService cameraService;
+    private final SecurityHelper securityHelper;
 
     @Operation(summary = "데이터", description = "접근 권한 : 카메라(자기 자신만)")
     @PreAuthorize("hasRole('ROLE_CAMERA')")
     @PostMapping("/data")
     public Response insert(@Valid @RequestBody CameraDataDto cameraDataDto) {
 
-        // TODO: 자기 자신만 처리.
+        securityHelper.checkIfLoginCameraForRoleCamera(cameraDataDto.getC());
 
         dataService.insert(cameraDataDto);
         dataStatsService.insert(cameraDataDto);

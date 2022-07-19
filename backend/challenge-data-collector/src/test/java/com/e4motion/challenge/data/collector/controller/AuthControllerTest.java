@@ -123,7 +123,9 @@ public class AuthControllerTest extends HBaseMockTest {
 	}
 	
 	private UserDetails getUserDetails(String cameraNo, String password, boolean settingsUpdated) {
+
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(AuthorityName.ROLE_CAMERA.toString()));
+
 		return new CustomUser(cameraNo,
 				passwordEncoder.encode(password),
 				settingsUpdated,

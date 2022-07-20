@@ -6,21 +6,9 @@ import com.e4motion.challenge.data.provider.dto.DataDto;
 import com.e4motion.challenge.data.provider.dto.DataListDto;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TestDataHelper {
-
-    public static HashMap<String, Object> getQueryHashMap() {
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("startTime", "2022-04-01 12:00:00");
-        map.put("endTime", "2022-04-01 12:01:00");
-        map.put("limit", 1);
-        map.put("filterBy", "camera");
-        map.put("filterId", "C0001");
-        return map;
-    }
 
     public static DataListDto getDataListDto() {
 

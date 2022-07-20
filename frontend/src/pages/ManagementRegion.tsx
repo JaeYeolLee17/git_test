@@ -5,7 +5,7 @@ import { useAsyncAxios } from "../utils/customHooks";
 import * as Utils from "../utils/utils"
 import * as Request from "../commons/request"
 import KakaoMap from "../component/KakaoMap";
-import styles from "../pages/ManagementCamera.module.css"
+import styles from "../pages/ManagementRegion.module.css"
 import * as Common from "../commons/common";
 
 import Grid from '@mui/material/Grid';
@@ -13,9 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 type rows = {
     id: string,
-    region: string,
-    intersection: string,
-    cameraDirection: string
+    name: string
 }
 
 type columns ={
@@ -25,36 +23,23 @@ type columns ={
     renderCell: any
   }
 
-function ManagementCamera() {
+function ManagementRegion() {
     const userDetails = useAuthState();
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
-    const [listCamera, setListCamera] = useState<Array<any>>([]);
-    const [selectedCameraId, setSelectedCameraId] = useState<string | null>("");
-    const [mapZoomLevel, setMapZoomLevel] = useState<number>(7);
+    const [listRegion, setListRegion] = useState<Array<any>>([]);
+    const [selectedRegionId, setSelectedRegionId] = useState<string | null>("");
     
     const columns: columns[] = [
         {
             field: 'id',
-            headerName: '카메라 ID',
+            headerName: '구역 ID',
             flex: 1,
             renderCell: undefined
         },
         {
-            field: 'region',
-            headerName: '구역',
-            flex: 1,
-            renderCell: undefined
-        },
-        {
-            field: 'intersection',
-            headerName: '교차로',
-            flex: 1,
-            renderCell: undefined
-        },
-        {
-            field: 'cameraDirection',
-            headerName: '카메라 설치 방향',
+            field: 'name',
+            headerName: '구역 이름',
             flex: 1,
             renderCell: undefined
         },
@@ -66,8 +51,8 @@ function ManagementCamera() {
                 return (
                     <button onClick={(e) => {
                         navigate(
-                            Common.PAGE_MANAGEMENT_CAMERA_DETAIL, {
-                            state :listCamera.find(function(data){ return data.cameraId === params.id })})
+                            Common.PAGE_MANAGEMENT_REGION_DETAIL, {
+                            state :listRegion.find(function(data){ return data.regionId === params.id })})
                         }
                     }>
                         수정
@@ -78,66 +63,62 @@ function ManagementCamera() {
       ];
 
     useEffect(() => {
-        requestCameras();
+        requestRegions();
     }, []);
 
-    const requestAxiosCameras = async() => {
+    const requestAxiosRegions = async() => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_LIST_URL
+            Request.REGIONS_LIST_URL
         );
 
         return response.data;
     }
 
     const {
-        loading: loadingCameras,
-        error: errorCameras,
-        data: resultCameras,
-        execute: requestCameras,
-    } = useAsyncAxios(requestAxiosCameras);
+        loading: loadingRegions,
+        error: errorRegions,
+        data: resultRegions,
+        execute: requestRegions,
+    } = useAsyncAxios(requestAxiosRegions);
 
     useEffect(() => {
-        if (resultCameras === null) return;
+        if (resultRegions === null) return;
 
-        setListCamera(resultCameras.cameras);
+        setListRegion(resultRegions.regions);
 
-        resultCameras.cameras.map((result: any) => { 
+        resultRegions.regions.map((result: any) => { 
             setRows(rows => 
                 [...rows, 
                     {
-                        id: result.cameraId, 
-                        region: result.intersection.region.regionName, 
-                        intersection: result.intersection.intersectionName, 
-                        cameraDirection: result.direction.intersectionName
+                        id: result.regionId, 
+                        name: result.regionName,
                     }
                 ]
             );
         })
 
-    }, [resultCameras]);
+    }, [resultRegions]);
 
     useEffect(() => {
-        if (errorCameras === null) return;
+        if (errorRegions === null) return;
 
-        console.log("errorCameras", errorCameras);
-    }, [errorCameras]);
+        console.log("errorRegions", errorRegions);
+    }, [errorRegions]);
 
-    const handleClickCamera = (cameraId: string) => {
-        setSelectedCameraId(cameraId);
-        alert(cameraId);
+    const handleClickRegion = (regionId: string) => {
+        setSelectedRegionId(regionId);
+        alert(regionId);
     };
-
     
     const onChangedZoomLevel = (level: number) => {
         console.log("level", level);
-        setMapZoomLevel(level);
     };
 
-    const onRowClick = (cameraId: string) => {
-        setSelectedCameraId(cameraId);
+    const onRowClick = (regionId: string) => {
+        setSelectedRegionId(regionId);
     };
 
     return(
@@ -158,14 +139,19 @@ function ManagementCamera() {
                             zIndex: "0",
                         }}
                         transitionState={undefined}
-                        region={undefined}
-                        intersections={undefined}
-                        cameras={{
-                            list: listCamera,
-                            isShow: true,
-                            selected: selectedCameraId,
-                            clickEvent: handleClickCamera,
+                        region={{
+                            current: {
+                                regionId: 'test',
+                                regionName: 'test',
+                                gps: [{
+                                    lat: 128.3,
+                                    lng: 38
+                                }]
+                            },
+                            isShow: true
                         }}
+                        intersections={undefined}
+                        cameras={undefined}
                         links={undefined}
                         trafficLights={undefined}
                         avl={undefined}
@@ -178,4 +164,4 @@ function ManagementCamera() {
     )
 }
 
-export default ManagementCamera
+export default ManagementRegion

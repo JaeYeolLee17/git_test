@@ -26,7 +26,7 @@ class CameraRepositoryTest extends HBaseMockTest {
         String cameraNo = "C0001";
         Optional<Camera> camera = cameraRepository.findByCameraNo(cameraNo);
         assertThat(camera.isPresent()).isTrue();
-        assertThat(camera.get().getSettingsUpdated()).isFalse();
+        assertThat(camera.get().getSettingsUpdated()).isTrue();
 
         cameraNo = "C0002";
         camera = cameraRepository.findByCameraNo(cameraNo);
@@ -36,7 +36,7 @@ class CameraRepositoryTest extends HBaseMockTest {
         cameraNo = "C0003";
         camera = cameraRepository.findByCameraNo(cameraNo);
         assertThat(camera.isPresent()).isTrue();
-        assertThat(camera.get().getSettingsUpdated()).isTrue();
+        assertThat(camera.get().getSettingsUpdated()).isFalse();
 
         cameraNo = "C0004";
         camera = cameraRepository.findByCameraNo(cameraNo);

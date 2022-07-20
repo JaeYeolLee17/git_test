@@ -26,6 +26,9 @@ jwt:
   secret: jwt secret smart city challenge
   token-validity-in-seconds: 86400
 
+challenge-api:
+  url: http://devchallenge01.e4motion.com:8091/v2/camera/
+
 cors:
   origins: >
     http://localhost:${server.port}

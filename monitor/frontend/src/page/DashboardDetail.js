@@ -73,7 +73,7 @@ const DashboardDetail = () => {
 
     const requestAxiosCameras = async () => {
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_URL
+            Request.CAMERA_LIST_URL
         );
         return response.data;
     };

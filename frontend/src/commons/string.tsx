@@ -41,3 +41,26 @@ export const carType_truck = "트럭";
 export const carType_motocycle = "오토바이";
 
 export const camera_direction_unit = " 방면";
+
+// camera
+export const camera_id = "카메라 ID";
+export const intersection_name = "카메라 설치 교차로";
+export const direction_name = "카메라 설치 방향";
+export const gps_lat = "카메라 GPS 정보(lat)";
+export const gps_lng = "카메라 GPS 정보(lng)";
+export const distance = "카메라 대기열 인식 영역 거리";
+export const rtsp_url = "카메라 영상 스트리밍 주소";
+export const rts_id = "카메라 RTSP 접속 ID";
+export const rts_password = "카메라 RTSP 접속 Password";
+export const small_width = "Width(S)";
+export const small_height = "Height(S)";
+export const large_width = "Width(L)";
+export const large_height = "Height(L)";
+export const server_url = "운영플랫폼 서버 주소";
+export const send_cycle = "데이터 송신 주기";
+export const collect_cylcle = "교통량 수집 주기";
+export const start_line = "startLine";
+export const u_turn = "uTurn";
+export const crosswalk = "crosswalk";
+export const lane = "lane";
+

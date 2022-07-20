@@ -3,11 +3,21 @@ const DEFAULT_URL =
 
 export const LOGIN_URL = DEFAULT_URL + "login";
 
-export const CAMERA_URL = DEFAULT_URL + "cameras";
+export const CAMERA_URL = DEFAULT_URL + "camera";
+export const CAMERA_LIST_URL = DEFAULT_URL + "cameras";
 
+export const INTERSECTION_URL = DEFAULT_URL + "intersection";
+export const INTERSECTION_LIST_URL = DEFAULT_URL + "intersections";
+
+export const REGION_URL = DEFAULT_URL + "region";
 export const REGIONS_LIST_URL = DEFAULT_URL + "regions";
 
-export const INTERSECTIONS_LIST_URL = DEFAULT_URL + "intersections";
+export const EMERGENCY_URL = DEFAULT_URL + "avl/car";
+export const EMERGENCY_LIST_URL = DEFAULT_URL + "avl/cars";
+
+export const USER_URL = DEFAULT_URL + "user";
+export const USER_LIST_URL = DEFAULT_URL + "users";
+
 
 export const STAT_MFD_URL = DEFAULT_URL + "stat/mfd";
 export const STAT_LINK_URL = DEFAULT_URL + "stat/link";

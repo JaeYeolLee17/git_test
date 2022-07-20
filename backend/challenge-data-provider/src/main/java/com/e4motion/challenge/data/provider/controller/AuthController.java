@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.Valid;
 
-@Tag(name = "1. 인증")
+@Tag(name = "1. 사용자 인증")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "v2")

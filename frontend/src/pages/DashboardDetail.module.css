@@ -56,3 +56,12 @@
     background-color: #182940;
     border: none;
 }
+
+.statCharts {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+
+    margin-top: 80px;
+    padding: 0 30px;
+}

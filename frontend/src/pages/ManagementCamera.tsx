@@ -86,7 +86,7 @@ function ManagementCamera() {
         if (userDetails?.token === null) return null;
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_URL
+            Request.CAMERA_LIST_URL
         );
 
         return response.data;
@@ -105,7 +105,16 @@ function ManagementCamera() {
         setListCamera(resultCameras.cameras);
 
         resultCameras.cameras.map((result: any) => { 
-            setRows(rows => [...rows, {id: result.cameraId, region: result.intersection.region.regionName, intersection: result.intersection.intersectionName, cameraDirection: result.direction.intersectionName}]);
+            setRows(rows => 
+                [...rows, 
+                    {
+                        id: result.cameraId, 
+                        region: result.intersection.region.regionName, 
+                        intersection: result.intersection.intersectionName, 
+                        cameraDirection: result.direction.intersectionName
+                    }
+                ]
+            );
         })
 
     }, [resultCameras]);

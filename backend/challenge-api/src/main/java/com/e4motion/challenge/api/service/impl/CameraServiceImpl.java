@@ -176,13 +176,13 @@ public class CameraServiceImpl implements CameraService {
         cameraRepository.deleteByCameraNo(cameraNo);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public CameraDto get(String cameraNo) {
 
         return cameraMapper.toCameraDto(cameraRepository.findByCameraNo(cameraNo).orElse(null));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CameraDto> getList(String regionNo, String intersectionNo) {
 
         return cameraMapper.toCameraDto(cameraRepository.findAllByRegionNoIntersectionNo(regionNo, intersectionNo));

@@ -25,7 +25,7 @@ export type KakaoMapRegionType = {
 
 export type KakaoMapIntersectionsType = {
     list: any[];
-    selected: string;
+    selected: string | null;
     clickEvent: (intersectionId: string) => void;
     showEdge?: boolean;
 };

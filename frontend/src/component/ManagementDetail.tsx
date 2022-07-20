@@ -58,7 +58,7 @@ function ManagementDetail({response, clickEvent}: responseType) {
                 ))
                 ) : null}
             </Grid>
-            <Button variant="outlined">이전</Button>
+            <Button variant="outlined" onClick={() => navigate(-1)}>이전</Button>
             <Button variant="outlined" onClick={() => {clickEvent(inputs)}}>저장</Button>
         </Box>
     )

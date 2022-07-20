@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Card } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Card, Collapse } from "@mui/material";
 
 import styles from "./ChartStatWrapper.module.css";
 
@@ -7,7 +7,6 @@ import * as Common from "../commons/common";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ChartStat from "./ChartStat";
-import { style } from "@mui/system";
 
 function ChartStatWrapper({
     title,
@@ -18,6 +17,8 @@ function ChartStatWrapper({
     loading: boolean;
     series: Common.ChartData[];
 }) {
+    const [showChart, setShowChart] = useState<boolean>(true);
+
     const commonChartOption = {
         chart: {
             height: "500px",
@@ -57,22 +58,33 @@ function ChartStatWrapper({
     };
     return (
         <Box className={styles.statChartWwrapper}>
-            <Box className={styles.statChartTitleWrapper}>
+            <Box
+                className={styles.statChartTitleWrapper}
+                onClick={() => setShowChart(!showChart)}
+            >
                 <Box className={styles.statChartTitle}>
                     {title}
-                    <ArrowDropUpIcon sx={{ fontSize: "44px" }} />
-                </Box>
-            </Box>
-            <Card className={styles.statChartCard}>
-                {showLoading()}
-                <Box className={styles.statChart}>
-                    <ChartStat
-                        loading={loading}
-                        series={series}
-                        option={commonChartOption}
+                    <ArrowDropUpIcon
+                        sx={{
+                            fontSize: "44px",
+                            transition: "0.3s",
+                            transform: showChart ? "" : "rotate(0.5turn)",
+                        }}
                     />
                 </Box>
-            </Card>
+            </Box>
+            <Collapse in={showChart}>
+                <Card className={styles.statChartCard}>
+                    {showLoading()}
+                    <Box className={styles.statChart}>
+                        <ChartStat
+                            loading={loading}
+                            series={series}
+                            option={commonChartOption}
+                        />
+                    </Box>
+                </Card>
+            </Collapse>
         </Box>
     );
 }

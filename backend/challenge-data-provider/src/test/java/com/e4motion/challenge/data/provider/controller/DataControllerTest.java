@@ -1,5 +1,6 @@
 package com.e4motion.challenge.data.provider.controller;
 
+import com.e4motion.challenge.common.domain.FilterBy;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
@@ -130,7 +131,7 @@ class DataControllerTest extends HBaseMockTest {
         map.put("startTime", "2022-04-01 12:00:00");
         map.put("endTime", "2022-04-01 12:01:00");
         map.put("limit", 1);
-        map.put("filterBy", "camera");
+        map.put("filterBy", FilterBy.CAMERA);
         map.put("filterId", "C0001");
         return map;
     }

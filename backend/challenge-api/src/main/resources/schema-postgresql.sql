@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS public.nt_link CASCADE;
 DROP TABLE IF EXISTS public.nt_intersection CASCADE;
 DROP TABLE IF EXISTS public.nt_region_gps CASCADE;
 DROP TABLE IF EXISTS public.nt_region CASCADE;
-DROP TABLE IF EXISTS public.lt_data_stats CASCADE;
+DROP TABLE IF EXISTS public.lt_traffic_data_m15 CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_user_user_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_camera_camera_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_camera_road_camera_road_id_seq CASCADE;
@@ -17,7 +17,7 @@ DROP SEQUENCE IF EXISTS public.nt_link_gps_link_gps_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_intersection_intersection_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_region_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_gps_region_gps_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS public.lt_data_stats_id_seq;
+DROP SEQUENCE IF EXISTS public.lt_traffic_data_m15_id_seq;
 
 CREATE TABLE public.nt_authority
 (
@@ -249,16 +249,16 @@ CREATE TABLE public.nt_link_gps
         ON DELETE NO ACTION
 );
 
-CREATE SEQUENCE public.lt_data_stats_id_seq
+CREATE SEQUENCE public.lt_traffic_data_m15_id_seq
     INCREMENT 1
     START 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
     CACHE 1;
 
-CREATE TABLE public.lt_data_stats
+CREATE TABLE public.lt_traffic_data_m15
 (
-    id bigint NOT NULL DEFAULT nextval('lt_data_stats_id_seq'::regclass),
+    id bigint NOT NULL DEFAULT nextval('lt_traffic_data_m15_id_seq'::regclass),
     t timestamp without time zone NOT NULL,
     c character varying(10) COLLATE pg_catalog."default" NOT NULL,
     i character varying(10) COLLATE pg_catalog."default",
@@ -297,6 +297,6 @@ CREATE TABLE public.lt_data_stats
     qtlu3 integer,
     qtlu4 integer,
     qt_t integer,
-    CONSTRAINT lt_data_stats_pkey PRIMARY KEY (id),
+    CONSTRAINT lt_traffic_data_m15_pkey PRIMARY KEY (id),
     CONSTRAINT ukns9kd2c11ogafqkpklblcvh39 UNIQUE (t, c)
 );

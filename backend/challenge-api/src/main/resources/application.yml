@@ -15,7 +15,7 @@ spring:
       encoding: UTF-8
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: com.e4motion.challenge.common.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none                # none, create, update, create-drop
     defer-datasource-initialization: true
@@ -60,6 +60,8 @@ springdoc:
       title: Challenge API
       description: REST API for Challenge
       version: 1.0.0
+    syntaxHighlight:                # because of performance
+      activated: false
 
 logging:
   level:

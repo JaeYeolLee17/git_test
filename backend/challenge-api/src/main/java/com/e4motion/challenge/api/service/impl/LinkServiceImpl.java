@@ -77,13 +77,13 @@ public class LinkServiceImpl implements LinkService {
         linkRepository.deleteByLinkId(linkId);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public LinkDto get(Long linkId) {
 
         return linkMapper.toLinkDto(linkRepository.findByLinkId(linkId).orElse(null));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<LinkDto> getList() {
 
         Sort sort = Sort.by("linkId").ascending();

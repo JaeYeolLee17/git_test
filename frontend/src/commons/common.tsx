@@ -34,7 +34,7 @@ export type ChartData = {
 
 export type ChartStatData = {
     loading: boolean;
-    name: string;
+    name?: string;
     series: ChartData[];
     option: Record<string, any>;
 };
@@ -78,4 +78,4 @@ export const PAGE_DASHBOARD = "/dashboard/summary";
 export const PAGE_DASHBOARD_DETAIL = "/dashboard/detail/all";
 export const PAGE_STAT_TRAFFIC = "/stats/traffic";
 export const PAGE_MANAGEMENT_CAMERA = "/management/camera";
-export const PAGE_MANAGEMENT_CAMERA_DETAIL = "/management/camera/detail"
+export const PAGE_MANAGEMENT_CAMERA_DETAIL = "/management/camera/detail";

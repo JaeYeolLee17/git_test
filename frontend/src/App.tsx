@@ -12,7 +12,15 @@ import StatTraffic from "./pages/StatTraffic";
 import Login from "./pages/Login";
 import DashboardLayout from "./layout/DashboardLayout";
 import ManagementCamera from "./pages/ManagementCamera";
+import ManagementIntersection from "./pages/ManagementIntersection";
+import ManagementRegion from "./pages/ManagementRegion";
+import ManagementEmergency from "./pages/ManagementEmergency";
+import ManagementUser from "./pages/ManagementUser";
 import CameraDetail from "./pages/CameraDetail";
+import IntersectionDetail from "./pages/IntersectionDetail";
+import RegionDetail from "./pages/RegionDetail";
+import EmergencyDetail from "./pages/EmergencyDetail";
+import UserDetail from "./pages/UserDetail";
 
 // declare global {
 //     interface Window {
@@ -82,6 +90,106 @@ function App() {
                         <PrivateAdminRoute>
                             <DashboardLayout>
                                 <CameraDetail />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_INTERSECTION}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <ManagementIntersection />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_INTERSECTION_DETAIL}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <IntersectionDetail />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <ManagementRegion />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION_DETAIL}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <RegionDetail />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <ManagementRegion />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION_DETAIL}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <RegionDetail />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_EMERGENCY}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <ManagementEmergency />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_EMERGENCY_DETAIL}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <EmergencyDetail />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_USER}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <ManagementUser />
+                            </DashboardLayout>
+                        </PrivateAdminRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_USER_DETAIL}
+                    element={
+                        <PrivateAdminRoute>
+                            <DashboardLayout>
+                                <UserDetail />
                             </DashboardLayout>
                         </PrivateAdminRoute>
                     }

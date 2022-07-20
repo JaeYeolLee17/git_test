@@ -79,22 +79,22 @@ const menuData: menuType[] = [
             },
             {
                 title: "교차로 관리",
-                link: `${Common.PAGE_STAT_TRAFFIC}`,
+                link: `${Common.PAGE_MANAGEMENT_INTERSECTION}`,
                 icon: "Menu07",
             },
             {
                 title: "구역 관리",
-                link: `${Common.PAGE_STAT_TRAFFIC}`,
+                link: `${Common.PAGE_MANAGEMENT_REGION}`,
                 icon: "Menu08",
             },
             {
                 title: "긴급차량 관리",
-                link: `${Common.PAGE_STAT_TRAFFIC}`,
+                link: `${Common.PAGE_MANAGEMENT_EMERGENCY}`,
                 icon: "Menu09",
             },
             {
                 title: "사용자 관리",
-                link: `${Common.PAGE_STAT_TRAFFIC}`,
+                link: `${Common.PAGE_MANAGEMENT_USER}`,
                 icon: "Menu10",
             },
         ],

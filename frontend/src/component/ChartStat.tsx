@@ -5,7 +5,7 @@ import * as String from "../commons/string";
 import * as Common from "../commons/common";
 import * as Utils from "../utils/utils";
 
-function ChartStat({ loading, name, series, option }: Common.ChartStatData) {
+function ChartStat({ loading, series, option }: Common.ChartStatData) {
     //console.log(name, loading);
     const [chartOption, setChartOption] = useState<Record<string, any>>({});
 
@@ -126,17 +126,17 @@ function ChartStat({ loading, name, series, option }: Common.ChartStatData) {
         setChartOption(chart_option);
     }, [option]);
 
-    console.log(name, chartOption);
+    // console.log(name, chartOption);
 
     return (
         <div>
-            <h2>{name}</h2>
+            {/* <h2>{name}</h2> */}
             {!Utils.utilIsEmptyObj(chartOption) && (
                 <Chart
                     options={chartOption}
                     series={series}
                     type={option.chart.type}
-                    width='1500'
+                    width='100%'
                     height={option.chart.height}
                 ></Chart>
             )}

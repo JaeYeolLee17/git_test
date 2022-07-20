@@ -55,7 +55,7 @@ function DashboardMap({
 
     const requestAxiosCameras = async () => {
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_URL
+            Request.CAMERA_LIST_URL
         );
         return response.data;
     };
@@ -84,7 +84,7 @@ function DashboardMap({
     //     try {
     //         const response = await Utils.utilAxiosWithAuth(
     //             userDetails.token
-    //         ).get(Request.CAMERA_URL);
+    //         ).get(Request.CAMERA_LIST_URL);
 
     //         //console.log(JSON.stringify(response?.data));
     //         setListCamera(response?.data.cameras);

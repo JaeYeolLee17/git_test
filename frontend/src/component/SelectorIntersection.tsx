@@ -22,7 +22,7 @@ function SelectorIntersection({
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
     const [listSelectIntersections, setListSelectIntersections] = useState<
         Array<SelectorItemType>
-    >([]);
+    >([{ value: "all", innerHTML: String.total }]);
     const [listSelectIntersectionItem, setListSelectIntersectionItem] =
         useState<SelectorItemType>({ value: "all", innerHTML: String.total });
 

@@ -12,33 +12,14 @@ function ChartStatWrapper({
     title,
     loading,
     series,
+    option,
 }: {
     title: string;
     loading: boolean;
     series: Common.ChartData[];
+    option: Record<string, any>;
 }) {
     const [showChart, setShowChart] = useState<boolean>(true);
-
-    const commonChartOption = {
-        chart: {
-            height: "500px",
-            type: "bar",
-            stacked: true,
-        },
-        colors: ["#224d99", "#3b84ff", "#17e6b1", "#ffd500", "#ff5b7d"],
-        title: {
-            align: "center",
-        },
-        grid: {
-            show: true,
-            padding: {
-                top: 20,
-                right: 0,
-                bottom: 20,
-                left: 0,
-            },
-        },
-    };
 
     const showLoading = () => {
         let showClass = styles.chartLoadingSpinnerFadeEnd;
@@ -80,7 +61,7 @@ function ChartStatWrapper({
                         <ChartStat
                             loading={loading}
                             series={series}
-                            option={commonChartOption}
+                            option={option}
                         />
                     </Box>
                 </Card>

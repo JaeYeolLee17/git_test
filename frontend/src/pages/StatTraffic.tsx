@@ -43,6 +43,7 @@ function StatTraffic() {
         Array<Common.ChartData>
     >([]);
 
+    const [firstLoad, setFirstLoad] = useState<boolean>(true);
     const [maxQtsrluUnitData, setMaxQtsrluUnitData] = useState<number>(0);
     const [offsetUnitData, setOffsetUnitData] = useState<number>(100);
 
@@ -219,6 +220,19 @@ function StatTraffic() {
 
         console.log("errorStatPeriod", errorStatPeriod);
     }, [errorStatPeriod]);
+
+    useEffect(() => {
+        if (firstLoad === true) {
+            if (
+                selectedRegionId !== "" &&
+                selectedIntersectionId !== "" &&
+                searchPeriod !== ""
+            ) {
+                onSearch();
+                setFirstLoad(false);
+            }
+        }
+    }, [selectedRegionId, selectedIntersectionId, searchPeriod]);
 
     const onSearch = () => {
         //console.log("onSearch");

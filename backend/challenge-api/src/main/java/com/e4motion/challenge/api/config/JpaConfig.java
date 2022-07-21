@@ -17,7 +17,7 @@ public class JpaConfig {
 
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(entityManager);
+        return new JPAQueryFactory(new PostgreSQLTemplates(), entityManager);
     }
 
 }

@@ -1,9 +1,13 @@
 package com.e4motion.challenge.api.controller;
 
+import com.e4motion.challenge.api.dto.StatsDailyDto;
+import com.e4motion.challenge.api.dto.StatsPeriodDto;
+import com.e4motion.challenge.common.domain.DailyGroupBy;
 import com.e4motion.challenge.common.domain.FilterBy;
 import com.e4motion.challenge.common.domain.GroupBy;
 import com.e4motion.challenge.api.dto.StatsMfdDto;
 import com.e4motion.challenge.api.service.DataStatsService;
+import com.e4motion.challenge.common.domain.Period;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.DateTimeHelper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,12 +35,12 @@ public class DataStatsController {
     @Operation(summary = "교통통계: 링크(15분 단위)", description = "접근 권한 : 최고관리자, 운영자, 사용자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
 	@GetMapping("/data/stats/link")
-    public Response getLink(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
+    public Response getLinkStats(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
                             @RequestParam(value = "endTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime endTime,
                             @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
-                            @RequestParam(value = "filterId", required = false) String filterId) {
+                            @RequestParam(value = "filterValue", required = false) String filterValue) {
 
-        dataStatsService.getLink(startTime, endTime, filterBy, filterId);
+        dataStatsService.getLinkStats(startTime, endTime, filterBy, filterValue);
 
         return new Response("stats", "ok");
     }
@@ -44,14 +48,14 @@ public class DataStatsController {
     @Operation(summary = "교통통계: 교통도(15분 단위)", description = "접근 권한 : 최고관리자, 운영자, 사용자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @GetMapping("/data/stats/mfd")
-    public Response getMfd(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
-                           @RequestParam(value = "endTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime endTime,
-                           @RequestParam(value = "groupBy", required = false) GroupBy groupBy,
-                           @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
-                           @RequestParam(value = "filterId", required = false) String filterId,
-                           @RequestParam(value = "dayOfWeek", required = false) Integer dayOfWeek) {
+    public Response getMdfStats(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
+                                @RequestParam(value = "endTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime endTime,
+                                @RequestParam(value = "dayOfWeek", required = false) Integer dayOfWeek,
+                                @RequestParam(value = "groupBy", required = false) GroupBy groupBy,
+                                @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
+                                @RequestParam(value = "filterValue", required = false) String filterValue) {
 
-        List<StatsMfdDto> statsMfdDtos = dataStatsService.getMfd(startTime, endTime, groupBy, filterBy, filterId, dayOfWeek);
+        List<StatsMfdDto> statsMfdDtos = dataStatsService.getMdfStats(startTime, endTime, dayOfWeek, groupBy, filterBy, filterValue);
 
         return new Response("stats", statsMfdDtos);
     }
@@ -59,28 +63,28 @@ public class DataStatsController {
     @Operation(summary = "교통통계: 기간별(1시간 단위)", description = "접근 권한 : 최고관리자, 운영자, 사용자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @GetMapping("/data/stats/period")
-    public Response getPeriod(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
+    public Response getPeriodStats(@RequestParam(value = "startTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime startTime,
                               @RequestParam(value = "endTime", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateTimeFormat) LocalDateTime endTime,
-                              @RequestParam(value = "byPeriod", required = true) String byPeriod,
+                              @RequestParam(value = "period", required = true) Period period,
                               @RequestParam(value = "groupBy", required = false) GroupBy groupBy,
                               @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
-                              @RequestParam(value = "filterId", required = false) String filterId) {
+                              @RequestParam(value = "filterValue", required = false) String filterValue) {
 
-        dataStatsService.getPeriod(startTime, endTime, byPeriod, groupBy, filterBy, filterId);
+        List<StatsPeriodDto> statsPeriodDtos = dataStatsService.getPeriodStats(startTime, endTime, period, groupBy, filterBy, filterValue);
 
-        return new Response("stats", "ok");
+        return new Response("stats", statsPeriodDtos);
     }
 
     @Operation(summary = "교통통계: 일일 상세(1시간 단위)", description = "접근 권한 : 최고관리자, 운영자, 사용자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @GetMapping("/data/stats/daily")
-    public Response getDaily(@RequestParam(value = "date", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateFormat) LocalDate date,
-                             @RequestParam(value = "groupBy", required = false) GroupBy groupBy,
+    public Response getDailyStats(@RequestParam(value = "date", required = true) @DateTimeFormat(pattern = DateTimeHelper.dateFormat) LocalDate date,
+                             @RequestParam(value = "groupBy", required = false) DailyGroupBy groupBy,
                              @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
-                             @RequestParam(value = "filterId", required = false) String filterId) {
+                             @RequestParam(value = "filterValue", required = false) String filterValue) {
 
-        dataStatsService.getDaily(date, groupBy, filterBy, filterId);
+        List<StatsDailyDto> statsDailyDtos = dataStatsService.getDailyStats(date, groupBy, filterBy, filterValue);
 
-        return new Response("stats", "ok");
+        return new Response("stats", statsDailyDtos);
     }
 }

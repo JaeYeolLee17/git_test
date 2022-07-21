@@ -118,10 +118,10 @@ class DataControllerTest extends HBaseMockTest {
         map.replace("limit", 100001);   // out of range
         assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        // filterBy, filterId
+        // filterBy, filterValue
         map = getGetHashMap();
         map.remove("filterBy");     // missing
-        map.remove("filterId");
+        map.remove("filterValue");
         assertGet(map, HttpStatus.OK, Response.OK, null, null);
     }
 
@@ -132,7 +132,7 @@ class DataControllerTest extends HBaseMockTest {
         map.put("endTime", "2022-04-01 12:01:00");
         map.put("limit", 1);
         map.put("filterBy", FilterBy.CAMERA);
-        map.put("filterId", "C0001");
+        map.put("filterValue", "C0001");
         return map;
     }
 
@@ -153,7 +153,7 @@ class DataControllerTest extends HBaseMockTest {
             uri += ("&limit=" + map.get("limit"));
         }
         if (map.get("filterBy") != null) {
-            uri += ("&filterBy=" + map.get("filterBy") + "&filterId=" + map.get("filterId"));
+            uri += ("&filterBy=" + map.get("filterBy") + "&filterValue=" + map.get("filterValue"));
         }
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri)

@@ -37,7 +37,7 @@ function ChartStat({ loading, series, option }: Common.ChartStatData) {
     // };
 
     useEffect(() => {
-        console.log("option", option);
+        // console.log("option", option);
         const chart_option = {
             ...option,
             chart: {

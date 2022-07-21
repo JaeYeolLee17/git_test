@@ -73,7 +73,7 @@ function DashboardDetail() {
         if (userDetails?.token === null) return null;
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_URL
+            Request.CAMERA_LIST_URL
         );
         return response.data;
     };
@@ -245,6 +245,27 @@ function DashboardDetail() {
         }
     };
 
+    const commonChartOption = {
+        chart: {
+            height: "500px",
+            type: "bar",
+            stacked: true,
+        },
+        colors: ["#224d99", "#3b84ff", "#17e6b1", "#ffd500", "#ff5b7d"],
+        title: {
+            align: "center",
+        },
+        grid: {
+            show: true,
+            padding: {
+                top: 20,
+                right: 0,
+                bottom: 20,
+                left: 0,
+            },
+        },
+    };
+
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Box className={styles.searchBar}>
@@ -287,24 +308,28 @@ function DashboardDetail() {
                     title={String.stats_title_cartype_srlu}
                     loading={loadingStatCarType}
                     series={seriesChartSrluCarType}
+                    option={commonChartOption}
                 />
                 {requestCarTypeNCamera ? (
                     <ChartStatWrapper
                         title={String.stats_title_camera_srlu}
                         loading={loadingStatCamera}
                         series={seriesChartSrluCamera}
+                        option={commonChartOption}
                     />
                 ) : null}
                 <ChartStatWrapper
                     title={String.stats_title_cartype_qtsrlu}
                     loading={loadingStatCarType}
                     series={seriesChartQtsrluCarType}
+                    option={commonChartOption}
                 />
                 {requestCarTypeNCamera ? (
                     <ChartStatWrapper
                         title={String.stats_title_camera_qtsrlu}
                         loading={loadingStatCamera}
                         series={seriesChartQtsrluCamera}
+                        option={commonChartOption}
                     />
                 ) : null}
                 <ChartStatWrapper
@@ -315,6 +340,7 @@ function DashboardDetail() {
                             : loadingStatCarType
                     }
                     series={seriesChartPerson}
+                    option={commonChartOption}
                 />
             </Box>
         </Box>

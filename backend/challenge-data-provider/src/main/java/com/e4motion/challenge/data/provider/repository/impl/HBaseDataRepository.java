@@ -168,7 +168,7 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
         String startTime = (String) map.get("startTime");
         String endTime = (String) map.get("endTime");
         String filterBy = (String) map.get("filterBy");
-        String filterId = (String) map.get("filterId");
+        String filterValue = (String) map.get("filterValue");
         int limit = (int) map.get("limit");
 
         Scan scan = new Scan();
@@ -178,7 +178,7 @@ public class HBaseDataRepository implements DataRepository, InitializingBean {
             scan.withStopRow(Bytes.toBytes(endTime));
         }
         if (filterBy != null) {
-            scan.setFilter(new RowFilter(CompareFilter.CompareOp.EQUAL, new SubstringComparator(filterId)));
+            scan.setFilter(new RowFilter(CompareFilter.CompareOp.EQUAL, new SubstringComparator(filterValue)));
         }
         return scan;
     }

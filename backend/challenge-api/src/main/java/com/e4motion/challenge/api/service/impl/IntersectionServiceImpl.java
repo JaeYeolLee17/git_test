@@ -78,13 +78,13 @@ public class IntersectionServiceImpl implements IntersectionService {
         intersectionRepository.deleteByIntersectionNo(intersectionNo);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public IntersectionDto get(String intersectionNo) {
 
         return intersectionMapper.toIntersectionDto(intersectionRepository.findByIntersectionNo(intersectionNo).orElse(null));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<IntersectionDto> getList(String regionNo) {
 
         Sort sort = Sort.by("intersectionNo").ascending();

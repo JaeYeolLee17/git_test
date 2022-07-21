@@ -70,13 +70,13 @@ public class RegionServiceImpl implements RegionService {
         regionRepository.deleteByRegionNo(regionNo);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public RegionDto get(String regionNo) {
 
         return regionMapper.toRegionDto(regionRepository.findByRegionNo(regionNo).orElse(null));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<RegionDto> getList() {
 
         Sort sort = Sort.by("regionNo").ascending();

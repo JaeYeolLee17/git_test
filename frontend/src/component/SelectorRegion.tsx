@@ -21,7 +21,7 @@ function SelectorRegion({
     const [listRegions, setListRegions] = useState<Array<any>>([]);
     const [listSelectRegions, setListSelectRegions] = useState<
         Array<SelectorItemType>
-    >([]);
+    >([{ value: "all", innerHTML: String.total }]);
     const [listSelectRegionItem, setListSelectRegionItem] =
         useState<SelectorItemType>({ value: "all", innerHTML: String.total });
 

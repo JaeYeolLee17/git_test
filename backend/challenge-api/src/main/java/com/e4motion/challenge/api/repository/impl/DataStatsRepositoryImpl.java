@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.repository.impl;
 
-import com.e4motion.challenge.api.domain.QDataStats;
+import com.e4motion.challenge.api.domain.*;
 import com.e4motion.challenge.api.dto.*;
 import com.e4motion.challenge.api.repository.DataStatsRepositoryCustom;
 import com.e4motion.challenge.common.domain.DailyGroupBy;
@@ -29,9 +29,198 @@ import java.util.Objects;
 @Repository
 public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
 
+    // TODO: !!! query 결과물이 데이터베이스 구조와 달리 1:M 인 경우 직접 매핑으로 인한 속도 저하...
+    // TODO: 통계 결과물을 데이터베이스처럼 펼쳐볼까?
+    // TODO: 필요에 따라 SUM 된 통계테이블을 VIEW 로 만들어두면 속도가 좀 개선될까?
+
     private final JPAQueryFactory queryFactory;
 
     QDataStats dataStats = QDataStats.dataStats;
+    QCamera camera = QCamera.camera;
+    QLink link = QLink.link;
+    QLinkGps linkGps = QLinkGps.linkGps;
+
+    /*
+    SELECT extract(year from t) AS y, extract(month from t) AS m, extract(day from t) AS d,
+                c, L.start_id, L.end_id, LG.latitude, LG.longitude,
+                extract(hour from t) AS h, extract(minute from t) AS mi,
+                (sr0 + sr1 + sr2 + sr3 + sr4 + lu0 + lu1 + lu2 + lu3 + lu4) AS srlu,
+                (qtsr0 + qtsr1 + qtsr2 + qtsr3 + qtsr4 + qtlu0 + qtlu1 + qtlu2 + qtlu3 + qtlu4) AS qtsrlu,
+                (sr0 + sr1 + sr2 + sr3 + sr4) AS sr,
+                (qtsr0 + qtsr1 + qtsr2 + qtsr3 + qtsr4) AS qtsr,
+                (lu0 + lu1 + lu2 + lu3 + lu4) AS lu,
+                (qtlu0 + qtlu1 + qtlu2 + qtlu3 + qtlu4) AS qtlu
+    FROM
+        lt_traffic_data_m15 TD
+    LEFT OUTER JOIN nt_camera C ON C.camera_no = TD.c
+    LEFT OUTER JOIN nt_link L ON L.start_id = C.direction_id AND L.end_id = C.intersection_id
+    LEFT OUTER JOIN nt_link_gps LG ON LG.link_id = L.link_id
+    WHERE
+        t >= '2022-01-01 00:00:00' AND t < '2022-02-01 00:00:00'
+    ORDER BY y, m, d, c, h, mi, LG.gps_order;
+     */
+    @Transactional(readOnly = true)
+    public List<StatsLinkDto> getLinkStats(LocalDateTime startTime, LocalDateTime endTime, FilterBy filterBy, String filterValue) {
+
+        // projections
+        Expression<?>[] projections = new Expression[] {
+                dataStats.t.year(), dataStats.t.month(), dataStats.t.dayOfMonth(),
+                dataStats.c, link.start.intersectionNo, link.end.intersectionNo, linkGps.latitude, linkGps.longitude,
+                dataStats.t.hour(), dataStats.t.minute()
+        };
+
+        int srluIndex = projections.length;
+        projections = ArrayUtils.addAll(projections,
+                dataStats.sr0
+                        .add(dataStats.sr1)
+                        .add(dataStats.sr2)
+                        .add(dataStats.sr3)
+                        .add(dataStats.sr4)
+                        .add(dataStats.lu0)
+                        .add(dataStats.lu1)
+                        .add(dataStats.lu2)
+                        .add(dataStats.lu3)
+                        .add(dataStats.lu4),
+                dataStats.qtsr0
+                        .add(dataStats.qtsr1)
+                        .add(dataStats.qtsr2)
+                        .add(dataStats.qtsr3)
+                        .add(dataStats.qtsr4)
+                        .add(dataStats.qtlu0)
+                        .add(dataStats.qtlu1)
+                        .add(dataStats.qtlu2)
+                        .add(dataStats.qtlu3)
+                        .add(dataStats.qtlu4),
+                dataStats.sr0
+                        .add(dataStats.sr1)
+                        .add(dataStats.sr2)
+                        .add(dataStats.sr3)
+                        .add(dataStats.sr4),
+                dataStats.qtsr0
+                        .add(dataStats.qtsr1)
+                        .add(dataStats.qtsr2)
+                        .add(dataStats.qtsr3)
+                        .add(dataStats.qtsr4),
+                dataStats.lu0
+                        .add(dataStats.lu1)
+                        .add(dataStats.lu2)
+                        .add(dataStats.lu3)
+                        .add(dataStats.lu4),
+                dataStats.qtlu0
+                        .add(dataStats.qtlu1)
+                        .add(dataStats.qtlu2)
+                        .add(dataStats.qtlu3)
+                        .add(dataStats.qtlu4));
+
+        // predicate
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and(dataStats.t.goe(startTime)).and(dataStats.t.lt(endTime));
+
+        if (filterValue != null) {
+            if (FilterBy.CAMERA.equals(filterBy)) {
+                predicate.and(dataStats.c.eq(filterValue));
+            } else if (FilterBy.INTERSECTION.equals(filterBy)) {
+                predicate.and(dataStats.i.eq(filterValue));
+            } else if (FilterBy.REGION.equals(filterBy)) {
+                predicate.and(dataStats.r.eq(filterValue));
+            }
+        }
+
+        // order by
+        OrderSpecifier<?>[] orderBys = new OrderSpecifier[] {
+                dataStats.t.year().asc(), dataStats.t.month().asc(), dataStats.t.dayOfMonth().asc(),
+                dataStats.c.asc(),
+                dataStats.t.hour().asc(), dataStats.t.minute().asc(),
+                linkGps.gpsOrder.asc(),
+        };
+
+        List<Tuple> tuples = queryFactory
+                .select(projections)
+                .from(dataStats)
+                .leftJoin(camera).on(camera.cameraNo.eq(dataStats.c))
+                .leftJoin(link).on(link.start.eq(camera.direction), link.end.eq(camera.intersection))
+                .leftJoin(linkGps).on(linkGps.link.eq(link))
+                .where(predicate)
+                .orderBy(orderBys)
+                .fetch();
+
+        ArrayList<StatsLinkDto> statsLinkDtos = new ArrayList<>();
+        StatsLinkDto statsLinkDto = null;
+        Integer lastYear = null, year;
+        Integer lastMonth = null, month;
+        Integer lastDay = null, day;
+        String lastC = null, c;
+        Integer lastHour = null, hour;
+        Integer lastMin = null, min;
+
+        for (Tuple tuple : tuples) {
+            year = tuple.get(dataStats.t.year());
+            month = tuple.get(dataStats.t.month());
+            day = tuple.get(dataStats.t.dayOfMonth());
+            c = tuple.get(dataStats.c);
+            hour = tuple.get(dataStats.t.hour());
+            min = tuple.get(dataStats.t.minute());
+
+            if (!Objects.equals(lastYear, year) || !Objects.equals(lastMonth, month) || !Objects.equals(lastDay, day) ||
+                    !Objects.equals(c, lastC)) {
+                lastYear = year;
+                lastMonth = month;
+                lastDay = day;
+                lastC = c;
+
+                statsLinkDto = StatsLinkDto.builder()
+                        .year(year)
+                        .month(month)
+                        .day(day)
+                        .cameraNo(c)
+                        .link(LinkDto.builder()
+                                .start(IntersectionDto.builder()
+                                        .intersectionNo(tuple.get(link.start.intersectionNo))
+                                        .build())
+                                .end(IntersectionDto.builder()
+                                        .intersectionNo(tuple.get(link.end.intersectionNo))
+                                        .build())
+                                .gps(new ArrayList<>())
+                                .build())
+                        .data(new ArrayList<>())
+                        .build();
+
+                statsLinkDtos.add(statsLinkDto);
+            }
+
+            if (!Objects.equals(hour, lastHour) || !Objects.equals(min, lastMin)) {
+                lastHour = hour;
+                lastMin = min;
+
+                int j = 0;
+                StatsLinkDataDto statsLinkDataDto = StatsLinkDataDto.builder()
+                        .hour(tuple.get(dataStats.t.hour()))
+                        .min(tuple.get(dataStats.t.minute()))
+                        .srlu(tuple.get(srluIndex + j++, Integer.class))
+                        .qtsrlu(tuple.get(srluIndex + j++, Integer.class))
+                        .sr(tuple.get(srluIndex + j++, Integer.class))
+                        .qtsr(tuple.get(srluIndex + j++, Integer.class))
+                        .lu(tuple.get(srluIndex + j++, Integer.class))
+                        .qtlu(tuple.get(srluIndex + j, Integer.class))
+                        .build();
+
+                assert statsLinkDto != null;
+                statsLinkDto.getData().add(statsLinkDataDto);
+            }
+
+            assert statsLinkDto != null;
+            if (statsLinkDto.getLink().getGps().stream()
+                    .noneMatch(gps -> Objects.equals(gps.getLatitude(), tuple.get(linkGps.latitude)) &&
+                            Objects.equals(gps.getLongitude(), tuple.get(linkGps.longitude)))) {
+                statsLinkDto.getLink().getGps().add(GpsDto.builder()
+                        .latitude(tuple.get(linkGps.latitude))
+                        .longitude(tuple.get(linkGps.longitude))
+                        .build());
+            }
+        }
+
+        return statsLinkDtos;
+    }
 
     @Transactional(readOnly = true)
     public List<StatsMfdDto> getMdfStats(LocalDateTime startTime, LocalDateTime endTime, Integer dayOfWeek, GroupBy groupBy, FilterBy filterBy, String filterValue) {

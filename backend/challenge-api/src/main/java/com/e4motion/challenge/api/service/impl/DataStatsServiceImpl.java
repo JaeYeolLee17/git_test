@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.service.impl;
 
 import com.e4motion.challenge.api.dto.StatsDailyDto;
+import com.e4motion.challenge.api.dto.StatsLinkDto;
 import com.e4motion.challenge.api.dto.StatsPeriodDto;
 import com.e4motion.challenge.common.domain.DailyGroupBy;
 import com.e4motion.challenge.common.domain.FilterBy;
@@ -24,8 +25,9 @@ public class DataStatsServiceImpl implements DataStatsService {
     private final DataStatsRepository dataStatsRepository;
 
     @Transactional(readOnly = true)
-    public void getLinkStats(LocalDateTime startTime, LocalDateTime endTime, FilterBy filterBy, String filterValue) {
+    public List<StatsLinkDto> getLinkStats(LocalDateTime startTime, LocalDateTime endTime, FilterBy filterBy, String filterValue) {
 
+        return dataStatsRepository.getLinkStats(startTime, endTime, filterBy, filterValue);
     }
 
     @Transactional(readOnly = true)

@@ -1,5 +1,7 @@
 server:
   port: 8091
+  tomcat:
+    max-swallow-size: 100MB         # to catch file size exceed exception in spring.
     
 spring:
   datasource:
@@ -23,7 +25,13 @@ spring:
       format_sql: true
     show-sql: false
     open-in-view: true
-  
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      file-size-threshold: 50MB
+
 jwt:
   header: Authorization
   secret: jwt secret smart city challenge

@@ -47,9 +47,9 @@ public class DataController {
                         @RequestParam(value = "endTime", required = false) @Pattern(regexp = RegExpressions.dateTime) String endTime,
                         @RequestParam(value = "limit", required = true) @Min(1) @Max(MAX_LIMIT) Integer limit,
                         @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
-                        @RequestParam(value = "filterId", required = false) String filterId) {
+                        @RequestParam(value = "filterValue", required = false) String filterValue) {
 
-        DataListDto dataList = dataService.get(getRequestMap(startTime, endTime, limit, filterBy, filterId));
+        DataListDto dataList = dataService.get(getRequestMap(startTime, endTime, limit, filterBy, filterValue));
 
         Response response = new Response("data", dataList.getData());
         response.setData("nextTime", dataList.getNextTime());
@@ -64,7 +64,7 @@ public class DataController {
                           @RequestParam(value = "endTime", required = false) @Pattern(regexp = RegExpressions.dateTime) String endTime,
                           @RequestParam(value = "limit", required = true) @Min(1) @Max(MAX_LIMIT) Integer limit,
                           @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
-                          @RequestParam(value = "filterId", required = false) String filterId,
+                          @RequestParam(value = "filterValue", required = false) String filterValue,
                           HttpServletResponse response) throws IOException {
 
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -73,10 +73,10 @@ public class DataController {
         String filename = "data-" + LocalDateTime.now() + ".csv";
         response.setHeader("Content-disposition", "attachment;filename=" + filename);
 
-        dataService.write(getRequestMap(startTime, endTime, limit, filterBy, filterId), response.getWriter());
+        dataService.write(getRequestMap(startTime, endTime, limit, filterBy, filterValue), response.getWriter());
     }
 
-    private HashMap<String, Object> getRequestMap(String startTime, String endTime, Integer limit, FilterBy filterBy, String filterId) {
+    private HashMap<String, Object> getRequestMap(String startTime, String endTime, Integer limit, FilterBy filterBy, String filterValue) {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("startTime", startTime);
@@ -86,7 +86,7 @@ public class DataController {
         map.put("limit", limit);
         if (filterBy != null) {
             map.put("filterBy", filterBy);
-            map.put("filterId", filterId);
+            map.put("filterValue", filterValue);
         }
         return map;
     }

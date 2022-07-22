@@ -7,6 +7,7 @@ import * as Common from "../commons/common";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ChartStat from "./ChartStat";
+import LoadingChartSpinner from "./LoadingChartSpinner";
 
 function ChartStatWrapper({
     title,
@@ -21,24 +22,24 @@ function ChartStatWrapper({
 }) {
     const [showChart, setShowChart] = useState<boolean>(true);
 
-    const showLoading = () => {
-        let showClass = styles.chartLoadingSpinnerFadeEnd;
-        if (loading) {
-            showClass = styles.chartLoadingSpinnerFade;
-        }
+    // const showLoading = () => {
+    //     let showClass = styles.chartLoadingSpinnerFadeEnd;
+    //     if (loading) {
+    //         showClass = styles.chartLoadingSpinnerFade;
+    //     }
 
-        return (
-            <div
-                className={[styles.chartLoadingSpinnerOverlay, showClass].join(
-                    " "
-                )}
-            >
-                <div className={styles.chartLoadingSpinner}></div>
-            </div>
-        );
-    };
+    //     return (
+    //         <div
+    //             className={[styles.chartLoadingSpinnerOverlay, showClass].join(
+    //                 " "
+    //             )}
+    //         >
+    //             <div className={styles.chartLoadingSpinner}></div>
+    //         </div>
+    //     );
+    // };
     return (
-        <Box className={styles.statChartWwrapper}>
+        <Box className={styles.statChartWrapper}>
             <Box
                 className={styles.statChartTitleWrapper}
                 onClick={() => setShowChart(!showChart)}
@@ -56,7 +57,8 @@ function ChartStatWrapper({
             </Box>
             <Collapse in={showChart}>
                 <Card className={styles.statChartCard}>
-                    {showLoading()}
+                    {/* {showLoading()} */}
+                    <LoadingChartSpinner loading={loading} />
                     <Box className={styles.statChart}>
                         <ChartStat
                             loading={loading}

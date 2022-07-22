@@ -1,0 +1,71 @@
+.emergencyStatRow {
+    display: flex;
+    flex-wrap: wrap;
+
+    margin: 0 40px 0 30px;
+}
+
+.chartTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 40px 0 20px;
+}
+
+.chartSearch {
+    display: flex;
+}
+
+.chartTitleText {
+    color: #333;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.statCharts {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+
+    margin-top: 80px;
+    padding: 0 30px;
+}
+
+.statChartCard {
+    position: relative;
+
+    border-radius: 2px;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
+
+    height: 524px;
+    margin: 0;
+}
+
+.statChart {
+    min-height: 524px !important;
+    text-align: center;
+
+    border-radius: 4px;
+    box-shadow: 0 3px 30px 0 rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+}
+
+.recordTitle {
+    width: 100%;
+    color: #333;
+    font-size: 22px;
+    font-weight: 500;
+    background: transparent;
+
+    margin: 40px 40px 20px 30px;
+}
+
+.record {
+    min-height: 800px;
+    border-radius: 4px;
+    box-shadow: 0 3px 30px 0 rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+
+    margin-bottom: 40px;
+}

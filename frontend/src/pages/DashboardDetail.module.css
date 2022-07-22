@@ -29,7 +29,7 @@
     margin-right: 24px;
 }
 
-.searchBtn {
+/* .searchBtn {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -55,7 +55,7 @@
 .searchBtn:focus {
     background-color: #182940;
     border: none;
-}
+} */
 
 .statCharts {
     position: relative;

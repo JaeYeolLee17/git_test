@@ -77,6 +77,7 @@ export const PAGE_LOGIN = "/login";
 export const PAGE_DASHBOARD = "/dashboard/summary";
 export const PAGE_DASHBOARD_DETAIL = "/dashboard/detail/all";
 export const PAGE_STAT_TRAFFIC = "/stats/traffic";
+export const PAGE_STAT_EMERGENCY = "/stats/emergency";
 export const PAGE_MANAGEMENT_CAMERA = "/management/camera";
 export const PAGE_MANAGEMENT_CAMERA_DETAIL = "/management/camera/detail";
 export const PAGE_MANAGEMENT_INTERSECTION = "/management/intersection";

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import SelectorRegion from "../component/SelectorRegion";
 import SelectorIntersection from "../component/SelectorIntersection";
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 
 import styles from "./StatTraffic.module.css";
 
@@ -14,6 +14,7 @@ import SelectorPeriod from "../component/SelectorPeriod";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
 import ChartStatWrapper from "../component/ChartStatWrapper";
+import SearchButton from "../component/SearchButton";
 
 function StatTraffic() {
     const userDetails = useAuthState();
@@ -444,14 +445,15 @@ function StatTraffic() {
                         />
                     </li>
                     <li>
-                        <button
+                        {/* <button
                             type='button'
                             className={styles.searchBtn}
                             onClick={onSearch}
                         >
                             <SearchIcon />
                             <span>검색</span>
-                        </button>
+                        </button> */}
+                        <SearchButton onSearch={onSearch} />
                     </li>
                 </ul>
             </Box>

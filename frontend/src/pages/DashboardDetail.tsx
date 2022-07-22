@@ -9,10 +9,11 @@ import * as Request from "../commons/request";
 import * as String from "../commons/string";
 import CustomDatePicker from "../component/CustomDatePicker";
 
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 import ChartStatWrapper from "../component/ChartStatWrapper";
 import { useAsyncAxios } from "../utils/customHooks";
 import { useAuthState } from "../provider/AuthProvider";
+import SearchButton from "../component/SearchButton";
 
 function DashboardDetail() {
     const userDetails = useAuthState();
@@ -292,14 +293,15 @@ function DashboardDetail() {
                         <CustomDatePicker onChangedDate={onChangedSearchDate} />
                     </li>
                     <li>
-                        <button
+                        {/* <button
                             type='button'
                             className={styles.searchBtn}
                             onClick={onSearch}
                         >
                             <SearchIcon />
                             <span>검색</span>
-                        </button>
+                        </button> */}
+                        <SearchButton onSearch={onSearch} />
                     </li>
                 </ul>
             </Box>

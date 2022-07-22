@@ -64,7 +64,7 @@ const menuData: menuType[] = [
             },
             {
                 title: "긴급차량 통계",
-                link: `${Common.PAGE_STAT_TRAFFIC}`,
+                link: `${Common.PAGE_STAT_EMERGENCY}`,
                 icon: "Menu05",
             },
         ],
@@ -193,8 +193,8 @@ const Menu = () => {
     return (
         <aside className={styles.wrapper}>
             <>
-            <WeatherWidget />
-            {menuElements}
+                <WeatherWidget />
+                {menuElements}
             </>
         </aside>
         // <aside>

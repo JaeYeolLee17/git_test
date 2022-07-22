@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.repository;
 
 import com.e4motion.challenge.api.dto.StatsDailyDto;
+import com.e4motion.challenge.api.dto.StatsLinkDto;
 import com.e4motion.challenge.api.dto.StatsPeriodDto;
 import com.e4motion.challenge.common.domain.DailyGroupBy;
 import com.e4motion.challenge.common.domain.FilterBy;
@@ -13,6 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DataStatsRepositoryCustom {
+
+    List<StatsLinkDto> getLinkStats(LocalDateTime startTime, LocalDateTime endTime, FilterBy filterBy, String filterValue);
 
     List<StatsMfdDto> getMdfStats(LocalDateTime startTime, LocalDateTime endTime, Integer dayOfWeek, GroupBy groupBy, FilterBy filterBy, String filterValue);
 

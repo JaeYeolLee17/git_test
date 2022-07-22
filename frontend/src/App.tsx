@@ -21,6 +21,7 @@ import IntersectionDetail from "./pages/IntersectionDetail";
 import RegionDetail from "./pages/RegionDetail";
 import EmergencyDetail from "./pages/EmergencyDetail";
 import UserDetail from "./pages/UserDetail";
+import StatEmergency from "./pages/StatEmergency";
 
 // declare global {
 //     interface Window {
@@ -200,6 +201,16 @@ function App() {
                         <PrivateRoute>
                             <DashboardLayout>
                                 <StatTraffic />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_STAT_EMERGENCY}
+                    element={
+                        <PrivateRoute>
+                            <DashboardLayout>
+                                <StatEmergency />
                             </DashboardLayout>
                         </PrivateRoute>
                     }

@@ -18,13 +18,15 @@ export const EMERGENCY_LIST_URL = DEFAULT_URL + "avl/cars";
 export const USER_URL = DEFAULT_URL + "user";
 export const USER_LIST_URL = DEFAULT_URL + "users";
 
-
 export const STAT_MFD_URL = DEFAULT_URL + "stat/mfd";
 export const STAT_LINK_URL = DEFAULT_URL + "stat/link";
 export const STAT_DAILY_URL = DEFAULT_URL + "stat/daily";
 export const STAT_PERIOD_URL = DEFAULT_URL + "stat/period";
 
 export const AVL_URL = DEFAULT_URL + "avl";
+export const AVL_STAT_LIST_URL = DEFAULT_URL + "avl/stat/list";
+export const AVL_STAT_PERIOD_URL = DEFAULT_URL + "avl/stat/period";
+export const AVL_TRACK_URL = DEFAULT_URL + "avl/track";
 
 export const TSI_URL = DEFAULT_URL + "tsi";
 

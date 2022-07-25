@@ -91,13 +91,13 @@ CREATE TABLE public.nt_region_gps
 (
     region_gps_id bigint NOT NULL DEFAULT nextval('nt_region_gps_region_gps_id_seq'::regclass),
     region_id bigint,
-    latitude double precision,
-    longitude double precision,
+    lat double precision,
+    lng double precision,
     gps_order integer,
     created_date timestamp without time zone,
     modified_date timestamp without time zone,
     CONSTRAINT nt_region_gps_pkey PRIMARY KEY (region_gps_id),
-    CONSTRAINT ukfi9a59s3sjqqwlywhw3mt8mdj UNIQUE (region_id, latitude, longitude),
+    CONSTRAINT ukfi9a59s3sjqqwlywhw3mt8mdj UNIQUE (region_id, lat, lng),
     CONSTRAINT fkqanwdwnfx1ijtedyux6xjd84a FOREIGN KEY (region_id)
         REFERENCES public.nt_region (region_id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -116,8 +116,8 @@ CREATE TABLE public.nt_intersection
     intersection_id bigint NOT NULL DEFAULT nextval('nt_intersection_intersection_id_seq'::regclass),
     intersection_no character varying(10) COLLATE pg_catalog."default" NOT NULL,
     intersection_name character varying(32) COLLATE pg_catalog."default",
-    latitude double precision,
-    longitude double precision,
+    lat double precision,
+    lng double precision,
     region_id bigint,
     national_id bigint,
     created_date timestamp without time zone,
@@ -144,8 +144,8 @@ CREATE TABLE public.nt_camera
     password character varying(128) COLLATE pg_catalog."default" NOT NULL,
     intersection_id bigint,
     direction_id bigint,
-    latitude double precision,
-    longitude double precision,
+    lat double precision,
+    lng double precision,
     distance integer,
     rtsp_url character varying(128) COLLATE pg_catalog."default",
     rtsp_id character varying(32) COLLATE pg_catalog."default",
@@ -236,13 +236,13 @@ CREATE TABLE public.nt_link_gps
 (
     link_gps_id bigint NOT NULL DEFAULT nextval('nt_link_gps_link_gps_id_seq'::regclass),
     link_id bigint,
-    latitude double precision,
-    longitude double precision,
+    lat double precision,
+    lng double precision,
     gps_order integer,
     created_date timestamp without time zone,
     modified_date timestamp without time zone,
     CONSTRAINT nt_link_gps_pkey PRIMARY KEY (link_gps_id),
-    CONSTRAINT ukj5asivtra90oxw4tc2hkhv4w0 UNIQUE (link_id, latitude, longitude),
+    CONSTRAINT ukj5asivtra90oxw4tc2hkhv4w0 UNIQUE (link_id, lat, lng),
     CONSTRAINT fk141vf5mygaaj07tjbyurbohu5 FOREIGN KEY (link_id)
         REFERENCES public.nt_link (link_id) MATCH SIMPLE
         ON UPDATE NO ACTION

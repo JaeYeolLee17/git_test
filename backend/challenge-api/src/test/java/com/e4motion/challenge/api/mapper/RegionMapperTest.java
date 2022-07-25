@@ -48,8 +48,8 @@ public class RegionMapperTest {
 		// with intersections.
 		List<Intersection> intersections = new ArrayList<>();
 		Intersection intersection1 = TestDataHelper.getIntersection1();
-		intersection1.setLatitude(null);
-		intersection1.setLongitude(null);
+		intersection1.setLat(null);
+		intersection1.setLng(null);
 		intersections.add(intersection1);	// an intersection without gps.
 		intersections.add(TestDataHelper.getIntersection2());
 		region.setIntersections(intersections);
@@ -77,8 +77,8 @@ public class RegionMapperTest {
 		} else {
 			int i = 0;
 			for (RegionGps gps : region.getGps()) {
-				assertThat(gps.getLatitude()).isEqualTo(regionDto.getGps().get(i).getLatitude());
-				assertThat(gps.getLongitude()).isEqualTo(regionDto.getGps().get(i).getLongitude());
+				assertThat(gps.getLat()).isEqualTo(regionDto.getGps().get(i).getLat());
+				assertThat(gps.getLng()).isEqualTo(regionDto.getGps().get(i).getLng());
 				i++;
 			}
 		}
@@ -90,11 +90,11 @@ public class RegionMapperTest {
 			for (Intersection intersection : region.getIntersections()) {
 				assertThat(intersection.getIntersectionNo()).isEqualTo(regionDto.getIntersections().get(i).getIntersectionNo());
 				assertThat(intersection.getIntersectionName()).isEqualTo(regionDto.getIntersections().get(i).getIntersectionName());
-				if (intersection.getLatitude() == null) {
+				if (intersection.getLat() == null) {
 					assertThat(regionDto.getIntersections().get(i).getGps()).isNull();
 				} else {
-					assertThat(intersection.getLatitude()).isEqualTo(regionDto.getIntersections().get(i).getGps().getLatitude());
-					assertThat(intersection.getLongitude()).isEqualTo(regionDto.getIntersections().get(i).getGps().getLongitude());
+					assertThat(intersection.getLat()).isEqualTo(regionDto.getIntersections().get(i).getGps().getLat());
+					assertThat(intersection.getLng()).isEqualTo(regionDto.getIntersections().get(i).getGps().getLng());
 				}
 				assertThat(regionDto.getIntersections().get(i).getRegion()).isNull();
 				assertThat(intersection.getNationalId()).isEqualTo(regionDto.getIntersections().get(i).getNationalId());

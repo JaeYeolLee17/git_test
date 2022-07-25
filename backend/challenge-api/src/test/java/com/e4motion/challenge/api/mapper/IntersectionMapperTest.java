@@ -35,8 +35,8 @@ public class IntersectionMapperTest {
 		assertMapTo(intersection, intersectionDto);
 
 		// without intersection gps.
-		intersection.setLatitude(null);
-		intersection.setLongitude(null);
+		intersection.setLat(null);
+		intersection.setLng(null);
 
 		intersectionDto = mapper.toIntersectionDto(intersection);
 		assertMapTo(intersection, intersectionDto);
@@ -81,11 +81,11 @@ public class IntersectionMapperTest {
 		assertThat(intersection.getIntersectionName()).isEqualTo(intersectionDto.getIntersectionName());
 		assertThat(intersection.getNationalId()).isEqualTo(intersectionDto.getNationalId());
 
-		if (intersection.getLatitude() == null) {
+		if (intersection.getLat() == null) {
 			assertThat(intersectionDto.getGps()).isNull();
 		} else {
-			assertThat(intersection.getLatitude()).isEqualTo(intersectionDto.getGps().getLatitude());
-			assertThat(intersection.getLongitude()).isEqualTo(intersectionDto.getGps().getLongitude());
+			assertThat(intersection.getLat()).isEqualTo(intersectionDto.getGps().getLat());
+			assertThat(intersection.getLng()).isEqualTo(intersectionDto.getGps().getLng());
 		}
 
 		if (intersection.getRegion() == null) {
@@ -106,11 +106,11 @@ public class IntersectionMapperTest {
 		assertThat(intersectionDto.getNationalId()).isEqualTo(intersection.getNationalId());
 
 		if (intersectionDto.getGps() == null) {
-			assertThat(intersection.getLatitude()).isNull();
-			assertThat(intersection.getLongitude()).isNull();
+			assertThat(intersection.getLat()).isNull();
+			assertThat(intersection.getLng()).isNull();
 		} else {
-			assertThat(intersectionDto.getGps().getLatitude()).isEqualTo(intersection.getLatitude());
-			assertThat(intersectionDto.getGps().getLongitude()).isEqualTo(intersection.getLongitude());
+			assertThat(intersectionDto.getGps().getLat()).isEqualTo(intersection.getLat());
+			assertThat(intersectionDto.getGps().getLng()).isEqualTo(intersection.getLng());
 		}
 
 		if (intersectionDto.getRegion() == null) {

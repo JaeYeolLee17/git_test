@@ -86,7 +86,7 @@ public class IntersectionServiceTest {
 		updateIntersectionDto1 = IntersectionDto.builder()
 				.intersectionNo("I0099")
 				.intersectionName("수정이름")
-				.gps(GpsDto.builder().latitude(35.000000).longitude(127.000000).build())
+				.gps(GpsDto.builder().lat(35.000000).lng(127.000000).build())
 				.region(regionDto2)
 				.nationalId(15000001L)
 				.build();
@@ -186,8 +186,8 @@ public class IntersectionServiceTest {
 			return;
 		}
 
-		assertThat(gpsDto1.getLatitude()).isEqualTo(gpsDto2.getLatitude());
-		assertThat(gpsDto1.getLongitude()).isEqualTo(gpsDto2.getLongitude());
+		assertThat(gpsDto1.getLat()).isEqualTo(gpsDto2.getLat());
+		assertThat(gpsDto1.getLng()).isEqualTo(gpsDto2.getLng());
 	}
 
 	private void assertEquals(RegionDto regionDto1, RegionDto regionDto2) {

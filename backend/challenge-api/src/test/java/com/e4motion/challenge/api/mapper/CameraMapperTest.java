@@ -125,8 +125,8 @@ public class CameraMapperTest {
 		assertMapTo(camera, cameraDto);
 
 		// without gps.
-		camera.setLatitude(null);
-		camera.setLongitude(null);
+		camera.setLat(null);
+		camera.setLng(null);
 
 		cameraDto = mapper.toCameraDto(camera);
 		assertMapTo(camera, cameraDto);
@@ -186,11 +186,11 @@ public class CameraMapperTest {
 			assertThat(intersection.getIntersectionName()).isEqualTo(intersectionDto.getIntersectionName());
 			assertThat(intersection.getNationalId()).isEqualTo(intersectionDto.getNationalId());
 
-			if (intersection.getLatitude() == null) {
+			if (intersection.getLat() == null) {
 				assertThat(intersectionDto.getGps()).isNull();
 			} else {
-				assertThat(intersection.getLatitude()).isEqualTo(intersectionDto.getGps().getLatitude());
-				assertThat(intersection.getLongitude()).isEqualTo(intersectionDto.getGps().getLongitude());
+				assertThat(intersection.getLat()).isEqualTo(intersectionDto.getGps().getLat());
+				assertThat(intersection.getLng()).isEqualTo(intersectionDto.getGps().getLng());
 			}
 
 			if (intersection.getRegion() == null) {
@@ -213,11 +213,11 @@ public class CameraMapperTest {
 			assertThat(intersection.getIntersectionName()).isEqualTo(intersectionDto.getIntersectionName());
 			assertThat(intersection.getNationalId()).isEqualTo(intersectionDto.getNationalId());
 
-			if (intersection.getLatitude() == null) {
+			if (intersection.getLat() == null) {
 				assertThat(intersectionDto.getGps()).isNull();
 			} else {
-				assertThat(intersection.getLatitude()).isEqualTo(intersectionDto.getGps().getLatitude());
-				assertThat(intersection.getLongitude()).isEqualTo(intersectionDto.getGps().getLongitude());
+				assertThat(intersection.getLat()).isEqualTo(intersectionDto.getGps().getLat());
+				assertThat(intersection.getLng()).isEqualTo(intersectionDto.getGps().getLng());
 			}
 
 			if (intersection.getRegion() == null) {
@@ -230,11 +230,11 @@ public class CameraMapperTest {
 			}
 		}
 
-		if (camera.getLatitude() == null) {
+		if (camera.getLat() == null) {
 			assertThat(cameraDto.getGps()).isNull();
 		} else {
-			assertThat(camera.getLatitude()).isEqualTo(cameraDto.getGps().getLatitude());
-			assertThat(camera.getLongitude()).isEqualTo(cameraDto.getGps().getLongitude());
+			assertThat(camera.getLat()).isEqualTo(cameraDto.getGps().getLat());
+			assertThat(camera.getLng()).isEqualTo(cameraDto.getGps().getLng());
 		}
 
 		assertThat(camera.getDistance()).isEqualTo(cameraDto.getDistance());
@@ -278,8 +278,8 @@ public class CameraMapperTest {
 			assertThat(intersection.getIntersectionId()).isNull();
 			assertThat(intersection.getIntersectionNo()).isEqualTo(intersectionDto.getIntersectionNo());
 			assertThat(intersection.getIntersectionName()).isNull();
-			assertThat(intersection.getLatitude()).isNull();
-			assertThat(intersection.getLongitude()).isNull();
+			assertThat(intersection.getLat()).isNull();
+			assertThat(intersection.getLng()).isNull();
 			assertThat(intersection.getRegion()).isNull();
 			assertThat(intersection.getNationalId()).isNull();
 		}
@@ -293,18 +293,18 @@ public class CameraMapperTest {
 			assertThat(intersection.getIntersectionId()).isNull();
 			assertThat(intersection.getIntersectionNo()).isEqualTo(intersectionDto.getIntersectionNo());
 			assertThat(intersection.getIntersectionName()).isNull();
-			assertThat(intersection.getLatitude()).isNull();
-			assertThat(intersection.getLongitude()).isNull();
+			assertThat(intersection.getLat()).isNull();
+			assertThat(intersection.getLng()).isNull();
 			assertThat(intersection.getRegion()).isNull();
 			assertThat(intersection.getNationalId()).isNull();
 		}
 
 		if (cameraDto.getGps() == null) {
-			assertThat(camera.getLatitude()).isNull();
-			assertThat(camera.getLongitude()).isNull();
+			assertThat(camera.getLat()).isNull();
+			assertThat(camera.getLng()).isNull();
 		} else {
-			assertThat(cameraDto.getGps().getLatitude()).isEqualTo(camera.getLatitude());
-			assertThat(cameraDto.getGps().getLongitude()).isEqualTo(camera.getLongitude());
+			assertThat(cameraDto.getGps().getLat()).isEqualTo(camera.getLat());
+			assertThat(cameraDto.getGps().getLng()).isEqualTo(camera.getLng());
 		}
 
 		assertThat(cameraDto.getDistance()).isEqualTo(camera.getDistance());

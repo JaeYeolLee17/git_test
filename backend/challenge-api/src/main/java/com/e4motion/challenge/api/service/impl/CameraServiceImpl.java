@@ -47,6 +47,10 @@ public class CameraServiceImpl implements CameraService {
             camera.setDirection(getIntersection(camera.getDirection().getIntersectionNo()));
         }
 
+        if (camera.getRoad() != null) {
+            camera.getRoad().setCamera(camera);
+        }
+
         return cameraMapper.toCameraDto(cameraRepository.save(camera));
     }
 
@@ -79,8 +83,8 @@ public class CameraServiceImpl implements CameraService {
                     }
 
                     if (cameraDto.getGps() != null) {
-                        camera.setLatitude(cameraDto.getGps().getLatitude());
-                        camera.setLongitude(cameraDto.getGps().getLongitude());
+                        camera.setLat(cameraDto.getGps().getLat());
+                        camera.setLng(cameraDto.getGps().getLng());
                         settingsUpdated = true;
                     }
 

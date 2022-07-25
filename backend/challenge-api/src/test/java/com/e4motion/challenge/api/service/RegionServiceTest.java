@@ -55,8 +55,8 @@ public class RegionServiceTest {
 		newRegion.setGps(regionDto.getGps().stream().map(gps ->
 				RegionGps.builder()
 						.region(newRegion)
-						.latitude(gps.getLatitude())
-						.longitude(gps.getLongitude())
+						.lat(gps.getLat())
+						.lng(gps.getLng())
 						.gpsOrder(order.incrementAndGet())
 						.build()).collect(Collectors.toList()));
 		
@@ -97,8 +97,8 @@ public class RegionServiceTest {
 		newRegion.setGps(regionDto.getGps().stream().map(gps ->
 				RegionGps.builder()
 						.region(newRegion)
-						.latitude(gps.getLatitude())
-						.longitude(gps.getLongitude())
+						.lat(gps.getLat())
+						.lng(gps.getLng())
 						.gpsOrder(order.incrementAndGet())
 						.build()).collect(Collectors.toList()));
 
@@ -122,8 +122,8 @@ public class RegionServiceTest {
 		newRegion.setGps(regionDto.getGps().stream().map(gps ->
 				RegionGps.builder()
 						.region(newRegion)
-						.latitude(gps.getLatitude())
-						.longitude(gps.getLongitude())
+						.lat(gps.getLat())
+						.lng(gps.getLng())
 						.gpsOrder(order.incrementAndGet())
 						.build()).collect(Collectors.toList()));
 
@@ -189,8 +189,8 @@ public class RegionServiceTest {
 		newRegion.setGps(regionDto.getGps().stream().map(gps ->
 				RegionGps.builder()
 						.region(newRegion)
-						.latitude(gps.getLatitude())
-						.longitude(gps.getLongitude())
+						.lat(gps.getLat())
+						.lng(gps.getLng())
 						.gpsOrder(order.incrementAndGet())
 						.build()).collect(Collectors.toList()));
 
@@ -216,8 +216,8 @@ public class RegionServiceTest {
 		region1.setGps(regionDto1.getGps().stream().map(gps ->
 				RegionGps.builder()
 						.region(region1)
-						.latitude(gps.getLatitude())
-						.longitude(gps.getLongitude())
+						.lat(gps.getLat())
+						.lng(gps.getLng())
 						.gpsOrder(order.incrementAndGet())
 						.build()).collect(Collectors.toList()));
 
@@ -226,8 +226,8 @@ public class RegionServiceTest {
 		region2.setGps(regionDto2.getGps().stream().map(gps ->
 				RegionGps.builder()
 						.region(region2)
-						.latitude(gps.getLatitude())
-						.longitude(gps.getLongitude())
+						.lat(gps.getLat())
+						.lng(gps.getLng())
 						.gpsOrder(order2.incrementAndGet())
 						.build()).collect(Collectors.toList()));
 
@@ -262,8 +262,8 @@ public class RegionServiceTest {
 
 		int i = 0;
 		for (GpsDto gps : gpsDto2) {
-			assertThat(gps.getLatitude()).isEqualTo(gpsDto2.get(i).getLatitude());
-			assertThat(gps.getLongitude()).isEqualTo(gpsDto2.get(i).getLongitude());
+			assertThat(gps.getLat()).isEqualTo(gpsDto2.get(i).getLat());
+			assertThat(gps.getLng()).isEqualTo(gpsDto2.get(i).getLng());
 			i++;
 		}
 	}

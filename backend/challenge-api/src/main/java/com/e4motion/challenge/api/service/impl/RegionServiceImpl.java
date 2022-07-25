@@ -90,8 +90,8 @@ public class RegionServiceImpl implements RegionService {
             return regionDto.getGps().stream().map(gps ->
                     RegionGps.builder()
                             .region(region)
-                            .latitude(gps.getLatitude())
-                            .longitude(gps.getLongitude())
+                            .lat(gps.getLat())
+                            .lng(gps.getLng())
                             .gpsOrder(order.incrementAndGet())
                             .build()).collect(Collectors.toList());
         }

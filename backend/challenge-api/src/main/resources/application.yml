@@ -26,11 +26,30 @@ spring:
     show-sql: false
     open-in-view: true
 
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: foo
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
   servlet:
     multipart:
       max-file-size: 50MB
-      max-request-size: 50MB
-      file-size-threshold: 50MB
+      max-request-size: 500MB
+      file-size-threshold: 10MB
+
+tsihub:
+  node-info:
+    url: http://tsihub-api.koroad.or.kr:18877/api/nodeinfo/
+  broker-info:
+    url: http://tsihub-api.koroad.or.kr:18877/api/brokerinfo/
+  api-token: 42cb9b8457f4cf19ec76dc1302a5a6af353b552c28b3b1b0af19d2c7bb982406
 
 jwt:
   header: Authorization

@@ -101,12 +101,12 @@ class RegionRepositoryTest {
 		region.setGps(disorderGps);
 
 		// check disordered
-		assertThat(gps.get(0).getLatitude()).isEqualTo(disorderGps.get(2).getLatitude());
-		assertThat(gps.get(0).getLongitude()).isEqualTo(disorderGps.get(2).getLongitude());
-		assertThat(gps.get(1).getLatitude()).isEqualTo(disorderGps.get(1).getLatitude());
-		assertThat(gps.get(1).getLongitude()).isEqualTo(disorderGps.get(1).getLongitude());
-		assertThat(gps.get(2).getLatitude()).isEqualTo(disorderGps.get(0).getLatitude());
-		assertThat(gps.get(2).getLongitude()).isEqualTo(disorderGps.get(0).getLongitude());
+		assertThat(gps.get(0).getLat()).isEqualTo(disorderGps.get(2).getLat());
+		assertThat(gps.get(0).getLng()).isEqualTo(disorderGps.get(2).getLng());
+		assertThat(gps.get(1).getLat()).isEqualTo(disorderGps.get(1).getLat());
+		assertThat(gps.get(1).getLng()).isEqualTo(disorderGps.get(1).getLng());
+		assertThat(gps.get(2).getLat()).isEqualTo(disorderGps.get(0).getLat());
+		assertThat(gps.get(2).getLng()).isEqualTo(disorderGps.get(0).getLng());
 
 		regionRepository.saveAndFlush(region);
 		entityManager.clear();
@@ -116,12 +116,12 @@ class RegionRepositoryTest {
 		assertThat(found.get().getGps().size()).isEqualTo(region.getGps().size());
 
 		// check ordered
-		assertThat(gps.get(0).getLatitude()).isEqualTo(found.get().getGps().get(0).getLatitude());
-		assertThat(gps.get(0).getLongitude()).isEqualTo(found.get().getGps().get(0).getLongitude());
-		assertThat(gps.get(1).getLatitude()).isEqualTo(found.get().getGps().get(1).getLatitude());
-		assertThat(gps.get(1).getLongitude()).isEqualTo(found.get().getGps().get(1).getLongitude());
-		assertThat(gps.get(2).getLatitude()).isEqualTo(found.get().getGps().get(2).getLatitude());
-		assertThat(gps.get(2).getLongitude()).isEqualTo(found.get().getGps().get(2).getLongitude());
+		assertThat(gps.get(0).getLat()).isEqualTo(found.get().getGps().get(0).getLat());
+		assertThat(gps.get(0).getLng()).isEqualTo(found.get().getGps().get(0).getLng());
+		assertThat(gps.get(1).getLat()).isEqualTo(found.get().getGps().get(1).getLat());
+		assertThat(gps.get(1).getLng()).isEqualTo(found.get().getGps().get(1).getLng());
+		assertThat(gps.get(2).getLat()).isEqualTo(found.get().getGps().get(2).getLat());
+		assertThat(gps.get(2).getLng()).isEqualTo(found.get().getGps().get(2).getLng());
 	}
 
 	@Test
@@ -134,9 +134,9 @@ class RegionRepositoryTest {
 
 		// new gps
 		List<RegionGps> gps = new ArrayList<>();
-		gps.add(RegionGps.builder().region(found.get()).latitude(35.9).longitude(128.9).gpsOrder(1).build());
-		gps.add(RegionGps.builder().region(found.get()).latitude(35.8).longitude(128.8).gpsOrder(2).build());
-		gps.add(RegionGps.builder().region(found.get()).latitude(35.3).longitude(128.3).gpsOrder(3).build());
+		gps.add(RegionGps.builder().region(found.get()).lat(35.9).lng(128.9).gpsOrder(1).build());
+		gps.add(RegionGps.builder().region(found.get()).lat(35.8).lng(128.8).gpsOrder(2).build());
+		gps.add(RegionGps.builder().region(found.get()).lat(35.3).lng(128.3).gpsOrder(3).build());
 
 		// gps 목록 수정 시 목록 자체를 대체하면 안된다. list 를 clear 후 add 하여 저장한다.
 		// 만약 기존 목록에서 동일한 위도, 경도(unique 위반) 가 있을 경우 모두 제거 후 flush 한 다음 다시 목록 채워서 저장해야 한다.
@@ -151,12 +151,12 @@ class RegionRepositoryTest {
 		assertThat(found.isPresent()).isTrue();
 
 		assertThat(found.get().getGps().size()).isEqualTo(3);
-		assertThat(found.get().getGps().get(0).getLatitude()).isEqualTo(gps.get(0).getLatitude());
-		assertThat(found.get().getGps().get(0).getLongitude()).isEqualTo(gps.get(0).getLongitude());
-		assertThat(found.get().getGps().get(1).getLatitude()).isEqualTo(gps.get(1).getLatitude());
-		assertThat(found.get().getGps().get(1).getLongitude()).isEqualTo(gps.get(1).getLongitude());
-		assertThat(found.get().getGps().get(2).getLatitude()).isEqualTo(gps.get(2).getLatitude());
-		assertThat(found.get().getGps().get(2).getLongitude()).isEqualTo(gps.get(2).getLongitude());
+		assertThat(found.get().getGps().get(0).getLat()).isEqualTo(gps.get(0).getLat());
+		assertThat(found.get().getGps().get(0).getLng()).isEqualTo(gps.get(0).getLng());
+		assertThat(found.get().getGps().get(1).getLat()).isEqualTo(gps.get(1).getLat());
+		assertThat(found.get().getGps().get(1).getLng()).isEqualTo(gps.get(1).getLng());
+		assertThat(found.get().getGps().get(2).getLat()).isEqualTo(gps.get(2).getLat());
+		assertThat(found.get().getGps().get(2).getLng()).isEqualTo(gps.get(2).getLng());
 
 		List<RegionGps> regionGps = regionGpsRepository.findAllByRegion_RegionIdOrderByGpsOrder(region.getRegionId());
 		assertThat(regionGps.size()).isEqualTo(3);
@@ -258,8 +258,8 @@ class RegionRepositoryTest {
 		} else {
 			int i = 0;
 			for (RegionGps gps : region1.getGps()) {
-				assertThat(gps.getLatitude()).isEqualTo(region2.getGps().get(i).getLatitude());
-				assertThat(gps.getLongitude()).isEqualTo(region2.getGps().get(i).getLongitude());
+				assertThat(gps.getLat()).isEqualTo(region2.getGps().get(i).getLat());
+				assertThat(gps.getLng()).isEqualTo(region2.getGps().get(i).getLng());
 				i++;
 			}
 		}

@@ -42,7 +42,7 @@ public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
 
     /*
     SELECT extract(year from t) AS y, extract(month from t) AS m, extract(day from t) AS d,
-                c, L.start_id, L.end_id, LG.latitude, LG.longitude,
+                c, L.start_id, L.end_id, LG.lat, LG.lng,
                 extract(hour from t) AS h, extract(minute from t) AS mi,
                 (sr0 + sr1 + sr2 + sr3 + sr4 + lu0 + lu1 + lu2 + lu3 + lu4) AS srlu,
                 (qtsr0 + qtsr1 + qtsr2 + qtsr3 + qtsr4 + qtlu0 + qtlu1 + qtlu2 + qtlu3 + qtlu4) AS qtsrlu,
@@ -65,7 +65,7 @@ public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
         // projections
         Expression<?>[] projections = new Expression[] {
                 dataStats.t.year(), dataStats.t.month(), dataStats.t.dayOfMonth(),
-                dataStats.c, link.start.intersectionNo, link.end.intersectionNo, linkGps.latitude, linkGps.longitude,
+                dataStats.c, link.start.intersectionNo, link.end.intersectionNo, linkGps.lat, linkGps.lng,
                 dataStats.t.hour(), dataStats.t.minute()
         };
 
@@ -210,11 +210,11 @@ public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
 
             assert statsLinkDto != null;
             if (statsLinkDto.getLink().getGps().stream()
-                    .noneMatch(gps -> Objects.equals(gps.getLatitude(), tuple.get(linkGps.latitude)) &&
-                            Objects.equals(gps.getLongitude(), tuple.get(linkGps.longitude)))) {
+                    .noneMatch(gps -> Objects.equals(gps.getLat(), tuple.get(linkGps.lat)) &&
+                            Objects.equals(gps.getLng(), tuple.get(linkGps.lng)))) {
                 statsLinkDto.getLink().getGps().add(GpsDto.builder()
-                        .latitude(tuple.get(linkGps.latitude))
-                        .longitude(tuple.get(linkGps.longitude))
+                        .lat(tuple.get(linkGps.lat))
+                        .lng(tuple.get(linkGps.lng))
                         .build());
             }
         }

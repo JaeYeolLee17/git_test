@@ -13,9 +13,9 @@ import javax.validation.constraints.NotNull;
 public class GpsDto {
 
     @NotNull
-    private Double latitude;
+    private Double lat;
 
     @NotNull
-    private Double longitude;
+    private Double lng;
 
 }

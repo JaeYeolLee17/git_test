@@ -33,8 +33,8 @@ public interface IntersectionMapper {
     List<IntersectionDto> toIntersectionDto(List<Intersection> regions);
 
     @Mapping(target = "intersectionId", ignore = true)
-    @Mapping(target = "latitude", expression = MappingExpressions.TO_INTERSECTION_LATITUDE)
-    @Mapping(target = "longitude", expression = MappingExpressions.TO_INTERSECTION_LONGITUDE)
+    @Mapping(target = "lat", expression = MappingExpressions.TO_INTERSECTION_LAT)
+    @Mapping(target = "lng", expression = MappingExpressions.TO_INTERSECTION_LNG)
     @Mapping(target = "cameras", ignore = true)
     Intersection toIntersection (IntersectionDto intersectionDto);
 

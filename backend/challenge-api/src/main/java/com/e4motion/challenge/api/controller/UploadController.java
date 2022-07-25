@@ -33,7 +33,7 @@ public class UploadController {
 
     @Operation(summary = "데이터 통계(15분 단위)", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping(value = "/data/stats/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/data/stats/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Response uploadDataStats(@RequestPart("files") MultipartFile[] files) throws Exception {
 
         uploadService.uploadDataStats(files);

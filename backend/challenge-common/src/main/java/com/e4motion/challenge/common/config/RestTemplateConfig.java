@@ -1,4 +1,4 @@
-package com.e4motion.challenge.data.collector.config;
+package com.e4motion.challenge.common.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

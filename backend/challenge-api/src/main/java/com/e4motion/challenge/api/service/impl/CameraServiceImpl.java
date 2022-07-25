@@ -47,6 +47,10 @@ public class CameraServiceImpl implements CameraService {
             camera.setDirection(getIntersection(camera.getDirection().getIntersectionNo()));
         }
 
+        if (camera.getRoad() != null) {
+            camera.getRoad().setCamera(camera);
+        }
+
         return cameraMapper.toCameraDto(cameraRepository.save(camera));
     }
 

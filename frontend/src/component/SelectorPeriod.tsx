@@ -11,14 +11,14 @@ function SelectorPeriod({
     onChangedPeriod?: (period: string) => void;
 }) {
     const listPeriod = [
-        { value: "day", innerHTML: "일간 추이" },
-        { value: "weekOfYear", innerHTML: "주간 추이" },
-        { value: "month", innerHTML: "월간 추이" },
-        { value: "dayOfWeek", innerHTML: "요일별 추이" },
+        { value: "DAY", innerHTML: "일간 추이" },
+        { value: "WEEK_OF_YEAR", innerHTML: "주간 추이" },
+        { value: "MONTH", innerHTML: "월간 추이" },
+        { value: "DAY_OF_WEEK", innerHTML: "요일별 추이" },
     ];
 
     const [listSelectPeriodItem, setListSelectPeriodItem] =
-        useState<SelectorItemType>({ value: "day", innerHTML: "일간 추이" });
+        useState<SelectorItemType>({ value: "DAY", innerHTML: "일간 추이" });
 
     const onChangePeriod = (e: SelectChangeEvent) => {
         setListSelectPeriodItem({

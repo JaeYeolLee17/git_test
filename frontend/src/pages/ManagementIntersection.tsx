@@ -1,79 +1,91 @@
-import React, { useEffect, useState } from "react"
-import TableManagement from "../component/TableManagement"
+import React, { useEffect, useState } from "react";
+import TableManagement from "../component/TableManagement";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
-import * as Utils from "../utils/utils"
-import * as Request from "../commons/request"
+import * as Utils from "../utils/utils";
+import * as Request from "../commons/request";
 import KakaoMap from "../component/KakaoMap";
-import styles from "../pages/ManagementIntersection.module.css"
+import styles from "../pages/ManagementIntersection.module.css";
 import * as Common from "../commons/common";
 
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 
 type rows = {
-    id: string,
-    name: string,
-    region: string
-}
+    id: string;
+    name: string;
+    region: string;
+};
 
-type columns ={
-    field: string,
-    headerName: string,
-    flex: number,
-    renderCell: any
-  }
+type columns = {
+    field: string;
+    headerName: string;
+    flex: number;
+    renderCell: any;
+};
 
 function ManagementIntersection() {
     const userDetails = useAuthState();
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
     const [listIntersection, setListIntersection] = useState<Array<any>>([]);
-    const [selectedintersectionId, setSelectedIntersectionId] = useState<string | null>("");
-    
+    const [selectedintersectionNo, setSelectedIntersectionNo] = useState<
+        string | null
+    >("");
+
     const columns: columns[] = [
         {
-            field: 'id',
-            headerName: '교차로 ID',
+            field: "id",
+            headerName: "교차로 No.",
             flex: 1,
-            renderCell: undefined
+            renderCell: undefined,
         },
         {
-            field: 'name',
-            headerName: '교차로 이름',
+            field: "name",
+            headerName: "교차로 이름",
             flex: 1,
-            renderCell: undefined
+            renderCell: undefined,
         },
         {
-            field: 'region',
-            headerName: '구역',
+            field: "region",
+            headerName: "구역",
             flex: 1,
-            renderCell: undefined
+            renderCell: undefined,
         },
         {
-            field: 'data',
-            headerName: '',
+            field: "data",
+            headerName: "",
             flex: 1,
-            renderCell: (params :any) => {
+            renderCell: (params: any) => {
                 return (
-                    <button onClick={(e) => {
-                        navigate(
-                            Common.PAGE_MANAGEMENT_INTERSECTION_DETAIL, {
-                            state :listIntersection.find(function(data){ return data.intersectionId === params.id })})
-                        }
-                    }>
+                    <button
+                        onClick={(e) => {
+                            navigate(
+                                Common.PAGE_MANAGEMENT_INTERSECTION_DETAIL,
+                                {
+                                    state: listIntersection.find(function (
+                                        data
+                                    ) {
+                                        return (
+                                            data.intersectionNo === params.id
+                                        );
+                                    }),
+                                }
+                            );
+                        }}
+                    >
                         수정
                     </button>
-                )
-            }
-        }
-      ];
+                );
+            },
+        },
+    ];
 
     useEffect(() => {
         requestIntersections();
     }, []);
 
-    const requestAxiosIntersections = async() => {
+    const requestAxiosIntersections = async () => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
@@ -82,7 +94,7 @@ function ManagementIntersection() {
         );
 
         return response.data;
-    }
+    };
 
     const {
         loading: loadingIntersections,
@@ -96,18 +108,17 @@ function ManagementIntersection() {
 
         setListIntersection(resultIntersections.intersections);
 
-        resultIntersections.intersections.map((result: any) => { 
-            setRows(rows => 
-                [...rows, 
-                    {
-                        id: result.intersectionId, 
-                        name: result.intersectionName, 
-                        region: result.region === null ? '-' : result.region.regionName
-                    }
-                ]
-            );
-        })
-
+        resultIntersections.intersections.map((result: any) => {
+            setRows((rows) => [
+                ...rows,
+                {
+                    id: result.intersectionNo,
+                    name: result.intersectionName,
+                    region:
+                        result.region === null ? "-" : result.region.regionName,
+                },
+            ]);
+        });
     }, [resultIntersections]);
 
     useEffect(() => {
@@ -116,27 +127,22 @@ function ManagementIntersection() {
         console.log("errorIntersection", errorIntersections);
     }, [errorIntersections]);
 
-    const handleClickIntersection = (intersectionId: string) => {
-        setSelectedIntersectionId(intersectionId);
-        alert(intersectionId);
-    };
-
-    
-    const onChangedZoomLevel = (level: number) => {
-        console.log("level", level);
+    const handleClickIntersection = (intersectionNo: string) => {
+        setSelectedIntersectionNo(intersectionNo);
+        alert(intersectionNo);
     };
 
     const onRowClick = (intersectionId: string) => {
-        setSelectedIntersectionId(intersectionId);
+        setSelectedIntersectionNo(intersectionId);
     };
 
-    return(
+    return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <TableManagement 
-                        columns={columns} 
-                        rows={rows} 
+                    <TableManagement
+                        columns={columns}
+                        rows={rows}
                         clickEvent={onRowClick}
                     />
                 </Grid>
@@ -147,25 +153,17 @@ function ManagementIntersection() {
                             height: "calc(100vh - 80px)",
                             zIndex: "0",
                         }}
-                        transitionState={undefined}
-                        region={undefined}
                         intersections={{
                             list: listIntersection,
-                            selected: selectedintersectionId,
+                            selected: selectedintersectionNo,
                             clickEvent: handleClickIntersection,
                             showEdge: true,
                         }}
-                        cameras={undefined}
-                        links={undefined}
-                        trafficLights={undefined}
-                        avl={undefined}
-                        zoomLevel={undefined}
-                        onChangedZoomLevel={onChangedZoomLevel}
                     />
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
 
-export default ManagementIntersection
+export default ManagementIntersection;

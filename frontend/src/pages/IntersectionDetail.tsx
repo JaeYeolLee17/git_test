@@ -5,85 +5,95 @@ import ManagementDetail from "../component/ManagementDetail";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
 import { useNavigate } from "react-router-dom";
-import Grid from '@mui/material/Grid';
-import styles from './CameraDetail.module.css';
+import Grid from "@mui/material/Grid";
+import styles from "./CameraDetail.module.css";
 import * as Utils from "../utils/utils";
-import * as Request from "../commons/request"
+import * as Request from "../commons/request";
 import * as Common from "../commons/common";
 
 type intersectionDataType = {
-    distance: number,
-    serverUrl: string,
-    sendCycle: number,
-    collectCycle: number 
-}
+    distance: number;
+    serverUrl: string;
+    sendCycle: number;
+    collectCycle: number;
+};
 
 function IntersectionDetail() {
     const location = useLocation();
     const userDetails = useAuthState();
     const navigate = useNavigate();
 
-    const [selectedIntersectionList, setSelectedIntersectionList] = useState<Array<any>>([]);
+    const [selectedIntersectionList, setSelectedIntersectionList] = useState<
+        Array<any>
+    >([]);
     const [intersectionData, setIntersectionData] = useState<any[]>([]);
 
     useEffect(() => {
         location.state !== null && onSelectedIntersection(location.state);
-    }, [location.state])
+    }, [location.state]);
 
     const onSelectedIntersection = (selectedIntersection: any) => {
-        setSelectedIntersectionList(selectedIntersectionList => [...selectedIntersectionList, selectedIntersection]);
-        
-        setIntersectionData([{
-            name: 'intersectionId',
-            data: selectedIntersection.intersectionId,
-            width:6,
-            required: true,
-            disabled: true
-        },
-        {
-            name: 'intersectionName',
-            data: selectedIntersection.intersectionName,
-            width:6,
-            required: true,
-            disabled: false
-        },
-        {
-            name: 'region',
-            data: selectedIntersection.region.regionName,
-            width:6,
-            required: false,
-            disabled: true
-        },
-        {
-            name: 'gpsLat',
-            data: selectedIntersection.gps.lat,
-            width:6,
-            required: true,
-            disabled: true
-        },
-        {
-            name: 'gpsLng',
-            data: selectedIntersection.gps.lng,
-            width:6,
-            required: false,
-            disabled: true
-        }
+        setSelectedIntersectionList((selectedIntersectionList) => [
+            ...selectedIntersectionList,
+            selectedIntersection,
         ]);
-    }
 
-    const requestAxiosUpdateIntersections = async(intersectionData: intersectionDataType) => {
+        setIntersectionData([
+            {
+                name: "intersectionNo",
+                data: selectedIntersection.intersectionNo,
+                width: 6,
+                required: true,
+                disabled: true,
+            },
+            {
+                name: "intersectionName",
+                data: selectedIntersection.intersectionName,
+                width: 6,
+                required: true,
+                disabled: false,
+            },
+            {
+                name: "region",
+                data: selectedIntersection.region.regionName,
+                width: 6,
+                required: false,
+                disabled: true,
+            },
+            {
+                name: "gpsLat",
+                data: selectedIntersection.gps.lat,
+                width: 6,
+                required: true,
+                disabled: true,
+            },
+            {
+                name: "gpsLng",
+                data: selectedIntersection.gps.lng,
+                width: 6,
+                required: false,
+                disabled: true,
+            },
+        ]);
+    };
+
+    const requestAxiosUpdateIntersections = async (
+        intersectionData: intersectionDataType
+    ) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
         console.log("intersectionData : " + intersectionData);
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).post(
-            Request.INTERSECTION_URL + "/" + selectedIntersectionList[0].intersectionId,
+            Request.INTERSECTION_URL +
+                "/" +
+                selectedIntersectionList[0].intersectionNo,
             { intersectionData }
-        ); 
+        );
 
         return response.data;
-    }
+    };
 
     const {
         loading: loadingIntersections,
@@ -94,10 +104,9 @@ function IntersectionDetail() {
 
     useEffect(() => {
         if (resultUpdateIntersections === null) return;
-        
+
         navigate(Common.PAGE_MANAGEMENT_INTERSECTION);
         alert("수정되었습니다.");
-
     }, [resultUpdateIntersections]);
 
     useEffect(() => {
@@ -106,20 +115,18 @@ function IntersectionDetail() {
         console.log("errorIntersections", errorUpdateIntersections);
     }, [errorUpdateIntersections]);
 
-
-    const onChangedZoomLevel = (level: number) => {
-        console.log("level", level);
-    };
-
-    const onClickEvent = (intersections :any) => {
+    const onClickEvent = (intersections: any) => {
         requestUpdateIntersections(intersections);
     };
-    
-    return(
+
+    return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={8}>
-                    <ManagementDetail response={intersectionData} clickEvent={onClickEvent}/>
+                    <ManagementDetail
+                        response={intersectionData}
+                        clickEvent={onClickEvent}
+                    />
                 </Grid>
                 <Grid item xs={4}>
                     <KakaoMap
@@ -128,25 +135,19 @@ function IntersectionDetail() {
                             height: "calc(100vh - 80px)",
                             zIndex: "0",
                         }}
-                        transitionState={undefined}
-                        region={undefined}
                         intersections={{
                             list: selectedIntersectionList,
                             selected: null,
-                            clickEvent: () => {undefined},
+                            clickEvent: () => {
+                                undefined;
+                            },
                             showEdge: true,
                         }}
-                        cameras={undefined}
-                        links={undefined}
-                        trafficLights={undefined}
-                        avl={undefined}
-                        zoomLevel={undefined}
-                        onChangedZoomLevel={onChangedZoomLevel}
                     />
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
 
 export default IntersectionDetail;

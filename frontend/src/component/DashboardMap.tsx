@@ -39,23 +39,23 @@ function DashboardMap({
     currentRegionInfo: Common.RegionInfo;
     intersections: {
         listIntersections: any[];
-        selectedIntersectionId: string;
+        selectedIntersectionNo: string;
         selectedIntersectionName: string | undefined;
     };
     onChangedSelectedItem: ({
-        cameraId,
-        intersectionId,
+        cameraNo,
+        intersectionNo,
     }: {
-        cameraId: string | null;
-        intersectionId: string;
+        cameraNo: string | null;
+        intersectionNo: string;
     }) => void;
 }) {
     const userDetails = useAuthState();
 
     const [listCamera, setListCamera] = useState<Array<any>>([]);
-    const [selectedCameraId, setSelectedCameraId] = useState<string | null>("");
+    const [selectedCameraNo, setSelectedCameraNo] = useState<string | null>("");
 
-    const [selectedIntersectionId, setSelectedIntersectionId] =
+    const [selectedIntersectionNo, setSelectedIntersectionNo] =
         useState<string>("");
 
     const [listLink, setListLink] = useState<Array<any>>([]);
@@ -357,9 +357,9 @@ function DashboardMap({
 
     useEffect(() => {
         if (intersections?.selectedIntersectionName === undefined) {
-            setSelectedCameraId(null);
+            setSelectedCameraNo(null);
         }
-        setSelectedIntersectionId(intersections?.selectedIntersectionId);
+        setSelectedIntersectionNo(intersections?.selectedIntersectionNo);
 
         if (intersections?.selectedIntersectionName === undefined) {
             setTrafficInformationBottom(0);
@@ -367,27 +367,27 @@ function DashboardMap({
     }, [intersections]);
 
     useEffect(() => {
-        //console.log("selectedIntersectionId", selectedIntersectionId);
-        if (selectedIntersectionId === null || selectedIntersectionId === "") {
+        //console.log("selectedIntersectionNo", selectedIntersectionNo);
+        if (selectedIntersectionNo === null || selectedIntersectionNo === "") {
             return;
         }
 
         setStreamIntersectionCameras(
-            Utils.utilGetInstsectionCamerasByIntersectionId(
+            Utils.utilGetInstsectionCamerasByIntersectionNo(
                 listCamera,
-                selectedIntersectionId
+                selectedIntersectionNo
             )
         );
-    }, [selectedIntersectionId]);
+    }, [selectedIntersectionNo]);
 
-    const handleClickCamera = (cameraId: string, intersectionId: string) => {
-        setSelectedCameraId(cameraId);
-        setSelectedIntersectionId(intersectionId);
+    const handleClickCamera = (cameraNo: string, intersectionNo: string) => {
+        setSelectedCameraNo(cameraNo);
+        setSelectedIntersectionNo(intersectionNo);
 
         if (onChangedSelectedItem !== undefined) {
             onChangedSelectedItem({
-                cameraId: cameraId,
-                intersectionId: intersectionId,
+                cameraNo: cameraNo,
+                intersectionNo: intersectionNo,
             });
         }
 
@@ -395,23 +395,23 @@ function DashboardMap({
         // requestStreamStop(listStreamResponse);
 
         // let streamCameraInfo = makeStreamCameraList(
-        //     Utils.utilGetInstsectionCameras(listCamera, cameraId)
+        //     Utils.utilGetInstsectionCameras(listCamera, cameraNo)
         // );
 
         // requestStreamStart(streamCameraInfo);
 
-        //console.log("intersectionId", intersectionId);
+        //console.log("intersectionNo", intersectionNo);
     };
 
-    const handleClickIntersection = (intersectionId: string) => {
-        //console.log("intersectionId", intersectionId);
-        setSelectedCameraId(null);
-        setSelectedIntersectionId(intersectionId);
+    const handleClickIntersection = (intersectionNo: string) => {
+        //console.log("intersectionNo", intersectionNo);
+        setSelectedCameraNo(null);
+        setSelectedIntersectionNo(intersectionNo);
 
         if (onChangedSelectedItem !== undefined) {
             onChangedSelectedItem({
-                cameraId: null,
-                intersectionId: intersectionId,
+                cameraNo: null,
+                intersectionNo: intersectionNo,
             });
         }
     };
@@ -452,8 +452,8 @@ function DashboardMap({
         setTrafficInformationBottom(height);
     };
 
-    const onChangedSelectedCameraId = (cameraId: string) => {
-        setSelectedCameraId(cameraId);
+    const onChangedSelectedCameraNo = (cameraNo: string) => {
+        setSelectedCameraNo(cameraNo);
     };
 
     const onChangedSelectedEmergencyCarNumber = (carNumber: string) => {
@@ -544,9 +544,9 @@ function DashboardMap({
                 <RTSPStreamer
                     intersectionName={intersections?.selectedIntersectionName}
                     streamIntersectionCameras={streamIntersectionCameras}
-                    selectedCameraId={selectedCameraId}
+                    selectedCameraNo={selectedCameraNo}
                     onChangedHeight={handleRTSPStreamerHeight}
-                    onChangedSelectedCameraId={onChangedSelectedCameraId}
+                    onChangedSelectedCameraNo={onChangedSelectedCameraNo}
                 />
             ) : null}
 
@@ -563,14 +563,14 @@ function DashboardMap({
                 }}
                 intersections={{
                     list: intersections?.listIntersections,
-                    selected: selectedIntersectionId,
+                    selected: selectedIntersectionNo,
                     clickEvent: handleClickIntersection,
                     //showEdge: true,
                 }}
                 cameras={{
                     list: listCamera,
                     isShow: showCameras,
-                    selected: selectedCameraId,
+                    selected: selectedCameraNo,
                     clickEvent: handleClickCamera,
                 }}
                 links={{

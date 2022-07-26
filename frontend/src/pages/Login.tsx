@@ -53,7 +53,7 @@ const Login = () => {
     useEffect(() => {
         if (resultLogin === null) return;
 
-        //console.log(JSON.stringify(resultLogin));
+        console.log(JSON.stringify(resultLogin));
         if (dispatch !== null)
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -88,10 +88,18 @@ const Login = () => {
 
         const sha256 = require("sha256");
 
-        const result = await login(
-            Request.LOGIN_URL,
-            JSON.stringify({ userId: user, password: sha256(pwd) })
-        );
+        let result;
+        if (process.env.REACT_APP_NEXT_DEV === "false") {
+            result = await login(
+                Request.LOGIN_URL,
+                JSON.stringify({ userId: user, password: sha256(pwd) })
+            );
+        } else {
+            result = await login(
+                Request.LOGIN_URL,
+                JSON.stringify({ username: user, password: pwd })
+            );
+        }
 
         //console.log("result", result);
 

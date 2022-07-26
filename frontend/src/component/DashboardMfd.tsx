@@ -12,14 +12,14 @@ import styles from "./DashboardMfd.module.css";
 import { Box } from "@mui/material";
 
 function DashboardMfd({
-    regionId,
+    regionNo,
     regionName,
-    intersectionId,
+    intersectionNo,
     intersectionName,
 }: {
-    regionId: string;
+    regionNo: string;
     regionName: string | undefined;
-    intersectionId: string;
+    intersectionNo: string;
     intersectionName: string | undefined;
 }) {
     const userDetails = useAuthState();
@@ -38,17 +38,17 @@ function DashboardMfd({
     const getExtraParams = () => {
         let extraParam = {};
 
-        if (intersectionId === "" || intersectionId === "all") {
-            if (regionId !== "" && regionId !== "all") {
+        if (intersectionNo === "" || intersectionNo === "all") {
+            if (regionNo !== "" && regionNo !== "all") {
                 extraParam = {
-                    filterBy: "region",
-                    filterId: regionId,
+                    filterBy: "REGION",
+                    filterValue: regionNo,
                 };
             }
         } else {
             extraParam = {
-                filterBy: "intersection",
-                filterId: intersectionId,
+                filterBy: "INTERSECTION",
+                filterValue: intersectionNo,
             };
         }
 
@@ -96,6 +96,7 @@ function DashboardMfd({
 
     useEffect(() => {
         if (resultMfd === null) return;
+        if (Utils.utilIsEmptyArray(resultMfd.stat) === true) return;
 
         //console.log("resultMfd", JSON.stringify(resultMfd.stat[0]));
         //console.log("resultMfd", resultMfd);
@@ -184,6 +185,7 @@ function DashboardMfd({
 
     useEffect(() => {
         if (resultLastWeekMfd === null) return;
+        if (Utils.utilIsEmptyArray(resultLastWeekMfd.stat) === true) return;
 
         // console.log(
         //     "resultLastWeekMfd",
@@ -278,6 +280,7 @@ function DashboardMfd({
 
     useEffect(() => {
         if (resultLastMonthAvgMfd === null) return;
+        if (Utils.utilIsEmptyArray(resultLastMonthAvgMfd.stat) === true) return;
 
         // console.log(
         //     "resultLastMonthAvgMfd",
@@ -331,7 +334,7 @@ function DashboardMfd({
     // };
 
     useEffect(() => {
-        if (regionId === "" || intersectionId === "") return;
+        if (regionNo === "" || intersectionNo === "") return;
 
         setDataLastWeekMfd(null);
         setDataLastMonthAvgMfd(null);
@@ -339,7 +342,7 @@ function DashboardMfd({
         requestMfd();
         requestLastWeekMfd();
         requestLastMonthAvgMfd();
-    }, [regionId, intersectionId]);
+    }, [regionNo, intersectionNo]);
 
     const showLoading = () => {
         let showClass = styles.chartLoadingSpinnerFadeEnd;

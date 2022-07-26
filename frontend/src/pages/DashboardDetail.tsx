@@ -18,10 +18,10 @@ import SearchButton from "../component/SearchButton";
 function DashboardDetail() {
     const userDetails = useAuthState();
 
-    const [selectedRegionId, setSelectedRegionId] = useState<string>("");
+    const [selectedRegionNo, setSelectedRegionNo] = useState<string>("");
     const [currentRegionInfo, setCurrentRegionInfo] =
-        useState<Common.RegionInfo>({ regionId: "all" });
-    const [selectedIntersectionId, setSelectedIntersectionId] =
+        useState<Common.RegionInfo>({ regionNo: "all" });
+    const [selectedIntersectionNo, setSelectedIntersectionNo] =
         useState<string>("");
     const [listCamera, setListCamera] = useState<Array<any>>([]);
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
@@ -52,7 +52,7 @@ function DashboardDetail() {
 
     const onChangedCurrentRegion = (regionItem: Common.RegionInfo) => {
         //console.log("regionItem", regionItem);
-        setSelectedRegionId(regionItem.regionId);
+        setSelectedRegionNo(regionItem.regionNo);
         // setSelectedRegionName(regionItem.regionName);
         setCurrentRegionInfo(regionItem);
     };
@@ -61,7 +61,7 @@ function DashboardDetail() {
         intersectionItem: Common.IntersectionInfo
     ) => {
         //console.log("intersectionItem", intersectionItem);
-        setSelectedIntersectionId(intersectionItem.intersectionId);
+        setSelectedIntersectionNo(intersectionItem.intersectionNo);
         // setSelectedIntersectionName(intersectionItem.intersectionName);
     };
 
@@ -89,7 +89,7 @@ function DashboardDetail() {
     useEffect(() => {
         if (resultCamerasList === null) return;
 
-        console.log("resultCamerasList", resultCamerasList);
+        // console.log("resultCamerasList", resultCamerasList);
         setListCamera(resultCamerasList.cameras);
 
         onSearch();
@@ -104,17 +104,17 @@ function DashboardDetail() {
     const getExtraParams = () => {
         let extraParam = {};
 
-        if (selectedIntersectionId === "" || selectedIntersectionId === "all") {
-            if (selectedRegionId !== "" && selectedRegionId !== "all") {
+        if (selectedIntersectionNo === "" || selectedIntersectionNo === "all") {
+            if (selectedRegionNo !== "" && selectedRegionNo !== "all") {
                 extraParam = {
-                    filterBy: "region",
-                    filterId: selectedRegionId,
+                    filterBy: "REGION",
+                    filterValue: selectedRegionNo,
                 };
             }
         } else {
             extraParam = {
-                filterBy: "intersection",
-                filterId: selectedIntersectionId,
+                filterBy: "INTERSECTION",
+                filterValue: selectedIntersectionNo,
             };
         }
 
@@ -135,7 +135,7 @@ function DashboardDetail() {
             {
                 params: {
                     date: searchDate,
-                    groupBy: "carType",
+                    groupBy: "CAR_TYPE",
                     ...extraParam,
                 },
             }
@@ -153,9 +153,9 @@ function DashboardDetail() {
 
     useEffect(() => {
         if (resultStatCarType === null) return;
-        if (resultStatCarType.stat[0] === null) return;
+        if (Utils.utilIsEmptyArray(resultStatCarType.stats) === true) return;
 
-        const statData = resultStatCarType.stat[0];
+        const statData = resultStatCarType.stats[0];
         //console.log("statData", JSON.stringify(statData));
 
         const { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson } =
@@ -192,7 +192,7 @@ function DashboardDetail() {
             {
                 params: {
                     date: searchDate,
-                    groupBy: "camera",
+                    groupBy: "CAMERA",
                     ...extraParam,
                 },
             }
@@ -210,17 +210,17 @@ function DashboardDetail() {
 
     useEffect(() => {
         if (resultStatCamera === null) return;
-        if (resultStatCamera.stat === null) return;
+        if (resultStatCamera.stats === null) return;
 
-        const statData = resultStatCamera.stat;
+        const statData = resultStatCamera.stats;
         //console.log("statData", JSON.stringify(statData));
 
         const { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson } =
             Utils.utilConvertChartSeriesCamera(statData, listCamera);
 
-        console.log("seriesChartSrlu", seriesChartSrlu);
-        console.log("seriesChartQtsrlu", seriesChartQtsrlu);
-        console.log("seriesChartPerson", seriesChartPerson);
+        // console.log("seriesChartSrlu", seriesChartSrlu);
+        // console.log("seriesChartQtsrlu", seriesChartQtsrlu);
+        // console.log("seriesChartPerson", seriesChartPerson);
 
         setSeriesChartSrluCamera(seriesChartSrlu);
         setSeriesChartQtsrluCamera(seriesChartQtsrlu);
@@ -236,7 +236,7 @@ function DashboardDetail() {
     }, [errorStatCamera]);
 
     const onSearch = () => {
-        if (selectedIntersectionId === "" || selectedIntersectionId === "all") {
+        if (selectedIntersectionNo === "" || selectedIntersectionNo === "all") {
             setRequestCarTypeNCamera(false);
             requestStatCarType();
         } else {
@@ -273,14 +273,14 @@ function DashboardDetail() {
                 <ul className={styles.searchBarUl}>
                     <li>
                         <SelectorRegion
-                            selectedRegionId={selectedRegionId}
+                            selectedRegionNo={selectedRegionNo}
                             onChangedCurrentRegion={onChangedCurrentRegion}
                         />
                     </li>
                     <li>
                         <SelectorIntersection
                             currentRegionInfo={currentRegionInfo}
-                            selectedIntersectionId={selectedIntersectionId}
+                            selectedIntersectionNo={selectedIntersectionNo}
                             onChangedIntersectionList={(list) => {
                                 setListIntersections(list);
                             }}

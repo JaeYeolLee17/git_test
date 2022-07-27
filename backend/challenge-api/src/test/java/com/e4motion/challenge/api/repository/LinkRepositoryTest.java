@@ -119,9 +119,9 @@ class LinkRepositoryTest {
 
 		// new gps
 		List<LinkGps> gps = new ArrayList<>();
-		gps.add(LinkGps.builder().link(found.get()).latitude(35.9999).longitude(128.99999).gpsOrder(1).build());
-		gps.add(LinkGps.builder().link(found.get()).latitude(35.88888).longitude(128.88888).gpsOrder(2).build());
-		gps.add(LinkGps.builder().link(found.get()).latitude(35.33333).longitude(128.33333).gpsOrder(3).build());
+		gps.add(LinkGps.builder().link(found.get()).lat(35.9999).lng(128.99999).gpsOrder(1).build());
+		gps.add(LinkGps.builder().link(found.get()).lat(35.88888).lng(128.88888).gpsOrder(2).build());
+		gps.add(LinkGps.builder().link(found.get()).lat(35.33333).lng(128.33333).gpsOrder(3).build());
 
 		// gps 목록 수정 시 목록 자체를 대체하면 안된다. list 를 clear 후 add 하여 저장한다.
 		// 만약 기존 목록에서 동일한 위도, 경도(unique 위반) 가 있을 경우 모두 제거 후 flush 한 다음 다시 목록 채워서 저장해야 한다.
@@ -136,12 +136,12 @@ class LinkRepositoryTest {
 		assertThat(found.isPresent()).isTrue();
 
 		assertThat(found.get().getGps().size()).isEqualTo(3);
-		assertThat(found.get().getGps().get(0).getLatitude()).isEqualTo(gps.get(0).getLatitude());
-		assertThat(found.get().getGps().get(0).getLongitude()).isEqualTo(gps.get(0).getLongitude());
-		assertThat(found.get().getGps().get(1).getLatitude()).isEqualTo(gps.get(1).getLatitude());
-		assertThat(found.get().getGps().get(1).getLongitude()).isEqualTo(gps.get(1).getLongitude());
-		assertThat(found.get().getGps().get(2).getLatitude()).isEqualTo(gps.get(2).getLatitude());
-		assertThat(found.get().getGps().get(2).getLongitude()).isEqualTo(gps.get(2).getLongitude());
+		assertThat(found.get().getGps().get(0).getLat()).isEqualTo(gps.get(0).getLat());
+		assertThat(found.get().getGps().get(0).getLng()).isEqualTo(gps.get(0).getLng());
+		assertThat(found.get().getGps().get(1).getLat()).isEqualTo(gps.get(1).getLat());
+		assertThat(found.get().getGps().get(1).getLng()).isEqualTo(gps.get(1).getLng());
+		assertThat(found.get().getGps().get(2).getLat()).isEqualTo(gps.get(2).getLat());
+		assertThat(found.get().getGps().get(2).getLng()).isEqualTo(gps.get(2).getLng());
 
 		List<LinkGps> regionGps = linkGpsRepository.findAllByLink_LinkIdOrderByGpsOrder(link.getLinkId());
 		assertThat(regionGps.size()).isEqualTo(3);
@@ -244,8 +244,8 @@ class LinkRepositoryTest {
 		} else {
 			int i = 0;
 			for (LinkGps gps : link1.getGps()) {
-				assertThat(gps.getLatitude()).isEqualTo(link2.getGps().get(i).getLatitude());
-				assertThat(gps.getLongitude()).isEqualTo(link2.getGps().get(i).getLongitude());
+				assertThat(gps.getLat()).isEqualTo(link2.getGps().get(i).getLat());
+				assertThat(gps.getLng()).isEqualTo(link2.getGps().get(i).getLng());
 				i++;
 			}
 		}

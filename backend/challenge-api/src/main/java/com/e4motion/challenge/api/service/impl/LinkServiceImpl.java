@@ -102,8 +102,8 @@ public class LinkServiceImpl implements LinkService {
             return linkDto.getGps().stream().map(gps ->
                     LinkGps.builder()
                             .link(link)
-                            .latitude(gps.getLatitude())
-                            .longitude(gps.getLongitude())
+                            .lat(gps.getLat())
+                            .lng(gps.getLng())
                             .gpsOrder(order.incrementAndGet())
                             .build()).collect(Collectors.toList());
         }

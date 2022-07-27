@@ -135,7 +135,7 @@ public class CameraServiceTest {
 				.password("camera12!@")
 				.intersection(intersectionDto2)
 				.direction(intersectionDto1)
-				.gps(GpsDto.builder().latitude(35.999999).longitude(127.888).build())
+				.gps(GpsDto.builder().lat(35.999999).lng(127.888).build())
 				.distance(200)
 				.rtspUrl("rtsp://...")
 				.rtspId("id")
@@ -331,8 +331,8 @@ public class CameraServiceTest {
 			return;
 		}
 
-		assertThat(gpsDto1.getLatitude()).isEqualTo(gpsDto2.getLatitude());
-		assertThat(gpsDto1.getLongitude()).isEqualTo(gpsDto2.getLongitude());
+		assertThat(gpsDto1.getLat()).isEqualTo(gpsDto2.getLat());
+		assertThat(gpsDto1.getLng()).isEqualTo(gpsDto2.getLng());
 	}
 
 	private void assertEquals(RegionDto regionDto1, RegionDto regionDto2) {

@@ -30,8 +30,8 @@ public interface LinkMapper {
 
     @Mapping(target = "intersectionId", ignore = true)              // mapping intersectionNo only.
     @Mapping(target = "intersectionName", ignore = true)
-    @Mapping(target = "latitude", ignore = true)
-    @Mapping(target = "longitude", ignore = true)
+    @Mapping(target = "lat", ignore = true)
+    @Mapping(target = "lng", ignore = true)
     @Mapping(target = "region", ignore = true)
     @Mapping(target = "nationalId", ignore = true)
     @Mapping(target = "cameras", ignore = true)

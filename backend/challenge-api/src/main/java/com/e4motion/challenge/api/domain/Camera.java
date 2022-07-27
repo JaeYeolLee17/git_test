@@ -34,11 +34,11 @@ public class Camera extends BaseTimeEntity {
     @JoinColumn(name = "direction_id")
     private Intersection direction;
 
-    @Column(name = "latitude")
-    private Double latitude;
+    @Column(name = "lat")
+    private Double lat;
 
-    @Column(name = "longitude")
-    private Double longitude;
+    @Column(name = "lng")
+    private Double lng;
 
     @Column(name = "distance")
     private Integer distance;
@@ -93,8 +93,8 @@ public class Camera extends BaseTimeEntity {
                 ", password='" + password + '\'' +
                 ", intersection=" + intersection.getIntersectionNo() +
                 ", direction=" + direction.getIntersectionNo() +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", lat=" + lat +
+                ", lng=" + lng +
                 ", distance=" + distance +
                 ", rtspUrl='" + rtspUrl + '\'' +
                 ", rtspId='" + rtspId + '\'' +

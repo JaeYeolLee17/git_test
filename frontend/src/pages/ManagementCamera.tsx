@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react"
-import TableManagement from "../component/TableManagement"
+import React, { useEffect, useState } from "react";
+import TableManagement from "../component/TableManagement";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
-import * as Utils from "../utils/utils"
-import * as Request from "../commons/request"
+import * as Utils from "../utils/utils";
+import * as Request from "../commons/request";
 import KakaoMap from "../component/KakaoMap";
-import styles from "../pages/ManagementCamera.module.css"
+import styles from "../pages/ManagementCamera.module.css";
 import * as Common from "../commons/common";
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import editBtn from '../assets/images/btn_list_edit_n.svg'
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import editBtn from "../assets/images/btn_list_edit_n.svg"
 
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 
 type rows = {
@@ -35,47 +35,46 @@ function ManagementCamera() {
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
     const [listCamera, setListCamera] = useState<Array<any>>([]);
-    const [selectedCameraId, setSelectedCameraId] = useState<string | null>("");
-    const [mapZoomLevel, setMapZoomLevel] = useState<number>(7);
-    
+    const [selectedCameraNo, setSelectedCameraNo] = useState<string | null>("");
+
     const columns: columns[] = [
         {
-            field: 'id',
-            headerName: '카메라 ID',
-            headerAlign: 'center',
-            align: 'center',
+            field: "id",
+            headerName: "카메라 No.",
+            headerAlign: "center",
+            align: "center",
             flex: 1,
-            renderCell: undefined
+            renderCell: undefined,
         },
         {
-            field: 'region',
-            headerName: '구역',
-            headerAlign: 'center',
-            align: 'center',
+            field: "region",
+            headerName: "구역",
+            headerAlign: "center",
+            align: "center",
             flex: 1,
-            renderCell: undefined
+            renderCell: undefined,
         },
         {
-            field: 'intersection',
-            headerName: '교차로',
-            headerAlign: 'center',
-            align: 'center',
+            field: "intersection",
+            headerName: "교차로",
+            headerAlign: "center",
+            align: "center",
             flex: 1,            
             renderCell: undefined
         },
         {
-            field: 'cameraDirection',
-            headerName: '카메라 설치 방향',
-            headerAlign: 'center',
-            align: 'center',
+            field: "cameraDirection",
+            headerName: "카메라 설치 방향",
+            headerAlign: "center",
+            align: "center",
             flex: 2,
             renderCell: undefined
         },
         {
-            field: 'data',
-            headerName: '',
-            headerAlign: 'center',
-            align: 'center',
+            field: "data",
+            headerName: "",
+            headerAlign: "center",
+            align: "center",
             flex: 0.5,
             renderCell: (params :any) => {
                 return (
@@ -97,7 +96,7 @@ function ManagementCamera() {
         requestCameras();
     }, []);
 
-    const requestAxiosCameras = async() => {
+    const requestAxiosCameras = async () => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
@@ -106,7 +105,7 @@ function ManagementCamera() {
         );
 
         return response.data;
-    }
+    };
 
     const {
         loading: loadingCameras,
@@ -120,19 +119,17 @@ function ManagementCamera() {
 
         setListCamera(resultCameras.cameras);
 
-        resultCameras.cameras.map((result: any) => { 
-            setRows(rows => 
-                [...rows, 
-                    {
-                        id: result.cameraId, 
-                        region: result.intersection.region.regionName, 
-                        intersection: result.intersection.intersectionName, 
-                        cameraDirection: result.direction.intersectionName
-                    }
-                ]
-            );
-        })
-
+        resultCameras.cameras.map((result: any) => {
+            setRows((rows) => [
+                ...rows,
+                {
+                    id: result.cameraNo,
+                    region: result.intersection.region.regionName,
+                    intersection: result.intersection.intersectionName,
+                    cameraDirection: result.direction.intersectionName,
+                },
+            ]);
+        });
     }, [resultCameras]);
 
     useEffect(() => {
@@ -141,22 +138,16 @@ function ManagementCamera() {
         console.log("errorCameras", errorCameras);
     }, [errorCameras]);
 
-    const handleClickCamera = (cameraId: string) => {
-        setSelectedCameraId(cameraId);
-        alert(cameraId);
+    const handleClickCamera = (cameraNo: string) => {
+        setSelectedCameraNo(cameraNo);
+        alert(cameraNo);
     };
 
-    
-    const onChangedZoomLevel = (level: number) => {
-        console.log("level", level);
-        setMapZoomLevel(level);
+    const onRowClick = (cameraNo: string) => {
+        setSelectedCameraNo(cameraNo);
     };
 
-    const onRowClick = (cameraId: string) => {
-        setSelectedCameraId(cameraId);
-    };
-
-    return(
+    return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={7}>
@@ -174,26 +165,18 @@ function ManagementCamera() {
                                 height: "calc(100vh - 80px)",
                                 zIndex: "0",
                             }}
-                            transitionState={undefined}
-                            region={undefined}
-                            intersections={undefined}
                             cameras={{
                                 list: listCamera,
                                 isShow: true,
-                                selected: selectedCameraId,
+                                selected: selectedCameraNo,
                                 clickEvent: handleClickCamera,
                             }}
-                            links={undefined}
-                            trafficLights={undefined}
-                            avl={undefined}
-                            zoomLevel={undefined}
-                            onChangedZoomLevel={onChangedZoomLevel}
                         />
                     </Box>
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
 
-export default ManagementCamera
+export default ManagementCamera;

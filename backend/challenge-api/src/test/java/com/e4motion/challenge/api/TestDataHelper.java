@@ -108,9 +108,9 @@ public class TestDataHelper {
                 .build();
 
         List<GpsDto> gps = new ArrayList<>();
-        gps.add(GpsDto.builder().latitude(35.1).longitude(128.1).build());
-        gps.add(GpsDto.builder().latitude(35.2).longitude(128.2).build());
-        gps.add(GpsDto.builder().latitude(35.3).longitude(128.3).build());
+        gps.add(GpsDto.builder().lat(35.1).lng(128.1).build());
+        gps.add(GpsDto.builder().lat(35.2).lng(128.2).build());
+        gps.add(GpsDto.builder().lat(35.3).lng(128.3).build());
         regionDto.setGps(gps);
 
         return regionDto;
@@ -124,9 +124,9 @@ public class TestDataHelper {
                 .build();
 
         List<GpsDto> gps = new ArrayList<>();
-        gps.add(GpsDto.builder().latitude(35.4).longitude(128.4).build());
-        gps.add(GpsDto.builder().latitude(35.5).longitude(128.5).build());
-        gps.add(GpsDto.builder().latitude(35.6).longitude(128.6).build());
+        gps.add(GpsDto.builder().lat(35.4).lng(128.4).build());
+        gps.add(GpsDto.builder().lat(35.5).lng(128.5).build());
+        gps.add(GpsDto.builder().lat(35.6).lng(128.6).build());
         regionDto.setGps(gps);
 
         return regionDto;
@@ -141,9 +141,9 @@ public class TestDataHelper {
                 .build();
 
         List<RegionGps> gps = new ArrayList<>();
-        gps.add(RegionGps.builder().regionGpsId(1L).region(region).latitude(35.1).longitude(128.1).gpsOrder(1).build());
-        gps.add(RegionGps.builder().regionGpsId(2L).region(region).latitude(35.2).longitude(128.2).gpsOrder(2).build());
-        gps.add(RegionGps.builder().regionGpsId(3L).region(region).latitude(35.3).longitude(128.3).gpsOrder(3).build());
+        gps.add(RegionGps.builder().regionGpsId(1L).region(region).lat(35.1).lng(128.1).gpsOrder(1).build());
+        gps.add(RegionGps.builder().regionGpsId(2L).region(region).lat(35.2).lng(128.2).gpsOrder(2).build());
+        gps.add(RegionGps.builder().regionGpsId(3L).region(region).lat(35.3).lng(128.3).gpsOrder(3).build());
         region.setGps(gps);
 
         return region;
@@ -158,9 +158,9 @@ public class TestDataHelper {
                 .build();
 
         List<RegionGps> gps = new ArrayList<>();
-        gps.add(RegionGps.builder().regionGpsId(4L).region(region).latitude(35.4).longitude(128.4).gpsOrder(1).build());
-        gps.add(RegionGps.builder().regionGpsId(5L).region(region).latitude(35.5).longitude(128.5).gpsOrder(2).build());
-        gps.add(RegionGps.builder().regionGpsId(6L).region(region).latitude(35.6).longitude(128.6).gpsOrder(3).build());
+        gps.add(RegionGps.builder().regionGpsId(4L).region(region).lat(35.4).lng(128.4).gpsOrder(1).build());
+        gps.add(RegionGps.builder().regionGpsId(5L).region(region).lat(35.5).lng(128.5).gpsOrder(2).build());
+        gps.add(RegionGps.builder().regionGpsId(6L).region(region).lat(35.6).lng(128.6).gpsOrder(3).build());
         region.setGps(gps);
 
         return region;
@@ -171,7 +171,7 @@ public class TestDataHelper {
         return IntersectionDto.builder()
                 .intersectionNo("I0001")
                 .intersectionName("이현삼거리")
-                .gps(GpsDto.builder().latitude(35.8784855520347).longitude(128.539885742538).build())
+                .gps(GpsDto.builder().lat(35.8784855520347).lng(128.539885742538).build())
                 .region(getRegionDto1())
                 .nationalId(1520005300L)
                 .build();
@@ -182,7 +182,7 @@ public class TestDataHelper {
         return IntersectionDto.builder()
                 .intersectionNo("I0002")
                 .intersectionName("배고개삼거리")
-                .gps(GpsDto.builder().latitude(35.8787525882359).longitude(128.547154632069).build())
+                .gps(GpsDto.builder().lat(35.8787525882359).lng(128.547154632069).build())
                 .region(getRegionDto2())
                 .nationalId(1520005400L)
                 .build();
@@ -194,8 +194,8 @@ public class TestDataHelper {
                 .intersectionId(1L)
                 .intersectionNo("I0001")
                 .intersectionName("이현삼거리")
-                .latitude(35.8784855520347)
-                .longitude(128.539885742538)
+                .lat(35.8784855520347)
+                .lng(128.539885742538)
                 .region(getRegion1())
                 .nationalId(1520005300L)
                 .build();
@@ -207,8 +207,8 @@ public class TestDataHelper {
                 .intersectionId(2L)
                 .intersectionNo("I0002")
                 .intersectionName("배고개삼거리")
-                .latitude(35.8787525882359)
-                .longitude(128.547154632069)
+                .lat(35.8787525882359)
+                .lng(128.547154632069)
                 .region(getRegion2())
                 .nationalId(1520005400L)
                 .build();
@@ -234,7 +234,7 @@ public class TestDataHelper {
                 .password("camera12!@")
                 .intersection(intersectionDto1)
                 .direction(intersectionDto2)
-                .gps(GpsDto.builder().latitude(35.8786655952179).longitude(128.539900300697).build())
+                .gps(GpsDto.builder().lat(35.8786655952179).lng(128.539900300697).build())
                 .distance(100)
                 .rtspUrl("rtsp://192.67.8.1:554/video1").rtspId(null).rtspPassword(null)
                 .serverUrl("http://192.168.71.21:8080/challenge-data").sendCycle(60).collectCycle(10)
@@ -266,7 +266,7 @@ public class TestDataHelper {
                 .password("camera12!@")
                 .intersection(intersectionDto2)
                 .direction(intersectionDto1)
-                .gps(GpsDto.builder().latitude(35.8785201012622).longitude(35.8785201012622).build())
+                .gps(GpsDto.builder().lat(35.8785201012622).lng(35.8785201012622).build())
                 .distance(100)
                 .rtspUrl("rtsp://192.67.8.2:554/video1").rtspId(null).rtspPassword(null)
                 .serverUrl("http://192.168.71.21:8080/challenge-data").sendCycle(60).collectCycle(10)
@@ -289,7 +289,7 @@ public class TestDataHelper {
                 .password("camera12!@")
                 .intersection(intersection1)
                 .direction(intersection2)
-                .latitude(35.8786655952179).longitude(128.539900300697)
+                .lat(35.8786655952179).lng(128.539900300697)
                 .distance(100)
                 .rtspUrl("rtsp://192.67.8.1:554/video1").rtspId(null).rtspPassword(null)
                 .serverUrl("http://192.168.71.21:8080/challenge-data").sendCycle(60).collectCycle(10)
@@ -324,7 +324,7 @@ public class TestDataHelper {
                 .password("camera12!@")
                 .intersection(intersection2)
                 .direction(intersection1)
-                .latitude(35.8785201012622).longitude(128.539299557313)
+                .lat(35.8785201012622).lng(128.539299557313)
                 .distance(100)
                 .rtspUrl("rtsp://192.67.8.2:554/video1").rtspId(null).rtspPassword(null)
                 .serverUrl("http://192.168.71.21:8080/challenge-data").sendCycle(60).collectCycle(10)
@@ -357,9 +357,9 @@ public class TestDataHelper {
                 .build();
 
         List<GpsDto> gps = new ArrayList<>();
-        gps.add(GpsDto.builder().latitude(35.1111).longitude(128.11111).build());
-        gps.add(GpsDto.builder().latitude(35.2222).longitude(128.22222).build());
-        gps.add(GpsDto.builder().latitude(35.3333).longitude(128.33333).build());
+        gps.add(GpsDto.builder().lat(35.1111).lng(128.11111).build());
+        gps.add(GpsDto.builder().lat(35.2222).lng(128.22222).build());
+        gps.add(GpsDto.builder().lat(35.3333).lng(128.33333).build());
         linkDto.setGps(gps);
 
         return linkDto;
@@ -374,9 +374,9 @@ public class TestDataHelper {
                 .build();
 
         List<LinkGps> gps = new ArrayList<>();
-        gps.add(LinkGps.builder().linkGpsId(1L).link(link).latitude(35.1111).longitude(128.1111).gpsOrder(1).build());
-        gps.add(LinkGps.builder().linkGpsId(2L).link(link).latitude(35.22222).longitude(128.22222).gpsOrder(2).build());
-        gps.add(LinkGps.builder().linkGpsId(3L).link(link).latitude(35.33333).longitude(128.33333).gpsOrder(3).build());
+        gps.add(LinkGps.builder().linkGpsId(1L).link(link).lat(35.1111).lng(128.1111).gpsOrder(1).build());
+        gps.add(LinkGps.builder().linkGpsId(2L).link(link).lat(35.22222).lng(128.22222).gpsOrder(2).build());
+        gps.add(LinkGps.builder().linkGpsId(3L).link(link).lat(35.33333).lng(128.33333).gpsOrder(3).build());
         link.setGps(gps);
 
         return link;

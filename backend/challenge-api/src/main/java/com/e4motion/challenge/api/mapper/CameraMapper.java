@@ -35,14 +35,14 @@ public interface CameraMapper {
     List<CameraDto> toCameraDto(List<Camera> cameras);
 
     @Mapping(target = "cameraId", ignore = true)
-    @Mapping(target = "latitude", expression = MappingExpressions.TO_CAMERA_LATITUDE)
-    @Mapping(target = "longitude", expression = MappingExpressions.TO_CAMERA_LONGITUDE)
+    @Mapping(target = "lat", expression = MappingExpressions.TO_CAMERA_LAT)
+    @Mapping(target = "lng", expression = MappingExpressions.TO_CAMERA_LNG)
     Camera toCamera(CameraDto cameraDto);
 
     @Mapping(target = "intersectionId", ignore = true)              // mapping intersectionNo only.
     @Mapping(target = "intersectionName", ignore = true)
-    @Mapping(target = "latitude", ignore = true)
-    @Mapping(target = "longitude", ignore = true)
+    @Mapping(target = "lat", ignore = true)
+    @Mapping(target = "lng", ignore = true)
     @Mapping(target = "region", ignore = true)
     @Mapping(target = "nationalId", ignore = true)
     @Mapping(target = "cameras", ignore = true)

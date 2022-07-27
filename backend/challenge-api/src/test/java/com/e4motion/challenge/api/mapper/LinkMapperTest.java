@@ -63,8 +63,8 @@ public class LinkMapperTest {
 		} else {
 			int i = 0;
 			for (LinkGps gps : link.getGps()) {
-				assertThat(gps.getLatitude()).isEqualTo(linkDto.getGps().get(i).getLatitude());
-				assertThat(gps.getLongitude()).isEqualTo(linkDto.getGps().get(i).getLongitude());
+				assertThat(gps.getLat()).isEqualTo(linkDto.getGps().get(i).getLat());
+				assertThat(gps.getLng()).isEqualTo(linkDto.getGps().get(i).getLng());
 				i++;
 			}
 		}

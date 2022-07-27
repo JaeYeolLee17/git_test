@@ -19,10 +19,10 @@ import SearchButton from "../component/SearchButton";
 function StatTraffic() {
     const userDetails = useAuthState();
 
-    const [selectedRegionId, setSelectedRegionId] = useState<string>("");
+    const [selectedRegionNo, setSelectedRegionNo] = useState<string>("");
     const [currentRegionInfo, setCurrentRegionInfo] =
-        useState<Common.RegionInfo>({ regionId: "all" });
-    const [selectedIntersectionId, setSelectedIntersectionId] =
+        useState<Common.RegionInfo>({ regionNo: "all" });
+    const [selectedIntersectionNo, setSelectedIntersectionNo] =
         useState<string>("");
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
 
@@ -50,7 +50,7 @@ function StatTraffic() {
 
     const onChangedCurrentRegion = (regionItem: Common.RegionInfo) => {
         //console.log("regionItem", regionItem);
-        setSelectedRegionId(regionItem.regionId);
+        setSelectedRegionNo(regionItem.regionNo);
         // setSelectedRegionName(regionItem.regionName);
         setCurrentRegionInfo(regionItem);
     };
@@ -59,7 +59,7 @@ function StatTraffic() {
         intersectionItem: Common.IntersectionInfo
     ) => {
         //console.log("intersectionItem", intersectionItem);
-        setSelectedIntersectionId(intersectionItem.intersectionId);
+        setSelectedIntersectionNo(intersectionItem.intersectionNo);
         // setSelectedIntersectionName(intersectionItem.intersectionName);
     };
 
@@ -74,9 +74,9 @@ function StatTraffic() {
 
         let start = new Date(now);
         const end = new Date(now);
-        if (period === "day") {
+        if (period === "DAY") {
             start.setDate(start.getDate() - 7); // 7일전
-        } else if (period === "weekOfYear" || period === "dayOfWeek") {
+        } else if (period === "WEEK_OF_YEAR" || period === "DAY_OF_WEEK") {
             let offsetDay = 1;
             if (end.getDay() == 0) offsetDay = -6;
 
@@ -84,7 +84,7 @@ function StatTraffic() {
 
             start = new Date(end);
             start.setDate(start.getDate() - 7 * 4); // 4주간
-        } else if (period === "month") {
+        } else if (period === "MONTH") {
             end.setMonth(end.getMonth(), 1);
             start.setMonth(start.getMonth() - 3, 1); // 3개월
         }
@@ -117,17 +117,17 @@ function StatTraffic() {
     const getExtraParams = () => {
         let extraParam = {};
 
-        if (selectedIntersectionId === "" || selectedIntersectionId === "all") {
-            if (selectedRegionId !== "" && selectedRegionId !== "all") {
+        if (selectedIntersectionNo === "" || selectedIntersectionNo === "all") {
+            if (selectedRegionNo !== "" && selectedRegionNo !== "all") {
                 extraParam = {
-                    filterBy: "region",
-                    filterId: selectedRegionId,
+                    filterBy: "REGION",
+                    filterValue: selectedRegionNo,
                 };
             }
         } else {
             extraParam = {
-                filterBy: "intersection",
-                filterId: selectedIntersectionId,
+                filterBy: "INTERSECTION",
+                filterValue: selectedIntersectionNo,
             };
         }
 
@@ -150,7 +150,7 @@ function StatTraffic() {
                 params: {
                     startTime: startTime,
                     endTime: endTime,
-                    byPeriod: searchPeriod,
+                    period: searchPeriod,
                     ...extraParam,
                 },
             }
@@ -168,9 +168,10 @@ function StatTraffic() {
 
     useEffect(() => {
         if (resultStatPeriod === null) return;
+        if (Utils.utilIsEmptyArray(resultStatPeriod.stats) === true) return;
 
-        const statData = resultStatPeriod.stat;
-        // console.log("resultStatPeriod", JSON.stringify(resultStatPeriod));
+        const statData = resultStatPeriod.stats;
+        //console.log("statData", JSON.stringify(statData));
 
         const {
             seriesSrluDatas,
@@ -225,15 +226,15 @@ function StatTraffic() {
     useEffect(() => {
         if (firstLoad === true) {
             if (
-                selectedRegionId !== "" &&
-                selectedIntersectionId !== "" &&
+                selectedRegionNo !== "" &&
+                selectedIntersectionNo !== "" &&
                 searchPeriod !== ""
             ) {
                 onSearch();
                 setFirstLoad(false);
             }
         }
-    }, [selectedRegionId, selectedIntersectionId, searchPeriod]);
+    }, [selectedRegionNo, selectedIntersectionNo, searchPeriod]);
 
     const onSearch = () => {
         //console.log("onSearch");
@@ -428,14 +429,14 @@ function StatTraffic() {
                     </li>
                     <li>
                         <SelectorRegion
-                            selectedRegionId={selectedRegionId}
+                            selectedRegionNo={selectedRegionNo}
                             onChangedCurrentRegion={onChangedCurrentRegion}
                         />
                     </li>
                     <li>
                         <SelectorIntersection
                             currentRegionInfo={currentRegionInfo}
-                            selectedIntersectionId={selectedIntersectionId}
+                            selectedIntersectionNo={selectedIntersectionNo}
                             onChangedIntersectionList={(list) => {
                                 setListIntersections(list);
                             }}

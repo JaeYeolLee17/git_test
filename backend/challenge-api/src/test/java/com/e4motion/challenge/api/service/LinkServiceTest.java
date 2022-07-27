@@ -106,9 +106,9 @@ public class LinkServiceTest {
 
 		// everything will be updated.
 		List<GpsDto> gps = new ArrayList<>();
-		gps.add(GpsDto.builder().latitude(35.55).longitude(128.55).build());
-		gps.add(GpsDto.builder().latitude(35.66).longitude(128.66).build());
-		gps.add(GpsDto.builder().latitude(35.77).longitude(128.77).build());
+		gps.add(GpsDto.builder().lat(35.55).lng(128.55).build());
+		gps.add(GpsDto.builder().lat(35.66).lng(128.66).build());
+		gps.add(GpsDto.builder().lat(35.77).lng(128.77).build());
 
 		updateLinkDto1 = LinkDto.builder()
 				.start(intersectionDto2)
@@ -207,8 +207,8 @@ public class LinkServiceTest {
 
 		int i = 0;
 		for (GpsDto gps : gpsDto2) {
-			assertThat(gps.getLatitude()).isEqualTo(gpsDto2.get(i).getLatitude());
-			assertThat(gps.getLongitude()).isEqualTo(gpsDto2.get(i).getLongitude());
+			assertThat(gps.getLat()).isEqualTo(gpsDto2.get(i).getLat());
+			assertThat(gps.getLng()).isEqualTo(gpsDto2.get(i).getLng());
 			i++;
 		}
 	}

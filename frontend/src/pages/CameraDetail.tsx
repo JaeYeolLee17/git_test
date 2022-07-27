@@ -5,205 +5,207 @@ import ManagementDetail from "../component/ManagementDetail";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
 import { useNavigate } from "react-router-dom";
-import Grid from '@mui/material/Grid';
-import styles from './CameraDetail.module.css';
+import Grid from "@mui/material/Grid";
+import styles from "./CameraDetail.module.css";
 import * as Utils from "../utils/utils";
-import * as Request from "../commons/request"
+import * as Request from "../commons/request";
 import * as Common from "../commons/common";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
 type cameraDataType = {
-    distance: number,
-    serverUrl: string,
-    sendCycle: number,
-    collectCycle: number 
-}
+    distance: number;
+    serverUrl: string;
+    sendCycle: number;
+    collectCycle: number;
+};
 
 function CameraDetail() {
     const location = useLocation();
     const userDetails = useAuthState();
     const navigate = useNavigate();
 
-    const [selectedCameraList, setSelectedCameraList] = useState<Array<any>>([]);
+    const [selectedCameraList, setSelectedCameraList] = useState<Array<any>>(
+        []
+    );
     const [cameraData, setCameraData] = useState<any[]>([]);
 
     useEffect(() => {
         location.state !== null && onSelectedCamera(location.state);
-    }, [location.state])
+    }, [location.state]);
 
     const onSelectedCamera = (selectedCamera: any) => {
         setSelectedCameraList(selectedCameraList => [...selectedCameraList, selectedCamera]);
         
         setCameraData([{
-            name: 'cameraId',
+            name: "cameraId",
             data: selectedCamera.cameraId,
             width: 6,
             required: true,
             disabled: true
         },
         {
-            name: '',
-            data: '',
+            name: "",
+            data: "",
             width: 6,
             required: false,
             disabled: false
         },
         {
-            name: 'intersectionName',
+            name: "intersectionName",
             data: selectedCamera.intersection.intersectionName,
             width:6,
             required: true,
             disabled: true
         },
         {
-            name: 'directionName',
+            name: "directionName",
             data: selectedCamera.direction.intersectionName,
             width: 6,
             required: true,
             disabled: true
         },
         {
-            name: 'gpsLat',
+            name: "gpsLat",
             data: selectedCamera.gps.lat,
             width: 6,
             required: true,
             disabled: true
         },
         {
-            name: 'gpsLng',
+            name: "gpsLng",
             data: selectedCamera.gps.lng,
             width: 6,
             required: false,
             disabled: true
         },
         {
-            name: 'distance',
+            name: "distance",
             data: selectedCamera.distance,
             width: 4,
             required: false,
             disabled: false
         },
         {
-            name: '',
-            data: '',
+            name: "",
+            data: "",
             width: 8,
             required: false,
             disabled: false
         },
         {
-            name: 'rtspUrl',
+            name: "rtspUrl",
             data: selectedCamera.rtspUrl,
             width: 4,
             required: false,
             disabled: true
         },
         {
-            name: 'rtsId',
+            name: "rtsId",
             data: selectedCamera.rtsId,
             width: 4,
             required: false,
             disabled: true
         },
         {
-            name: 'rtsPassword',
+            name: "rtsPassword",
             data: selectedCamera.rtsPassword,
             width: 4,
             required: false,
             disabled: true
         },
         {
-            name: 'smallWidth',
+            name: "smallWidth",
             data: selectedCamera.smallWidth,
             width: 3,
             required: false,
             disabled: true
         },
         {
-            name: 'smallHeight',
+            name: "smallHeight",
             data: selectedCamera.smallHeight,
             width: 3,
             required: false,
             disabled: true
         },
         {
-            name: 'largeWidth',
+            name: "largeWidth",
             data: selectedCamera.largeWidth,
             width: 3,
             required: false,
             disabled: true
         },
         {
-            name: 'largeHeight',
+            name: "largeHeight",
             data: selectedCamera.largeHeight,
             width: 3,
             required: false,
             disabled: true
         },
         {
-            name: 'serverUrl',
+            name: "serverUrl",
             data: selectedCamera.serverUrl,
             width: 4,
             required: false,
             disabled: false
         },
         {
-            name: 'sendCycle',
+            name: "sendCycle",
             data: selectedCamera.sendCycle,
             width: 4,
             required: false,
             disabled: false
         },
         {
-            name: 'collectCycle',
+            name: "collectCycle",
             data: selectedCamera.collectCycle,
             width: 4,
             required: false,
             disabled: false
         },
         {
-            name: 'startLine',
+            name: "startLine",
             data: selectedCamera.roadInfo.startLine,
             width: 4,
             required: false,
             disabled: true
         },
         {
-            name: 'uTurn',
+            name: "uTurn",
             data: selectedCamera.roadInfo.uTurn,
             width: 4,
             required: false,
             disabled: true
         },
         {
-            name: 'crosswalk',
+            name: "crosswalk",
             data: selectedCamera.roadInfo.crosswalk,
             width: 4,
             required: false,
             disabled: true
         },
         {
-            name: 'lane',
+            name: "lane",
             data: selectedCamera.roadInfo.lane,
             width: 4,
             required: false,
             disabled: true
         },
         ]);
-    }
+    };
 
-    const requestAxiosUpdateCameras = async(cameraData: cameraDataType) => {
+    const requestAxiosUpdateCameras = async (cameraData: cameraDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        console.log("cameraData : " + cameraData);
+        //console.log("cameraData : " + cameraData);
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).post(
-            Request.CAMERA_URL + "/" + selectedCameraList[0].cameraId,
+            Request.CAMERA_URL + "/" + selectedCameraList[0].cameraNo,
             { cameraData }
-        ); 
+        );
 
         return response.data;
-    }
+    };
 
     const {
         loading: loadingCameras,
@@ -214,10 +216,9 @@ function CameraDetail() {
 
     useEffect(() => {
         if (resultUpdateCameras === null) return;
-        
+
         navigate(Common.PAGE_MANAGEMENT_CAMERA);
         alert("수정되었습니다.");
-
     }, [resultUpdateCameras]);
 
     useEffect(() => {
@@ -226,49 +227,39 @@ function CameraDetail() {
         console.log("errorCameras", errorUpdateCameras);
     }, [errorUpdateCameras]);
 
-
-    const onChangedZoomLevel = (level: number) => {
-        console.log("level", level);
-    };
-
-    const onClickEvent = (cameras :any) => {
+    const onClickEvent = (cameras: any) => {
         requestUpdateCameras(cameras);
     };
-    
-    return(
+
+    return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
-                <Grid item xs={7}>
-                    <ManagementDetail response={cameraData} clickEvent={onClickEvent}/>
+                <Grid item xs={8}>
+                    <ManagementDetail
+                        response={cameraData}
+                        clickEvent={onClickEvent}
+                    />
                 </Grid>
-                <Grid item xs={5}>
-                    <Box className={styles.box}>
-                        <KakaoMap
-                            style={{
-                                width: "100%",
-                                height: "calc(100vh - 80px)",
-                                zIndex: "0",
-                            }}
-                            transitionState={undefined}
-                            region={undefined}
-                            intersections={undefined}
-                            cameras={{
-                                list: selectedCameraList,
-                                isShow: true,
-                                selected: null,
-                                clickEvent: () => {undefined},
-                            }}
-                            links={undefined}
-                            trafficLights={undefined}
-                            avl={undefined}
-                            zoomLevel={undefined}
-                            onChangedZoomLevel={onChangedZoomLevel}
-                        />
-                    </Box>
+                <Grid item xs={4}>
+                    <KakaoMap
+                        style={{
+                            width: "100%",
+                            height: "calc(100vh - 80px)",
+                            zIndex: "0",
+                        }}
+                        cameras={{
+                            list: selectedCameraList,
+                            isShow: true,
+                            selected: null,
+                            clickEvent: () => {
+                                undefined;
+                            },
+                        }}
+                    />
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
 
 export default CameraDetail;

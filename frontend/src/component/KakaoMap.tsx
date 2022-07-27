@@ -26,7 +26,7 @@ export type KakaoMapRegionType = {
 export type KakaoMapIntersectionsType = {
     list: any[];
     selected: string | null;
-    clickEvent: (intersectionId: string) => void;
+    clickEvent: (intersectionNo: string) => void;
     showEdge?: boolean;
 };
 
@@ -34,7 +34,7 @@ export type KakaoMapCamerasType = {
     list: any[];
     isShow: boolean;
     selected: string | null;
-    clickEvent: (cameraId: string, intersectionId: string) => void;
+    clickEvent: (cameraNo: string, intersectionNo: string) => void;
 };
 
 export type KakaoMapLinksType = {
@@ -95,7 +95,7 @@ export const displayIntersection = (
                 let strokeColor;
                 let fillColor;
 
-                if (intersection.intersectionId === intersections.selected) {
+                if (intersection.intersectionNo === intersections.selected) {
                     strokeColor = "#ff8000";
                     fillColor = "#ff9900";
                 } else {
@@ -110,7 +110,7 @@ export const displayIntersection = (
 
                 return (
                     <Circle
-                        key={intersection.intersectionId}
+                        key={intersection.intersectionNo}
                         center={intersection.gps}
                         radius={150}
                         strokeWeight={1} // 선의 두께입니다
@@ -121,7 +121,7 @@ export const displayIntersection = (
                         zIndex={5}
                         onClick={(marker: kakao.maps.Circle) => {
                             intersections.clickEvent(
-                                intersection.intersectionId
+                                intersection.intersectionNo
                             );
                         }}
                     />
@@ -148,7 +148,7 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
 
     return cameras.list?.map((camera) => {
         const normalState = true; // TODO
-        const isSelected = camera.cameraId === cameras.selected;
+        const isSelected = camera.cameraNo === cameras.selected;
         // const imageUrl =
         //     "../assets/images/btn_map_cctv" +
         //     (normalState ? "" : "_e") +
@@ -167,7 +167,7 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
 
         return (
             <MapMarker
-                key={camera.cameraId}
+                key={camera.cameraNo}
                 position={camera.gps}
                 image={{
                     src: imageData,
@@ -184,8 +184,8 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
                 }}
                 onClick={(marker: kakao.maps.Marker) => {
                     cameras.clickEvent(
-                        camera.cameraId,
-                        camera.intersection.intersectionId
+                        camera.cameraNo,
+                        camera.intersection.intersectionNo
                     );
                 }}
             />
@@ -630,17 +630,17 @@ function KakaoMap({
 }: {
     style: KakaoMapStyleType;
     transitionState?: string | undefined;
-    region: KakaoMapRegionType | undefined;
-    intersections: KakaoMapIntersectionsType | undefined;
-    cameras: KakaoMapCamerasType | undefined;
-    links: KakaoMapLinksType | undefined;
-    trafficLights: KakaoMapTrafficLightsType | undefined;
-    avl: KakaoMapAvlType | undefined;
+    region?: KakaoMapRegionType | undefined;
+    intersections?: KakaoMapIntersectionsType | undefined;
+    cameras?: KakaoMapCamerasType | undefined;
+    links?: KakaoMapLinksType | undefined;
+    trafficLights?: KakaoMapTrafficLightsType | undefined;
+    avl?: KakaoMapAvlType | undefined;
     zoomLevel?: number | undefined;
     onChangedZoomLevel?: (level: number) => void;
 }) {
     const [kakaoMap, setKakaoMap] = useState<kakao.maps.Map>();
-    const [level, setLevel] = useState<number>(0);
+    const [level, setLevel] = useState<number>(7);
 
     const [tempCenter, setTempCenter] = useState<kakao.maps.LatLng>();
 

@@ -26,11 +26,11 @@ public class Intersection extends BaseTimeEntity {
     @Column(name = "intersection_name", length = 32)
     private String intersectionName;
 
-    @Column(name = "latitude")
-    private Double latitude;
+    @Column(name = "lat")
+    private Double lat;
 
-    @Column(name = "longitude")
-    private Double longitude;
+    @Column(name = "lng")
+    private Double lng;
 
     @ManyToOne
     @JoinColumn(name = "region_id")
@@ -48,8 +48,8 @@ public class Intersection extends BaseTimeEntity {
                 "intersectionId=" + intersectionId +
                 ", intersectionNo='" + intersectionNo + '\'' +
                 ", intersectionName='" + intersectionName + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", lat=" + lat +
+                ", lng=" + lng +
                 ", region=" + region.getRegionNo() +
                 ", nationalId=" + nationalId +
                 ", cameras=" + cameras +

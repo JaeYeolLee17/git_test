@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_region_gps", uniqueConstraints = {@UniqueConstraint(columnNames = {"region_id", "latitude", "longitude"})})
+@Table(name = "nt_region_gps", uniqueConstraints = {@UniqueConstraint(columnNames = {"region_id", "lat", "lng"})})
 public class RegionGps extends BaseTimeEntity {
 
     @Id
@@ -23,11 +23,11 @@ public class RegionGps extends BaseTimeEntity {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @Column(name = "latitude")
-    private Double latitude;
+    @Column(name = "lat")
+    private Double lat;
 
-    @Column(name = "longitude")
-    private Double longitude;
+    @Column(name = "lng")
+    private Double lng;
 
     @Column(name = "gps_order")
     private Integer gpsOrder;
@@ -37,8 +37,8 @@ public class RegionGps extends BaseTimeEntity {
         return "RegionGps{" +
                 "regionGpsId=" + regionGpsId +
                 ", region=" + region.getRegionNo() +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", lat=" + lat +
+                ", lng=" + lng +
                 ", gpsOrder=" + gpsOrder +
                 '}';
     }

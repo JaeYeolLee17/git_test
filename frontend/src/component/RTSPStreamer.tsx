@@ -13,15 +13,15 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 function RTSPStreamer({
     intersectionName,
     streamIntersectionCameras,
-    selectedCameraId,
+    selectedCameraNo,
     onChangedHeight,
-    onChangedSelectedCameraId,
+    onChangedSelectedCameraNo,
 }: {
     intersectionName: string | undefined;
     streamIntersectionCameras: any[];
-    selectedCameraId: string | null;
+    selectedCameraNo: string | null;
     onChangedHeight: (height: number) => void;
-    onChangedSelectedCameraId: (cameraId: string) => void;
+    onChangedSelectedCameraNo: (cameraNo: string) => void;
 }) {
     const [openRtsp, setOpenRtsp] = useState<boolean>(false);
     const [showButton, setShowButton] = useState<boolean>(true);
@@ -48,8 +48,8 @@ function RTSPStreamer({
         onChangedHeight(height);
     }, [height]);
 
-    const onChangedSelectedCamera = (cameraId: string) => {
-        onChangedSelectedCameraId(cameraId);
+    const onChangedSelectedCamera = (cameraNo: string) => {
+        onChangedSelectedCameraNo(cameraNo);
     };
 
     return (
@@ -95,11 +95,11 @@ function RTSPStreamer({
 
                     <Box className={styles.rtspWrapper}>
                         <StreamIntersection
-                            selectedCameraId={selectedCameraId}
+                            selectedCameraNo={selectedCameraNo}
                             streamIntersectionCameras={
                                 streamIntersectionCameras
                             }
-                            onChangedSelectedCameraId={onChangedSelectedCamera}
+                            onChangedSelectedCameraNo={onChangedSelectedCamera}
                         />
                     </Box>
                 </div>

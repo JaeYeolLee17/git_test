@@ -40,19 +40,19 @@ export type ChartStatData = {
 };
 
 export type RegionInfo = {
-    regionId: string;
+    regionNo: string;
     regionName?: string;
     gps?: GpsPosition[];
 };
 
 export type SelectorRegion = {
-    selectedRegionId: string;
+    selectedRegionNo: string;
     onChangedRegionList?: (listRegions: any[]) => void;
     onChangedCurrentRegion: (currentRegionInfo: RegionInfo) => void;
 };
 
 export type IntersectionInfo = {
-    intersectionId: string;
+    intersectionNo: string;
     intersectionName?: string;
     gps?: GpsPosition;
     region?: RegionInfo;
@@ -60,7 +60,7 @@ export type IntersectionInfo = {
 
 export type SelectorIntersection = {
     currentRegionInfo: RegionInfo;
-    selectedIntersectionId: string;
+    selectedIntersectionNo: string;
     onChangedIntersectionList?: (listIntersections: any[]) => void;
     onChangedCurrentIntersection?: (
         currentIntersectionInfo: IntersectionInfo
@@ -68,7 +68,7 @@ export type SelectorIntersection = {
 };
 
 export type StreamInfo = {
-    cameraId: string;
+    cameraNo: string;
     port: string;
 };
 

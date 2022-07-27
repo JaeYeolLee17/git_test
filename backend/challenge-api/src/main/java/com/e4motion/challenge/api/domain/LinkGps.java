@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_link_gps", uniqueConstraints = {@UniqueConstraint(columnNames = {"link_id", "latitude", "longitude"})})
+@Table(name = "nt_link_gps", uniqueConstraints = {@UniqueConstraint(columnNames = {"link_id", "lat", "lng"})})
 public class LinkGps extends BaseTimeEntity {
 
     @Id
@@ -23,11 +23,11 @@ public class LinkGps extends BaseTimeEntity {
     @JoinColumn(name = "link_id")
     private Link link;
 
-    @Column(name = "latitude")
-    private Double latitude;
+    @Column(name = "lat")
+    private Double lat;
 
-    @Column(name = "longitude")
-    private Double longitude;
+    @Column(name = "lng")
+    private Double lng;
 
     @Column(name = "gps_order")
     private Integer gpsOrder;
@@ -37,8 +37,8 @@ public class LinkGps extends BaseTimeEntity {
         return "LinkGps{" +
                 "linkGpsId=" + linkGpsId +
                 ", link=" + link.getStart().getIntersectionNo() + "->" + link.getEnd().getIntersectionNo() +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", lat=" + lat +
+                ", lng=" + lng +
                 ", gpsOrder=" + gpsOrder +
                 '}';
     }

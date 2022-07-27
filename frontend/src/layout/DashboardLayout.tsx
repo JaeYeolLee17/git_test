@@ -12,7 +12,7 @@ function DashboardLayout(props: any) {
     return (
         <StyledEngineProvider injectFirst>
             <CssBaseline />
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", backgroundColor: "#fafbfe"}}>
                 <AppBar
                     className={styles.appBar}
                     position='fixed'

@@ -1,0 +1,13 @@
+<svg id="btn_list_delete_n" xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 21 22">
+    <defs>
+        <style>
+            .cls-1{fill:#4579bd}
+        </style>
+    </defs>
+    <path id="패스_158" data-name="패스 158" class="cls-1" d="M324.547 607.567h-19.076c-.585 0-.961.312-.961.792v.071a.863.863 0 0 0 .956.755h1.38v16.06a.947.947 0 0 0 .961.933h14.4a.947.947 0 0 0 .961-.933v-16.06h1.379a.5.5 0 0 0 .071.005.863.863 0 0 0 .892-.832c0-.479-.378-.791-.963-.791zm-3.047 16.922h-12.945v-15.3H321.5z" transform="translate(-304.51 -604.178)"/>
+    <g id="그룹_303" data-name="그룹 303" transform="translate(-980 -246)">
+        <path id="패스_159" data-name="패스 159" class="cls-1" d="M319.608 621.693v-7.672a1 1 0 0 1 2 0v7.672a1 1 0 0 1-2 0z" transform="translate(672.394 -359.193)"/>
+        <path id="패스_160" data-name="패스 160" class="cls-1" d="M312.813 621.693v-7.672a1 1 0 0 1 1.992 0v7.672a1 1 0 0 1-2 0z" transform="translate(674.193 -359.193)"/>
+    </g>
+    <path id="패스_161" data-name="패스 161" class="cls-1" d="M313.183 605.05a.824.824 0 1 1 0-1.633h6.13a.824.824 0 1 1 0 1.633z" transform="translate(-305.248 -603.415)"/>
+</svg>

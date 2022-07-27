@@ -7,6 +7,9 @@ import * as Request from "../commons/request"
 import KakaoMap from "../component/KakaoMap";
 import styles from "../pages/ManagementRegion.module.css"
 import * as Common from "../commons/common";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import editBtn from '../assets/images/btn_list_edit_n.svg'
 
 import Grid from '@mui/material/Grid';
 import { useNavigate } from "react-router-dom";
@@ -19,6 +22,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
+    headerAlign: string,
+    align: string,
     flex: number,
     renderCell: any
   }
@@ -34,29 +39,35 @@ function ManagementRegion() {
         {
             field: 'id',
             headerName: '구역 ID',
-            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+            flex: 2,
             renderCell: undefined
         },
         {
             field: 'name',
             headerName: '구역 이름',
-            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+            flex: 2,
             renderCell: undefined
         },
         {
             field: 'data',
             headerName: '',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             renderCell: (params :any) => {
                 return (
-                    <button onClick={(e) => {
+                    <Button onClick={(e) => {
                         navigate(
                             Common.PAGE_MANAGEMENT_REGION_DETAIL, {
                             state :listRegion.find(function(data){ return data.regionId === params.id })})
                         }
                     }>
-                        수정
-                    </button>
+                        <img src={editBtn} width={20}/>
+                    </Button>
                 )
             }
         }
@@ -124,40 +135,42 @@ function ManagementRegion() {
     return(
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={7}>
                     <TableManagement 
                         columns={columns} 
                         rows={rows} 
                         clickEvent={onRowClick}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <KakaoMap
-                        style={{
-                            width: "100%",
-                            height: "calc(100vh - 80px)",
-                            zIndex: "0",
-                        }}
-                        transitionState={undefined}
-                        region={{
-                            current: {
-                                regionId: 'test',
-                                regionName: 'test',
-                                gps: [{
-                                    lat: 128.3,
-                                    lng: 38
-                                }]
-                            },
-                            isShow: true
-                        }}
-                        intersections={undefined}
-                        cameras={undefined}
-                        links={undefined}
-                        trafficLights={undefined}
-                        avl={undefined}
-                        zoomLevel={undefined}
-                        onChangedZoomLevel={onChangedZoomLevel}
-                    />
+                <Grid item xs={5}>
+                    <Box className={styles.box}>
+                        <KakaoMap
+                            style={{
+                                width: "100%",
+                                height: "calc(100vh - 80px)",
+                                zIndex: "0",
+                            }}
+                            transitionState={undefined}
+                            region={{
+                                current: {
+                                    regionId: 'test',
+                                    regionName: 'test',
+                                    gps: [{
+                                        lat: 128.3,
+                                        lng: 38
+                                    }]
+                                },
+                                isShow: true
+                            }}
+                            intersections={undefined}
+                            cameras={undefined}
+                            links={undefined}
+                            trafficLights={undefined}
+                            avl={undefined}
+                            zoomLevel={undefined}
+                            onChangedZoomLevel={onChangedZoomLevel}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
         </div>

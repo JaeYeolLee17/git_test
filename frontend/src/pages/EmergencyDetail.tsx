@@ -39,6 +39,13 @@ function EmergencyDetail() {
             disabled: true
         },
         {
+            name: '',
+            data: '',
+            width:6,
+            required: false,
+            disabled: false
+        },
+        {
             name: 'password',
             data: '',
             width:6,

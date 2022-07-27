@@ -10,6 +10,7 @@ import styles from './CameraDetail.module.css';
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request"
 import * as Common from "../commons/common";
+import Box from '@mui/material/Box';
 
 type intersectionDataType = {
     distance: number,
@@ -39,6 +40,13 @@ function IntersectionDetail() {
             width:6,
             required: true,
             disabled: true
+        },
+        {
+            name: '',
+            data: '',
+            width: 6,
+            required: false,
+            disabled: false
         },
         {
             name: 'intersectionName',
@@ -122,27 +130,29 @@ function IntersectionDetail() {
                     <ManagementDetail response={intersectionData} clickEvent={onClickEvent}/>
                 </Grid>
                 <Grid item xs={4}>
-                    <KakaoMap
-                        style={{
-                            width: "100%",
-                            height: "calc(100vh - 80px)",
-                            zIndex: "0",
-                        }}
-                        transitionState={undefined}
-                        region={undefined}
-                        intersections={{
-                            list: selectedIntersectionList,
-                            selected: null,
-                            clickEvent: () => {undefined},
-                            showEdge: true,
-                        }}
-                        cameras={undefined}
-                        links={undefined}
-                        trafficLights={undefined}
-                        avl={undefined}
-                        zoomLevel={undefined}
-                        onChangedZoomLevel={onChangedZoomLevel}
-                    />
+                    <Box className={styles.box}>
+                        <KakaoMap
+                            style={{
+                                width: "100%",
+                                height: "calc(100vh - 80px)",
+                                zIndex: "0",
+                            }}
+                            transitionState={undefined}
+                            region={undefined}
+                            intersections={{
+                                list: selectedIntersectionList,
+                                selected: null,
+                                clickEvent: () => {undefined},
+                                showEdge: true,
+                            }}
+                            cameras={undefined}
+                            links={undefined}
+                            trafficLights={undefined}
+                            avl={undefined}
+                            zoomLevel={undefined}
+                            onChangedZoomLevel={onChangedZoomLevel}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
         </div>

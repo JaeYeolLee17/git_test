@@ -5,6 +5,9 @@ import { useAsyncAxios } from "../utils/customHooks";
 import * as Utils from "../utils/utils"
 import * as Request from "../commons/request"
 import * as Common from "../commons/common";
+import Button from '@mui/material/Button';
+import editBtn from '../assets/images/btn_list_edit_n.svg'
+import deleteBtn from '../assets/images/btn_list_delete_n.svg'
 
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +20,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
+    headerAlign: string,
+    align: string,
     flex: number,
     renderCell: any
   }
@@ -33,35 +38,48 @@ function ManagementEmergency() {
         {
             field: 'id',
             headerName: '차량번호',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             renderCell: undefined
         },
         {
             field: 'wardId',
             headerName: '소속기관 아이디',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             renderCell: undefined
         },
         {
             field: 'wardName',
             headerName: '소속기관명',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             renderCell: undefined
         },
         {
             field: 'data',
             headerName: '',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             renderCell: (params :any) => {
                 return (
-                    <button onClick={(e) => {
-                        navigate(
-                            Common.PAGE_MANAGEMENT_EMERGENCY_DETAIL, {
-                            state :listEmergency.find(function(data){ return data.carNo === params.id })})
-                        }
-                    }>
-                        수정
-                    </button>
+                    <>
+                        <Button onClick={(e) => {
+                            navigate(
+                                Common.PAGE_MANAGEMENT_EMERGENCY_DETAIL, {
+                                state :listEmergency.find(function(data){ return data.carNo === params.id })})
+                            }
+                        }>
+                            <img src={editBtn} width={20} />
+                        </Button>
+                        <Button onClick={(e) => {requestDeleteEmergency(params.id)}}>
+                            <img src={deleteBtn} width={20} />
+                        </Button>
+                    </>
                 )
             }
         }
@@ -113,6 +131,37 @@ function ManagementEmergency() {
 
         console.log("errorEmergencys", errorEmergencys);
     }, [errorEmergencys]);
+
+    const requestAxiosDeleteEmergency = async(carNo: string) => {
+        if (userDetails === null) return null;
+        if (userDetails?.token === null) return null;
+
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).delete(
+            Request.EMERGENCY_URL + "/" + carNo
+        );
+
+        return response.data;
+    }
+
+    const {
+        loading: loadingDeleteEmergency,
+        error: errorDeleteEmergency,
+        data: resultDeleteEmergency,
+        execute: requestDeleteEmergency,
+    } = useAsyncAxios(requestAxiosDeleteEmergency);
+
+    useEffect(() => {
+        if (resultDeleteEmergency === null) return;
+
+        alert('삭제되었습니다.');
+
+    }, [resultDeleteEmergency]);
+
+    useEffect(() => {
+        if (errorDeleteEmergency === null) return;
+
+        console.log("errorDeleteEmergency", errorDeleteEmergency);
+    }, [errorDeleteEmergency]);
 
     const handleClickEmergency = (emergencyId: string) => {
         setSelectedEmergencyId(emergencyId);

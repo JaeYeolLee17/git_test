@@ -1,0 +1,32 @@
+.box {
+    margin: 24px;
+    padding: 32px;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+.inputLabel {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.inputLabel span {
+    color: red;
+}
+
+.backBtn,
+.backBtn:hover
+ {
+    color: white;
+
+    background-color: #6c757d;
+    border-color: #6c757d;
+    margin-right: 10px;
+}
+
+.saveBtn,
+.saveBtn:hover {
+    color: white;
+    background-color: #0766B6;
+    border-color: #0766B6;
+}

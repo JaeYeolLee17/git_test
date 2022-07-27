@@ -10,6 +10,7 @@ import styles from './RegionDetail.module.css';
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request"
 import * as Common from "../commons/common";
+import Box from '@mui/material/Box';
 
 type regionDataType = {
     distance: number,
@@ -101,32 +102,34 @@ function RegionDetail() {
                     <ManagementDetail response={regionData} clickEvent={onClickEvent}/>
                 </Grid>
                 <Grid item xs={4}>
-                    <KakaoMap
-                        style={{
-                            width: "100%",
-                            height: "calc(100vh - 80px)",
-                            zIndex: "0",
-                        }}
-                        transitionState={undefined}
-                        region={{
-                            current: {
-                                regionId: '1',
-                                regionName: '1',
-                                gps: [{
-                                    lat: 128.3,
-                                    lng: 38
-                                }]
-                            },
-                            isShow: true
-                        }}
-                        intersections={undefined}
-                        cameras={undefined}
-                        links={undefined}
-                        trafficLights={undefined}
-                        avl={undefined}
-                        zoomLevel={undefined}
-                        onChangedZoomLevel={onChangedZoomLevel}
-                    />
+                    <Box className={styles.box}>
+                        <KakaoMap
+                            style={{
+                                width: "100%",
+                                height: "calc(100vh - 80px)",
+                                zIndex: "0",
+                            }}
+                            transitionState={undefined}
+                            region={{
+                                current: {
+                                    regionId: '1',
+                                    regionName: '1',
+                                    gps: [{
+                                        lat: 128.3,
+                                        lng: 38
+                                    }]
+                                },
+                                isShow: true
+                            }}
+                            intersections={undefined}
+                            cameras={undefined}
+                            links={undefined}
+                            trafficLights={undefined}
+                            avl={undefined}
+                            zoomLevel={undefined}
+                            onChangedZoomLevel={onChangedZoomLevel}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
         </div>

@@ -7,6 +7,9 @@ import * as Request from "../commons/request"
 import KakaoMap from "../component/KakaoMap";
 import styles from "../pages/ManagementCamera.module.css"
 import * as Common from "../commons/common";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import editBtn from '../assets/images/btn_list_edit_n.svg'
 
 import Grid from '@mui/material/Grid';
 import { useNavigate } from "react-router-dom";
@@ -21,6 +24,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
+    headerAlign: string,
+    align: string,
     flex: number,
     renderCell: any
   }
@@ -37,41 +42,52 @@ function ManagementCamera() {
         {
             field: 'id',
             headerName: '카메라 ID',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             renderCell: undefined
         },
         {
             field: 'region',
             headerName: '구역',
+            headerAlign: 'center',
+            align: 'center',
             flex: 1,
             renderCell: undefined
         },
         {
             field: 'intersection',
             headerName: '교차로',
-            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+            flex: 1,            
             renderCell: undefined
         },
         {
             field: 'cameraDirection',
             headerName: '카메라 설치 방향',
-            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+            flex: 2,
             renderCell: undefined
         },
         {
             field: 'data',
             headerName: '',
-            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+            flex: 0.5,
             renderCell: (params :any) => {
                 return (
-                    <button onClick={(e) => {
-                        navigate(
-                            Common.PAGE_MANAGEMENT_CAMERA_DETAIL, {
-                            state :listCamera.find(function(data){ return data.cameraId === params.id })})
+                    <Button
+                        onClick={(e) => {
+                            navigate(
+                                Common.PAGE_MANAGEMENT_CAMERA_DETAIL, {
+                                state :listCamera.find(function(data){ return data.cameraId === params.id })})
                         }
                     }>
-                        수정
-                    </button>
+                        <img src={editBtn} width={20}></img>
+                    </Button>
                 )
             }
         }
@@ -143,35 +159,37 @@ function ManagementCamera() {
     return(
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={7}>
                     <TableManagement 
-                        columns={columns} 
-                        rows={rows} 
-                        clickEvent={onRowClick}
+                            columns={columns} 
+                            rows={rows} 
+                            clickEvent={onRowClick}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <KakaoMap
-                        style={{
-                            width: "100%",
-                            height: "calc(100vh - 80px)",
-                            zIndex: "0",
-                        }}
-                        transitionState={undefined}
-                        region={undefined}
-                        intersections={undefined}
-                        cameras={{
-                            list: listCamera,
-                            isShow: true,
-                            selected: selectedCameraId,
-                            clickEvent: handleClickCamera,
-                        }}
-                        links={undefined}
-                        trafficLights={undefined}
-                        avl={undefined}
-                        zoomLevel={undefined}
-                        onChangedZoomLevel={onChangedZoomLevel}
-                    />
+                <Grid item xs={5}>
+                    <Box className={styles.box}>
+                        <KakaoMap
+                            style={{
+                                width: "100%",
+                                height: "calc(100vh - 80px)",
+                                zIndex: "0",
+                            }}
+                            transitionState={undefined}
+                            region={undefined}
+                            intersections={undefined}
+                            cameras={{
+                                list: listCamera,
+                                isShow: true,
+                                selected: selectedCameraId,
+                                clickEvent: handleClickCamera,
+                            }}
+                            links={undefined}
+                            trafficLights={undefined}
+                            avl={undefined}
+                            zoomLevel={undefined}
+                            onChangedZoomLevel={onChangedZoomLevel}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
         </div>

@@ -37,14 +37,14 @@ function CameraDetail() {
         setSelectedCameraList(selectedCameraList => [...selectedCameraList, selectedCamera]);
         
         setCameraData([{
-            name: "cameraId",
-            data: selectedCamera.cameraId,
+            name: "cameraNo",
+            data: selectedCamera.cameraNo,
             width: 6,
             required: true,
             disabled: true
         },
         {
-            name: "",
+            name: "empty",
             data: "",
             width: 6,
             required: false,
@@ -86,7 +86,7 @@ function CameraDetail() {
             disabled: false
         },
         {
-            name: "",
+            name: "empty2",
             data: "",
             width: 8,
             required: false,
@@ -164,28 +164,28 @@ function CameraDetail() {
         },
         {
             name: "startLine",
-            data: selectedCamera.roadInfo.startLine,
+            data: selectedCamera.road.startLine,
             width: 4,
             required: false,
             disabled: true
         },
         {
-            name: "uTurn",
-            data: selectedCamera.roadInfo.uTurn,
+            name: "uturn",
+            data: selectedCamera.road.uturn,
             width: 4,
             required: false,
             disabled: true
         },
         {
             name: "crosswalk",
-            data: selectedCamera.roadInfo.crosswalk,
+            data: selectedCamera.road.crosswalk,
             width: 4,
             required: false,
             disabled: true
         },
         {
             name: "lane",
-            data: selectedCamera.roadInfo.lane,
+            data: selectedCamera.road.lane,
             width: 4,
             required: false,
             disabled: true
@@ -193,15 +193,13 @@ function CameraDetail() {
         ]);
     };
 
-    const requestAxiosUpdateCameras = async (cameraData: cameraDataType) => {
+    const requestAxiosUpdateCameras = async (updateData: cameraDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        //console.log("cameraData : " + cameraData);
-
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).post(
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
             Request.CAMERA_URL + "/" + selectedCameraList[0].cameraNo,
-            { cameraData }
+            updateData
         );
 
         return response.data;
@@ -227,35 +225,73 @@ function CameraDetail() {
         console.log("errorCameras", errorUpdateCameras);
     }, [errorUpdateCameras]);
 
-    const onClickEvent = (cameras: any) => {
-        requestUpdateCameras(cameras);
+    const onClickEvent = (camera: any) => {
+        const updateData = {
+            "cameraNo": camera.cameraNo,
+            "intersection": {
+              "intersectionNo": selectedCameraList[0].intersection.intersectionNo,
+              "intersectionName": camera.intersectionName
+            },
+            "direction": {
+                "intersectionNo": selectedCameraList[0].direction.intersectionNo,
+                "intersectionName": camera.directionName
+            },
+            "gps": {
+              "lat": camera.gpsLat,
+              "lng": camera.gpsLng
+            },
+            "distance": camera.distance,
+            "rtspUrl": camera.rtspUrl,
+            "rtspId": camera.rtsId,
+            "rtspPassword": camera.rtspPassword,
+            "serverUrl": camera.serverUrl,
+            "sendCycle": camera.sendCycle,
+            "collectCycle": camera.collectCycle,
+            "smallWidth": camera.smallWidth,
+            "smallHeight": camera.smallHeight,
+            "largeWidth": camera.largeWidth,
+            "largeHeight": camera.largeHeight,
+            "road": {
+              "startLine": camera.startLine,
+              "lane": 
+              camera.lane
+              ,
+              "uturn": camera.uturn,
+              "crosswalk": camera.crosswalk
+            }
+        }
+
+        requestUpdateCameras(updateData);        
     };
 
     return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
-                <Grid item xs={8}>
+                <Grid item xs={7}>
                     <ManagementDetail
+                        pageType="edit"
                         response={cameraData}
                         clickEvent={onClickEvent}
                     />
                 </Grid>
-                <Grid item xs={4}>
-                    <KakaoMap
-                        style={{
-                            width: "100%",
-                            height: "calc(100vh - 80px)",
-                            zIndex: "0",
-                        }}
-                        cameras={{
-                            list: selectedCameraList,
-                            isShow: true,
-                            selected: null,
-                            clickEvent: () => {
-                                undefined;
-                            },
-                        }}
-                    />
+                <Grid item xs={5}>
+                    <Box className={styles.box}>
+                        <KakaoMap
+                            style={{
+                                width: "100%",
+                                height: "calc(100vh - 80px)",
+                                zIndex: "0",
+                            }}
+                            cameras={{
+                                list: selectedCameraList,
+                                isShow: true,
+                                selected: null,
+                                clickEvent: () => {
+                                    undefined;
+                                },
+                            }}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
         </div>

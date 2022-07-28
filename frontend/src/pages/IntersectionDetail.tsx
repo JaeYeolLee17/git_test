@@ -55,7 +55,7 @@ function IntersectionDetail() {
                 disabled: false,
             },
             {
-                name: "region",
+                name: "regionName",
                 data: selectedIntersection.region.regionName,
                 width: 6,
                 required: false,
@@ -78,19 +78,13 @@ function IntersectionDetail() {
         ]);
     };
 
-    const requestAxiosUpdateIntersections = async (
-        intersectionData: intersectionDataType
-    ) => {
+    const requestAxiosUpdateIntersections = async (intersectionData: intersectionDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        console.log("intersectionData : " + intersectionData);
-
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).post(
-            Request.INTERSECTION_URL +
-                "/" +
-                selectedIntersectionList[0].intersectionNo,
-            { intersectionData }
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
+            Request.INTERSECTION_URL + "/" +selectedIntersectionList[0].intersectionNo,
+            intersectionData
         );
 
         return response.data;
@@ -116,8 +110,21 @@ function IntersectionDetail() {
         console.log("errorIntersections", errorUpdateIntersections);
     }, [errorUpdateIntersections]);
 
-    const onClickEvent = (intersections: any) => {
-        requestUpdateIntersections(intersections);
+    const onClickEvent = (intersection: any) => {
+        const updateData = {
+            "intersectionNo": selectedIntersectionList[0].intersectionNo,
+            "intersectionName": intersection.intersectionName,
+            "gps": {
+              "lat": intersection.gpsLat,
+              "lng": intersection.gpsLng
+            },
+            "region": {
+              "regionNo": selectedIntersectionList[0].region.regionNo,
+              "regionName": intersection.regionName
+            }
+        }
+
+        requestUpdateIntersections(updateData);
     };
 
     return (
@@ -125,6 +132,7 @@ function IntersectionDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <ManagementDetail
+                        pageType="edit"
                         response={intersectionData}
                         clickEvent={onClickEvent}
                     />

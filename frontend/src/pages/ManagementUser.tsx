@@ -5,9 +5,12 @@ import { useAsyncAxios } from "../utils/customHooks";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
+import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import editBtn from "../assets/images/btn_list_edit_n.svg"
 import deleteBtn from "../assets/images/btn_list_delete_n.svg"
+import AddIcon from "@mui/icons-material/Add";
+import styles from "./ManagementUser.module.css";
 
 import { useNavigate } from "react-router-dom";
 
@@ -154,7 +157,6 @@ function ManagementUser() {
 
     useEffect(() => {
         if (resultDeleteUser === null) return;
-
         alert("삭제되었습니다.")
 
     }, [resultDeleteUser]);
@@ -165,17 +167,23 @@ function ManagementUser() {
         console.log("errorDeleteUser", errorDeleteUser);
     }, [errorDeleteUser]);
 
-    const handleClickUser = (username: string) => {
-        setSelectedUserId(username);
-        alert(username);
-    };
-
     const onRowClick = (username: string) => {
         setSelectedUserId(username);
     };
 
+    const onAddUserClick = () => {
+        navigate(Common.PAGE_MANAGEMENT_USER_DETAIL, {
+            state: null,
+        });
+    }
+
     return (
-        <div style={{ height: "700px" }}>
+        <div style={{ height: "700px" , position: "relative"}}>
+            <IconButton 
+                className={styles.imgButton}
+                onClick={(e) => onAddUserClick()}>
+                <AddIcon />
+            </IconButton>
             <TableManagement
                 columns={columns}
                 rows={rows}

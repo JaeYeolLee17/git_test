@@ -4,7 +4,7 @@ import ManagementDetail from "../component/ManagementDetail";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
 import { useNavigate } from "react-router-dom";
-import styles from './EmergencyDetail.module.css';
+import styles from "./EmergencyDetail.module.css";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request"
 import * as Common from "../commons/common";
@@ -32,42 +32,42 @@ function EmergencyDetail() {
         setSelectedEmergencyList(selectedEmergencyList => [...selectedEmergencyList, selectedEmergency]);
         
         setEmergencyData([{
-            name: 'carNo',
+            name: "carNo",
             data: selectedEmergency.carNo,
             width:6,
             required: true,
             disabled: true
         },
         {
-            name: '',
-            data: '',
+            name: "",
+            data: "",
             width:6,
             required: false,
             disabled: false
         },
         {
-            name: 'password',
-            data: '',
+            name: "password",
+            data: "",
             width:6,
             required: false,
             disabled: false
         },
         {
-            name: 'passwordConfirm',
-            data: '',
+            name: "passwordConfirm",
+            data: "",
             width:6,
             required: false,
             disabled: false
         },
         {
-            name: 'wardId',
+            name: "wardId",
             data: selectedEmergency.wardId,
             width:6,
             required: false,
             disabled: false
         },
         {
-            name: 'wardName',
+            name: "wardName",
             data: selectedEmergency.wardName,
             width:6,
             required: true,
@@ -117,7 +117,11 @@ function EmergencyDetail() {
     
     return(
         <div className={styles.wrapper}>
-            <ManagementDetail response={emergencyData} clickEvent={onClickEvent}/>
+            <ManagementDetail 
+                pageType="edit" 
+                response={emergencyData} 
+                clickEvent={onClickEvent}
+            />
         </div>
     )
 }

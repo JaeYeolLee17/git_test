@@ -61,11 +61,9 @@ function RegionDetail() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        //console.log("regionData : " + regionData);
-
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).post(
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
             Request.REGION_URL + "/" + selectedRegionList[0].regionNo,
-            { regionData }
+            regionData
         );
 
         return response.data;
@@ -91,8 +89,13 @@ function RegionDetail() {
         console.log("errorRegions", errorUpdateRegions);
     }, [errorUpdateRegions]);
 
-    const onClickEvent = (regions: any) => {
-        requestUpdateRegions(regions);
+    const onClickEvent = (region: any) => {
+        const updatdData = {
+            "regionNo": region.regionNo,
+            "regionName": region.regionName,
+          }
+
+        requestUpdateRegions(updatdData);
     };
 
     return (
@@ -100,6 +103,7 @@ function RegionDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <ManagementDetail
+                        pageType="edit"
                         response={regionData}
                         clickEvent={onClickEvent}
                     />

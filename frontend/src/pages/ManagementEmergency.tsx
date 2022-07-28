@@ -5,9 +5,9 @@ import { useAsyncAxios } from "../utils/customHooks";
 import * as Utils from "../utils/utils"
 import * as Request from "../commons/request"
 import * as Common from "../commons/common";
-import Button from '@mui/material/Button';
-import editBtn from '../assets/images/btn_list_edit_n.svg'
-import deleteBtn from '../assets/images/btn_list_delete_n.svg'
+import Button from "@mui/material/Button";
+import editBtn from "../assets/images/btn_list_edit_n.svg"
+import deleteBtn from "../assets/images/btn_list_delete_n.svg"
 
 import { useNavigate } from "react-router-dom";
 
@@ -36,34 +36,34 @@ function ManagementEmergency() {
     
     const columns: columns[] = [
         {
-            field: 'id',
-            headerName: '차량번호',
-            headerAlign: 'center',
-            align: 'center',
+            field: "id",
+            headerName: "차량번호",
+            headerAlign: "center",
+            align: "center",
             flex: 1,
             renderCell: undefined
         },
         {
-            field: 'wardId',
-            headerName: '소속기관 아이디',
-            headerAlign: 'center',
-            align: 'center',
+            field: "wardId",
+            headerName: "소속기관 아이디",
+            headerAlign: "center",
+            align: "center",
             flex: 1,
             renderCell: undefined
         },
         {
-            field: 'wardName',
-            headerName: '소속기관명',
-            headerAlign: 'center',
-            align: 'center',
+            field: "wardName",
+            headerName: "소속기관명",
+            headerAlign: "center",
+            align: "center",
             flex: 1,
             renderCell: undefined
         },
         {
-            field: 'data',
-            headerName: '',
-            headerAlign: 'center',
-            align: 'center',
+            field: "data",
+            headerName: "",
+            headerAlign: "center",
+            align: "center",
             flex: 1,
             renderCell: (params :any) => {
                 return (
@@ -153,7 +153,7 @@ function ManagementEmergency() {
     useEffect(() => {
         if (resultDeleteEmergency === null) return;
 
-        alert('삭제되었습니다.');
+        alert("삭제되었습니다.");
 
     }, [resultDeleteEmergency]);
 
@@ -179,7 +179,7 @@ function ManagementEmergency() {
     };
 
     return(
-        <div style={{height: '700px' }}>
+        <div style={{height: "700px" }}>
             <TableManagement 
                 columns={columns} 
                 rows={rows} 

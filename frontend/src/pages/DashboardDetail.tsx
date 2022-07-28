@@ -294,7 +294,7 @@ function DashboardDetail() {
                     </li>
                     <li>
                         {/* <button
-                            type='button'
+                            type="button"
                             className={styles.searchBtn}
                             onClick={onSearch}
                         >

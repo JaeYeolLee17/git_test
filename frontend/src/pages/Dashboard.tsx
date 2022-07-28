@@ -95,7 +95,7 @@ const Dashboard = () => {
                                             onChange={handleChartOpen}
                                         />
                                     }
-                                    label='Show'
+                                    label="Show"
                                 /> */}
 
                                 <DashboardMap
@@ -120,9 +120,9 @@ const Dashboard = () => {
                                     onClick={handleChartOpen}
                                 >
                                     {chartOpen ? (
-                                        <ArrowBackIosNewIcon fontSize='small' />
+                                        <ArrowBackIosNewIcon fontSize="small" />
                                     ) : (
-                                        <ArrowForwardIosIcon fontSize='small' />
+                                        <ArrowForwardIosIcon fontSize="small" />
                                     )}
                                 </button>
                                 <Box className={styles.mapSelectWrap}>

@@ -82,7 +82,7 @@ function ManagementCamera() {
                         onClick={(e) => {
                             navigate(
                                 Common.PAGE_MANAGEMENT_CAMERA_DETAIL, {
-                                state :listCamera.find(function(data){ return data.cameraId === params.id })})
+                                state :listCamera.find(function(data){ return data.cameraNo === params.row.id })})
                         }
                     }>
                         <img src={editBtn} width={20}></img>

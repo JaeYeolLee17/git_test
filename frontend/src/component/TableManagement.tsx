@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import { 
   DataGrid,
   gridPageCountSelector,
@@ -6,10 +6,10 @@ import {
   useGridApiContext,
   useGridSelector,
   GridCellParams, 
-  GridToolbarQuickFilter } from '@mui/x-data-grid';
-import Box from '@mui/material/Box';
-import styles from './TableManagement.module.css';
-import Pagination from '@mui/material/Pagination';
+  GridToolbarQuickFilter } from "@mui/x-data-grid";
+import Box from "@mui/material/Box";
+import styles from "./TableManagement.module.css";
+import Pagination from "@mui/material/Pagination";
 
 type rows = {
   id: string,
@@ -47,7 +47,7 @@ function QuickSearchToolbar() {
       sx={{
         p: 0.5,
         pb: 0,
-        textAlign: 'left'
+        textAlign: "left"
       }}
     >
       <GridToolbarQuickFilter />
@@ -78,21 +78,21 @@ function TableManagement({rows, columns, clickEvent} : {rows: any[], columns:col
             border: 0,
             borderRadius: 2,
             fontSize: 16,
-            alignContent: 'center',
+            alignContent: "center",
             p: 2,
-            textAlign: 'center',
+            textAlign: "center",
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: "#f8fafb",
             },
             "& .MuiDataGrid-cell" : {
             },
             "& .MuiDataGrid-row.Mui-selected" : {
-              backgroundColor: '#4578bd',
-              color: 'white'
+              backgroundColor: "#4578bd",
+              color: "white"
             },
             "& .MuiDataGrid-row.Mui-selected:hover" : {
-              backgroundColor: '#4578bd',
-              color: 'white'
+              backgroundColor: "#4578bd",
+              color: "white"
             }
           }}
         />

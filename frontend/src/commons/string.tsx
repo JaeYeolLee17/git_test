@@ -1,3 +1,6 @@
+export const back = "이전";
+export const save = "저장";
+
 export const chart_no_data = "조회된 데이터 없음";
 export const chart_today = "당일 현재";
 export const chart_lastweek = "지난 주";
@@ -60,7 +63,6 @@ export const server_url = "운영플랫폼 서버 주소";
 export const send_cycle = "데이터 송신 주기";
 export const collect_cylcle = "교통량 수집 주기";
 export const start_line = "startLine";
-export const u_turn = "uTurn";
+export const u_turn = "uturn";
 export const crosswalk = "crosswalk";
 export const lane = "lane";
-

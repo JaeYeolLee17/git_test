@@ -17,22 +17,22 @@ public class CameraRepositoryImpl implements CameraRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    QCamera camera = QCamera.camera;
+    private final QCamera camera = QCamera.camera;
 
     @Transactional(readOnly = true)
     public List<Camera> findAllByRegionNoIntersectionNo(String regionNo, String intersectionNo) {
 
-        BooleanBuilder builder = new BooleanBuilder();
+        BooleanBuilder predicate = new BooleanBuilder();
         if (regionNo != null) {
-            builder.and(camera.intersection.region.regionNo.eq(regionNo));
+            predicate.and(camera.intersection.region.regionNo.eq(regionNo));
         }
         if (intersectionNo != null) {
-            builder.and(camera.intersection.intersectionNo.eq(intersectionNo));
+            predicate.and(camera.intersection.intersectionNo.eq(intersectionNo));
         }
 
         return queryFactory
                 .selectFrom(camera)
-                .where(builder)
+                .where(predicate)
                 .orderBy(camera.cameraNo.asc())
                 .fetch();
     }

@@ -1,6 +1,9 @@
 package com.e4motion.challenge.api.repository.impl;
 
-import com.e4motion.challenge.api.domain.*;
+import com.e4motion.challenge.api.domain.QCamera;
+import com.e4motion.challenge.api.domain.QDataStats;
+import com.e4motion.challenge.api.domain.QLink;
+import com.e4motion.challenge.api.domain.QLinkGps;
 import com.e4motion.challenge.api.dto.*;
 import com.e4motion.challenge.api.repository.DataStatsRepositoryCustom;
 import com.e4motion.challenge.common.domain.DailyGroupBy;
@@ -13,7 +16,6 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,21 +26,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
 
     // TODO: !!! query 결과물이 데이터베이스 구조와 달리 1:M 인 경우 직접 매핑으로 인한 속도 저하...
     // TODO: 통계 결과물을 데이터베이스처럼 펼쳐볼까?
-    // TODO: 필요에 따라 SUM 된 통계테이블을 VIEW 로 만들어두면 속도가 좀 개선될까?
+    // TODO: 필요에 따라 SUM 된 통계테이블을 VIEW 로 만들면 속도가 좀 개선될까?
 
     private final JPAQueryFactory queryFactory;
 
-    QDataStats dataStats = QDataStats.dataStats;
-    QCamera camera = QCamera.camera;
-    QLink link = QLink.link;
-    QLinkGps linkGps = QLinkGps.linkGps;
+    private final QDataStats dataStats = QDataStats.dataStats;
+    private final QCamera camera = QCamera.camera;
+    private final QLink link = QLink.link;
+    private final QLinkGps linkGps = QLinkGps.linkGps;
 
     /*
     SELECT extract(year from t) AS y, extract(month from t) AS m, extract(day from t) AS d,

@@ -8,9 +8,9 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TsiNodeInfo {
+public class TsiNodeDto {
 
-    private String node_id;
+    private Long node_id;
 
     private String node_name;
 

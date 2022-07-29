@@ -1,10 +1,15 @@
 package com.e4motion.challenge.api.service.impl;
 
-import com.e4motion.challenge.api.dto.TsiBrokerInfo;
-import com.e4motion.challenge.api.dto.TsiBrokerInfoResponse;
-import com.e4motion.challenge.api.dto.TsiNodeInfo;
-import com.e4motion.challenge.api.dto.TsiNodeInfoResponse;
+import com.e4motion.challenge.api.domain.Tsi;
+import com.e4motion.challenge.api.domain.TsiNode;
+import com.e4motion.challenge.api.domain.TsiSignal;
+import com.e4motion.challenge.api.dto.*;
+import com.e4motion.challenge.api.mapper.TsiMapper;
+import com.e4motion.challenge.api.repository.TsiNodeRepository;
+import com.e4motion.challenge.api.repository.TsiRepository;
+import com.e4motion.challenge.api.repository.TsiSignalRepository;
 import com.e4motion.challenge.api.service.TsiService;
+import com.e4motion.challenge.common.domain.TsiFilterBy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,6 +30,14 @@ import java.util.List;
 public class TsiServiceImpl implements TsiService {
 
     private final String RESULT_SUCCESS = "1000";
+
+    private final TsiRepository tsiRepository;
+
+    private final TsiSignalRepository tsiSignalRepository;
+
+    private final TsiMapper tsiMapper;
+
+    private final TsiNodeRepository tsiNodeRepository;
 
     private final RestTemplate restTemplate;
 
@@ -37,54 +51,123 @@ public class TsiServiceImpl implements TsiService {
     String apiToken;
 
     @Transactional
-    public void insert() {
+    public void insertTsi(TsiHubDto tsiHubDto) {
 
+        Optional<Tsi> tsiOptional = tsiRepository.findByNodeId(tsiHubDto.getNodeId());
+        if (tsiOptional.isPresent()) {
+
+            updateTsi(tsiOptional.get(), tsiHubDto);
+        } else {
+
+            Tsi tsi = tsiMapper.toTsi(tsiHubDto);
+            for (TsiSignal tsiSignal : tsi.getTsiSignals()) {
+                tsiSignal.setTsi(tsi);
+            }
+
+            tsiRepository.save(tsi);
+            tsiSignalRepository.saveAll(tsi.getTsiSignals());
+        }
+    }
+
+    private void updateTsi(Tsi tsi, TsiHubDto tsiHubDto) {
+
+        tsi.setManual(tsiHubDto.getManual());
+        tsi.setFlashing(tsiHubDto.getFlashing());
+        tsi.setLightsOut(tsiHubDto.getLightsOut());
+        tsi.setResponse(tsiHubDto.getResponse());
+        tsi.setTransition(tsiHubDto.getTransition());
+        tsi.setErrorContradiction(tsiHubDto.getErrorContradiction());
+        tsi.setErrorCenter(tsiHubDto.getErrorCenter());
+        tsi.setErrorScu(tsiHubDto.getErrorScu());
+        tsi.setCycleCounter(tsiHubDto.getCycleCounter());
+        tsi.setTime(tsiHubDto.getTime());
+
+        tsiRepository.save(tsi);
+
+        TsiSignal tsiSignal;
+        for (TsiHubSignalDto tsiSignalDto : tsiHubDto.getTsiSignals()) {
+
+            Optional<TsiSignal> tsiSignalOptional  = tsiSignalRepository.findByTsi_NodeIdAndInfoAndDirection(
+                    tsi.getNodeId(), tsiSignalDto.getInfo(), tsiSignalDto.getDirection());
+            if (tsiSignalOptional.isPresent()) {
+
+                tsiSignal = tsiSignalOptional.get();
+                tsiSignal.setTimeReliability(tsiSignalDto.getTimeReliability());
+                tsiSignal.setPerson(tsiSignalDto.getPerson());
+                tsiSignal.setStatus(tsiSignalDto.getStatus());
+                tsiSignal.setDisplayTime(tsiSignalDto.getDisplayTime());
+                tsiSignal.setRemainTime(tsiSignalDto.getRemainTime());
+
+            } else {
+
+                tsiSignal = tsiMapper.toTsiSignal(tsiSignalDto);
+                tsiSignal.setTsi(tsi);
+            }
+            tsiSignalRepository.save(tsiSignal);
+        }
     }
 
     @Transactional(readOnly = true)
-    public List<Object> getList() {
+    public List<TsiDto> getTsiList(TsiFilterBy filterBy, String filterValue) {
 
-        return new ArrayList<>();
+        return tsiRepository.getTsiList(filterBy, filterValue);
     }
 
     @Transactional
-    public void insertNodeInfos(List<TsiNodeInfo> nodeInfo) {
+    public void insertNodeInfo(List<TsiNodeDto> nodeDtos) {
 
+        List<TsiNode> tisNodes =  nodeDtos.stream()
+                .map(nodeDto -> tsiNodeRepository.findByNodeId(nodeDto.getNode_id())
+                        .map(node -> {
+                            node.setNodeName(nodeDto.getNode_name());
+                            node.setLat(nodeDto.getLatitude());
+                            node.setLng(nodeDto.getLongitude());
+                            return node;
+                        })
+                        .orElseGet(() -> TsiNode.builder()
+                                .nodeId(nodeDto.getNode_id())
+                                .nodeName(nodeDto.getNode_name())
+                                .lat(nodeDto.getLatitude())
+                                .lng(nodeDto.getLongitude())
+                                .build()))
+                .collect(Collectors.toList());
+
+        tsiNodeRepository.saveAll(tisNodes);
     }
 
-    public List<TsiNodeInfo> getNodeInfos() {
+    public List<TsiNodeDto> getNodeInfo() {
 
-        List<TsiNodeInfo> nodeInfos = null;
+        List<TsiNodeDto> nodeDtos = null;
         try {
-            ResponseEntity<TsiNodeInfoResponse> entity = restTemplate.exchange(nodeInfoUrl + apiToken,
-                    HttpMethod.POST, null, TsiNodeInfoResponse.class);
+            ResponseEntity<TsiNodeResponse> entity = restTemplate.exchange(nodeInfoUrl + apiToken,
+                    HttpMethod.POST, null, TsiNodeResponse.class);
             if (entity.getStatusCode() == HttpStatus.OK) {
-                TsiNodeInfoResponse response = entity.getBody();
+                TsiNodeResponse response = entity.getBody();
                 if (RESULT_SUCCESS.equals(response.getResultCode())) {
                     log.debug(response.getResultData().toString());
-                    nodeInfos = response.getResultData();
+                    nodeDtos = response.getResultData();
                 } else {
-                    log.info("getNodeInfos " + response.getResultCode() + ", " + response.getResultDesc());
+                    log.info("getNodeInfo " + response.getResultCode() + ", " + response.getResultDesc());
                 }
             }
         } catch (Exception e) {
             log.info(e.toString());
         }
 
-        return nodeInfos;
+        return nodeDtos;
     }
 
-    public TsiBrokerInfo getBrokerInfo() {
+    public TsiBrokerDto getBrokerInfo() {
 
-        TsiBrokerInfo brokerInfo = null;
+        TsiBrokerDto brokerDto = null;
         try {
-            ResponseEntity<TsiBrokerInfoResponse> entity = restTemplate.exchange(brokerInfoUrl + apiToken,
-                    HttpMethod.POST, null, TsiBrokerInfoResponse.class);
+            ResponseEntity<TsiBrokerResponse> entity = restTemplate.exchange(brokerInfoUrl + apiToken,
+                    HttpMethod.POST, null, TsiBrokerResponse.class);
             if (entity.getStatusCode() == HttpStatus.OK) {
-                TsiBrokerInfoResponse response = entity.getBody();
+                TsiBrokerResponse response = entity.getBody();
                 if (RESULT_SUCCESS.equals(response.getResultCode())) {
                     log.debug(response.getResultData().toString());
-                    brokerInfo = response.getResultData();
+                    brokerDto = response.getResultData();
                 } else {
                     log.info("getBrokerInfo : " + response.getResultCode() + ", " + response.getResultDesc());
                 }
@@ -93,6 +176,6 @@ public class TsiServiceImpl implements TsiService {
             log.info(e.toString());
         }
 
-        return brokerInfo;
+        return brokerDto;
     }
 }

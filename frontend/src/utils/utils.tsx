@@ -4,46 +4,46 @@ import * as String from "../commons/string";
 
 //const { kakao } = window;
 
-export const utilGetCamera = (listCamera: any[], cameraId: string) => {
+export const utilGetCamera = (listCamera: any[], cameraNo: string) => {
     const camera: any[] = listCamera.filter(
-        (element) => element.cameraId === cameraId
+        (element) => element.cameraNo === cameraNo
     );
     return camera[0];
 };
 
 export const utilGetInstsectionCameras = (
     listCamera: any[],
-    cameraId: string
+    cameraNo: string
 ) => {
-    const cameraData: any = utilGetCamera(listCamera, cameraId);
+    const cameraData: any = utilGetCamera(listCamera, cameraNo);
     // let cameras = listCamera.filter(
     //     (camera) =>
     //         cameraData.intersection.intersectionId ===
     //         camera.intersection.intersectionId
     // );
-    return utilGetInstsectionCamerasByIntersectionId(
+    return utilGetInstsectionCamerasByIntersectionNo(
         listCamera,
-        cameraData.intersection.intersectionId
+        cameraData.intersection.intersectionNo
     );
 };
 
-export const utilGetInstsectionCamerasByIntersectionId = (
+export const utilGetInstsectionCamerasByIntersectionNo = (
     listCamera: any[],
-    intersectionId: string
+    intersectionNo: string
 ) => {
     const cameras: any[] = listCamera.filter(
-        (camera) => intersectionId === camera.intersection.intersectionId
+        (camera) => intersectionNo === camera.intersection.intersectionNo
     );
     return cameras;
 };
 
-export const utilIsPremakeIntersection = (intersectionId: string) => {
+export const utilIsPremakeIntersection = (intersectionNo: string) => {
     if (
-        intersectionId === "I0001" ||
-        intersectionId === "I0002" ||
-        intersectionId === "I0003" ||
-        intersectionId === "I0004" ||
-        intersectionId === "I0005"
+        intersectionNo === "I0001" ||
+        intersectionNo === "I0002" ||
+        intersectionNo === "I0003" ||
+        intersectionNo === "I0004" ||
+        intersectionNo === "I0005"
     ) {
         return true;
     }
@@ -218,9 +218,12 @@ export const utilConvertParallelLines = (
 };
 
 export const utilAxios = () => {
+    const token = JSON.parse(localStorage.getItem("currentUser") || "{}").token;
+    // console.log("token", token);
     const instance = axios.create({
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         withCredentials: true,
     });
@@ -230,7 +233,7 @@ export const utilAxios = () => {
 
 export const utilAxiosWithAuth = (auth: string) => {
     let instance = null;
-    if (process.env.REACT_APP_NEXT_DEV === true) {
+    if (process.env.REACT_APP_NEXT_DEV === "true") {
         instance = utilAxios();
     } else {
         instance = axios.create({
@@ -285,15 +288,15 @@ export const utilConvertSrlu15Minute = (srlu: number) => {
     return (srlu * 100 * 4) / 1000;
 };
 
-export const isPrebuiltIntersection = (intersectionId: string) => {
+export const isPrebuiltIntersection = (intersectionNo: string) => {
     let result = false;
 
     if (
-        intersectionId === "I0001" ||
-        intersectionId === "I0002" ||
-        intersectionId === "I0003" ||
-        intersectionId === "I0004" ||
-        intersectionId === "I0005"
+        intersectionNo === "I0001" ||
+        intersectionNo === "I0002" ||
+        intersectionNo === "I0003" ||
+        intersectionNo === "I0004" ||
+        intersectionNo === "I0005"
     ) {
         result = true;
     }
@@ -464,7 +467,7 @@ export const utilConvertChartSeriesCamera = (
             if (listCamera !== undefined) {
                 const cameraInfo = utilGetCamera(
                     listCamera,
-                    seriesData.cameraId
+                    seriesData.cameraNo
                 );
                 name =
                     cameraInfo.direction.intersectionName +
@@ -584,9 +587,9 @@ const convertDayOfWeekString = (dayOfWeek: number) => {
 
 const getNameFromSeriesData = (seriesData: any) => {
     if (
-        seriesData.year !== 0 &&
-        seriesData.month !== 0 &&
-        seriesData.day !== 0
+        seriesData.year !== null &&
+        seriesData.month !== null &&
+        seriesData.day !== null
     ) {
         return (
             "20" +
@@ -597,26 +600,26 @@ const getNameFromSeriesData = (seriesData: any) => {
             to2Digit(seriesData.day)
         );
     } else if (
-        seriesData.year !== 0 &&
-        seriesData.month === 0 &&
-        seriesData.day === 0 &&
-        seriesData.weekOfYear !== 0.0
+        seriesData.year !== null &&
+        seriesData.month === null &&
+        seriesData.day === null &&
+        seriesData.weekOfYear !== null
     ) {
         return convertWeekOfYearString(seriesData.year, seriesData.weekOfYear);
     } else if (
-        seriesData.year !== 0 &&
-        seriesData.month !== 0 &&
-        seriesData.day === 0 &&
-        seriesData.dayOfWeek === 0.0 &&
-        seriesData.weekOfYear === 0.0
+        seriesData.year !== null &&
+        seriesData.month !== null &&
+        seriesData.day === null &&
+        seriesData.dayOfWeek === null &&
+        seriesData.weekOfYear === null
     ) {
         return (
             "20" + to2Digit(seriesData.year) + "-" + to2Digit(seriesData.month)
         );
     } else if (
-        seriesData.year === 0 &&
-        seriesData.month === 0 &&
-        seriesData.day === 0
+        seriesData.year === null &&
+        seriesData.month === null &&
+        seriesData.day === null
     ) {
         return convertDayOfWeekString(seriesData.dayOfWeek);
     }

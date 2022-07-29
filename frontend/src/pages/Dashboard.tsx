@@ -29,14 +29,14 @@ const transitionChart: { [key: string]: string } = {
 
 const Dashboard = () => {
     const [chartOpen, setChartOpen] = useState<boolean>(false);
-    const [selectedRegionId, setSelectedRegionId] = useState<string>("");
+    const [selectedRegionNo, setSelectedRegionNo] = useState<string>("");
     const [selectedRegionName, setSelectedRegionName] = useState<
         string | undefined
     >("");
     const [currentRegionInfo, setCurrentRegionInfo] =
-        useState<Common.RegionInfo>({ regionId: "all" });
+        useState<Common.RegionInfo>({ regionNo: "all" });
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
-    const [selectedIntersectionId, setSelectedIntersectionId] =
+    const [selectedIntersectionNo, setSelectedIntersectionNo] =
         useState<string>("");
     const [selectedIntersectionName, setSelectedIntersectionName] = useState<
         string | undefined
@@ -46,7 +46,7 @@ const Dashboard = () => {
 
     const onChangedCurrentRegion = (regionItem: Common.RegionInfo) => {
         //console.log("regionItem", regionItem);
-        setSelectedRegionId(regionItem.regionId);
+        setSelectedRegionNo(regionItem.regionNo);
         setSelectedRegionName(regionItem.regionName);
         setCurrentRegionInfo(regionItem);
     };
@@ -55,7 +55,7 @@ const Dashboard = () => {
         intersectionItem: Common.IntersectionInfo
     ) => {
         //console.log("intersectionItem", intersectionItem);
-        setSelectedIntersectionId(intersectionItem.intersectionId);
+        setSelectedIntersectionNo(intersectionItem.intersectionNo);
         setSelectedIntersectionName(intersectionItem.intersectionName);
     };
 
@@ -95,7 +95,7 @@ const Dashboard = () => {
                                             onChange={handleChartOpen}
                                         />
                                     }
-                                    label='Show'
+                                    label="Show"
                                 /> */}
 
                                 <DashboardMap
@@ -104,14 +104,14 @@ const Dashboard = () => {
                                     currentRegionInfo={currentRegionInfo}
                                     intersections={{
                                         listIntersections: listIntersections,
-                                        selectedIntersectionId:
-                                            selectedIntersectionId,
+                                        selectedIntersectionNo:
+                                            selectedIntersectionNo,
                                         selectedIntersectionName:
                                             selectedIntersectionName,
                                     }}
                                     onChangedSelectedItem={(item) => {
-                                        setSelectedIntersectionId(
-                                            item.intersectionId
+                                        setSelectedIntersectionNo(
+                                            item.intersectionNo
                                         );
                                     }}
                                 />
@@ -120,17 +120,17 @@ const Dashboard = () => {
                                     onClick={handleChartOpen}
                                 >
                                     {chartOpen ? (
-                                        <ArrowBackIosNewIcon fontSize='small' />
+                                        <ArrowBackIosNewIcon fontSize="small" />
                                     ) : (
-                                        <ArrowForwardIosIcon fontSize='small' />
+                                        <ArrowForwardIosIcon fontSize="small" />
                                     )}
                                 </button>
                                 <Box className={styles.mapSelectWrap}>
                                     <ul>
                                         <li>
                                             <SelectorRegion
-                                                selectedRegionId={
-                                                    selectedRegionId
+                                                selectedRegionNo={
+                                                    selectedRegionNo
                                                 }
                                                 onChangedCurrentRegion={
                                                     onChangedCurrentRegion
@@ -142,8 +142,8 @@ const Dashboard = () => {
                                                 currentRegionInfo={
                                                     currentRegionInfo
                                                 }
-                                                selectedIntersectionId={
-                                                    selectedIntersectionId
+                                                selectedIntersectionNo={
+                                                    selectedIntersectionNo
                                                 }
                                                 onChangedIntersectionList={(
                                                     list
@@ -165,9 +165,9 @@ const Dashboard = () => {
                                 ].join(" ")}
                             >
                                 <DashboardMfd
-                                    regionId={selectedRegionId}
+                                    regionNo={selectedRegionNo}
                                     regionName={selectedRegionName}
-                                    intersectionId={selectedIntersectionId}
+                                    intersectionNo={selectedIntersectionNo}
                                     intersectionName={selectedIntersectionName}
                                 />
                             </Box>

@@ -13,7 +13,7 @@ import styles from "./Selector.module.css";
 
 function SelectorIntersection({
     currentRegionInfo,
-    selectedIntersectionId,
+    selectedIntersectionNo,
     onChangedIntersectionList,
     onChangedCurrentIntersection,
 }: Common.SelectorIntersection) {
@@ -34,8 +34,8 @@ function SelectorIntersection({
             Request.INTERSECTION_LIST_URL,
             {
                 params: {
-                    ...(currentRegionInfo.regionId !== "all"
-                        ? { regionId: currentRegionInfo.regionId }
+                    ...(currentRegionInfo.regionNo !== "all"
+                        ? { regionNo: currentRegionInfo.regionNo }
                         : {}),
                 },
             }
@@ -109,7 +109,7 @@ function SelectorIntersection({
                 .map((intersection) => {
                     //console.log(region);
                     return {
-                        value: intersection.intersectionId,
+                        value: intersection.intersectionNo,
                         innerHTML: intersection.intersectionName,
                     };
                 })
@@ -124,13 +124,13 @@ function SelectorIntersection({
         if (Utils.utilIsEmptyObj(listSelectIntersectionItem)) return;
         const currentIntersectionInfos = listIntersections.filter(
             (intersection) =>
-                intersection.intersectionId === listSelectIntersectionItem.value
+                intersection.intersectionNo === listSelectIntersectionItem.value
         );
 
         let currentIntersectionInfo = null;
 
         if (Utils.utilIsEmptyArray(currentIntersectionInfos)) {
-            currentIntersectionInfo = { intersectionId: "all" };
+            currentIntersectionInfo = { intersectionNo: "all" };
         } else {
             currentIntersectionInfo = currentIntersectionInfos[0];
         }
@@ -141,17 +141,17 @@ function SelectorIntersection({
     }, [listSelectIntersectionItem]);
 
     useEffect(() => {
-        if (listSelectIntersectionItem.value === selectedIntersectionId) return;
+        if (listSelectIntersectionItem.value === selectedIntersectionNo) return;
 
         const listSelectItems = listSelectIntersections.filter(
             (selectorIntersection) =>
-                selectorIntersection.value === selectedIntersectionId
+                selectorIntersection.value === selectedIntersectionNo
         );
 
         if (!Utils.utilIsEmptyArray(listSelectItems)) {
             setListSelectIntersectionItem(listSelectItems[0]);
         }
-    }, [selectedIntersectionId]);
+    }, [selectedIntersectionNo]);
 
     const onChangeIntersections = (e: SelectChangeEvent) => {
         setListSelectIntersectionItem({

@@ -51,22 +51,25 @@ public class TsiServiceImpl implements TsiService {
     String apiToken;
 
     @Transactional
-    public void insertTsi(TsiHubDto tsiHubDto) {
+    public void upsertTsi(TsiHubDto tsiHubDto) {
 
         Optional<Tsi> tsiOptional = tsiRepository.findByNodeId(tsiHubDto.getNodeId());
         if (tsiOptional.isPresent()) {
-
             updateTsi(tsiOptional.get(), tsiHubDto);
         } else {
-
-            Tsi tsi = tsiMapper.toTsi(tsiHubDto);
-            for (TsiSignal tsiSignal : tsi.getTsiSignals()) {
-                tsiSignal.setTsi(tsi);
-            }
-
-            tsiRepository.save(tsi);
-            tsiSignalRepository.saveAll(tsi.getTsiSignals());
+            insertTsi(tsiHubDto);
         }
+    }
+
+    private void insertTsi(TsiHubDto tsiHubDto) {
+
+        Tsi tsi = tsiMapper.toTsi(tsiHubDto);
+        for (TsiSignal tsiSignal : tsi.getTsiSignals()) {
+            tsiSignal.setTsi(tsi);
+        }
+
+        tsiRepository.save(tsi);
+        tsiSignalRepository.saveAll(tsi.getTsiSignals());
     }
 
     private void updateTsi(Tsi tsi, TsiHubDto tsiHubDto) {
@@ -84,14 +87,18 @@ public class TsiServiceImpl implements TsiService {
 
         tsiRepository.save(tsi);
 
-        TsiSignal tsiSignal;
+        List<TsiSignal> tsiSignals = tsiSignalRepository.findAllByTsi_NodeId(tsi.getNodeId());
+
         for (TsiHubSignalDto tsiSignalDto : tsiHubDto.getTsiSignals()) {
 
-            Optional<TsiSignal> tsiSignalOptional  = tsiSignalRepository.findByTsi_NodeIdAndInfoAndDirection(
+            TsiSignal tsiSignal;
+            Optional<TsiSignal> tsiSignalOptional = tsiSignalRepository.findByTsi_NodeIdAndInfoAndDirection(
                     tsi.getNodeId(), tsiSignalDto.getInfo(), tsiSignalDto.getDirection());
             if (tsiSignalOptional.isPresent()) {
 
                 tsiSignal = tsiSignalOptional.get();
+                tsiSignals.remove(tsiSignal);
+
                 tsiSignal.setTimeReliability(tsiSignalDto.getTimeReliability());
                 tsiSignal.setPerson(tsiSignalDto.getPerson());
                 tsiSignal.setStatus(tsiSignalDto.getStatus());
@@ -103,8 +110,11 @@ public class TsiServiceImpl implements TsiService {
                 tsiSignal = tsiMapper.toTsiSignal(tsiSignalDto);
                 tsiSignal.setTsi(tsi);
             }
+
             tsiSignalRepository.save(tsiSignal);
         }
+
+        tsiSignalRepository.deleteAll(tsiSignals);
     }
 
     @Transactional(readOnly = true)

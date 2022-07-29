@@ -100,7 +100,7 @@ public class TsiHubConsumer {
 
             TsiHubDto tsiHubDto = parseTsi(record.value());
             if (tsiHubDto != null) {
-                tsiService.insertTsi(tsiHubDto);
+                tsiService.upsertTsi(tsiHubDto);
             }
         }
     }

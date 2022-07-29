@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TsiService {
 
-    void insertTsi(TsiHubDto tsiHubDto);
+    void upsertTsi(TsiHubDto tsiHubDto);
 
     List<TsiDto> getTsiList(TsiFilterBy filterBy, String filterValue);
 

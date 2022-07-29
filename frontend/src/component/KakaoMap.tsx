@@ -56,7 +56,8 @@ export type KakaoMapAvlType = {
 
 export const displayRegion = (region: KakaoMapRegionType) => {
     if (region === undefined) return null;
-    if (region.current.gps === undefined) return null;
+    if (region.current.gps === undefined || region.current.gps === null)
+        return null;
     //console.log("displayRegion", JSON.stringify(region));
     if (
         Utils.utilIsEmptyObj(region.current) === false &&
@@ -107,6 +108,8 @@ export const displayIntersection = (
                         fillColor = "#707070";
                     }
                 }
+
+                if (intersection.gps === null) return null;
 
                 return (
                     <Circle
@@ -164,6 +167,8 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
             (isSelected ? "_f" : "_n");
 
         const imageData = Utils.getCameraImageByKey(imageUrl);
+
+        if (camera.gps === null) return null;
 
         return (
             <MapMarker
@@ -321,9 +326,10 @@ const getTrafficSignalType = (
     trafficLights: KakaoMapTrafficLightsType,
     signalDatas: any
 ) => {
+    return "d";
     let signalType = "d";
 
-    signalDatas.signalInfo.forEach((signal: any) => {
+    signalDatas.tsiSignalInfos.forEach((signal: any) => {
         if (signal.info === 1 || signal.info === 2) {
             switch (signal.status) {
                 case 0:
@@ -447,7 +453,13 @@ export const displayTrafficLights = (
             //     console.log("tsiData", tsiData);
             // }
 
-            const datas = tsiData.signal.map((signalData: any) => {
+            if (tsiData.nodeId === 2222) {
+                return null;
+            }
+
+            console.log("tsiData", tsiData);
+
+            const datas = tsiData.tsiSignals.map((signalData: any) => {
                 if (signalType !== "e") {
                     signalType = getTrafficSignalType(
                         trafficLights,

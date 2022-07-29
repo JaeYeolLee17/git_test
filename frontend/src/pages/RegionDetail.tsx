@@ -7,10 +7,11 @@ import { useAsyncAxios } from "../utils/customHooks";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import styles from "./RegionDetail.module.css";
+import Box from "@mui/material/Box";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
-import Box from "@mui/material/Box";
+import * as String from "../commons/string"
 
 type regionDataType = {
     distance: number;
@@ -56,6 +57,11 @@ function RegionDetail() {
             },
         ]);
     };
+    
+    const title: Map<string, string> = new Map([
+        ["regionNo" , String.region_no],
+        ["regionName" , String.region_name]
+      ]);
 
     const requestAxiosUpdateRegions = async (regionData: regionDataType) => {
         if (userDetails === null) return null;
@@ -104,6 +110,7 @@ function RegionDetail() {
                 <Grid item xs={8}>
                     <ManagementDetail
                         pageType="edit"
+                        title={title}
                         response={regionData}
                         clickEvent={onClickEvent}
                     />

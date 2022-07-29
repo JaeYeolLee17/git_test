@@ -24,11 +24,12 @@ type tableDataType = {
 
 type responseType = {
     pageType : string,
+    title : Map<string, string>;
     response : tableDataType[];
     clickEvent : any;
 }
 
-function ManagementDetail({pageType, response, clickEvent}: responseType) {
+function ManagementDetail({pageType, title, response, clickEvent}: responseType) {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({}); 
     const changeData: any = {};
@@ -78,7 +79,7 @@ function ManagementDetail({pageType, response, clickEvent}: responseType) {
                         {(item.name.substring(0, 5) !== "empty" && item.type !== "select") &&
                             <FormControl variant="standard" style={{width: "100%", marginBottom: "1rem"}}>
                                 <InputLabel shrink htmlFor={item.name} className={styles.inputLabel} required={item.required}>
-                                    {item.name}
+                                    {title.get(item.name)}
                                 </InputLabel>
                                 <TextField
                                     id={item.name}

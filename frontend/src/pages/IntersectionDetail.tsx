@@ -7,10 +7,11 @@ import { useAsyncAxios } from "../utils/customHooks";
 import { useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import styles from "./CameraDetail.module.css";
+import Box from "@mui/material/Box";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
-import Box from "@mui/material/Box";
+import * as String from "../commons/string"
 
 type intersectionDataType = {
     distance: number;
@@ -78,6 +79,14 @@ function IntersectionDetail() {
         ]);
     };
 
+    const title: Map<string, string> = new Map([
+        ["intersectionNo" , String.intersection_no],
+        ["intersectionName" , String.intersection_name],
+        ["regionName" , String.region_name],
+        ["gpsLat" , String.gps_lat],
+        ["gpsLng" , String.gps_lng]
+      ]);
+
     const requestAxiosUpdateIntersections = async (intersectionData: intersectionDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
@@ -133,6 +142,7 @@ function IntersectionDetail() {
                 <Grid item xs={8}>
                     <ManagementDetail
                         pageType="edit"
+                        title={title}
                         response={intersectionData}
                         clickEvent={onClickEvent}
                     />

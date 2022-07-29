@@ -8,6 +8,7 @@ import styles from "./EmergencyDetail.module.css";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request"
 import * as Common from "../commons/common";
+import * as String from "../commons/string"
 
 type emergencyDataType = {
     distance: number,
@@ -74,7 +75,10 @@ function EmergencyDetail() {
             disabled: false
         }
         ]);
-    }
+    };
+
+    const title: Map<string, string> = new Map([
+      ]);
 
     const requestAxiosUpdateEmergencys = async(emergencyData: emergencyDataType) => {
         if (userDetails === null) return null;
@@ -118,7 +122,8 @@ function EmergencyDetail() {
     return(
         <div className={styles.wrapper}>
             <ManagementDetail 
-                pageType="edit" 
+                pageType="edit"
+                title={title}
                 response={emergencyData} 
                 clickEvent={onClickEvent}
             />

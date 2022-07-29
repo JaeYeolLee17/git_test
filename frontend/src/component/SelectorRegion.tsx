@@ -12,7 +12,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import styles from "./Selector.module.css";
 
 function SelectorRegion({
-    selectedRegionId,
+    selectedRegionNo,
     onChangedRegionList,
     onChangedCurrentRegion,
 }: Common.SelectorRegion) {
@@ -82,7 +82,7 @@ function SelectorRegion({
             return;
         }
 
-        //console.log("list", listRegions);
+        // console.log("list", listRegions);
 
         const topItem = { value: "all", innerHTML: String.total };
 
@@ -92,7 +92,7 @@ function SelectorRegion({
         newList = newList.concat(
             listRegions.map((region) => {
                 //console.log(region);
-                return { value: region.regionId, innerHTML: region.regionName };
+                return { value: region.regionNo, innerHTML: region.regionName };
             })
         );
 
@@ -107,13 +107,13 @@ function SelectorRegion({
         }
 
         const currentRegionInfos = listRegions.filter(
-            (region) => region.regionId === listSelectRegionItem.value
+            (region) => region.regionNo === listSelectRegionItem.value
         );
 
         let currentRegionInfo = null;
 
         if (Utils.utilIsEmptyArray(currentRegionInfos)) {
-            currentRegionInfo = { regionId: "all" };
+            currentRegionInfo = { regionNo: "all" };
         } else {
             currentRegionInfo = currentRegionInfos[0];
         }
@@ -126,16 +126,16 @@ function SelectorRegion({
     }, [listSelectRegionItem]);
 
     useEffect(() => {
-        if (listSelectRegionItem.value === selectedRegionId) return;
+        if (listSelectRegionItem.value === selectedRegionNo) return;
 
         const listSelectItems = listSelectRegions.filter(
-            (selectorRegion) => selectorRegion.value === selectedRegionId
+            (selectorRegion) => selectorRegion.value === selectedRegionNo
         );
 
         if (!Utils.utilIsEmptyArray(listSelectItems)) {
             setListSelectRegionItem(listSelectItems[0]);
         }
-    }, [selectedRegionId]);
+    }, [selectedRegionNo]);
 
     const onChangeRegions = (e: SelectChangeEvent) => {
         setListSelectRegionItem({

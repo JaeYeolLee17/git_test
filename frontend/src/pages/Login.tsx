@@ -53,7 +53,7 @@ const Login = () => {
     useEffect(() => {
         if (resultLogin === null) return;
 
-        //console.log(JSON.stringify(resultLogin));
+        console.log(JSON.stringify(resultLogin));
         if (dispatch !== null)
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -88,10 +88,18 @@ const Login = () => {
 
         const sha256 = require("sha256");
 
-        const result = await login(
-            Request.LOGIN_URL,
-            JSON.stringify({ userId: user, password: sha256(pwd) })
-        );
+        let result;
+        if (process.env.REACT_APP_NEXT_DEV === "false") {
+            result = await login(
+                Request.LOGIN_URL,
+                JSON.stringify({ userId: user, password: sha256(pwd) })
+            );
+        } else {
+            result = await login(
+                Request.LOGIN_URL,
+                JSON.stringify({ username: user, password: pwd })
+            );
+        }
 
         //console.log("result", result);
 
@@ -109,39 +117,39 @@ const Login = () => {
                     </div>
                 </div>
                 <div className={styles.logos}>
-                    <img src={daeguLogo} alt='daegu' />
-                    <img src={emgLogo} alt='emg' />
+                    <img src={daeguLogo} alt="daegu" />
+                    <img src={emgLogo} alt="emg" />
                 </div>
             </section>
 
             <section className={styles.right}>
                 <div className={styles.loginCard}>
-                    <img src={loginIcon} alt='login-icon' />
+                    <img src={loginIcon} alt="login-icon" />
                     <h1>로그인하기</h1>
                     <p>등록된 아이디ㆍ비밀번호를 입력하여 로그인해 주세요.</p>
                     <form onSubmit={handleSubmit}>
                         <div className={styles.formGroup}>
-                            <label htmlFor='username'>아이디</label>
+                            <label htmlFor="username">아이디</label>
                             <input
-                                type='text'
-                                id='username'
+                                type="text"
+                                id="username"
                                 ref={userRef}
-                                autoComplete='off'
+                                autoComplete="off"
                                 onChange={(e) => setUser(e.target.value)}
                                 value={user}
-                                placeholder='아이디를 입력해주세요.'
+                                placeholder="아이디를 입력해주세요."
                                 required
                             />
                         </div>
 
                         <div className={styles.formGroup}>
-                            <label htmlFor='password'>비밀번호</label>
+                            <label htmlFor="password">비밀번호</label>
                             <input
-                                type='password'
-                                id='password'
+                                type="password"
+                                id="password"
                                 onChange={(e) => setPwd(e.target.value)}
                                 value={pwd}
-                                placeholder='비밀번호를 입력해주세요.'
+                                placeholder="비밀번호를 입력해주세요."
                                 required
                             />
                         </div>

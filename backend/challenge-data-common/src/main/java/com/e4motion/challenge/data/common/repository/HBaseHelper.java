@@ -15,8 +15,8 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class HBaseHelper {
 
     public static final String TABLE_NAME = "traffic_data";

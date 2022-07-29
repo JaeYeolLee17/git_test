@@ -1,19 +1,16 @@
 package com.e4motion.challenge.api.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import com.e4motion.challenge.api.TestDataHelper;
+import com.e4motion.challenge.api.domain.Authority;
+import com.e4motion.challenge.api.domain.User;
+import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
+import com.e4motion.challenge.api.mapper.UserMapper;
+import com.e4motion.challenge.api.repository.UserRepository;
+import com.e4motion.challenge.api.service.impl.UserServiceImpl;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
+import com.e4motion.challenge.common.exception.customexception.UserDuplicateException;
+import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -21,19 +18,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
-import com.e4motion.challenge.api.domain.Authority;
-import com.e4motion.challenge.api.domain.User;
-import com.e4motion.challenge.api.dto.UserDto;
-import com.e4motion.challenge.api.mapper.UserMapper;
-import com.e4motion.challenge.api.repository.UserRepository;
-import com.e4motion.challenge.api.service.impl.UserServiceImpl;
-import com.e4motion.challenge.common.exception.customexception.UserDuplicateException;
-import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.EntityManager;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class UserServiceTest {
 	
 	@Autowired 

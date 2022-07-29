@@ -2,20 +2,18 @@ package com.e4motion.challenge.api.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TsiBrokerInfo {
+public class TsiSignalDto {
 
-    private String host;
+    private Integer direction;
 
-    private Integer port;
-
-    private String id;
-
-    private String pwd;
+    private List<TsiSignalInfoDto> tsiSignalInfos;
 
 }

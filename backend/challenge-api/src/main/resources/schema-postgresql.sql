@@ -8,6 +8,9 @@ DROP TABLE IF EXISTS public.nt_link CASCADE;
 DROP TABLE IF EXISTS public.nt_intersection CASCADE;
 DROP TABLE IF EXISTS public.nt_region_gps CASCADE;
 DROP TABLE IF EXISTS public.nt_region CASCADE;
+DROP TABLE IF EXISTS public.nt_tsi_node CASCADE;
+DROP TABLE IF EXISTS public.nt_tsi_signal CASCADE;
+DROP TABLE IF EXISTS public.nt_tsi CASCADE;
 DROP TABLE IF EXISTS public.lt_traffic_data_m15 CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_user_user_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_camera_camera_id_seq CASCADE;
@@ -17,7 +20,10 @@ DROP SEQUENCE IF EXISTS public.nt_link_gps_link_gps_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_intersection_intersection_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_region_id_seq CASCADE;
 DROP SEQUENCE IF EXISTS public.nt_region_gps_region_gps_id_seq CASCADE;
-DROP SEQUENCE IF EXISTS public.lt_traffic_data_m15_id_seq;
+DROP SEQUENCE IF EXISTS public.nt_tsi_node_tsi_node_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_tsi_tsi_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.nt_tsi_signal_tsi_signal_id_seq CASCADE;
+DROP SEQUENCE IF EXISTS public.lt_traffic_data_m15_id_seq CASCADE;
 
 CREATE TABLE public.nt_authority
 (
@@ -245,6 +251,82 @@ CREATE TABLE public.nt_link_gps
     CONSTRAINT ukj5asivtra90oxw4tc2hkhv4w0 UNIQUE (link_id, lat, lng),
     CONSTRAINT fk141vf5mygaaj07tjbyurbohu5 FOREIGN KEY (link_id)
         REFERENCES public.nt_link (link_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+CREATE SEQUENCE public.nt_tsi_node_tsi_node_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_tsi_node
+(
+    tsi_node_id bigint NOT NULL DEFAULT nextval('nt_tsi_node_tsi_node_id_seq'::regclass),
+    node_id bigint NOT NULL,
+    node_name character varying(32) COLLATE pg_catalog."default",
+    lat double precision,
+    lng double precision,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_tsi_node_pkey PRIMARY KEY (tsi_node_id),
+    CONSTRAINT uk_o6bncwjyn91j0u331cvhlsnpq UNIQUE (node_id)
+);
+
+CREATE SEQUENCE public.nt_tsi_tsi_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_tsi
+(
+    tsi_id bigint NOT NULL DEFAULT nextval('nt_tsi_tsi_id_seq'::regclass),
+    node_id bigint NOT NULL,
+    transition boolean,
+    response boolean,
+    lights_out boolean,
+    flashing boolean,
+    manual boolean,
+    error_center boolean,
+    error_scu boolean,
+    error_contradiction boolean,
+    cycle_counter integer,
+    signal_count integer,
+    "time" timestamp without time zone,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_tsi_pkey PRIMARY KEY (tsi_id),
+    CONSTRAINT uk_iiowv6i7am1qrlyf4qpny0xip UNIQUE (node_id)
+);
+
+CREATE SEQUENCE public.nt_tsi_signal_tsi_signal_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+CREATE TABLE public.nt_tsi_signal
+(
+    tsi_signal_id bigint NOT NULL DEFAULT nextval('nt_tsi_signal_tsi_signal_id_seq'::regclass),
+    tsi_id bigint,
+    info character varying(20) COLLATE pg_catalog."default",
+    time_reliability character varying(20) COLLATE pg_catalog."default",
+    person boolean,
+    status character varying(20) COLLATE pg_catalog."default",
+    display_time integer,
+    remain_time integer,
+    direction integer,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    CONSTRAINT nt_tsi_signal_pkey PRIMARY KEY (tsi_signal_id),
+    CONSTRAINT uk6n7vl2bffxqj33jbgtyet8q0d UNIQUE (tsi_id, info, direction),
+    CONSTRAINT fkm6epur2eyrk8unkcc6irrrb2v FOREIGN KEY (tsi_id)
+        REFERENCES public.nt_tsi (tsi_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );

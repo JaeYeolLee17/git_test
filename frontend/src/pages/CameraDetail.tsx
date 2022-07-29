@@ -10,6 +10,8 @@ import styles from "./CameraDetail.module.css";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
+import * as String from "../commons/string"
+
 import Box from "@mui/material/Box";
 
 type cameraDataType = {
@@ -35,7 +37,6 @@ function CameraDetail() {
 
     const onSelectedCamera = (selectedCamera: any) => {
         setSelectedCameraList(selectedCameraList => [...selectedCameraList, selectedCamera]);
-        
         setCameraData([{
             name: "cameraNo",
             data: selectedCamera.cameraNo,
@@ -193,6 +194,29 @@ function CameraDetail() {
         ]);
     };
 
+    const title: Map<string, string> = new Map([
+        ["cameraNo" , String.camera_id],
+        ["intersectionName" , String.camera_intersection_name],
+        ["directionName" , String.direction_name],
+        ["gpsLat" , String.camera_gps_lat],
+        ["gpsLng" , String.camera_gps_lng],
+        ["distance" , String.distance],
+        ["rtspUrl" , String.rtsp_url],
+        ["rtsId" , String.rts_id],
+        ["rtsPassword" , String.rts_password],
+        ["smallWidth" , String.small_width],
+        ["smallHeight" , String.small_height],
+        ["largeWidth" , String.large_width],
+        ["largeHeight" , String.large_height],
+        ["serverUrl" , String.server_url],
+        ["sendCycle" , String.send_cycle],
+        ["collectCycle" , String.collect_cylcle],
+        ["startLine" , String.start_line],
+        ["uturn" , String.u_turn],
+        ["crosswalk" , String.crosswalk],
+        ["lane" , String.lane],
+      ]);
+
     const requestAxiosUpdateCameras = async (updateData: cameraDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
@@ -260,6 +284,7 @@ function CameraDetail() {
               "crosswalk": camera.crosswalk
             }
         }
+        console.log(JSON.stringify(selectedCameraList[0]));
 
         requestUpdateCameras(updateData);        
     };
@@ -270,6 +295,7 @@ function CameraDetail() {
                 <Grid item xs={7}>
                     <ManagementDetail
                         pageType="edit"
+                        title={title}
                         response={cameraData}
                         clickEvent={onClickEvent}
                     />
@@ -290,6 +316,8 @@ function CameraDetail() {
                                     undefined;
                                 },
                             }}
+
+                            zoomLevel={5}
                         />
                     </Box>
                 </Grid>

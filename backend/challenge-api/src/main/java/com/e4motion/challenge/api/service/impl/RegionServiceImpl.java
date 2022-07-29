@@ -87,13 +87,16 @@ public class RegionServiceImpl implements RegionService {
     public List<RegionGps> getRegionGps(RegionDto regionDto, Region region) {
         if (regionDto.getGps() != null) {
             AtomicInteger order = new AtomicInteger();
-            return regionDto.getGps().stream().map(gps ->
-                    RegionGps.builder()
-                            .region(region)
-                            .lat(gps.getLat())
-                            .lng(gps.getLng())
-                            .gpsOrder(order.incrementAndGet())
-                            .build()).collect(Collectors.toList());
+            return regionDto.getGps().stream()
+                    .filter(gps -> gps.getLat() != null && gps.getLng() != null)
+                    .map(gps ->
+                            RegionGps.builder()
+                                    .region(region)
+                                    .lat(gps.getLat())
+                                    .lng(gps.getLng())
+                                    .gpsOrder(order.incrementAndGet())
+                                    .build())
+                    .collect(Collectors.toList());
         }
         return null;
     }

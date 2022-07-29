@@ -31,6 +31,8 @@ public class TsiRepositoryImpl implements TsiRepositoryCustom {
     private final QIntersection intersection = QIntersection.intersection;
     private final QRegion region = QRegion.region;
 
+    private final static Integer[] directionDegrees = new Integer[] {0, 90, 180, 270, 45, 135, 225, 315};
+
     /*
     SELECT 	T.node_id, TN.lat, TN.lng,
         I.intersection_no, I.intersection_name, R.region_no, R.region_name,
@@ -126,7 +128,7 @@ public class TsiRepositoryImpl implements TsiRepositoryCustom {
                 lastDirection = direction;
 
                 tsiSignalDto = TsiSignalDto.builder()
-                        .direction(direction)
+                        .direction(getDirectionDegree(direction))
                         .tsiSignalInfos(new ArrayList<>())
                         .build();
 
@@ -142,5 +144,10 @@ public class TsiRepositoryImpl implements TsiRepositoryCustom {
         }
 
         return tsiDtos;
+    }
+
+    private Integer getDirectionDegree(Integer direction) {
+
+        return directionDegrees[direction/10 - 1];
     }
 }

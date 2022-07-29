@@ -10,12 +10,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TsiNodeInfoResponse {
+public class TsiNodeResponse {
 
     private String resultCode;
 
     private String resultDesc;
 
-    private List<TsiNodeInfo> resultData;
+    private List<TsiNodeDto> resultData;
 
 }

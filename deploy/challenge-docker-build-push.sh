@@ -6,7 +6,7 @@ export REGISTRY=registry.emgglobal.co.kr:9443
 docker build -t $REGISTRY/challenge-api:$TAG ../backend/challenge-api
 docker build -t $REGISTRY/challenge-data-collector:$TAG ../backend/challenge-data-collector
 docker build -t $REGISTRY/challenge-data-provider:$TAG ../backend/challenge-data-provider
-docker build -t $REGISTRY/challenge-monitor:$TAG ../monitor/frontend
+docker build -t $REGISTRY/challenge-monitor:$TAG ../frontend
 
 docker push $REGISTRY/challenge-api:$TAG
 docker push $REGISTRY/challenge-data-collector:$TAG

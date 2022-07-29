@@ -8,6 +8,7 @@ import styles from "./UserDetail.module.css";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
+import * as String from "../commons/string"
 
 type userDataType = {
     distance: number;
@@ -111,6 +112,17 @@ function UserDetail() {
             },
         ]);
     };
+    
+    const title: Map<string, string> = new Map([
+        ["username" , String.username],
+        ["nickname" , String.nickname],
+        ["oldPassword" , String.old_password],
+        ["newPassword" , String.new_password],
+        ["passwordConfirm" , String.new_password_confirm],
+        ["email" , String.email],
+        ["phone" , String.phone],
+        ["authority" , String.authority]
+      ]);
 
     //addUser
     const requestAxiosAddUser = async (userData: userDataType) => {
@@ -241,7 +253,12 @@ function UserDetail() {
 
     return (
         <div className={styles.wrapper}>
-            <ManagementDetail pageType={pageType} response={userData} clickEvent={onClickEvent} />
+            <ManagementDetail 
+                pageType={pageType}
+                title={title}
+                response={userData} 
+                clickEvent={onClickEvent} 
+            />
         </div>
     );
 }

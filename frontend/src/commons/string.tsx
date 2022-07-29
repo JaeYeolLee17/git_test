@@ -47,10 +47,10 @@ export const camera_direction_unit = " 방면";
 
 // camera
 export const camera_id = "카메라 ID";
-export const intersection_name = "카메라 설치 교차로";
+export const camera_intersection_name = "카메라 설치 교차로";
 export const direction_name = "카메라 설치 방향";
-export const gps_lat = "카메라 GPS 정보(lat)";
-export const gps_lng = "카메라 GPS 정보(lng)";
+export const camera_gps_lat = "카메라 GPS 정보(lat)";
+export const camera_gps_lng = "카메라 GPS 정보(lng)";
 export const distance = "카메라 대기열 인식 영역 거리";
 export const rtsp_url = "카메라 영상 스트리밍 주소";
 export const rts_id = "카메라 RTSP 접속 ID";
@@ -66,3 +66,23 @@ export const start_line = "startLine";
 export const u_turn = "uturn";
 export const crosswalk = "crosswalk";
 export const lane = "lane";
+
+//region
+export const region_no = "구역 No.";
+export const region_name = "구역 이름";
+
+//intersection
+export const intersection_no = "교차로 No.";
+export const intersection_name = "교차로 이름";
+export const gps_lat = "위도";
+export const gps_lng = "경도";
+
+//user
+export const username = "아이디";
+export const nickname = "이름";
+export const old_password = "기존 비밀번호";
+export const new_password = "비밀번호";
+export const new_password_confirm = "비밀번호 확인";
+export const email = "이메일";
+export const phone = "연락처";
+export const authority = "권한";

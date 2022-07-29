@@ -99,13 +99,16 @@ public class LinkServiceImpl implements LinkService {
     private List<LinkGps> getLinkGps(LinkDto linkDto, Link link) {
         if (linkDto.getGps() != null) {
             AtomicInteger order = new AtomicInteger();
-            return linkDto.getGps().stream().map(gps ->
-                    LinkGps.builder()
-                            .link(link)
-                            .lat(gps.getLat())
-                            .lng(gps.getLng())
-                            .gpsOrder(order.incrementAndGet())
-                            .build()).collect(Collectors.toList());
+            return linkDto.getGps().stream()
+                    .filter(gps -> gps.getLat() != null && gps.getLng() != null)
+                    .map(gps ->
+                            LinkGps.builder()
+                                    .link(link)
+                                    .lat(gps.getLat())
+                                    .lng(gps.getLng())
+                                    .gpsOrder(order.incrementAndGet())
+                            .build())
+                    .collect(Collectors.toList());
         }
         return null;
     }

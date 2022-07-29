@@ -5,11 +5,13 @@ import com.e4motion.challenge.api.dto.TsiNodeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Profile("!test")
 @Component
 public class TsiHubRunner implements ApplicationRunner {
 

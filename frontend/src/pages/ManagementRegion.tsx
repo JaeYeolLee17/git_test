@@ -32,6 +32,7 @@ function ManagementRegion() {
     const [rows, setRows] = useState<rows[]>([]);
     const [listRegion, setListRegion] = useState<Array<any>>([]);
     const [selectedRegionNo, setSelectedRegionNo] = useState<string>("");
+    const [selectedRegionData, setSelectedRegionData] = useState<any>();
 
     const columns: columns[] = [
         {
@@ -118,6 +119,8 @@ function ManagementRegion() {
 
     const onRowClick = (regionNo: string) => {
         setSelectedRegionNo(regionNo);
+
+        setSelectedRegionData(listRegion.find(function(data){return data.regionNo === regionNo}));
     };
 
     return (
@@ -141,15 +144,9 @@ function ManagementRegion() {
                             }}
                             region={{
                                 current: {
-                                    regionNo: "test",
-                                    regionName: "test",
-                                    gps: [
-                                        [
-                                          { lat: 33.452344169439975, lng: 126.56878163224233 },
-                                          { lat: 33.452739313807456, lng: 126.5709308145358 },
-                                          { lat: 33.45178067090639, lng: 126.572688693875 },
-                                        ],
-                                      ]
+                                    regionNo: selectedRegionData !== undefined ? selectedRegionData.regionNo : "",
+                                    regionName: selectedRegionData !== undefined ? selectedRegionData.regionName : "",
+                                    gps: selectedRegionData !== undefined ? selectedRegionData.gps : ""
                                 },
                                 isShow: true,
                             }}

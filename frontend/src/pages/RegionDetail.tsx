@@ -25,9 +25,7 @@ function RegionDetail() {
     const userDetails = useAuthState();
     const navigate = useNavigate();
 
-    const [selectedRegionList, setSelectedRegionList] = useState<Array<any>>(
-        []
-    );
+    const [selectedRegionList, setSelectedRegionList] = useState<Array<any>>([]);
     const [regionData, setRegionData] = useState<any[]>([]);
 
     useEffect(() => {
@@ -126,23 +124,12 @@ function RegionDetail() {
                             }}
                             region={{
                                 current: {
-                                    regionNo: "a",
-                                    regionName: "",
-                                    gps:[
-                                        [
-                                          { lat: 33.452344169439975, lng: 126.56878163224233 },
-                                          { lat: 33.452739313807456, lng: 126.5709308145358 },
-                                          { lat: 33.45178067090639, lng: 126.572688693875 },
-                                        ],
-                                      ]
+                                    regionNo: selectedRegionList[0] !== undefined ? selectedRegionList[0].regionNo : null,
+                                    regionName: selectedRegionList[0] !== undefined ? selectedRegionList[0].regionName : null,
+                                    gps: selectedRegionList[0] !== undefined ? selectedRegionList[0].gps : []
                                 },
                                 isShow: true,
                             }}
-                            center={{
-                                lat: selectedRegionList[0] !== undefined && selectedRegionList[0].gps.lat,
-                                lng: selectedRegionList[0] !== undefined && selectedRegionList[0].gps.lng
-                            }}
-                            zoomLevel={3}
                         />
                     </Box>
                 </Grid>

@@ -1,0 +1,28 @@
+.ag-theme-alpine {
+    --ag-borders: none !important;
+    --ag-borders-row: solid 1px !important;
+    --ag-row-border-color: #ddd !important;
+    --ag-range-selection-background-color: rgb(255, 0, 128, 0.1);
+}
+
+.ag-header-cell-text {
+    width: 100% !important;
+}
+
+.ag-row-odd {
+    background-color: transparent !important;
+}
+
+.ag-header-row {
+    --ag-borders-row: solid 1px !important;
+    --ag-row-border-color: #ddd !important;
+}
+
+.ag-row-selected {
+    background-color: #4579bd !important;
+    color: white !important;
+}
+
+.ag-row-selected .ag-cell {
+color: white !important;
+}

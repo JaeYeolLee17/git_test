@@ -115,14 +115,14 @@ function EmergencyDetail() {
         console.log("errorEmergencys", errorUpdateEmergencys);
     }, [errorUpdateEmergencys]);
 
-    const onClickEvent = (emergencys :any) => {
+    const onClickEvent = (type: string, emergencys :any) => {
         requestUpdateEmergencys(emergencys);
     };
     
     return(
         <div className={styles.wrapper}>
             <ManagementDetail 
-                pageType="edit"
+                type="edit"
                 title={title}
                 response={emergencyData} 
                 clickEvent={onClickEvent}

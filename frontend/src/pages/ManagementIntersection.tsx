@@ -23,10 +23,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
-    headerAlign: string,
-    align: string,
     flex: number,
-    renderCell: any
+    cellRenderer: any
   }
 
 function ManagementIntersection() {
@@ -34,42 +32,32 @@ function ManagementIntersection() {
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
     const [listIntersection, setListIntersection] = useState<Array<any>>([]);
-    const [selectedintersectionNo, setSelectedIntersectionNo] = useState<
-        string | null
-    >("");
+    const [selectedintersectionNo, setSelectedIntersectionNo] = useState<string>("");
 
     const columns: columns[] = [
         {
             field: "id",
             headerName: "교차로 No.",
-            headerAlign: "center",
-            align: "center",
             flex: 2,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "name",
             headerName: "교차로 이름",
-            headerAlign: "center",
-            align: "center",
             flex: 3,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "region",
             headerName: "구역",
-            headerAlign: "center",
-            align: "center",
             flex: 3,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "data",
             headerName: "",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: (params: any) => {
+            cellRenderer: (params :any) => {
                 return (
                     <Button onClick={(e) => {
                         navigate(
@@ -79,7 +67,7 @@ function ManagementIntersection() {
                                     data
                                 ) {
                                     return (
-                                        data.intersectionNo === params.id
+                                        data.intersectionNo === params.data.id
                                     );
                                 }),
                             }
@@ -141,7 +129,6 @@ function ManagementIntersection() {
 
     const handleClickIntersection = (intersectionNo: string) => {
         setSelectedIntersectionNo(intersectionNo);
-        alert(intersectionNo);
     };
 
     const onRowClick = (intersectionId: string) => {
@@ -154,7 +141,8 @@ function ManagementIntersection() {
                 <Grid item xs={7}>
                     <TableManagement 
                         columns={columns} 
-                        rows={rows} 
+                        rows={rows}
+                        selectedId={selectedintersectionNo}
                         clickEvent={onRowClick}
                     />
                 </Grid>
@@ -163,7 +151,7 @@ function ManagementIntersection() {
                     <KakaoMap
                         style={{
                             width: "100%",
-                            height: "calc(100vh - 80px)",
+                            height: "calc(100vh - 190px)",
                             zIndex: "0",
                         }}
                         intersections={{
@@ -171,6 +159,11 @@ function ManagementIntersection() {
                             selected: selectedintersectionNo,
                             clickEvent: handleClickIntersection,
                             showEdge: true,
+                        }}
+                        zoomLevel={6}
+                        center={{
+                            lat: 35.8795650131115,
+                            lng: 128.571339656397
                         }}
                     />
                     </Box>

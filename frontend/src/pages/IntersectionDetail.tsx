@@ -119,7 +119,7 @@ function IntersectionDetail() {
         console.log("errorIntersections", errorUpdateIntersections);
     }, [errorUpdateIntersections]);
 
-    const onClickEvent = (intersection: any) => {
+    const onClickEvent = (type: string, intersection: any) => {
         const updateData = {
             "intersectionNo": selectedIntersectionList[0].intersectionNo,
             "intersectionName": intersection.intersectionName,
@@ -141,7 +141,7 @@ function IntersectionDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <ManagementDetail
-                        pageType="edit"
+                        type="edit"
                         title={title}
                         response={intersectionData}
                         clickEvent={onClickEvent}
@@ -161,6 +161,11 @@ function IntersectionDetail() {
                                 clickEvent: () => {undefined},
                                 showEdge: true,
                             }}
+                            center={{
+                                lat: selectedIntersectionList[0] !== undefined && selectedIntersectionList[0].gps.lat,
+                                lng: selectedIntersectionList[0] !== undefined && selectedIntersectionList[0].gps.lng
+                            }}
+                            zoomLevel={3}
                         />
                     </Box>
                 </Grid>

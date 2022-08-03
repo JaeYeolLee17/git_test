@@ -23,13 +23,13 @@ type tableDataType = {
 }
 
 type responseType = {
-    pageType : string,
+    type : string,
     title : Map<string, string>;
     response : tableDataType[];
     clickEvent : any;
 }
 
-function ManagementDetail({pageType, title, response, clickEvent}: responseType) {
+function ManagementDetail({type, title, response, clickEvent}: responseType) {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({}); 
     const changeData: any = {};
@@ -99,7 +99,7 @@ function ManagementDetail({pageType, title, response, clickEvent}: responseType)
             </Grid>
             <div style={{textAlign : "center"}}>
                 <Button variant="outlined" className={styles.backBtn} onClick={() => navigate(-1)}>{String.back}</Button>
-                <Button variant="outlined" className={styles.saveBtn} onClick={() => {clickEvent(pageType, inputs)}}>{String.save}</Button>
+                <Button variant="outlined" className={styles.saveBtn} onClick={() => {clickEvent(type, inputs)}}>{String.save}</Button>
             </div>
         </Box>
     )

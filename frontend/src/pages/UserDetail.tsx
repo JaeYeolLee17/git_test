@@ -24,7 +24,7 @@ function UserDetail() {
 
     const [selectedUserList, setSelectedUserList] = useState<Array<any>>([]);
     const [userData, setUserData] = useState<any[]>([]);
-    const [pageType, setPageType] = useState("add");
+    const [type, setPageType] = useState("add");
 
     const passwordRule = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
 
@@ -194,7 +194,7 @@ function UserDetail() {
         console.log("errorUser", errorUpdateUser);
     }, [errorUpdateUser]);
 
-    const onClickEvent = (pageType :string, user: any) => {
+    const onClickEvent = (type :string, user: any) => {
 
         const updateUserData: any = {
             "username": user.username,
@@ -204,7 +204,7 @@ function UserDetail() {
             "authority": user.authority
         }
 
-        switch(pageType){
+        switch(type){
             case "add":
                 addUserstep(user, updateUserData);
             break;
@@ -215,7 +215,7 @@ function UserDetail() {
                 break;
         }
         
-        pageType === "add" ? requestAddUser(updateUserData) : requestUpdateUser(updateUserData);
+        type === "add" ? requestAddUser(updateUserData) : requestUpdateUser(updateUserData);
     };
 
     const addUserstep = (user: any, updateUserData: any) => {
@@ -254,7 +254,7 @@ function UserDetail() {
     return (
         <div className={styles.wrapper}>
             <ManagementDetail 
-                pageType={pageType}
+                type={type}
                 title={title}
                 response={userData} 
                 clickEvent={onClickEvent} 

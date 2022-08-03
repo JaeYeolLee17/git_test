@@ -95,13 +95,14 @@ function RegionDetail() {
         console.log("errorRegions", errorUpdateRegions);
     }, [errorUpdateRegions]);
 
-    const onClickEvent = (region: any) => {
+    const onClickEvent = (type:string, region: any) => {
         const updatdData = {
             "regionNo": region.regionNo,
             "regionName": region.regionName,
           }
 
-        requestUpdateRegions(updatdData);
+        //requestUpdateRegions(updatdData);
+        console.log(JSON.stringify(selectedRegionList[0].gps));
     };
 
     return (
@@ -109,7 +110,7 @@ function RegionDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <ManagementDetail
-                        pageType="edit"
+                        type="edit"
                         title={title}
                         response={regionData}
                         clickEvent={onClickEvent}
@@ -125,17 +126,23 @@ function RegionDetail() {
                             }}
                             region={{
                                 current: {
-                                    regionNo: "1",
-                                    regionName: "1",
-                                    gps: [
-                                        {
-                                            lat: 128.3,
-                                            lng: 38,
-                                        },
-                                    ],
+                                    regionNo: "a",
+                                    regionName: "",
+                                    gps:[
+                                        [
+                                          { lat: 33.452344169439975, lng: 126.56878163224233 },
+                                          { lat: 33.452739313807456, lng: 126.5709308145358 },
+                                          { lat: 33.45178067090639, lng: 126.572688693875 },
+                                        ],
+                                      ]
                                 },
                                 isShow: true,
                             }}
+                            center={{
+                                lat: selectedRegionList[0] !== undefined && selectedRegionList[0].gps.lat,
+                                lng: selectedRegionList[0] !== undefined && selectedRegionList[0].gps.lng
+                            }}
+                            zoomLevel={3}
                         />
                     </Box>
                 </Grid>

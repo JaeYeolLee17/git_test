@@ -26,13 +26,12 @@ function CameraDetail() {
     const userDetails = useAuthState();
     const navigate = useNavigate();
 
-    const [selectedCameraList, setSelectedCameraList] = useState<Array<any>>(
-        []
-    );
+    const [selectedCameraList, setSelectedCameraList] = useState<Array<any>>([]);
     const [cameraData, setCameraData] = useState<any[]>([]);
 
     useEffect(() => {
-        location.state !== null && onSelectedCamera(location.state);
+        const state = location.state;
+        state !== null && onSelectedCamera(state);
     }, [location.state]);
 
     const onSelectedCamera = (selectedCamera: any) => {
@@ -249,7 +248,7 @@ function CameraDetail() {
         console.log("errorCameras", errorUpdateCameras);
     }, [errorUpdateCameras]);
 
-    const onClickEvent = (camera: any) => {
+    const onClickEvent = (type:string, camera: any) => {
         const updateData = {
             "cameraNo": camera.cameraNo,
             "intersection": {
@@ -284,7 +283,6 @@ function CameraDetail() {
               "crosswalk": camera.crosswalk
             }
         }
-        console.log(JSON.stringify(selectedCameraList[0]));
 
         requestUpdateCameras(updateData);        
     };
@@ -294,7 +292,7 @@ function CameraDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={7}>
                     <ManagementDetail
-                        pageType="edit"
+                        type="edit"
                         title={title}
                         response={cameraData}
                         clickEvent={onClickEvent}
@@ -316,8 +314,11 @@ function CameraDetail() {
                                     undefined;
                                 },
                             }}
-
-                            zoomLevel={5}
+                            center={{
+                                lat: selectedCameraList[0] !== undefined && selectedCameraList[0].gps.lat,
+                                lng: selectedCameraList[0] !== undefined && selectedCameraList[0].gps.lng
+                            }}
+                            zoomLevel={3}
                         />
                     </Box>
                 </Grid>

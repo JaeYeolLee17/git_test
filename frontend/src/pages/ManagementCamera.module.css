@@ -3,8 +3,8 @@
 }
 
 .box {
+    height: calc(100vh - 128px);
     margin: 24px 24px 24px -16px;
     padding: 32px;
-    height: 100%;
     background-color: #ffffff;
 }

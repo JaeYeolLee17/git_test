@@ -82,7 +82,8 @@ public class CameraServiceImpl implements CameraService {
                         settingsUpdated = true;
                     }
 
-                    if (cameraDto.getGps() != null) {
+                    if (cameraDto.getGps() != null &&
+                            cameraDto.getGps().getLat() != null && cameraDto.getGps().getLng() != null) {
                         camera.setLat(cameraDto.getGps().getLat());
                         camera.setLng(cameraDto.getGps().getLng());
                         settingsUpdated = true;

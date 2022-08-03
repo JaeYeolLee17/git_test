@@ -54,7 +54,8 @@ public class IntersectionServiceImpl implements IntersectionService {
                         intersection.setIntersectionName(intersectionDto.getIntersectionName());
                     }
 
-                    if (intersectionDto.getGps() != null) {
+                    if (intersectionDto.getGps() != null &&
+                            intersectionDto.getGps().getLat() != null && intersectionDto.getGps().getLng() != null) {
                         intersection.setLat(intersectionDto.getGps().getLat());
                         intersection.setLng(intersectionDto.getGps().getLng());
                     }

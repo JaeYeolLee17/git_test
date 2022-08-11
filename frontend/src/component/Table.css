@@ -2,7 +2,7 @@
     --ag-borders: none !important;
     --ag-borders-row: solid 1px !important;
     --ag-row-border-color: #ddd !important;
-    --ag-range-selection-background-color: rgb(255, 0, 128, 0.1);
+    --ag-range-selection-background-color: #4579bd !important;
 }
 
 .ag-header-cell-text {
@@ -10,7 +10,11 @@
 }
 
 .ag-row-odd {
-    background-color: transparent !important;
+    background-color: transparent;
+}
+
+.intersection_no_data {
+    background-color: #E6E6E6 !important;
 }
 
 .ag-header-row {
@@ -24,5 +28,6 @@
 }
 
 .ag-row-selected .ag-cell {
-color: white !important;
+    color: white !important;
 }
+

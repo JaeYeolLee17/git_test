@@ -20,7 +20,7 @@ type rows = {
 type columns = {
   field: string,
   headerName: string,
-  flex: number
+  flex: number | undefined
 }
 
 type clickEvent = (cameraId: string) => void;
@@ -30,16 +30,16 @@ function TableManagement({rows, columns, selectedId, clickEvent} : {rows: any[],
 
   React.useEffect(() => {
     selectedId !== "" &&
-      gridRef.current!.api.forEachNode(function(node) {
-        node.setSelected(node.data!.id === selectedId);
-        if(node.data!.id === selectedId){
-          gridRef.current!.api.paginationGoToPage(Math.floor(node.childIndex / 10));
+      gridRef.current?.api.forEachNode(function(node) {
+        node.setSelected(node.data?.id === selectedId);
+        if(node.data?.id === selectedId){
+          gridRef.current?.api.paginationGoToPage(Math.floor(node.childIndex / 10));
         }
       });
-  }, [selectedId])
+  }, [selectedId]);
 
   const onQuickFilterChanged = useCallback(() => {
-    gridRef.current!.api.setQuickFilter(
+    gridRef.current?.api.setQuickFilter(
       (document.getElementById('quickFilter') as HTMLInputElement).value
     );
   }, []);
@@ -55,26 +55,33 @@ function TableManagement({rows, columns, selectedId, clickEvent} : {rows: any[],
         />
         <SearchIcon className={styles.img}/>
       </div>
-      <div className="ag-theme-alpine" style={{height: '800px', width: '100%'}}>
+      <div className="ag-theme-alpine" style={{height: '90%', minHeight: '710px', width: '100%'}}>
         <AgGridReact
           ref={gridRef}
           defaultColDef={{
             editable: false,
             sortable: false,
             filter: false,
-            resizable: true,
+            resizable: false,
             cellClass: styles.cell,
-            headerClass: styles.header
+            headerClass: styles.header,
           }}
           headerHeight={60}
-          rowClass={styles.wrapper}
           rowHeight={60}
           rowData={rows}
           columnDefs={columns}
           rowSelection={"single"}
           pagination={true}
           paginationPageSize={10}
+          pivotSuppressAutoColumn={false}
           onRowClicked={(e) => clickEvent(e.api.getSelectedRows()[0].id)}
+          rowClassRules={{
+            'intersection_no_data': (params) => {
+              console.log(params);
+              const numSickDays = params.data.region;
+              return numSickDays === '-';
+            }
+          }}
         />
       </div>
     </Box>

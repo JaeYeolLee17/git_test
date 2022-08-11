@@ -77,7 +77,6 @@ function TableManagement({rows, columns, selectedId, clickEvent} : {rows: any[],
           onRowClicked={(e) => clickEvent(e.api.getSelectedRows()[0].id)}
           rowClassRules={{
             'intersection_no_data': (params) => {
-              console.log(params);
               const numSickDays = params.data.region;
               return numSickDays === '-';
             }

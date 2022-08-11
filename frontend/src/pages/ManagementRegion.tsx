@@ -22,10 +22,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
-    headerAlign: string,
-    align: string,
     flex: number,
-    renderCell: any
+    cellRenderer: any
   }
 
 function ManagementRegion() {
@@ -33,37 +31,32 @@ function ManagementRegion() {
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
     const [listRegion, setListRegion] = useState<Array<any>>([]);
-    const [selectedRegionNo, setSelectedRegionNo] = useState<string | null>("");
+    const [selectedRegionNo, setSelectedRegionNo] = useState<string>("");
+    const [selectedRegionData, setSelectedRegionData] = useState<any>();
 
     const columns: columns[] = [
         {
             field: "id",
             headerName: "구역 No.",
-            headerAlign: "center",
-            align: "center",
             flex: 2,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "name",
             headerName: "구역 이름",
-            headerAlign: "center",
-            align: "center",
             flex: 2,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "data",
             headerName: "",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: (params: any) => {
+            cellRenderer: (params :any) => {
                 return (
                     <Button onClick={(e) => {
                         navigate(Common.PAGE_MANAGEMENT_REGION_DETAIL, {
                             state: listRegion.find(function (data) {
-                                return data.regionNo === params.id;
+                                return data.regionNo === params.data.id;
                             }),
                         });
                     }}
@@ -126,6 +119,8 @@ function ManagementRegion() {
 
     const onRowClick = (regionNo: string) => {
         setSelectedRegionNo(regionNo);
+
+        setSelectedRegionData(listRegion.find(function(data){return data.regionNo === regionNo}));
     };
 
     return (
@@ -134,7 +129,8 @@ function ManagementRegion() {
                 <Grid item xs={7}>
                     <TableManagement 
                         columns={columns} 
-                        rows={rows} 
+                        rows={rows}
+                        selectedId={selectedRegionNo}
                         clickEvent={onRowClick}
                     />
                 </Grid>
@@ -143,19 +139,14 @@ function ManagementRegion() {
                         <KakaoMap
                             style={{
                                 width: "100%",
-                                height: "calc(100vh - 80px)",
+                                height: "calc(100vh - 190px)",
                                 zIndex: "0",
                             }}
                             region={{
                                 current: {
-                                    regionNo: "test",
-                                    regionName: "test",
-                                    gps: [
-                                        {
-                                            lat: 128.3,
-                                            lng: 38,
-                                        },
-                                    ],
+                                    regionNo: selectedRegionData !== undefined ? selectedRegionData.regionNo : "",
+                                    regionName: selectedRegionData !== undefined ? selectedRegionData.regionName : "",
+                                    gps: selectedRegionData !== undefined ? selectedRegionData.gps : ""
                                 },
                                 isShow: true,
                             }}

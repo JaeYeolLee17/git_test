@@ -24,10 +24,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
-    headerAlign: string,
-    align: string,
     flex: number,
-    renderCell: any
+    cellRenderer: any
   }
 
 function ManagementCamera() {
@@ -35,54 +33,45 @@ function ManagementCamera() {
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
     const [listCamera, setListCamera] = useState<Array<any>>([]);
-    const [selectedCameraNo, setSelectedCameraNo] = useState<string | null>("");
+    const [selectedCameraNo, setSelectedCameraNo] = useState<string>("");
+    const [zoomLevel, setZoomLevel] = useState<number>(6);
 
     const columns: columns[] = [
         {
             field: "id",
             headerName: "카메라 No.",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined,
+            cellRenderer: undefined,
         },
         {
             field: "region",
             headerName: "구역",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined,
+            cellRenderer: undefined,
         },
         {
             field: "intersection",
             headerName: "교차로",
-            headerAlign: "center",
-            align: "center",
             flex: 1,            
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "cameraDirection",
             headerName: "카메라 설치 방향",
-            headerAlign: "center",
-            align: "center",
             flex: 2,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "data",
             headerName: "",
-            headerAlign: "center",
-            align: "center",
             flex: 0.5,
-            renderCell: (params :any) => {
+            cellRenderer: (params :any) => {
                 return (
                     <Button
                         onClick={(e) => {
                             navigate(
                                 Common.PAGE_MANAGEMENT_CAMERA_DETAIL, {
-                                state :listCamera.find(function(data){ return data.cameraNo === params.row.id })})
+                                state :listCamera.find(function(data){ return data.cameraNo === params.data.id })})
                         }
                     }>
                         <img src={editBtn} width={20}></img>
@@ -140,11 +129,12 @@ function ManagementCamera() {
 
     const handleClickCamera = (cameraNo: string) => {
         setSelectedCameraNo(cameraNo);
-        alert(cameraNo);
+        setZoomLevel(3);
     };
 
     const onRowClick = (cameraNo: string) => {
         setSelectedCameraNo(cameraNo);
+        setZoomLevel(3);
     };
 
     return (
@@ -153,7 +143,8 @@ function ManagementCamera() {
                 <Grid item xs={7}>
                     <TableManagement 
                             columns={columns} 
-                            rows={rows} 
+                            rows={rows}
+                            selectedId={selectedCameraNo}
                             clickEvent={onRowClick}
                     />
                 </Grid>
@@ -162,7 +153,7 @@ function ManagementCamera() {
                         <KakaoMap
                             style={{
                                 width: "100%",
-                                height: "calc(100vh - 80px)",
+                                height: "calc(100vh - 190px)",
                                 zIndex: "0",
                             }}
                             cameras={{
@@ -171,6 +162,8 @@ function ManagementCamera() {
                                 selected: selectedCameraNo,
                                 clickEvent: handleClickCamera,
                             }}
+                            zoomLevel={zoomLevel}
+                            center={selectedCameraNo === "" ? undefined : listCamera.find(function(data){ return data.cameraNo === selectedCameraNo }).gps}
                         />
                     </Box>
                 </Grid>

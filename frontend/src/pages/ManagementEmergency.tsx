@@ -20,10 +20,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
-    headerAlign: string,
-    align: string,
     flex: number,
-    renderCell: any
+    cellRenderer: any
   }
 
 function ManagementEmergency() {
@@ -31,52 +29,44 @@ function ManagementEmergency() {
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
     const [listEmergency, setListEmergency] = useState<Array<any>>([]);
-    const [selectedEmergencyId, setSelectedEmergencyId] = useState<string | null>("");
+    const [selectedEmergencyId, setSelectedEmergencyId] = useState<string>("");
     const [mapZoomLevel, setMapZoomLevel] = useState<number>(7);
     
     const columns: columns[] = [
         {
             field: "id",
             headerName: "차량번호",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "wardId",
             headerName: "소속기관 아이디",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "wardName",
             headerName: "소속기관명",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined
+            cellRenderer: undefined
         },
         {
             field: "data",
             headerName: "",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: (params :any) => {
+            cellRenderer: (params :any) => {
                 return (
                     <>
                         <Button onClick={(e) => {
                             navigate(
                                 Common.PAGE_MANAGEMENT_EMERGENCY_DETAIL, {
-                                state :listEmergency.find(function(data){ return data.carNo === params.id })})
+                                state :listEmergency.find(function(data){ return data.carNo === params.data.id })})
                             }
                         }>
                             <img src={editBtn} width={20} />
                         </Button>
-                        <Button onClick={(e) => {requestDeleteEmergency(params.id)}}>
+                        <Button onClick={(e) => {requestDeleteEmergency(params.data.id)}}>
                             <img src={deleteBtn} width={20} />
                         </Button>
                     </>
@@ -168,21 +158,16 @@ function ManagementEmergency() {
         alert(emergencyId);
     };
 
-    
-    const onChangedZoomLevel = (level: number) => {
-        console.log("level", level);
-        setMapZoomLevel(level);
-    };
-
     const onRowClick = (emergencyId: string) => {
         setSelectedEmergencyId(emergencyId);
     };
 
     return(
-        <div style={{height: "700px" }}>
+        <div>
             <TableManagement 
                 columns={columns} 
-                rows={rows} 
+                rows={rows}
+                selectedId={selectedEmergencyId}
                 clickEvent={onRowClick}
             />
         </div>

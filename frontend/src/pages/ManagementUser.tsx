@@ -23,10 +23,8 @@ type rows = {
 type columns ={
     field: string,
     headerName: string,
-    headerAlign: string,
-    align: string,
     flex: number,
-    renderCell: any
+    cellRenderer: any
   }
 
 function ManagementUser() {
@@ -34,54 +32,46 @@ function ManagementUser() {
     const navigate = useNavigate();
     const [rows, setRows] = useState<rows[]>([]);
     const [listUser, setListUser] = useState<Array<any>>([]);
-    const [selectedUserId, setSelectedUserId] = useState<string | null>("");
+    const [selectedUserId, setSelectedUserId] = useState<string>("");
 
     const columns: columns[] = [
         {
             field: "id",
             headerName: "아이디",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined,
+            cellRenderer: undefined,
         },
         {
             field: "username",
             headerName: "이름",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined,
+            cellRenderer: undefined,
         },
         {
             field: "authority",
             headerName: "권한",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: undefined,
+            cellRenderer: undefined,
         },
         {
             field: "data",
             headerName: "",
-            headerAlign: "center",
-            align: "center",
             flex: 1,
-            renderCell: (params: any) => {
+            cellRenderer: (params :any) => {
                 return (
                     <>
                         <Button 
                             onClick={(e) => {
                                 navigate(Common.PAGE_MANAGEMENT_USER_DETAIL, {
                                     state: listUser.find(function (data) {
-                                        return data.username === params.id;
+                                        return data.username === params.data.id;
                                     }),
                                 });
                             }}
                         >
                             <img src={editBtn} width={20}></img>
                         </Button>
-                        <Button onClick={(e) => {requestDeleteUser(params.id)}}>
+                        <Button onClick={(e) => {requestDeleteUser(params.data.id)}}>
                             <img src={deleteBtn} width={20}></img>
                         </Button>
                     </>
@@ -178,7 +168,7 @@ function ManagementUser() {
     }
 
     return (
-        <div style={{ height: "700px" , position: "relative"}}>
+        <div style={{ position: "relative"}}>
             <IconButton 
                 className={styles.imgButton}
                 onClick={(e) => onAddUserClick()}>
@@ -187,6 +177,7 @@ function ManagementUser() {
             <TableManagement
                 columns={columns}
                 rows={rows}
+                selectedId={selectedUserId}
                 clickEvent={onRowClick}
             />
         </div>

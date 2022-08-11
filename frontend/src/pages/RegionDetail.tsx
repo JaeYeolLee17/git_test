@@ -25,9 +25,7 @@ function RegionDetail() {
     const userDetails = useAuthState();
     const navigate = useNavigate();
 
-    const [selectedRegionList, setSelectedRegionList] = useState<Array<any>>(
-        []
-    );
+    const [selectedRegionList, setSelectedRegionList] = useState<Array<any>>([]);
     const [regionData, setRegionData] = useState<any[]>([]);
 
     useEffect(() => {
@@ -95,13 +93,14 @@ function RegionDetail() {
         console.log("errorRegions", errorUpdateRegions);
     }, [errorUpdateRegions]);
 
-    const onClickEvent = (region: any) => {
+    const onClickEvent = (type:string, region: any) => {
         const updatdData = {
             "regionNo": region.regionNo,
             "regionName": region.regionName,
           }
 
-        requestUpdateRegions(updatdData);
+        //requestUpdateRegions(updatdData);
+        console.log(JSON.stringify(selectedRegionList[0].gps));
     };
 
     return (
@@ -109,7 +108,7 @@ function RegionDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <ManagementDetail
-                        pageType="edit"
+                        type="edit"
                         title={title}
                         response={regionData}
                         clickEvent={onClickEvent}
@@ -125,14 +124,9 @@ function RegionDetail() {
                             }}
                             region={{
                                 current: {
-                                    regionNo: "1",
-                                    regionName: "1",
-                                    gps: [
-                                        {
-                                            lat: 128.3,
-                                            lng: 38,
-                                        },
-                                    ],
+                                    regionNo: selectedRegionList[0] !== undefined ? selectedRegionList[0].regionNo : null,
+                                    regionName: selectedRegionList[0] !== undefined ? selectedRegionList[0].regionName : null,
+                                    gps: selectedRegionList[0] !== undefined ? selectedRegionList[0].gps : []
                                 },
                                 isShow: true,
                             }}

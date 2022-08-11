@@ -54,6 +54,11 @@ export type KakaoMapAvlType = {
     selected: string;
 };
 
+export type kakaoMapCenterType = {
+    lat: number;
+    lng: number;
+}
+
 export const displayRegion = (region: KakaoMapRegionType) => {
     if (region === undefined) return null;
     if (region.current.gps === undefined || region.current.gps === null)
@@ -634,6 +639,7 @@ function KakaoMap({
     links,
     tsi,
     avl,
+    center,
     zoomLevel,
     onChangedZoomLevel,
 }: {
@@ -645,6 +651,7 @@ function KakaoMap({
     links?: KakaoMapLinksType | undefined;
     tsi?: KakaoMapTsiType | undefined;
     avl?: KakaoMapAvlType | undefined;
+    center?: kakaoMapCenterType | undefined;
     zoomLevel?: number | undefined;
     onChangedZoomLevel?: (level: number) => void;
 }) {
@@ -1191,11 +1198,14 @@ function KakaoMap({
 
     return (
         <Map
-            center={{
-                // 지도의 중심좌표
-                lat: 35.85810060700929,
-                lng: 128.55729938820272,
-            }}
+            center={
+                center === undefined || "" ?
+                { // 지도의 중심좌표
+                    lat: 35.85810060700929,
+                    lng: 128.55729938820272
+                }
+                : center
+            }
             style={style}
             level={level}
             onCreate={(map) => handleMap(map)}

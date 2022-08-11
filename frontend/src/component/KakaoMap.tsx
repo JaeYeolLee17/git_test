@@ -42,7 +42,7 @@ export type KakaoMapLinksType = {
     isShow: boolean;
 };
 
-export type KakaoMapTrafficLightsType = {
+export type KakaoMapTsiType = {
     list: any[];
     blink: boolean;
     isShow: boolean;
@@ -327,65 +327,68 @@ export const displayLinks = (
     return null;
 };
 
-const getTrafficSignalType = (
-    trafficLights: KakaoMapTrafficLightsType,
-    signalDatas: any
-) => {
-    return "d";
-    let signalType = "d";
+const getTrafficSignalType = (tsi: KakaoMapTsiType, signalDatas: any) => {
+    //let signalType = "d";
 
-    signalDatas.tsiSignalInfos.forEach((signal: any) => {
-        if (signal.info === 1 || signal.info === 2) {
-            switch (signal.status) {
-                case 0:
-                    break;
-                case 1:
-                    if (signalType === "d" || signalType === "y") {
-                        signalType = "r";
-                    }
-                    break;
-                case 2:
-                    if (signalType === "d") {
-                        signalType = "y";
-                    }
-                    break;
-                case 3:
-                case 6:
-                    if (signalType === "s" || signalType === "l") {
-                        signalType = "sl";
-                    } else {
-                        if (signal.info === 1) {
-                            signalType = "s";
-                        } else if (signal.info === 2) {
-                            signalType = "l";
-                        }
-                    }
-                    break;
+    const displaySignals = signalDatas.tsiSignalInfos.filter(
+        (signalInfo: any) =>
+            signalInfo.info === "LEFT" || signalInfo.info === "STRAIGHT"
+    );
 
-                case 4:
-                    if (trafficLights.blink === true) {
-                        signalType = "r";
-                    } else {
-                        signalType = "d";
-                    }
-                    break;
+    const greenLeftSignals = displaySignals.filter(
+        (signalInfo: any) =>
+            signalInfo.info === "LEFT" && signalInfo.status === "GREEN"
+    );
 
-                case 5:
-                    if (trafficLights.blink === true) {
-                        signalType = "y";
-                    } else {
-                        signalType = "d";
-                    }
-                    break;
+    const greenStrightSignals = displaySignals.filter(
+        (signalInfo: any) =>
+            signalInfo.info === "STRAIGHT" && signalInfo.status === "GREEN"
+    );
 
-                default:
-                    signalType = "d";
-                    break;
-            }
+    if (greenLeftSignals.length > 0 && greenStrightSignals.length > 0) {
+        return "sl";
+    } else if (greenLeftSignals.length > 0) {
+        return "l";
+    } else if (greenStrightSignals.length > 0) {
+        return "s";
+    }
+
+    const redSignals = displaySignals.filter(
+        (signalInfo: any) => signalInfo.status === "RED"
+    );
+    if (redSignals.length > 0) {
+        return "r";
+    }
+
+    const yellowSignals = displaySignals.filter(
+        (signalInfo: any) => signalInfo.status === "YELLOW"
+    );
+    if (yellowSignals.length > 0) {
+        return "y";
+    }
+
+    const redFlashingSignals = displaySignals.filter(
+        (signalInfo: any) => signalInfo.status === "RED_FLAHING"
+    );
+    if (redFlashingSignals.length > 0) {
+        if (tsi.blink === true) {
+            return "r";
+        } else {
+            return "d";
         }
-    });
+    }
 
-    return signalType;
+    const yellowFlashingSignals = displaySignals.filter(
+        (signalInfo: any) => signalInfo.status === "YELLOW_FLAHING"
+    );
+    if (yellowFlashingSignals.length > 0) {
+        if (tsi.blink === true) {
+            return "y";
+        } else {
+            return "d";
+        }
+    }
+    return "d";
 };
 
 const toRad = (brng: number) => {
@@ -427,16 +430,12 @@ const getMoveGPSPosition = (
     return { lat: toDeg(tranlateLat), lng: toDeg(tranlateLng) };
 };
 
-export const displayTrafficLights = (
-    trafficLights: KakaoMapTrafficLightsType
-) => {
-    if (trafficLights === undefined) return null;
-
-    // console.log("trafficLights", JSON.stringify(trafficLights));
+export const displayTsi = (tsi: KakaoMapTsiType) => {
+    if (tsi === undefined) return null;
 
     const defaultTrafficeIntervalTime = 1000 * 60 * 1;
-    if (Utils.utilIsEmptyArray(trafficLights.list) === false) {
-        return trafficLights.list.map((tsiData) => {
+    if (Utils.utilIsEmptyArray(tsi.list) === false) {
+        return tsi.list.map((tsiData) => {
             const currentDateTime = new Date();
             const lastSignalDateTime = new Date(tsiData.time);
             const signalDateInterval =
@@ -462,14 +461,12 @@ export const displayTrafficLights = (
                 return null;
             }
 
-            console.log("tsiData", tsiData);
+            //console.log("tsiData", tsiData);
 
             const datas = tsiData.tsiSignals.map((signalData: any) => {
+                //console.log("signalData", signalData);
                 if (signalType !== "e") {
-                    signalType = getTrafficSignalType(
-                        trafficLights,
-                        signalData
-                    );
+                    signalType = getTrafficSignalType(tsi, signalData);
                 }
 
                 //let imageUrl = "../assets/images/ico_map_signal_lamp_";
@@ -640,7 +637,7 @@ function KakaoMap({
     intersections,
     cameras,
     links,
-    trafficLights,
+    tsi,
     avl,
     center,
     zoomLevel,
@@ -652,7 +649,7 @@ function KakaoMap({
     intersections?: KakaoMapIntersectionsType | undefined;
     cameras?: KakaoMapCamerasType | undefined;
     links?: KakaoMapLinksType | undefined;
-    trafficLights?: KakaoMapTrafficLightsType | undefined;
+    tsi?: KakaoMapTsiType | undefined;
     avl?: KakaoMapAvlType | undefined;
     center?: kakaoMapCenterType | undefined;
     zoomLevel?: number | undefined;
@@ -1220,7 +1217,7 @@ function KakaoMap({
             {links?.isShow &&
                 kakaoMap !== undefined &&
                 displayLinks(links, kakaoMap, level)}
-            {trafficLights?.isShow && displayTrafficLights(trafficLights)}
+            {tsi?.isShow && displayTsi(tsi)}
             {avl?.isShow && displayAvl(avl)}
         </Map>
     );

@@ -60,9 +60,8 @@ function DashboardMap({
 
     const [listLink, setListLink] = useState<Array<any>>([]);
 
-    const [listTrafficLights, setListTrafficLights] = useState<Array<any>>([]);
-    const [blinkTrafficLights, setBlinkTrafficLights] =
-        useState<boolean>(false);
+    const [listTsi, setListTsi] = useState<Array<any>>([]);
+    const [blinkTsi, setBlinkTsi] = useState<boolean>(false);
 
     const [listAvlDatas, setListAvlDatas] = useState<Array<any>>([]);
     const [selectedAvl, setSelectedAvl] = useState<string>("");
@@ -70,7 +69,7 @@ function DashboardMap({
     const [showRegion, setShowRegion] = useState<boolean>(true);
     const [showCameras, setShowCameras] = useState<boolean>(true);
     const [showLinks, setShowLinks] = useState<boolean>(true);
-    const [showTrafficLights, setShowTrafficLights] = useState<boolean>(true);
+    const [showTsi, setShowTsi] = useState<boolean>(true);
     const [showAvlDatas, setShowAvlDatas] = useState<boolean>(true);
 
     const [streamIntersectionCameras, setStreamIntersectionCameras] = useState<
@@ -91,7 +90,7 @@ function DashboardMap({
             requestLink();
         }
 
-        if (showTrafficLights) requestTrafficLight();
+        if (showTsi) requestTsi();
         if (showAvlDatas) requestAvlDatas();
     };
 
@@ -220,7 +219,7 @@ function DashboardMap({
     //     }
     // };
 
-    const requestAxiosTrafficLight = async () => {
+    const requestAxiosTsi = async () => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
@@ -231,25 +230,25 @@ function DashboardMap({
     };
 
     const {
-        loading: loadingTrafficLight,
-        error: errorTrafficLight,
-        data: resultTrafficLight,
-        execute: requestTrafficLight,
-    } = useAsyncAxios(requestAxiosTrafficLight);
+        loading: loadingTsi,
+        error: errorTsi,
+        data: resultTsi,
+        execute: requestTsi,
+    } = useAsyncAxios(requestAxiosTsi);
 
     useEffect(() => {
-        if (resultTrafficLight === null) return;
+        if (resultTsi === null) return;
 
-        //console.log("resultTrafficLight", resultTrafficLight);
-        setBlinkTrafficLights(!blinkTrafficLights);
-        setListTrafficLights(resultTrafficLight.tsi);
-    }, [resultTrafficLight]);
+        //console.log("resultTsi", resultTsi);
+        setBlinkTsi(!blinkTsi);
+        setListTsi(resultTsi.tsi);
+    }, [resultTsi]);
 
     useEffect(() => {
-        if (errorTrafficLight === null) return;
+        if (errorTsi === null) return;
 
-        console.log("errorTrafficLight", errorTrafficLight);
-    }, [errorTrafficLight]);
+        console.log("errorTsi", errorTsi);
+    }, [errorTsi]);
 
     // const requestTrafficLight = async (e) => {
     //     try {
@@ -323,9 +322,9 @@ function DashboardMap({
             localStorage.showLinks === undefined ||
                 localStorage.showLinks === "true"
         );
-        setShowTrafficLights(
-            localStorage.showTrafficLights === undefined ||
-                localStorage.showTrafficLights === "true"
+        setShowTsi(
+            localStorage.showTsi === undefined ||
+                localStorage.showTsi === "true"
         );
         setShowAvlDatas(
             localStorage.showAvlDatas === undefined ||
@@ -337,7 +336,7 @@ function DashboardMap({
         localStorage.showRegion = showRegion;
         localStorage.showCameras = showCameras;
         localStorage.showLinks = showLinks;
-        localStorage.showTrafficLights = showTrafficLights;
+        localStorage.showTsi = showTsi;
         localStorage.showAvlDatas = showAvlDatas;
     };
 
@@ -353,7 +352,7 @@ function DashboardMap({
 
     useEffect(() => {
         setLocalStorageData();
-    }, [showRegion, showCameras, showLinks, showTrafficLights, showAvlDatas]);
+    }, [showRegion, showCameras, showLinks, showTsi, showAvlDatas]);
 
     useEffect(() => {
         if (intersections?.selectedIntersectionName === undefined) {
@@ -428,8 +427,8 @@ function DashboardMap({
         setShowLinks(!showLinks);
     };
 
-    const onClickTrafficLight = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setShowTrafficLights(!showTrafficLights);
+    const onClickTsi = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setShowTsi(!showTsi);
     };
 
     const onClickAvl = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -485,11 +484,11 @@ function DashboardMap({
                     </li>
                     <li>
                         <ToggleImageButton
-                            bOn={showTrafficLights}
-                            onClick={onClickTrafficLight}
+                            bOn={showTsi}
+                            onClick={onClickTsi}
                             imageOn={btnSignalLampOn}
                             imageOff={btnSignalLampOff}
-                            tooltip={"TrafficLight"}
+                            tooltip={"Tsi"}
                         />
                     </li>
                     <li>
@@ -577,10 +576,10 @@ function DashboardMap({
                     list: listLink,
                     isShow: showLinks,
                 }}
-                trafficLights={{
-                    list: listTrafficLights,
-                    blink: blinkTrafficLights,
-                    isShow: showTrafficLights,
+                tsi={{
+                    list: listTsi,
+                    blink: blinkTsi,
+                    isShow: showTsi,
                 }}
                 avl={{
                     list: listAvlDatas,

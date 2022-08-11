@@ -151,7 +151,7 @@ function ManagementIntersection() {
                     <KakaoMap
                         style={{
                             width: "100%",
-                            height: "calc(100vh - 190px)",
+                            height: "100%",
                             zIndex: "0",
                         }}
                         intersections={{

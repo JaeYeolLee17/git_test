@@ -40,31 +40,31 @@ function ManagementCamera() {
         {
             field: "id",
             headerName: "카메라 No.",
-            flex: 1,
+            flex: 2,
             cellRenderer: undefined,
         },
         {
             field: "region",
             headerName: "구역",
-            flex: 1,
+            flex: 2,
             cellRenderer: undefined,
         },
         {
             field: "intersection",
             headerName: "교차로",
-            flex: 1,            
+            flex: 2,            
             cellRenderer: undefined
         },
         {
             field: "cameraDirection",
             headerName: "카메라 설치 방향",
-            flex: 2,
+            flex: 3,
             cellRenderer: undefined
         },
         {
             field: "data",
             headerName: "",
-            flex: 0.5,
+            flex: 1,
             cellRenderer: (params :any) => {
                 return (
                     <Button
@@ -140,7 +140,7 @@ function ManagementCamera() {
     return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
-                <Grid item xs={7}>
+                <Grid item md={7}>
                     <TableManagement 
                             columns={columns} 
                             rows={rows}
@@ -148,12 +148,12 @@ function ManagementCamera() {
                             clickEvent={onRowClick}
                     />
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item md={5}>
                     <Box className={styles.box}>
                         <KakaoMap
                             style={{
                                 width: "100%",
-                                height: "calc(100vh - 190px)",
+                                height: "100%",
                                 zIndex: "0",
                             }}
                             cameras={{

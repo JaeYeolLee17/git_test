@@ -99,8 +99,7 @@ function RegionDetail() {
             "regionName": region.regionName,
           }
 
-        //requestUpdateRegions(updatdData);
-        console.log(JSON.stringify(selectedRegionList[0].gps));
+        requestUpdateRegions(updatdData);
     };
 
     return (

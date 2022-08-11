@@ -52,28 +52,28 @@ function CameraDetail() {
         },
         {
             name: "intersectionName",
-            data: selectedCamera.intersection.intersectionName,
+            data: selectedCamera.intersection === null ? "" : selectedCamera.intersection.intersectionName,
             width:6,
             required: true,
             disabled: true
         },
         {
             name: "directionName",
-            data: selectedCamera.direction.intersectionName,
+            data: selectedCamera.direction === null ? "" : selectedCamera.direction.intersectionName,
             width: 6,
             required: true,
             disabled: true
         },
         {
             name: "gpsLat",
-            data: selectedCamera.gps.lat,
+            data: selectedCamera.gps === null ? "" : selectedCamera.gps.lat,
             width: 6,
             required: true,
             disabled: true
         },
         {
             name: "gpsLng",
-            data: selectedCamera.gps.lng,
+            data: selectedCamera.gps === null ? "" : selectedCamera.gps.lng,
             width: 6,
             required: false,
             disabled: true
@@ -164,28 +164,28 @@ function CameraDetail() {
         },
         {
             name: "startLine",
-            data: selectedCamera.road.startLine,
+            data: selectedCamera.road === null ? "" : selectedCamera.road.startLine,
             width: 4,
             required: false,
             disabled: true
         },
         {
             name: "uturn",
-            data: selectedCamera.road.uturn,
+            data: selectedCamera.road === null ? "" : selectedCamera.road.uturn,
             width: 4,
             required: false,
             disabled: true
         },
         {
             name: "crosswalk",
-            data: selectedCamera.road.crosswalk,
+            data: selectedCamera.road === null ? "" : selectedCamera.road.crosswalk,
             width: 4,
             required: false,
             disabled: true
         },
         {
             name: "lane",
-            data: selectedCamera.road.lane,
+            data: selectedCamera.road === null ? "" : selectedCamera.road.lane,
             width: 4,
             required: false,
             disabled: true

@@ -119,7 +119,6 @@ function ManagementRegion() {
 
     const onRowClick = (regionNo: string) => {
         setSelectedRegionNo(regionNo);
-
         setSelectedRegionData(listRegion.find(function(data){return data.regionNo === regionNo}));
     };
 
@@ -139,7 +138,7 @@ function ManagementRegion() {
                         <KakaoMap
                             style={{
                                 width: "100%",
-                                height: "calc(100vh - 190px)",
+                                height: "100%",
                                 zIndex: "0",
                             }}
                             region={{

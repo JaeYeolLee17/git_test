@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerEndpoint;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
@@ -33,6 +34,7 @@ public class TsiHubConsumer {
     private final KafkaListenerContainerFactory<?> kafkaListenerContainerFactory;
     private final KafkaProperties kafkaProperties;
     private final TsiService tsiService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public void start(TsiBrokerDto brokerDto, List<TsiNodeDto> nodeDtos) throws NoSuchMethodException {
 
@@ -100,7 +102,9 @@ public class TsiHubConsumer {
 
             TsiHubDto tsiHubDto = parseTsi(record.value());
             if (tsiHubDto != null) {
-                tsiService.upsertTsi(tsiHubDto);
+                if (tsiService.upsert(tsiHubDto)) {
+                    applicationEventPublisher.publishEvent(tsiHubDto.getNodeId());
+                }
             }
         }
     }

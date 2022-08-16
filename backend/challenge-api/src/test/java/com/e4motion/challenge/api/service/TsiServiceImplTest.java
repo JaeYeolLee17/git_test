@@ -28,10 +28,10 @@ class TsiServiceImplTest {
         TsiHubDto tsiHubDto1 = getTsiHubDto(1000000001L);
         TsiHubDto tsiHubDto2 = getTsiHubDto(1000000002L);
 
-        tsiService.upsertTsi(tsiHubDto1);
-        tsiService.upsertTsi(tsiHubDto2);
+        tsiService.upsert(tsiHubDto1);
+        tsiService.upsert(tsiHubDto2);
 
-        List<TsiDto> tsiDtos = tsiService.getTsiList(null, null);
+        List<TsiDto> tsiDtos = tsiService.getList(null, null);
         assertThat(tsiDtos.size()).isEqualTo(2);
         for (TsiDto tsiDto : tsiDtos) {
             assertThat(tsiDto.getTsiSignals().size()).isEqualTo(4);
@@ -44,9 +44,9 @@ class TsiServiceImplTest {
         tsiHubDto1.getTsiSignals().addAll(getTsiHubSignals(50, TsiSignalStatus.YELLOW_FLASHING));
         tsiHubDto1.setSignalCount(15);
 
-        tsiService.upsertTsi(tsiHubDto1);
+        tsiService.upsert(tsiHubDto1);
 
-        tsiDtos = tsiService.getTsiList(null, null);
+        tsiDtos = tsiService.getList(null, null);
         assertThat(tsiDtos.size()).isEqualTo(2);
         assertThat(tsiDtos.get(0).getTsiSignals().size()).isEqualTo(5);
         for (TsiSignalDto tsiSignalDto : tsiDtos.get(0).getTsiSignals()) {
@@ -60,9 +60,9 @@ class TsiServiceImplTest {
         tsiHubDto2.setTsiSignals(tsiHubSignalDtos);
         tsiHubDto1.setSignalCount(9);
 
-        tsiService.upsertTsi(tsiHubDto2);
+        tsiService.upsert(tsiHubDto2);
 
-        tsiDtos = tsiService.getTsiList(null, null);
+        tsiDtos = tsiService.getList(null, null);
         assertThat(tsiDtos.size()).isEqualTo(2);
 
         assertThat(tsiDtos.get(1).getTsiSignals().size()).isEqualTo(3);
@@ -80,6 +80,15 @@ class TsiServiceImplTest {
 
         return TsiHubDto.builder()
                 .nodeId(nodeId)
+                .transition(false)
+                .response(false)
+                .lightsOut(false)
+                .flashing(false)
+                .manual(false)
+                .errorContradiction(false)
+                .errorCenter(false)
+                .errorScu(false)
+                .cycleCounter(100)
                 .signalCount(tsiHubSignalDtos.size())
                 .time(LocalDateTime.now())
                 .tsiSignals(tsiHubSignalDtos)
@@ -89,19 +98,31 @@ class TsiServiceImplTest {
     private List<TsiHubSignalDto> getTsiHubSignals(Integer direction, TsiSignalStatus status) {
         List<TsiHubSignalDto> tsiHubSignalDtos = new ArrayList<>();
         tsiHubSignalDtos.add(TsiHubSignalDto.builder()
-                .direction(direction)
                 .info(TsiSignalInfo.STRAIGHT)
+                .timeReliability(TsiTimeReliability.FIXED)
+                .person(false)
                 .status(status)
+                .displayTime(100)
+                .remainTime(10)
+                .direction(direction)
                 .build());
         tsiHubSignalDtos.add(TsiHubSignalDto.builder()
-                .direction(direction)
                 .info(TsiSignalInfo.LEFT)
+                .timeReliability(TsiTimeReliability.FIXED)
+                .person(false)
                 .status(status)
+                .displayTime(100)
+                .remainTime(10)
+                .direction(direction)
                 .build());
         tsiHubSignalDtos.add(TsiHubSignalDto.builder()
-                .direction(direction)
                 .info(TsiSignalInfo.PERSON)
+                .timeReliability(TsiTimeReliability.FIXED)
+                .person(false)
                 .status(status)
+                .displayTime(100)
+                .remainTime(10)
+                .direction(direction)
                 .build());
         return tsiHubSignalDtos;
     }

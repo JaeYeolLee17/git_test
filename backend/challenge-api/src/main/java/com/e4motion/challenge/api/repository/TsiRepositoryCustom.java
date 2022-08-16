@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TsiRepositoryCustom {
 
-    List<TsiDto> getTsiList(TsiFilterBy filterBy, String filterValue);
+    List<TsiDto> getList(TsiFilterBy filterBy, String filterValue);
 
 }

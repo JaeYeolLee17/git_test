@@ -18,8 +18,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,7 +34,7 @@ public class TsiSenderImpl implements TsiSender {
     private final IntersectionRepository intersectionRepository;
     private final TsiRepository tsiRepository;
     private final SecurityHelper securityHelper;        // TODO: authentication header for javascript EventSource
-    private final HashMap<String, EmitterInfo> emitters = new HashMap<>();
+    private final ConcurrentHashMap<String, EmitterInfo> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter subscribe(TsiFilterBy filterBy, String filterValue) {
 

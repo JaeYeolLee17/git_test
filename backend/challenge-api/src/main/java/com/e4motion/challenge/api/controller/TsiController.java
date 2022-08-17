@@ -47,12 +47,11 @@ public class TsiController {
         return tsiSender.subscribe(filterBy, filterValue);
     }
 
-    @Operation(summary = "교통신호정보 수신 등록 해지")
-    @GetMapping(value = "/tsi/unsubscribe")
-    public Response unsubscribe(@RequestParam(value = "emitterId", required = true) String emitterId) {
+    @Operation(summary = "교통신호정보 수신 등록 - 인증 토큰 필요")
+    @GetMapping(value = "/tsi/subscribe-with-token")
+    public SseEmitter subscribeWithToken(@RequestParam(value = "filterBy", required = false) TsiFilterBy filterBy,
+                                       @RequestParam(value = "filterValue", required = false) String filterValue) {
 
-        tsiSender.unsubscribe(emitterId);
-
-        return new Response();
+        return tsiSender.subscribe(filterBy, filterValue);
     }
 }

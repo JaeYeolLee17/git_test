@@ -50,7 +50,7 @@ public class TsiRepositoryImpl implements TsiRepositoryCustom {
 	ORDER BY T.node_id, TS.direction, TS.info;
      */
     @Transactional(readOnly = true)
-    public List<TsiDto> getTsiList(TsiFilterBy filterBy, String filterValue) {
+    public List<TsiDto> getList(TsiFilterBy filterBy, String filterValue) {
 
         // projections
         Expression<?>[] projections = new Expression[] {
@@ -62,12 +62,12 @@ public class TsiRepositoryImpl implements TsiRepositoryCustom {
 
         // predicate
         BooleanBuilder predicate = new BooleanBuilder();
-        if (TsiFilterBy.ALL_REGIONS.equals(filterBy)) {
-            predicate.and(region.isNotNull());
-        } else if (TsiFilterBy.REGION.equals(filterBy)) {
-            predicate.and(region.regionNo.eq(filterValue));
+        if (TsiFilterBy.NODE.equals(filterBy)) {
+            predicate.and(tsi.nodeId.eq(Long.valueOf(filterValue)));
         } else if (TsiFilterBy.INTERSECTION.equals(filterBy)) {
             predicate.and(intersection.intersectionNo.eq(filterValue));
+        } else if (TsiFilterBy.REGION.equals(filterBy)) {
+            predicate.and(region.regionNo.eq(filterValue));
         }
 
         // order by

@@ -29,11 +29,10 @@ export const AVL_STAT_PERIOD_URL = DEFAULT_URL + "avl/stat/period";
 export const AVL_TRACK_URL = DEFAULT_URL + "avl/track";
 
 export const TSI_URL = DEFAULT_URL + "tsi";
-export const TSI_SUBSCRIBE_URL = DEFAULT_URL + "tsi/subscribe";
-export const TSI_SUBSCRIBE_WITH_TOKEN_URL =
-    DEFAULT_URL + "tsi/subscribe-with-token";
 
 export const USERS_URL = DEFAULT_URL + "users";
 
 export const STREAM_URL_START = "/start";
 export const STREAM_URL_STOP = "/stop";
+
+export const WEATHER_URL = DEFAULT_URL + "weather";

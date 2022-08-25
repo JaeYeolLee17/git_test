@@ -48,7 +48,7 @@ tsihub:
   api-token: 42cb9b8457f4cf19ec76dc1302a5a6af353b552c28b3b1b0af19d2c7bb982406
 
 openweather:
-  url: http://api.openweathermap.org/data/2.5/weather
+  url: https://api.openweathermap.org/data/2.5/weather
   api-key: 107ae00c8ec9e7f2cb859c5e00342bc4
 
 jwt:

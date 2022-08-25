@@ -47,17 +47,14 @@ public class WeatherController {
         URI uri = getUri(location);
         log.debug("uri: " + uri);
 
-        ConcurrentHashMap weather = null;
         try {
-            ResponseEntity<ConcurrentHashMap> entity = restTemplate.exchange(uri,
-                    HttpMethod.GET, null, ConcurrentHashMap.class);
-            if (entity.getStatusCode() == HttpStatus.OK) {
-                weather = entity.getBody();
-                log.debug("weather: " + weather);
-                return new Response("weather", weather);
-            }
+            ResponseEntity<ConcurrentHashMap> entity = restTemplate.exchange(uri, HttpMethod.GET, null, ConcurrentHashMap.class);
+            log.info("statusCode: " + entity.getStatusCode());
+            ConcurrentHashMap weather = entity.getBody();
+            log.debug("weather: " + weather);
+            return new Response("weather", weather);
         } catch (Exception e) {
-            log.info("exception: " + e.toString());
+            log.info("exception: " + e);
         }
 
         return new ResponseFail("OPEN_WEATHER_ERROR", "");

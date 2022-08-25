@@ -1,10 +1,15 @@
 package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.common.response.Response;
+import com.e4motion.challenge.common.response.ResponseFail;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +21,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Tag(name = "10. 날씨 API")
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "v2")
 public class WeatherController {
 
-    private final static String LOCATION = "?q=";
-    private final static String APP_ID = "&appid=";
+    private static final String LOCATION = "?q=";
+    private static final String APP_ID = "&appid=";
+
+    private final RestTemplate restTemplate;
 
     @Value("${openweather.url}")
     String url;
@@ -34,21 +42,30 @@ public class WeatherController {
     // TODO : get method needs @RequestParam String location
     public Response get() throws Exception {
 
-        String location = "Daegu";
+        Location location = Location.valueOf("Daegu");
 
         URI uri = getUri(location);
         log.debug("uri: " + uri);
 
-        RestTemplate template = new RestTemplate();
-        ConcurrentHashMap weather = template.getForObject(uri, ConcurrentHashMap.class);
-        log.debug("weather: " + weather);
+        ConcurrentHashMap weather = null;
+        try {
+            ResponseEntity<ConcurrentHashMap> entity = restTemplate.exchange(uri,
+                    HttpMethod.GET, null, ConcurrentHashMap.class);
+            if (entity.getStatusCode() == HttpStatus.OK) {
+                weather = entity.getBody();
+                log.debug("weather: " + weather);
+                return new Response("weather", weather);
+            }
+        } catch (Exception e) {
+            log.info("exception: " + e.toString());
+        }
 
-        return new Response("weather", weather);
+        return new ResponseFail("OPEN_WEATHER_ERROR", "");
     }
 
-    private URI getUri(String selectedLocation) throws Exception {
+    private URI getUri(Location location) throws Exception {
 
-        return new URI(url + LOCATION + Location.valueOf(selectedLocation) + APP_ID + apiKey);
+        return new URI(url + LOCATION + location.name() + APP_ID + apiKey);
     }
 
     public enum Location {

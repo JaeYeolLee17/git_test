@@ -46,7 +46,7 @@ public class WeatherController {
 
         Location location = Location.valueOf("Daegu");
 
-        URI uri = getUri(location);
+        String uri = getUri(location);
         log.debug("uri: " + uri);
 
         try {
@@ -62,9 +62,9 @@ public class WeatherController {
         return new ResponseFail("OPEN_WEATHER_ERROR", "");
     }
 
-    private URI getUri(Location location) throws Exception {
+    private String getUri(Location location) {
 
-        return new URI(URLEncoder.encode(url + LOCATION + location.name() + APP_ID + apiKey, StandardCharsets.UTF_8.name());
+        return url + LOCATION + location.name() + APP_ID + apiKey;
     }
 
     public enum Location {

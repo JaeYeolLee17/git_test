@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Tag(name = "10. 날씨 API")
@@ -62,7 +64,7 @@ public class WeatherController {
 
     private URI getUri(Location location) throws Exception {
 
-        return new URI(url + LOCATION + location.name() + APP_ID + apiKey);
+        return new URI(URLEncoder.encode(url + LOCATION + location.name() + APP_ID + apiKey, StandardCharsets.UTF_8.name());
     }
 
     public enum Location {

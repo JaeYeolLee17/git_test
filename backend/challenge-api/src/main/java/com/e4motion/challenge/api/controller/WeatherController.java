@@ -47,23 +47,21 @@ public class WeatherController {
         Location location = Location.valueOf("Daegu");
 
         String uri = getUri(location);
-        log.debug("uri: " + uri);
 
-        try {
-            ResponseEntity<ConcurrentHashMap> entity = restTemplate.exchange(uri, HttpMethod.GET, null, ConcurrentHashMap.class);
-            log.info("statusCode: " + entity.getStatusCode());
-            ConcurrentHashMap weather = entity.getBody();
-            log.debug("weather: " + weather);
-            return new Response("weather", weather);
-        } catch (Exception e) {
-            log.info("exception: " + e);
-        }
+        ConcurrentHashMap weather = getWeather(uri);
 
-        return new ResponseFail("OPEN_WEATHER_ERROR", "");
+        return new Response("weather", weather);
+    }
+
+    private ConcurrentHashMap<String, Object> getWeather(String uri) {
+        ConcurrentHashMap weather = restTemplate.exchange(uri, HttpMethod.GET, null, ConcurrentHashMap.class).getBody();
+        return weather;
     }
 
     private String getUri(Location location) {
-        return url + LOCATION + location.name() + APP_ID + apiKey;
+        String uri = url + LOCATION + location.name() + APP_ID + apiKey;
+
+        return uri;
     }
 
     public enum Location {

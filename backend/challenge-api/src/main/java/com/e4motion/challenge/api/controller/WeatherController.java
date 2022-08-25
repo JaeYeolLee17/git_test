@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping(path = "v2")
 public class WeatherController {
     private final String BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
-    private final String API_KEY = "107ae00c8ec9e7f2cb859c5e00342bc4";
+    private final String API_KEY = "4022a4ec0f8afcdaa8d83c019c98ce8e";
 
     @Operation(summary = "날씨 API 데이터", description = "접근 권한 : 최고관리자, 운영자, 사용자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")

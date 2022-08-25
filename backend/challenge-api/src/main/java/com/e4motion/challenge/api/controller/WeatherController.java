@@ -63,8 +63,8 @@ public class WeatherController {
     }
 
     private String getUri(Location location) {
-
-        return url + LOCATION + location.name() + APP_ID + apiKey;
+        return "http://api.openweathermap.org/data/2.5/weather?q=Daegu&appid=107ae00c8ec9e7f2cb859c5e00342bc4";
+        //return url + LOCATION + location.name() + APP_ID + apiKey;
     }
 
     public enum Location {

@@ -70,7 +70,7 @@ function WeatherWidget() {
     <div className={styles.wrapper}>
       {weather !== undefined ? (
         <>
-          <img src={`${process.env.PUBLIC_URL}/images/weather/ico-weather-` + weatherIconMap.get(weather.icon) + `.svg`} className={styles.img}></img>
+          <img src={`${process.env.PUBLIC_URL}` + "./images/weather/ico-weather-" + weatherIconMap.get(weather.icon) + ".svg"} className={styles.img}></img>
           <div className={styles.textBody}>
             <p className={styles.temperature}>{weather.temperature}</p>
             <p className={styles.city}>대구광역시</p>

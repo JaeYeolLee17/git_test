@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 public interface TsiMapper {
 
     @Mapping(target = "tsiId", ignore = true)
-    Tsi toTsi(TsiHubDto tsoHubDto);
+    Tsi toTsi(TsiHubDto tsiHubDto);
 
     @Mapping(target = "tsiSignalId", ignore = true)
     @Mapping(target = "tsi", ignore = true)                 // should map manually because of tsi.

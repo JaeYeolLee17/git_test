@@ -15,22 +15,23 @@ import java.util.List;
 @Component
 public class TsiHubRunner implements ApplicationRunner {
 
-    private final TsiService tsiService;
+    private final TsiHubService tsiHubService;
     private final TsiHubConsumer tsiKafkaConsumer;
+    private final TsiService tsiService;
 
     // TODO: 최소 실행 뿐 아니라 주기적으로 노드정보를 확인하고, 다시 Consumer 를 돌려야 하지 않을까?
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        List<TsiNodeDto> nodeDtos = tsiService.getNodeInfo();
+        List<TsiNodeDto> nodeDtos = tsiHubService.getNodeInfo();
         if (nodeDtos == null) {
             return;
         }
 
         tsiService.insertNodeInfo(nodeDtos);
 
-        TsiBrokerDto brokerDto = tsiService.getBrokerInfo();
+        TsiBrokerDto brokerDto = tsiHubService.getBrokerInfo();
         if (brokerDto == null) {
             return;
         }

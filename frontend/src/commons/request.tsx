@@ -34,3 +34,5 @@ export const USERS_URL = DEFAULT_URL + "users";
 
 export const STREAM_URL_START = "/start";
 export const STREAM_URL_STOP = "/stop";
+
+export const WEATHER_URL = DEFAULT_URL + "weather";

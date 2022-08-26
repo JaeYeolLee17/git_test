@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 @Component
 public class SecurityHelper {
 
+    public String getLoginUsername() {
+        return getLoginUser().getUsername();
+    }
 
     public void checkIfLoginUserForRoleUser(String username) {
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import KakaoMap from "./KakaoMap";
 
 import * as Utils from "../utils/utils";
@@ -28,6 +28,8 @@ import btnZoomMinus from "../assets/images/ico_minus_b.svg";
 import TrafficInformation from "./TrafficInformation";
 import RTSPStreamer from "./RTSPStreamer";
 import AvlInfo from "./AvlInfo";
+
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 function DashboardMap({
     transitionState,
@@ -82,6 +84,8 @@ function DashboardMap({
 
     const [trafficInformationBottom, setTrafficInformationBottom] =
         useState<number>(0);
+
+    const [tsiSubscribe, setTsiSubscribe] = useState<any>(null);
 
     const requestData = () => {
         const now = new Date();
@@ -239,7 +243,7 @@ function DashboardMap({
     useEffect(() => {
         if (resultTsi === null) return;
 
-        //console.log("resultTsi", resultTsi);
+        // console.log("resultTsi", resultTsi);
         setBlinkTsi(!blinkTsi);
         setListTsi(resultTsi.tsi);
     }, [resultTsi]);
@@ -353,6 +357,60 @@ function DashboardMap({
     useEffect(() => {
         setLocalStorageData();
     }, [showRegion, showCameras, showLinks, showTsi, showAvlDatas]);
+
+    /*  SSE TEST Code
+    const listTsiRef = useRef<Array<any>>();
+
+    useEffect(() => {
+        listTsiRef.current = listTsi;
+    }, [listTsi]);
+
+    useEffect(() => {
+        if (showTsi) {
+            if (userDetails === null) return;
+            if (userDetails?.token === null) return;
+
+            const eventSourceInitDict = {
+                headers: {
+                    Authorization: `Bearer ${userDetails.token}`,
+                },
+            };
+
+            const events = new EventSourcePolyfill(
+                Request.TSI_SUBSCRIBE_WITH_TOKEN_URL,
+                eventSourceInitDict
+            );
+            setTsiSubscribe(events);
+
+            events.onmessage = (event) => {
+                const parsedData = JSON.parse(event.data);
+                //console.log(parsedData);
+                const tsiData: any[] = parsedData.filter(
+                    (element: any) => element.mediaType === null
+                );
+
+                let tsiDatas: any[] = [];
+                if (listTsiRef.current !== undefined) {
+                    tsiDatas = [...listTsiRef.current];
+                }
+                const findIndex = tsiDatas.findIndex(
+                    (e: any) => e.nodeId === tsiData[0].data.nodeId
+                );
+                if (findIndex !== -1) {
+                    tsiDatas.splice(findIndex, 1);
+                }
+
+                tsiDatas.push(tsiData[0].data);
+                setListTsi(tsiDatas);
+            };
+        } else {
+            if (tsiSubscribe !== null) {
+                tsiSubscribe.close();
+                setTsiSubscribe(null);
+            }
+        }
+    }, [showTsi]);
+    */
 
     useEffect(() => {
         if (intersections?.selectedIntersectionName === undefined) {

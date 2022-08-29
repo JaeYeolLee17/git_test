@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class RegionServiceImpl implements RegionService {
                 });
 
         Region region = regionMapper.toRegion(regionDto);
-        region.setGps(getRegionGps(regionDto, region));
+        region.setGps(makeRegionGps(regionDto, region));
 
         return regionMapper.toRegionDto(regionRepository.save(region));
     }
@@ -55,7 +56,7 @@ public class RegionServiceImpl implements RegionService {
                         region.getGps().clear();
                         regionRepository.saveAndFlush(region);
 
-                        List<RegionGps> regionGps = getRegionGps(regionDto, region);
+                        List<RegionGps> regionGps = makeRegionGps(regionDto, region);
                         region.getGps().addAll(regionGps);
                     }
 
@@ -83,8 +84,7 @@ public class RegionServiceImpl implements RegionService {
         return regionMapper.toRegionDto(regionRepository.findAll(sort));
     }
 
-    // public for unit tests
-    public List<RegionGps> getRegionGps(RegionDto regionDto, Region region) {
+    private List<RegionGps> makeRegionGps(RegionDto regionDto, Region region) {
         if (regionDto.getGps() != null) {
             AtomicInteger order = new AtomicInteger();
             return regionDto.getGps().stream()
@@ -98,6 +98,6 @@ public class RegionServiceImpl implements RegionService {
                                     .build())
                     .collect(Collectors.toList());
         }
-        return null;
+        return new ArrayList<>();
     }
 }

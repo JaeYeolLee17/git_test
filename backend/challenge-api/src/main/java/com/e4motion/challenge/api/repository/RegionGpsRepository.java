@@ -9,6 +9,6 @@ import java.util.List;
 public interface RegionGpsRepository extends JpaRepository<RegionGps, Long> {
 
     @Transactional(readOnly = true)
-    List<RegionGps> findAllByRegion_RegionIdOrderByGpsOrder(Long regionId);     // for unit tests
+    List<RegionGps> findAllByRegion_RegionIdOrderByGpsOrder(Long regionId);     // for unit tests.
 
 }

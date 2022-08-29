@@ -9,6 +9,6 @@ import java.util.List;
 public interface LinkGpsRepository extends JpaRepository<LinkGps, Long> {
 
     @Transactional(readOnly = true)
-    List<LinkGps> findAllByLink_LinkIdOrderByGpsOrder(Long linkId);     // for unit tests
+    List<LinkGps> findAllByLink_LinkIdOrderByGpsOrder(Long linkId);     // for unit tests.
 
 }

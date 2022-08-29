@@ -19,11 +19,14 @@ public class TsiHubRunner implements ApplicationRunner {
     private final TsiHubConsumer tsiKafkaConsumer;
     private final TsiService tsiService;
 
-    // TODO: 최소 실행 뿐 아니라 주기적으로 노드정보를 확인하고, 다시 Consumer 를 돌려야 하지 않을까?
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
+        // TODO: 최소 실행 뿐 아니라 주기적으로 노드정보를 확인하고, 다시 Consumer 를 돌려야 하지 않을까?
+        startTsiHub();
+    }
+
+    private void startTsiHub() throws Exception {
         List<TsiNodeDto> nodeDtos = tsiHubService.getNodeInfo();
         if (nodeDtos == null) {
             return;

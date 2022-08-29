@@ -68,15 +68,15 @@ function WeatherWidget() {
 
   return (
     <div className={styles.wrapper}>
-      {weather !== undefined ? (
+      {weather !== undefined &&
         <>
-          <img src={process.env.PUBLIC_URL + '/images/weather/ico-weather-' + weatherIconMap.get(weather.icon) + '.svg'} className={styles.img}></img>
-          <div className={styles.textBody}>
-            <p className={styles.temperature}>{weather.temperature}</p>
-            <p className={styles.city}>대구광역시</p>
-          </div>
+            <img src={Utils.getWeatherImageByKey('imgWeather' + weatherIconMap.get(weather.icon))} className={styles.img}></img>
+            <div className={styles.textBody}>
+              <p className={styles.temperature}>{weather.temperature}</p>
+              <p className={styles.city}>대구광역시</p>
+            </div>
         </>
-      ) : null}
+      }
     </div>
   )
 }

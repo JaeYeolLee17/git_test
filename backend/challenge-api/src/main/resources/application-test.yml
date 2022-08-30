@@ -16,3 +16,7 @@ spring:
     hibernate: 
       ddl-auto: create-drop         # none, create, update, create-drop
     defer-datasource-initialization: true
+
+openweather:
+  url: https://api.openweathermap.org/data/2.5/weather
+  api-key: 107ae00c8ec9e7f2cb859c5e00342bc4

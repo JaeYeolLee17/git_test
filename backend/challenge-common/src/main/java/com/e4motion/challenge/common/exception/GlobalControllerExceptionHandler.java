@@ -10,6 +10,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
@@ -118,4 +119,12 @@ public class GlobalControllerExceptionHandler {
 
 		return new ResponseFail(InvalidParamException.CODE, ex.getMessage());
 	}
+
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(OpenWeatherException.class)					// Exception by @Validated in request param
+	public Response handleOpenWeatherUrlException(OpenWeatherException ex) {
+
+		return new ResponseFail(ex.getCode(), ex.getMessage());
+	}
+
 }

@@ -109,8 +109,8 @@ public class TsiHubConsumer {
         }
     }
 
-    // public for unit tests.
-    public TsiHubDto parseTsi(byte[] data) {
+    // protected for unit tests.
+    protected TsiHubDto parseTsi(byte[] data) {
 
         byte[] b0_3 = Arrays.copyOfRange(data, 0, 4);
         long nodeId = ByteBuffer.wrap(b0_3).getInt();

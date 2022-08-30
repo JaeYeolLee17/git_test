@@ -43,7 +43,7 @@ public class DataStatsServiceImpl implements DataStatsService {
                 }
                 if (dataStats == null) {
                     dataStats = dataStatsRepository.findByTAndC(t, cameraDataDto.getC())
-                            .orElse(getInitialDataStats(t, cameraDataDto.getC(), cameraDataDto.getI(), cameraDataDto.getR()));
+                            .orElse(makeEmptyDataStats(t, cameraDataDto.getC(), cameraDataDto.getI(), cameraDataDto.getR()));
                 }
 
                 dataStats.setP(dataStats.getP() + td.getP());
@@ -115,8 +115,7 @@ public class DataStatsServiceImpl implements DataStatsService {
         return null;
     }
 
-    // public for unit tests
-    public DataStats getInitialDataStats(LocalDateTime t, String c, String i, String r) {
+    private DataStats makeEmptyDataStats(LocalDateTime t, String c, String i, String r) {
 
         return DataStats.builder()
                 .t(t)

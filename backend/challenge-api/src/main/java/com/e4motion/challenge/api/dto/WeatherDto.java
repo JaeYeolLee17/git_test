@@ -12,90 +12,111 @@ import java.util.List;
 @NoArgsConstructor
 public class WeatherDto {
 
-    private Coord coord;
-
-    private List<Weather> weather;
-
     private String base;
-
-    private Main main;
-
-    private int visibility;
-
-    private Wind wind;
 
     private Clouds clouds;
 
+    private int cod;
+
+    private Coord coord;
+
     private long dt;
+
+    private int id;
+
+    private Main main;
+
+    private String name;
 
     private Sys sys;
 
     private int timezone;
 
-    private long id;
+    private int visibility;
 
-    private String name;
+    private List<Weather> weather;
 
-    private int cod;
+    private Wind wind;
 
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Coord {
-        private float lon;
+
         private float lat;
+
+        private float lon;
     }
+
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Weather {
-
-        private int id;
-
-        private String main;
 
         private String description;
 
         private String icon;
+
+        private int id;
+
+        private String main;
     }
 
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Main {
-
-        private float temp;
 
         private float feels_like;
 
-        private float temp_min;
+        private float humidity;
+
+        private float temp;
 
         private float temp_max;
 
-        private int pressure;
+        private float temp_min;
 
-        private float humidity;
+        private int pressure;
     }
 
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Wind {
 
-        private float speed;
-
         private int deg;
+
+        private float speed;
     }
 
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Clouds {
 
         private int all;
     }
 
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Sys {
 
-        private int type;
+        private String country;
 
         private int id;
-
-        private String country;
 
         private long sunrise;
 
         private long sunset;
+
+        private int type;
     }
 }

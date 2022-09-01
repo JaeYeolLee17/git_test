@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface CameraRoadRepository extends JpaRepository<CameraRoad, Long> {
 
     @Transactional(readOnly = true)
-    Optional<CameraRoad> findByCamera_CameraId(Long cameraId);      // for unit tests
+    Optional<CameraRoad> findByCamera_CameraId(Long cameraId);      // for unit tests.
+
 }

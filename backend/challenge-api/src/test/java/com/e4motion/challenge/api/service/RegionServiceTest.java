@@ -145,9 +145,7 @@ public class RegionServiceTest {
 		regionDto.getGps().clear();
 
 		Region region = regionMapper.toRegion(regionDto);
-		if (region.getGps() == null) {		// region from persistence has always gps list even if it's empty.
-			region.setGps(((RegionServiceImpl)regionService).getRegionGps(regionDto, region));
-		}
+		region.setGps(new ArrayList<>());		// region from persistence has always gps list even if it's empty.
 
 		doReturn(Optional.of(region)).when(regionRepository).findByRegionNo(regionDto.getRegionNo());
 		doReturn(region).when(regionRepository).saveAndFlush(any());

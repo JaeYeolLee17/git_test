@@ -1,10 +1,9 @@
 package com.e4motion.challenge.api.service;
 
-import com.e4motion.challenge.api.controller.OpenWeatherController;
-
-import java.util.concurrent.ConcurrentHashMap;
+import com.e4motion.challenge.api.dto.Area;
+import com.e4motion.challenge.api.dto.WeatherDto;
 
 public interface OpenWeatherService {
 
-    ConcurrentHashMap get(OpenWeatherController.Location location) throws Exception;
+    WeatherDto get(Area area);
 }

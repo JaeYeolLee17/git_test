@@ -1135,3 +1135,29 @@ const imagesEmergencyVehicle: { [key: string]: any } = {
 export const getEmergencyVehicleImageByKey = (key: string) => {
     return imagesEmergencyVehicle[key];
 };
+
+import imgWeatherBrokenClouds from "../assets/images/ico-weather-brokenclouds.svg";
+import imgWeatherClearSky from "../assets/images/ico-weather-clearsky.svg";
+import imgWeatherFewClouds from "../assets/images/ico-weather-fewclouds.svg";
+import imgWeatherMist from "../assets/images/ico-weather-mist.svg";
+import imgWeatherRain from "../assets/images/ico-weather-rain.svg";
+import imgWeatherScatteredClouds from "../assets/images/ico-weather-scatteredclouds.svg";
+import imgWeatherShowerRain from "../assets/images/ico-weather-showerrain.svg";
+import imgWeatherSnow from "../assets/images/ico-weather-snow.svg";
+import imgWeatherThunderstorm from "../assets/images/ico-weather-thunderstorm.svg";
+
+const imagesWeather: {[key: string]: any} = {
+    imgWeatherBrokenClouds,
+    imgWeatherClearSky,
+    imgWeatherFewClouds,
+    imgWeatherMist,
+    imgWeatherRain,
+    imgWeatherScatteredClouds,
+    imgWeatherShowerRain,
+    imgWeatherSnow,
+    imgWeatherThunderstorm
+};
+
+export const getWeatherImageByKey = (key: string) => {
+    return imagesWeather[key];
+}

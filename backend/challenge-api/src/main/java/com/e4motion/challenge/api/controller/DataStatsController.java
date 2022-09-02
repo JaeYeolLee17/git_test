@@ -25,7 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Tag(name = "8. 데이터 통계")
+@Tag(name = " 8. 데이터 통계")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")

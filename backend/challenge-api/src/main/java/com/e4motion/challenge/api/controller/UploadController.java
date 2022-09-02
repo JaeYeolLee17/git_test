@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "9. 파일 데이터 업로드")
+@Tag(name = " 9. 파일 데이터 업로드")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")

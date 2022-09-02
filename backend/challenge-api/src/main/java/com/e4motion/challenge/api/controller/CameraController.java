@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "3. 카메라 관리")
+@Tag(name = " 3. 카메라 관리")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")

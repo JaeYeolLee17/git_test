@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "4. 교차로 관리")
+@Tag(name = " 4. 교차로 관리")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")

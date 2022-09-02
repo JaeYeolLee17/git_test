@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.Valid;
 
-@Tag(name = "2. 사용자 관리")
+@Tag(name = " 2. 사용자 관리")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")

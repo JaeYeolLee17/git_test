@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
-@Tag(name = "7. 교통신호정보")
+@Tag(name = " 7. 교통신호정보")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")

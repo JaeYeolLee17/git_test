@@ -87,7 +87,7 @@ springdoc:
     info:
       title: Challenge API
       description: REST API for Challenge
-      version: 1.0.0
+      version: 2.0.0
     syntaxHighlight:                # because of performance
       activated: false
 

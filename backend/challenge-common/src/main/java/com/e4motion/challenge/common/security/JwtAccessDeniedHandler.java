@@ -20,9 +20,9 @@ import com.e4motion.challenge.common.response.ResponseFail;
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	
     @Override
-    public void handle(HttpServletRequest request, 
-    		HttpServletResponse response, 
-    		AccessDeniedException accessDeniedException) throws IOException {
+    public void handle(HttpServletRequest request,
+					   HttpServletResponse response,
+					   AccessDeniedException accessDeniedException) throws IOException {
 
 		ResponseFail fail = new ResponseFail(InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     	response.setStatus(HttpStatus.FORBIDDEN.value());

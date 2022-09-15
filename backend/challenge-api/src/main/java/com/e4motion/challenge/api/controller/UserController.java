@@ -1,24 +1,15 @@
 package com.e4motion.challenge.api.controller;
 
+import com.e4motion.challenge.api.dto.UserCreateDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
-import com.e4motion.challenge.common.security.SecurityHelper;
-import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.challenge.common.response.Response;
-
+import com.e4motion.challenge.common.security.SecurityHelper;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,9 +25,9 @@ public class UserController {
     @Operation(summary = "사용자 등록", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/user")
-    public Response create(@Valid @RequestBody UserDto userDto) throws Exception {
+    public Response create(@Valid @RequestBody UserCreateDto userCreateDto) throws Exception {
     	
-    	return new Response("user", userService.create(userDto));
+    	return new Response("user", userService.create(userCreateDto));
     }
 
     @Operation(summary = "사용자 수정", description = "접근 권한 : 최고관리자, 운영자, 사용자(자기 자신만)")

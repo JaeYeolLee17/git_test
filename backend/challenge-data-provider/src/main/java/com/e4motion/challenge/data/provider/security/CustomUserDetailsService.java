@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 				user.getNickname(),
 				user.getEmail(),
 				user.getPhone(),
-				user.getEnabled(),
+				user.getDisabled(),
 				grantedAuthorities);
 	}
 

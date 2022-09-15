@@ -22,9 +22,9 @@ import com.e4motion.challenge.common.exception.customexception.UnauthorizedExcep
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	
 	@Override
-	public void commence(HttpServletRequest request, 
-			HttpServletResponse response, 
-			AuthenticationException authenticationException) throws IOException {
+	public void commence(HttpServletRequest request,
+						 HttpServletResponse response,
+						 AuthenticationException authenticationException) throws IOException {
 
 		// BadCredentialsException : invalid password when login.
 		// InsufficientAuthenticationException : no token or invalid token.

@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.controller;
 
-import com.e4motion.challenge.api.dto.Area;
+import com.e4motion.challenge.api.dto.WeatherArea;
 import com.e4motion.challenge.api.dto.WeatherDto;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WeatherControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Test
     public void mockMvcIsNotNull() throws Exception {
@@ -38,7 +38,7 @@ public class WeatherControllerTest {
     @Test
     public void getWithoutRole() throws Exception {
 
-        assertGet(HttpStatus.UNAUTHORIZED, Response.FAIL, Area.Daegu, null);
+        assertGet(HttpStatus.UNAUTHORIZED, Response.FAIL, WeatherArea.Daegu, null);
     }
 
     @Test
@@ -47,28 +47,28 @@ public class WeatherControllerTest {
 
         WeatherDto expectedWeather = create();
 
-        assertGet(HttpStatus.OK, Response.OK, Area.Daegu, expectedWeather);
+        assertGet(HttpStatus.OK, Response.OK, WeatherArea.Daegu, expectedWeather);
     }
 
     @Test
     @WithMockUser(roles = "MANAGER")
     public void getWithManagerRole() throws Exception {
 
-        assertGet(HttpStatus.OK, Response.OK, Area.Daegu, create());
+        assertGet(HttpStatus.OK, Response.OK, WeatherArea.Daegu, create());
     }
 
     @Test
     @WithMockUser(roles = "USER")
     public void getWithUserRole() throws Exception {
 
-        assertGet(HttpStatus.OK, Response.OK, Area.Daegu, create());
+        assertGet(HttpStatus.OK, Response.OK, WeatherArea.Daegu, create());
     }
 
     @Test
     @WithMockUser(roles = {"CAMERA_ADMIN", "DATA"})
     public void getWithUnauthorizedRole() throws Exception {
 
-        assertGet(HttpStatus.FORBIDDEN, Response.FAIL, Area.Daegu, null);
+        assertGet(HttpStatus.FORBIDDEN, Response.FAIL, WeatherArea.Daegu, null);
     }
 
     // TODO: by sjkim
@@ -80,7 +80,7 @@ public class WeatherControllerTest {
         return JsonHelper.fromJson(jsonData, WeatherDto.class);
     }
 
-    private void assertGet(HttpStatus expectedStatus, String expectedResult, Area area, WeatherDto expectedData) throws Exception {
+    private void assertGet(HttpStatus expectedStatus, String expectedResult, WeatherArea area, WeatherDto expectedData) throws Exception {
 
         String url = "/v2/weather";
 

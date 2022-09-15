@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.controller;
 
-import com.e4motion.challenge.api.dto.Area;
+import com.e4motion.challenge.api.dto.WeatherArea;
 import com.e4motion.challenge.api.service.OpenWeatherService;
 import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +29,7 @@ public class WeatherController {
     @Operation(summary = "날씨 데이터", description = "접근 권한 : 최고관리자, 운영자, 사용자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @GetMapping("/weather")
-    public Response get(@RequestParam(required = false, defaultValue = AREA_DEFAULT) Area area) throws Exception {
+    public Response get(@RequestParam(required = false, defaultValue = AREA_DEFAULT) WeatherArea area) throws Exception {
 
         return new Response("weather", openWeatherService.get(area));
     }

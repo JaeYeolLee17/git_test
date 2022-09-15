@@ -126,7 +126,7 @@ public class AuthControllerTest extends HBaseMockTest {
 		String password = "data12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 
-		doReturn(getUserDetails(username, password, authority, false)).when(userDetailsService).loadUserByUsername(username);
+		doReturn(getUserDetails(username, password, authority, true)).when(userDetailsService).loadUserByUsername(username);
 
 		assertLogin(username, password, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.DISABLED_USER);
 	}
@@ -164,10 +164,10 @@ public class AuthControllerTest extends HBaseMockTest {
 
 	private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
 
-		return getUserDetails(username, password, authority, true);
+		return getUserDetails(username, password, authority, null);
 	}
 
-	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean enabled) {
+	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean disabled) {
 
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
 
@@ -177,7 +177,7 @@ public class AuthControllerTest extends HBaseMockTest {
 				null,
 				null,
 				null,
-				enabled,
+				disabled,
 				grantedAuthorities);
 	}
 }

@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.service.impl;
 
-import com.e4motion.challenge.api.dto.Area;
+import com.e4motion.challenge.api.dto.WeatherArea;
 import com.e4motion.challenge.api.dto.WeatherDto;
 import com.e4motion.challenge.api.service.OpenWeatherService;
 import com.e4motion.challenge.common.exception.customexception.OpenWeatherException;
@@ -24,7 +24,7 @@ public class OpenWeatherServiceImpl implements OpenWeatherService {
     @Value("${openweather.api-key}")
     public String apiKey;
 
-    public WeatherDto get(Area area) {
+    public WeatherDto get(WeatherArea area) {
 
         try {
             return restTemplate.getForObject(getUrl(area), WeatherDto.class, area);
@@ -34,7 +34,7 @@ public class OpenWeatherServiceImpl implements OpenWeatherService {
         }
     }
 
-    private String getUrl(Area area) {
+    private String getUrl(WeatherArea area) {
         return baseUrl +
                 LOCATION +
                 area +

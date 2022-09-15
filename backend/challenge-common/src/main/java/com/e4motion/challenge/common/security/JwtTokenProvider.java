@@ -27,11 +27,13 @@ public class JwtTokenProvider {
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secret,
                             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+
         this.secret = Base64.getEncoder().encodeToString(secret.getBytes());
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
     public String createToken(Authentication authentication) {
+
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -54,6 +56,7 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
+
     	Claims claims = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
@@ -70,6 +73,7 @@ public class JwtTokenProvider {
      }
 
      public boolean validateToken(String token) {
+
     	 try {
              Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
              return true;

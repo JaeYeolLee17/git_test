@@ -46,7 +46,7 @@ CREATE TABLE public.nt_user
     nickname character varying(32) COLLATE pg_catalog."default",
     email character varying(128) COLLATE pg_catalog."default",
     phone character varying(20) COLLATE pg_catalog."default",
-    enabled boolean NOT NULL,
+    disabled boolean,
     created_date timestamp without time zone,
     modified_date timestamp without time zone,
     CONSTRAINT nt_user_pkey PRIMARY KEY (user_id),

@@ -2,6 +2,7 @@ package com.e4motion.challenge.api.mapper;
 
 import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.domain.User;
+import com.e4motion.challenge.api.dto.UserCreateDto;
 import com.e4motion.challenge.api.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -43,10 +44,10 @@ public class UserMapperTest {
 	@Test
 	public void toUser() {
 
-		UserDto userDto = TestDataHelper.getUserDto1();
+		UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
-		User user = mapper.toUser(userDto);
-		assertMapTo(userDto, user);
+		User user = mapper.toUser(userCreateDto);
+		assertMapTo(userCreateDto, user);
 	}
 
 	private void assertMapTo(User user, UserDto userDto) {
@@ -56,19 +57,19 @@ public class UserMapperTest {
 		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());
 		assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
 		assertThat(userDto.getPhone()).isEqualTo(user.getPhone());
-		assertThat(userDto.getEnabled()).isEqualTo(user.getEnabled());
+		assertThat(userDto.getDisabled()).isEqualTo(user.getDisabled());
 		assertThat(userDto.getAuthority()).isEqualTo(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName());
 	}
 
-	private void assertMapTo(UserDto userDto, User user) {
+	private void assertMapTo(UserCreateDto userCreateDto, User user) {
 
 		assertThat(user.getUserId()).isNull();
-		assertThat(userDto.getUsername()).isEqualTo(user.getUsername());
-		assertThat(userDto.getPassword()).isEqualTo(user.getPassword());
-		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());
-		assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
-		assertThat(userDto.getPhone()).isEqualTo(user.getPhone());
-		assertThat(userDto.getEnabled()).isEqualTo(user.getEnabled());
-		assertThat(userDto.getAuthority()).isEqualTo(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName());
+		assertThat(userCreateDto.getUsername()).isEqualTo(user.getUsername());
+		assertThat(userCreateDto.getPassword()).isEqualTo(user.getPassword());
+		assertThat(userCreateDto.getNickname()).isEqualTo(user.getNickname());
+		assertThat(userCreateDto.getEmail()).isEqualTo(user.getEmail());
+		assertThat(userCreateDto.getPhone()).isEqualTo(user.getPhone());
+		assertThat(user.getDisabled()).isNull();
+		assertThat(userCreateDto.getAuthority()).isEqualTo(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName());
 	}
 }

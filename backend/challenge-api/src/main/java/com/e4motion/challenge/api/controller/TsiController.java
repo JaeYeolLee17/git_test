@@ -50,7 +50,7 @@ public class TsiController {
     @Operation(summary = "교통신호정보 수신 등록 - 인증 토큰 필요")
     @GetMapping(value = "/tsi/subscribe-with-token")
     public SseEmitter subscribeWithToken(@RequestParam(value = "filterBy", required = false) TsiFilterBy filterBy,
-                                       @RequestParam(value = "filterValue", required = false) String filterValue) {
+                                         @RequestParam(value = "filterValue", required = false) String filterValue) {
 
         return tsiSender.subscribe(filterBy, filterValue);
     }

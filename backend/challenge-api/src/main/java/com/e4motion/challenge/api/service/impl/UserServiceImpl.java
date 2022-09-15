@@ -1,6 +1,7 @@
 package com.e4motion.challenge.api.service.impl;
 
 import com.e4motion.challenge.api.domain.Authority;
+import com.e4motion.challenge.api.dto.UserCreateDto;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.mapper.UserMapper;
@@ -28,17 +29,16 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     
     @Transactional
-    public UserDto create(UserDto userDto) {
+    public UserDto create(UserCreateDto userCreateDto) {
 
-    	userRepository.findByUsername(userDto.getUsername())
+    	userRepository.findByUsername(userCreateDto.getUsername())
 				.ifPresent(user -> {
 					throw new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS);
 				});
 
-		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		userDto.setEnabled(true);
+		userCreateDto.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
 
-        return userMapper.toUserDto(userRepository.save(userMapper.toUser(userDto)));
+        return userMapper.toUserDto(userRepository.save(userMapper.toUser(userCreateDto)));
     }
     
     @Transactional
@@ -46,15 +46,15 @@ public class UserServiceImpl implements UserService {
 
     	return userRepository.findByUsername(username)
 				.map(user -> {
+					if (userUpdateDto.getUsername() != null) {
+						user.setUsername(userUpdateDto.getUsername());
+					}
+
 					if (userUpdateDto.getNewPassword() != null) {
 						if (userUpdateDto.getOldPassword() == null || !passwordEncoder.matches(userUpdateDto.getOldPassword(), user.getPassword())) {
 							throw new UnauthorizedException(UnauthorizedException.INVALID_PASSWORD);
 						}
 						user.setPassword(passwordEncoder.encode(userUpdateDto.getNewPassword()));
-					}
-
-					if (userUpdateDto.getUsername() != null) {
-						user.setUsername(userUpdateDto.getUsername());
 					}
 
 					if (userUpdateDto.getNickname() != null) {
@@ -67,10 +67,6 @@ public class UserServiceImpl implements UserService {
 
 					if (userUpdateDto.getPhone() != null) {
 						user.setPhone(userUpdateDto.getPhone());
-					}
-
-					if (userUpdateDto.getEnabled() != null) {
-						user.setEnabled(userUpdateDto.getEnabled());
 					}
 
 					if (userUpdateDto.getAuthority() != null) {

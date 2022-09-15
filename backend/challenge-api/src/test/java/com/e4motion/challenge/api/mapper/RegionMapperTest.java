@@ -18,20 +18,6 @@ public class RegionMapperTest {
 	RegionMapper mapper = Mappers.getMapper(RegionMapper.class);
 
 	@Test
-	public void toStringRegion() {
-
-		Region region = TestDataHelper.getRegion1();
-		assertThat(region.toString()).isNotNull();
-	}
-
-	@Test
-	public void toStringRegionDto() {
-
-		RegionDto regionDto = TestDataHelper.getRegionDto1();
-		assertThat(regionDto.toString()).isNotNull();
-	}
-
-	@Test
     public void toRegionDto() {
 
 		Region region = TestDataHelper.getRegion1();

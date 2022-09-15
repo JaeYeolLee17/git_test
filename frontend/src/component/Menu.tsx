@@ -23,6 +23,7 @@ import { ReactComponent as Menu10 } from "../assets/images/ico_menu_10_d.svg";
 import expandMinus from "../assets/images/ico_minus_w.png";
 
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { useAuthState } from "../provider/AuthProvider";
 
 type menuType = {
     title: string;
@@ -30,6 +31,7 @@ type menuType = {
         title: string;
         link: string;
         icon: string;
+        role: string[];
     }[];
 };
 
@@ -41,11 +43,21 @@ const menuData: menuType[] = [
                 title: "교통현황",
                 link: `${Common.PAGE_DASHBOARD}`,
                 icon: "Menu01",
+                role: [
+                    Common.Authority.ROLE_ADMIN,
+                    Common.Authority.ROLE_MANAGER,
+                    Common.Authority.ROLE_USER,
+                ],
             },
             {
                 title: "교통현황 데이터",
                 link: `${Common.PAGE_DASHBOARD_DETAIL}`,
                 icon: "Menu02",
+                role: [
+                    Common.Authority.ROLE_ADMIN,
+                    Common.Authority.ROLE_MANAGER,
+                    Common.Authority.ROLE_USER,
+                ],
             },
         ],
     },
@@ -56,16 +68,31 @@ const menuData: menuType[] = [
                 title: "교통통계",
                 link: `${Common.PAGE_STAT_TRAFFIC}`,
                 icon: "Menu03",
+                role: [
+                    Common.Authority.ROLE_ADMIN,
+                    Common.Authority.ROLE_MANAGER,
+                    Common.Authority.ROLE_USER,
+                ],
             },
             {
                 title: "교통통계 데이터",
                 link: `${Common.PAGE_STAT_TRAFFIC}`,
                 icon: "Menu04",
+                role: [
+                    Common.Authority.ROLE_ADMIN,
+                    Common.Authority.ROLE_MANAGER,
+                    Common.Authority.ROLE_USER,
+                ],
             },
             {
                 title: "긴급차량 통계",
                 link: `${Common.PAGE_STAT_EMERGENCY}`,
                 icon: "Menu05",
+                role: [
+                    Common.Authority.ROLE_ADMIN,
+                    Common.Authority.ROLE_MANAGER,
+                    Common.Authority.ROLE_USER,
+                ],
             },
         ],
     },
@@ -76,26 +103,31 @@ const menuData: menuType[] = [
                 title: "카메라 관리",
                 link: `${Common.PAGE_MANAGEMENT_CAMERA}`,
                 icon: "Menu06",
+                role: [Common.Authority.ROLE_ADMIN],
             },
             {
                 title: "교차로 관리",
                 link: `${Common.PAGE_MANAGEMENT_INTERSECTION}`,
                 icon: "Menu07",
+                role: [Common.Authority.ROLE_ADMIN],
             },
             {
                 title: "구역 관리",
                 link: `${Common.PAGE_MANAGEMENT_REGION}`,
                 icon: "Menu08",
+                role: [Common.Authority.ROLE_ADMIN],
             },
             {
                 title: "긴급차량 관리",
                 link: `${Common.PAGE_MANAGEMENT_EMERGENCY}`,
                 icon: "Menu09",
+                role: [Common.Authority.ROLE_ADMIN],
             },
             {
                 title: "사용자 관리",
                 link: `${Common.PAGE_MANAGEMENT_USER}`,
                 icon: "Menu10",
+                role: [Common.Authority.ROLE_ADMIN],
             },
         ],
     },
@@ -117,6 +149,8 @@ const Components: { [key: string]: any } = {
 const Menu = () => {
     // pass string array of menu items to be rendered into
     // components
+    const userDetails = useAuthState();
+
     const getImage = (icon: string) => {
         const ComponentName = Components[icon];
         return (
@@ -127,6 +161,12 @@ const Menu = () => {
     };
     const menuElements = menuData.map((group) => {
         const itemElements = group.items.map((item) => {
+            const checkRole =
+                userDetails?.user &&
+                item.role.includes(userDetails?.user.authority);
+
+            if (checkRole === false) return null;
+
             return (
                 <AccordionDetails
                     key={item.title}
@@ -162,6 +202,8 @@ const Menu = () => {
                 </AccordionDetails>
             );
         });
+
+        if (itemElements.every((element) => element === null)) return null;
 
         return (
             <Accordion

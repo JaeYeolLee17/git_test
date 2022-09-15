@@ -111,7 +111,7 @@ class UserRepositoryTest {
 		assertThat(user1.getNickname()).isEqualTo(user2.getNickname());
 		assertThat(user1.getEmail()).isEqualTo(user2.getEmail());
 		assertThat(user1.getPhone()).isEqualTo(user2.getPhone());
-		assertThat(user1.getEnabled()).isEqualTo(user2.getEnabled());
+		assertThat(user1.getDisabled()).isEqualTo(user2.getDisabled());
 		assertThat(user1.getAuthorities().size()).isEqualTo(user2.getAuthorities().size());
 		if (user1.getAuthorities().size() > 0) {
 			assertThat(user1.getAuthorities().iterator().next().getAuthorityName())

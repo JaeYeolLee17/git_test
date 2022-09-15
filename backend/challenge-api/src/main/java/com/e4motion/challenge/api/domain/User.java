@@ -36,8 +36,8 @@ public class User extends BaseTimeEntity {
 	@Column(name = "phone", length = 20)
 	private String phone;
 
-	@Column(name = "enabled", nullable = false)
-	private Boolean enabled;
+	@Column(name = "disabled")
+	private Boolean disabled;
 
     @ManyToMany
     @JoinTable(

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.doReturn;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-class UserDtoTest {
+class UserUpdateDtoTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -40,18 +40,7 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateOk_Create() throws Exception {
-
-        UserDto userDto = TestDataHelper.getUserDto1();
-
-        doReturn(userDto).when(userService).create(any());
-
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void validateOk_Update() throws Exception {
+    public void validateOk() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -64,23 +53,7 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateUsername_Create() throws Exception {
-
-        UserDto userDto = TestDataHelper.getUserDto1();
-
-        userDto.setUsername(null);
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setUsername("");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setUsername(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void validateUsername_Update() throws Exception {
+    public void validateUsername() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -100,35 +73,7 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validatePassword_Create() throws Exception {
-
-        UserDto userDto = TestDataHelper.getUserDto1();
-
-        userDto.setPassword(null);
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPassword("");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPassword(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPassword("challenge");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPassword("challenge1123");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPassword("1123!@1123");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPassword("cha112!");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void validatePassword_Update() throws Exception {
+    public void validatePassword() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -175,25 +120,7 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateNickname_Create() throws Exception {
-
-        UserDto userDto = TestDataHelper.getUserDto1();
-
-        doReturn(userDto).when(userService).create(any());
-
-        userDto.setNickname(null);
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-
-        userDto.setNickname("");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-
-        userDto.setNickname(" ");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void validateNickname_Update() throws Exception {
+    public void validateNickname() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -214,34 +141,7 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateEmail_Create() throws Exception {
-
-        UserDto userDto = TestDataHelper.getUserDto1();
-
-        doReturn(userDto).when(userService).create(any());
-
-        userDto.setEmail(null);
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-
-        userDto.setEmail("");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-
-        userDto.setEmail(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setUsername("user1@email...");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setUsername("user1email.com");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setUsername("user1@emailcom");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void validateEmail_Update() throws Exception {
+    public void validateEmail() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -270,34 +170,7 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validatePhone_Create() throws Exception {
-
-        UserDto userDto = TestDataHelper.getUserDto1();
-
-        doReturn(userDto).when(userService).create(any());
-
-        userDto.setPhone(null);
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-
-        userDto.setPhone("");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
-
-        userDto.setPhone(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPhone("010-2222-3333");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPhone("01022223333-");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-
-        userDto.setPhone("01022223");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void validatePhone_Update() throws Exception {
+    public void validatePhone() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -326,17 +199,7 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateAuthority_Create() throws Exception {
-
-        UserDto userDto = TestDataHelper.getUserDto1();
-
-        userDto.setAuthority(null);
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void validateAuthority_Update() throws Exception {
+    public void validateAuthority() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -346,30 +209,6 @@ class UserDtoTest {
 
         userUpdateDto.setAuthority(null);
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
-    }
-
-    private void assertCreate(UserDto userDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
-
-        String uri = "/v2/user";
-
-        mockMvc.perform(MockMvcRequestBuilders.post(uri)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonHelper.toJson(userDto)))
-                .andExpect(result -> {
-                    MockHttpServletResponse response = result.getResponse();
-                    assertThat(response.getStatus()).isEqualTo(expectedStatus.value());
-
-                    Response body = JsonHelper.fromJson(response.getContentAsString(), Response.class);
-                    assertThat(body.get(Response.RESULT)).isEqualTo(expectedResult);
-                    if (expectedResult.equals(Response.OK)) {
-                        assertThat(body.get("user")).isNotNull();
-                    } else {
-                        assertThat(body.get(Response.CODE)).isEqualTo(expectedCode);
-                        if (expectedMessage != null) {
-                            assertThat(body.get(Response.MESSAGE)).isEqualTo(expectedMessage);
-                        }
-                    }
-                });
     }
 
     private void assertUpdate(String username, UserUpdateDto userUpdateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {

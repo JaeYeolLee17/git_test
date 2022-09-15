@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.e4motion.challenge.api.domain.Authority;
+import com.e4motion.challenge.api.dto.UserCreateDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -20,7 +21,8 @@ public interface UserMapper {
     List<UserDto> toUserDto(List<User> users);
 
     @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "disabled", ignore = true)
     @Mapping(target = "authorities", expression = MappingExpressions.TO_USER_AUTHORITIES)
-    User toUser(UserDto userDto);
+    User toUser(UserCreateDto userCreateDto);
 
 }

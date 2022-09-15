@@ -12,7 +12,7 @@ public class CustomUser extends User {
 
 	private static final long serialVersionUID = 1L;
 
-	private boolean settingsUpdated;
+	private final boolean settingsUpdated;
    	
    	public CustomUser(String cameraNo, String password, boolean settingsUpdated,
 					  Collection<? extends GrantedAuthority> authorities) {

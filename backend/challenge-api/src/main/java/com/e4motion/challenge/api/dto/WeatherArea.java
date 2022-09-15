@@ -1,5 +1,5 @@
 package com.e4motion.challenge.api.dto;
 
-public enum Area {
+public enum WeatherArea {
     Daegu
 }

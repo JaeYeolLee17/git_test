@@ -18,7 +18,7 @@ public class TestDataHelper {
                 .nickname("nickname1")
                 .email("user1@email.com")
                 .phone("01022223333")
-                .enabled(true)
+                .disabled(null)
                 .authority(AuthorityName.ROLE_USER)
                 .build();
     }
@@ -31,8 +31,30 @@ public class TestDataHelper {
                 .nickname("nickname2")
                 .email("user2@email.com")
                 .phone("01044445555")
-                .enabled(true)
+                .disabled(null)
                 .authority(AuthorityName.ROLE_USER)
+                .build();
+    }
+
+    public static UserCreateDto getUserCreateDto1() {
+
+        return getUserCreateDto(getUserDto1());
+    }
+
+    public static UserCreateDto getUserCreateDto2() {
+
+        return getUserCreateDto(getUserDto2());
+    }
+
+    private static UserCreateDto getUserCreateDto(UserDto userDto) {
+
+        return UserCreateDto.builder()
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .nickname(userDto.getNickname())
+                .email(userDto.getEmail())
+                .phone(userDto.getPhone())
+                .authority(userDto.getAuthority())
                 .build();
     }
 
@@ -45,58 +67,31 @@ public class TestDataHelper {
                 .nickname("nicknameupdated")
                 .email("emailupdated@email.com")
                 .phone("01088889999")
-                .enabled(true)
                 .authority(AuthorityName.ROLE_ADMIN)
                 .build();
     }
 
     public static User getUser1() {
 
-        return User.builder()
-                .userId(1L)
-                .username("user1")
-                .password("user12!@")
-                .nickname("nickname1")
-                .email("user1@email.com")
-                .phone("01022223333")
-                .enabled(true)
-                .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
-                .build();
+        return getUser(1L, getUserDto1());
     }
 
     public static User getUser2() {
 
+        return getUser(2L, getUserDto2());
+    }
+
+    private static User getUser(long id, UserDto userDto) {
+
         return User.builder()
-                .userId(2L)
-                .username("user2")
-                .password("user12!@")
-                .nickname("nickname2")
-                .email("user2@email.com")
-                .phone("01044445555")
-                .enabled(true)
-                .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
-                .build();
-    }
-
-    public static UserDto getAdminUserDto() {
-
-        return UserDto.builder()
-                .username("admin")
-                .password("challenge1123!")
-                .nickname("adminname1")
-                .enabled(true)
-                .authority(AuthorityName.ROLE_ADMIN)
-                .build();
-    }
-
-    public static UserDto getManagerUserDto() {
-
-        return UserDto.builder()
-                .username("manager")
-                .password("challenge1123!")
-                .nickname("managername1")
-                .enabled(true)
-                .authority(AuthorityName.ROLE_MANAGER)
+                .userId(id)
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .nickname(userDto.getNickname())
+                .email(userDto.getEmail())
+                .phone(userDto.getEmail())
+                .disabled(false)
+                .authorities(Collections.singleton(new Authority(userDto.getAuthority())))
                 .build();
     }
 

@@ -36,16 +36,24 @@ import StatEmergency from "./pages/StatEmergency";
 
 const PrivateRoute = (props: any) => {
     const userDetails = useAuthState();
+
+    if (props.role !== undefined && props.role.length > 0) {
+        const checkRole =
+            userDetails?.user &&
+            props.role.includes(userDetails?.user.authority);
+        return checkRole ? props.children : <NotFound />;
+    }
+
     return userDetails?.user ? props.children : <NotFound />;
 };
 
-const PrivateAdminRoute = (props: any) => {
-    const userDetails = useAuthState();
-    const checkRole =
-        userDetails?.user && userDetails?.user.authority === "ROLE_ADMIN";
+// const PrivateAdminRoute = (props: any) => {
+//     const userDetails = useAuthState();
+//     const checkRole =
+//         userDetails?.user && userDetails?.user.authority === "ROLE_ADMIN";
 
-    return checkRole ? props.children : <NotFound />;
-};
+//     return checkRole ? props.children : <NotFound />;
+// };
 
 function App() {
     return (
@@ -58,7 +66,13 @@ function App() {
                 <Route
                     path={Common.PAGE_DASHBOARD}
                     element={
-                        <PrivateRoute>
+                        <PrivateRoute
+                            role={[
+                                Common.Authority.ROLE_ADMIN,
+                                Common.Authority.ROLE_MANAGER,
+                                Common.Authority.ROLE_USER,
+                            ]}
+                        >
                             <DashboardLayout>
                                 <Dashboard />
                             </DashboardLayout>
@@ -68,137 +82,29 @@ function App() {
                 <Route
                     path={Common.PAGE_DASHBOARD_DETAIL}
                     element={
-                        <PrivateAdminRoute>
+                        <PrivateRoute
+                            role={[
+                                Common.Authority.ROLE_ADMIN,
+                                Common.Authority.ROLE_MANAGER,
+                                Common.Authority.ROLE_USER,
+                            ]}
+                        >
                             <DashboardLayout>
                                 <DashboardDetail />
                             </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_CAMERA}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <ManagementCamera />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_CAMERA_DETAIL}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <CameraDetail />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_INTERSECTION}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <ManagementIntersection />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_INTERSECTION_DETAIL}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <IntersectionDetail />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_REGION}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <ManagementRegion />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_REGION_DETAIL}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <RegionDetail />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_REGION}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <ManagementRegion />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_REGION_DETAIL}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <RegionDetail />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_EMERGENCY}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <ManagementEmergency />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_EMERGENCY_DETAIL}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <EmergencyDetail />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_USER}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <ManagementUser />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
-                    }
-                ></Route>
-                <Route
-                    path={Common.PAGE_MANAGEMENT_USER_DETAIL}
-                    element={
-                        <PrivateAdminRoute>
-                            <DashboardLayout>
-                                <UserDetail />
-                            </DashboardLayout>
-                        </PrivateAdminRoute>
+                        </PrivateRoute>
                     }
                 ></Route>
                 <Route
                     path={Common.PAGE_STAT_TRAFFIC}
                     element={
-                        <PrivateRoute>
+                        <PrivateRoute
+                            role={[
+                                Common.Authority.ROLE_ADMIN,
+                                Common.Authority.ROLE_MANAGER,
+                                Common.Authority.ROLE_USER,
+                            ]}
+                        >
                             <DashboardLayout>
                                 <StatTraffic />
                             </DashboardLayout>
@@ -208,9 +114,135 @@ function App() {
                 <Route
                     path={Common.PAGE_STAT_EMERGENCY}
                     element={
-                        <PrivateRoute>
+                        <PrivateRoute
+                            role={[
+                                Common.Authority.ROLE_ADMIN,
+                                Common.Authority.ROLE_MANAGER,
+                                Common.Authority.ROLE_USER,
+                            ]}
+                        >
                             <DashboardLayout>
                                 <StatEmergency />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_CAMERA}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <ManagementCamera />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_CAMERA_DETAIL}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <CameraDetail />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_INTERSECTION}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <ManagementIntersection />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_INTERSECTION_DETAIL}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <IntersectionDetail />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <ManagementRegion />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION_DETAIL}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <RegionDetail />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <ManagementRegion />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_REGION_DETAIL}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <RegionDetail />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_EMERGENCY}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <ManagementEmergency />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_EMERGENCY_DETAIL}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <EmergencyDetail />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_USER}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <ManagementUser />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_USER_DETAIL}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <UserDetail />
                             </DashboardLayout>
                         </PrivateRoute>
                     }

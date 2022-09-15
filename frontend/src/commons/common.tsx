@@ -72,6 +72,15 @@ export type StreamInfo = {
     port: string;
 };
 
+export const Authority = {
+    ROLE_ADMIN: "ROLE_ADMIN",
+    ROLE_MANAGER: "ROLE_MANAGER",
+    ROLE_USER: "ROLE_USER",
+    ROLE_DATA: "ROLE_DATA",
+    ROLE_CAMERAADMIN: "ROLE_CAMERAADMIN",
+    ROLE_CAMERA: "ROLE_CAMERA",
+};
+
 // Page Link
 export const PAGE_LOGIN = "/login";
 export const PAGE_DASHBOARD = "/dashboard/summary";

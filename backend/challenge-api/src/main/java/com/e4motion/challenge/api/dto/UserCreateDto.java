@@ -1,11 +1,12 @@
 package com.e4motion.challenge.api.dto;
 
-import com.e4motion.challenge.common.annotation.NullOrNotBlank;
 import com.e4motion.challenge.common.domain.AuthorityName;
 import com.e4motion.challenge.common.utils.RegExpressions;
 import lombok.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
@@ -14,16 +15,14 @@ import javax.validation.constraints.Pattern;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateDto {
+public class UserCreateDto {
 
-    @NullOrNotBlank
+    @NotBlank
     private String username;
 
-    @NullOrNotBlank
-    private String oldPassword;
-
+    @NotNull
     @Pattern(regexp = RegExpressions.strongPassword)
-    private String newPassword;
+    private String password;
 
     private String nickname;
 
@@ -33,6 +32,7 @@ public class UserUpdateDto {
     @Pattern(regexp = RegExpressions.emptyOrPhone)
     private String phone;
 
+    @NotNull
     private AuthorityName authority;
-    
+
 }

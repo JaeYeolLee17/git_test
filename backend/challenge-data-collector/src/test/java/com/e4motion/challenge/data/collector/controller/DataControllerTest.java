@@ -51,7 +51,7 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     public void insertWithoutRole() throws Exception {
 
-        assertInsert(TestDataHelper.getDataDto(), false,
+        assertInsert(TestDataHelper.getCameraDataDto(), false,
                 HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
 
@@ -59,7 +59,7 @@ class DataControllerTest extends HBaseMockTest {
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRole() throws Exception {
 
-        CameraDataDto dataDto = TestDataHelper.getDataDto();
+        CameraDataDto dataDto = TestDataHelper.getCameraDataDto();
 
         doReturn(true).when(dataService).insert(dataDto);
         doReturn(1L).when(dataStatsService).insert(dataDto);
@@ -80,7 +80,7 @@ class DataControllerTest extends HBaseMockTest {
     @WithMockUser(roles = "CAMERA")
     public void insertWithCameraRoleWithNonexistentCamera() throws Exception {
 
-        CameraDataDto dataDto = TestDataHelper.getDataDto();
+        CameraDataDto dataDto = TestDataHelper.getCameraDataDto();
 
         doReturn(true).when(dataService).insert(dataDto);
         doReturn(1L).when(dataStatsService).insert(dataDto);
@@ -96,7 +96,7 @@ class DataControllerTest extends HBaseMockTest {
     @WithMockUser(roles = {"ADMIN", "MANAGER", "USER", "DATA"})
     public void insertWithInaccessibleRole() throws Exception {
 
-        assertInsert(TestDataHelper.getDataDto(), false,
+        assertInsert(TestDataHelper.getCameraDataDto(), false,
                 HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 

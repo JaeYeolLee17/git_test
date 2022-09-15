@@ -121,7 +121,7 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	@ExceptionHandler(OpenWeatherException.class)					// Exception by @Validated in request param
+	@ExceptionHandler(OpenWeatherException.class)
 	public Response handleOpenWeatherUrlException(OpenWeatherException ex) {
 
 		return new ResponseFail(ex.getCode(), ex.getMessage());

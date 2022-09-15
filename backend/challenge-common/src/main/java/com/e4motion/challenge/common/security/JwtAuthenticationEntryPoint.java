@@ -2,11 +2,13 @@ package com.e4motion.challenge.common.security;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
@@ -36,8 +38,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		}
 
     	response.setStatus(HttpStatus.UNAUTHORIZED.value());
-		response.setContentType("application/json"); 
-		response.setCharacterEncoding("utf-8"); 
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		
 		PrintWriter out = response.getWriter(); 
 		out.print(responseFail);

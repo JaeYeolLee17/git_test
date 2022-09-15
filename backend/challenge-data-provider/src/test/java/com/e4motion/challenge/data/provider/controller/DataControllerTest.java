@@ -42,29 +42,29 @@ class DataControllerTest extends HBaseMockTest {
     @Test
     public void getWithoutRole() throws Exception {
 
-        assertGet(getGetHashMap(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+        assertGet(getGoodGetParams(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
 
     @Test
     @WithMockUser(roles = {"ADMIN", "MANAGER", "USER", "CAMERA_ADMIN", "CAMERA"})
     public void getWithInaccessibleRole() throws Exception {
 
-        assertGet(getGetHashMap(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+        assertGet(getGoodGetParams(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
     @WithMockUser(roles = "DATA")
     public void getWithDataRole() throws Exception {
 
-        assertGet(getGetHashMap(), HttpStatus.OK, Response.OK, null, null);
+        assertGet(getGoodGetParams(), HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
     @WithMockUser(roles = "DATA")
-    public void validateGetParam() throws Exception {
+    public void validateGetParams() throws Exception {
 
         // startTime
-        HashMap<String, Object> map = getGetHashMap();
+        HashMap<String, Object> map = getGoodGetParams();
         map.remove("startTime");                // missing
         assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
@@ -87,7 +87,7 @@ class DataControllerTest extends HBaseMockTest {
         assertGet(map, HttpStatus.OK, Response.OK, null, null);
 
         // endTime
-        map = getGetHashMap();
+        map = getGoodGetParams();
         map.remove("endTime");                  // missing
         assertGet(map, HttpStatus.OK, Response.OK, null, null);
 
@@ -107,7 +107,7 @@ class DataControllerTest extends HBaseMockTest {
         assertGet(map, HttpStatus.OK, Response.OK, null, null);
 
         // limit
-        map = getGetHashMap();
+        map = getGoodGetParams();
         map.remove("limit");        // missing
         assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
@@ -121,13 +121,13 @@ class DataControllerTest extends HBaseMockTest {
         assertGet(map, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // filterBy, filterValue
-        map = getGetHashMap();
+        map = getGoodGetParams();
         map.remove("filterBy");     // missing
         map.remove("filterValue");
         assertGet(map, HttpStatus.OK, Response.OK, null, null);
     }
 
-    public static HashMap<String, Object> getGetHashMap() {
+    public static HashMap<String, Object> getGoodGetParams() {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("startTime", "2022-04-01 12:00:00");

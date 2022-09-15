@@ -12,10 +12,10 @@ public class CustomUser extends User {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long userId;
-	private String nickname;
-	private String email;
-	private String phone;
+	private final Long userId;
+	private final String nickname;
+	private final String email;
+	private final String phone;
    	
    	public CustomUser(Long userId, String username, String password, String nickname, String email, String phone, Boolean enabled,
 					  Collection<? extends GrantedAuthority> authorities) {

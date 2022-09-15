@@ -1,11 +1,7 @@
 package com.e4motion.challenge.common.security;
 
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
-
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,29 +10,25 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class JwtTokenProvider {
 	
 	private static final String AUTHORITIES_KEY = "auth";
-    
-    private String secret;
-    private long tokenValidityInMilliseconds;
 
-    public JwtTokenProvider(
-    	      @Value("${jwt.secret}") String secret,
-    	      @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
-    	      this.secret = Base64.getEncoder().encodeToString(secret.getBytes());
-    	      this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+    private final String secret;
+    private final long tokenValidityInMilliseconds;
+
+    public JwtTokenProvider(@Value("${jwt.secret}") String secret,
+                            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+        this.secret = Base64.getEncoder().encodeToString(secret.getBytes());
+        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
     public String createToken(Authentication authentication) {
@@ -45,9 +37,9 @@ public class JwtTokenProvider {
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date validity = new Date(now + tokenValidityInMilliseconds);
+        Date expiredDate = new Date(now + tokenValidityInMilliseconds);
 
-        return createToken(authentication.getName(), authorities, validity);
+        return createToken(authentication.getName(), authorities, expiredDate);
     }
 
     public String createToken(String subject, String authorities, Date expiredDate) {

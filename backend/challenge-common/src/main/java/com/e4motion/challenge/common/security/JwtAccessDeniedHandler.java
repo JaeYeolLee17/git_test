@@ -2,12 +2,14 @@ package com.e4motion.challenge.common.security;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -23,10 +25,9 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     		AccessDeniedException accessDeniedException) throws IOException {
 
 		ResponseFail fail = new ResponseFail(InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
-		
     	response.setStatus(HttpStatus.FORBIDDEN.value());
-		response.setContentType("application/json"); 
-		response.setCharacterEncoding("utf-8"); 
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		
 		PrintWriter out = response.getWriter(); 
 		out.print(fail);

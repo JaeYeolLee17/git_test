@@ -1,7 +1,6 @@
 package com.e4motion.challenge.data.collector.controller;
 
 import com.e4motion.challenge.common.response.Response;
-import com.e4motion.challenge.common.security.JwtTokenFilter;
 import com.e4motion.challenge.common.security.SecurityHelper;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 

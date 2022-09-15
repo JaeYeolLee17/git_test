@@ -35,10 +35,12 @@ public class DataController {
 
         securityHelper.checkIfLoginCameraForRoleCamera(cameraDataDto.getC());
 
+        boolean settingsUpdated = cameraService.getSettingsUpdated(cameraDataDto.getC());
+
         dataService.insert(cameraDataDto);
         dataStatsService.insert(cameraDataDto);
 
-        return new Response("settingsUpdated", cameraService.getSettingsUpdated(cameraDataDto.getC()));
+        return new Response("settingsUpdated", settingsUpdated);
     }
 
 }

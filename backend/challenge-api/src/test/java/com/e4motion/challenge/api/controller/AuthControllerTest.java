@@ -46,7 +46,7 @@ public class AuthControllerTest {
 	UserDetailsService userDetailsService;
 	
 	@Test
-	public void loginWithAdminUser() throws Exception {
+	public void loginWithAdminRole() throws Exception {
 		
 		String username = "admin";
 		String password = "challenge1123!";
@@ -58,7 +58,7 @@ public class AuthControllerTest {
 	}
 	
 	@Test
-	public void loginWithManagerUser() throws Exception {
+	public void loginWithManagerRole() throws Exception {
 		
 		String username = "manager";
 		String password = "challenge1123!";
@@ -70,7 +70,7 @@ public class AuthControllerTest {
 	}
 
 	@Test
-	public void loginWithUser() throws Exception {
+	public void loginWithUserRole() throws Exception {
 
 		String username = "user1";
 		String password = "user12!@";

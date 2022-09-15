@@ -6,7 +6,7 @@ import com.e4motion.challenge.common.exception.customexception.UnauthorizedExcep
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
 import com.e4motion.challenge.data.collector.HBaseMockTest;
-import com.e4motion.challenge.data.collector.dto.CameraLoginDto;
+import com.e4motion.challenge.data.collector.domain.Camera;
 import com.e4motion.challenge.data.collector.service.CameraService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -46,7 +46,7 @@ class CameraControllerTest extends HBaseMockTest {
     @Test
     public void getWithoutRole() throws Exception {
 
-        assertGet("C0001", getGoodApiResponse(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+        assertGet("C0001", getGoodCameraResponse(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
     }
 
     @Test
@@ -57,7 +57,7 @@ class CameraControllerTest extends HBaseMockTest {
 
         assertThat(cameraService.getSettingsUpdated(cameraNo)).isTrue();
 
-        assertGet("C0001", getGoodApiResponse(), HttpStatus.OK, Response.OK, null, null);
+        assertGet("C0001", getGoodCameraResponse(), HttpStatus.OK, Response.OK, null, null);
 
         assertThat(cameraService.getSettingsUpdated(cameraNo)).isFalse();
 
@@ -66,7 +66,7 @@ class CameraControllerTest extends HBaseMockTest {
         assertGet("C0001", null, HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
 
         // with other camera
-        assertGet("C0002", getGoodApiResponse(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+        assertGet("C0002", getGoodCameraResponse(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     @Test
@@ -74,18 +74,14 @@ class CameraControllerTest extends HBaseMockTest {
     public void getWithCameraRoleWithNonexistentCamera() throws Exception {
 
         // Nonexistent camera no
-        assertGet("C0099", getGoodApiResponse(), HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
+        assertGet("C0099", getGoodCameraResponse(), HttpStatus.NOT_FOUND, Response.FAIL, CameraNotFoundException.CODE, CameraNotFoundException.INVALID_CAMERA_NO);
     }
 
     @Test
     @WithMockUser(roles = {"ADMIN", "MANAGER", "USER", "DATA", "CAMERA_ADMIN"})
     public void getWithInaccessibleRole() throws Exception {
 
-        assertGet("C0001", getGoodApiResponse(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
-    }
-
-    private Response getGoodApiResponse() {
-        return new Response("camera", CameraLoginDto.builder().build());
+        assertGet("C0001", getGoodCameraResponse(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
     }
 
     private void assertGet(String cameraNo, Response expectedApiResponse,
@@ -117,4 +113,7 @@ class CameraControllerTest extends HBaseMockTest {
                 });
     }
 
+    private Response getGoodCameraResponse() {
+        return new Response("camera", Camera.builder().build());
+    }
 }

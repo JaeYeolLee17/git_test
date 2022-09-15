@@ -21,13 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-	
+
+    private static final String BEARER = "Bearer ";
+
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain) throws ServletException, IOException, RuntimeException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException, RuntimeException {
     	
         String token = resolveToken(request);
         String method = request.getMethod();
@@ -45,9 +46,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
     
     private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-           return bearerToken.substring(7);
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.hasText(authorization) && authorization.startsWith(BEARER)) {
+           return authorization.substring(7);
         }
         return null;
      }

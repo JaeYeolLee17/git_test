@@ -5,7 +5,6 @@ import com.e4motion.challenge.api.dto.WeatherDto;
 import com.e4motion.challenge.common.exception.customexception.OpenWeatherException;
 import com.e4motion.challenge.common.utils.JsonHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,10 @@ class OpenWeatherServiceTest {
     @MockBean
     RestTemplate restTemplate;
 
-    private String url = "https://api.openweathermap.org/data/2.5/weather?q=Daegu&appid=107ae00c8ec9e7f2cb859c5e00342bc4";
+    private final String url = "https://api.openweathermap.org/data/2.5/weather?q=Daegu&appid=107ae00c8ec9e7f2cb859c5e00342bc4";
 
     @Test
-    public void testGet() throws Exception {
+    public void get() throws Exception {
 
         Area area = Area.Daegu;
 
@@ -45,7 +44,7 @@ class OpenWeatherServiceTest {
     }
 
     @Test
-    public void testGetError() {
+    public void getError() {
 
         doThrow(RestClientException.class).when(restTemplate).getForObject(url, WeatherDto.class, Area.Daegu);
 
@@ -55,8 +54,7 @@ class OpenWeatherServiceTest {
     private WeatherDto createWeatherDto(Area area) throws JsonProcessingException {
 
         String jsonData = "{\"coord\":{\"lon\":128.55,\"lat\":35.8},\"weather\":[{\"id\":501,\"main\":\"Rain\",\"description\":\"moderate rain\",\"icon\":\"10d\"}],\"base\":\"stations\",\"main\":{\"temp\":293.51,\"feels_like\":294.16,\"temp_min\":293.51,\"temp_max\":293.51,\"pressure\":1010,\"humidity\":98},\"visibility\":9742,\"wind\":{\"speed\":0.58,\"deg\":37},\"clouds\":{\"all\":100},\"dt\":1661843412,\"sys\":{\"type\":1,\"id\":5507,\"country\":\"KR\",\"sunrise\":1661806558,\"sunset\":1661853461},\"timezone\":32400,\"id\":1835327,\"name\":\"Daegu\",\"cod\":200}";
-        WeatherDto testWeatherDto = JsonHelper.fromJson(jsonData, WeatherDto.class);
 
-        return testWeatherDto;
+        return JsonHelper.fromJson(jsonData, WeatherDto.class);
     }
 }

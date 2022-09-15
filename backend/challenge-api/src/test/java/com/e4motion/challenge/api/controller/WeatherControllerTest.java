@@ -34,6 +34,7 @@ public class WeatherControllerTest {
     public void mockMvcIsNotNull() throws Exception {
         assertThat(mockMvc).isNotNull();
     }
+
     @Test
     public void getWithoutRole() throws Exception {
 
@@ -42,7 +43,7 @@ public class WeatherControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void getWithAdmin() throws Exception {
+    public void getWithAdminRole() throws Exception {
 
         WeatherDto expectedWeather = create();
 
@@ -51,14 +52,14 @@ public class WeatherControllerTest {
 
     @Test
     @WithMockUser(roles = "MANAGER")
-    public void getWithManager() throws Exception {
+    public void getWithManagerRole() throws Exception {
 
         assertGet(HttpStatus.OK, Response.OK, Area.Daegu, create());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    public void getWithUser() throws Exception {
+    public void getWithUserRole() throws Exception {
 
         assertGet(HttpStatus.OK, Response.OK, Area.Daegu, create());
     }
@@ -70,21 +71,20 @@ public class WeatherControllerTest {
         assertGet(HttpStatus.FORBIDDEN, Response.FAIL, Area.Daegu, null);
     }
 
-
+    // TODO: by sjkim
+    // TODO: 이름? 무엇을 create?
     private WeatherDto create() throws JsonProcessingException {
 
         String jsonData = "{\"coord\":{\"lon\":128.55,\"lat\":35.8},\"weather\":[{\"id\":501,\"main\":\"Rain\",\"description\":\"moderate rain\",\"icon\":\"10d\"}],\"base\":\"stations\",\"main\":{\"temp\":293.51,\"feels_like\":294.16,\"temp_min\":293.51,\"temp_max\":293.51,\"pressure\":1010,\"humidity\":98},\"visibility\":9742,\"wind\":{\"speed\":0.58,\"deg\":37},\"clouds\":{\"all\":100},\"dt\":1661843412,\"sys\":{\"type\":1,\"id\":5507,\"country\":\"KR\",\"sunrise\":1661806558,\"sunset\":1661853461},\"timezone\":32400,\"id\":1835327,\"name\":\"Daegu\",\"cod\":200}";
-        WeatherDto weatherDto = JsonHelper.fromJson(jsonData, WeatherDto.class);
 
-        return weatherDto;
+        return JsonHelper.fromJson(jsonData, WeatherDto.class);
     }
 
     private void assertGet(HttpStatus expectedStatus, String expectedResult, Area area, WeatherDto expectedData) throws Exception {
 
         String url = "/v2/weather";
 
-        mockMvc
-                .perform(MockMvcRequestBuilders.get(url).param("area", String.valueOf(area)))
+        mockMvc.perform(MockMvcRequestBuilders.get(url).param("area", area.name()))
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
                     assertThat(response.getStatus()).isEqualTo(expectedStatus.value());

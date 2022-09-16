@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = " 9. 파일 데이터 업로드")
 @RequiredArgsConstructor
-@RestController 
+@RestController
 @RequestMapping(path = "v2")
 public class UploadController {
 
@@ -38,6 +38,16 @@ public class UploadController {
 
         uploadService.uploadDataStats(files);
 
-    	return new Response();
+        return new Response();
+    }
+
+    @Operation(summary = "구역 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/region/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadRegion(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadRegion(file);
+
+        return new Response();
     }
 }

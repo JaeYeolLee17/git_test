@@ -1,12 +1,7 @@
 package com.e4motion.challenge.api.service.impl;
 
-import com.e4motion.challenge.api.domain.Camera;
-import com.e4motion.challenge.api.domain.CameraRoad;
-import com.e4motion.challenge.api.domain.DataStats;
-import com.e4motion.challenge.api.domain.Intersection;
-import com.e4motion.challenge.api.repository.CameraRepository;
-import com.e4motion.challenge.api.repository.DataStatsRepository;
-import com.e4motion.challenge.api.repository.IntersectionRepository;
+import com.e4motion.challenge.api.domain.*;
+import com.e4motion.challenge.api.repository.*;
 import com.e4motion.challenge.api.service.UploadService;
 import com.e4motion.challenge.common.exception.customexception.IntersectionNotFoundException;
 import com.e4motion.challenge.common.utils.DateTimeHelper;
@@ -15,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,18 +21,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.*;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RequiredArgsConstructor
 @Service
 public class UploadServiceImpl implements UploadService {
 
     private final static String TEXT_CSV = "text/csv";
-
     private final CameraRepository cameraRepository;
     private final PasswordEncoder passwordEncoder;
     private final IntersectionRepository intersectionRepository;
     private final DataStatsRepository dataStatsRepository;
+    private final RegionRepository regionRepository;
 
     @Transactional
     public void uploadCamera(MultipartFile file) throws IOException {
@@ -161,6 +159,63 @@ public class UploadServiceImpl implements UploadService {
         }
     }
 
+    @Transactional
+    public void uploadRegion(MultipartFile file) throws IOException, ParseException {
+        Iterable<CSVRecord> records = parseCsv(file, RegionHeaders.class);
+        if (records == null) {
+            return;
+        }
+
+        ArrayList<RegionGps> regionGps = new ArrayList<>();
+        AtomicInteger gpsOrder = new AtomicInteger(0);
+        Region region = new Region();
+
+        String regionNo = "";
+        String regionName = "";
+        String lastRegionNo = "";
+
+        for (CSVRecord record : records) {
+
+            if (getString(record, RegionHeaders.region_no) != null) {
+                regionNo = getString(record, RegionHeaders.region_no);
+                regionName = getString(record, RegionHeaders.region_name);
+                regionGps.clear();
+            }
+
+            Optional<Region> savedRegion = regionRepository.findByRegionNo(regionNo);
+
+            if (savedRegion.isPresent()) {
+                region = savedRegion.get();
+
+                if (Objects.equals(regionNo, getString(record, RegionHeaders.region_no))) {
+                    region.getGps().clear();
+                    regionRepository.saveAndFlush(region);
+                }
+            } else {
+                region = Region.builder()
+                        .regionNo(regionNo)
+                        .regionName(regionName)
+                        .intersections(getIntersectionList(regionNo))
+                        .build();
+                region.setGps(regionGps);
+            }
+
+            if (!Objects.equals(lastRegionNo, regionNo)) {
+                gpsOrder = new AtomicInteger(0);
+            }
+
+            region.getGps().add(RegionGps.builder()
+                    .region(region)
+                    .lat(getDouble(record, RegionHeaders.lat))
+                    .lng(getDouble(record, RegionHeaders.lng))
+                    .gpsOrder(gpsOrder.incrementAndGet())
+                    .build());
+            regionRepository.save(region);
+
+            lastRegionNo = regionNo;
+        }
+    }
+
     private String getString(CSVRecord record, Enum<?> header) {
         String s = record.get(header);
         if (s != null && s.length() > 0 && !s.equals("NULL")) {
@@ -190,6 +245,14 @@ public class UploadServiceImpl implements UploadService {
         if (intersectionNo != null) {
             return intersectionRepository.findByIntersectionNo(intersectionNo)
                     .orElseThrow(() -> new IntersectionNotFoundException(IntersectionNotFoundException.INVALID_INTERSECTION_NO));
+        }
+        return null;
+    }
+
+    private List<Intersection> getIntersectionList(String regionNo) {
+
+        if (regionNo != null) {
+            return intersectionRepository.findAllByRegion_RegionNo(regionNo, Sort.sort(Intersection.class));
         }
         return null;
     }
@@ -275,5 +338,12 @@ public class UploadServiceImpl implements UploadService {
         qtlu3,
         qtlu4,
         qt_time
+    }
+
+    private enum RegionHeaders {
+        region_no,
+        region_name,
+        lat,
+        lng
     }
 }

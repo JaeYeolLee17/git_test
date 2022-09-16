@@ -10,5 +10,6 @@ public interface UploadService {
     void uploadCamera(MultipartFile file) throws IOException, ParseException;
 
     void uploadDataStats(MultipartFile[] files) throws IOException, ParseException;
-    
+
+    void uploadRegion(MultipartFile file) throws IOException, ParseException;
 }

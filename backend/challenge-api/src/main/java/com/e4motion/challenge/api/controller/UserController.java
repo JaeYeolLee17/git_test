@@ -1,11 +1,15 @@
 package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.api.dto.UserCreateDto;
+import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.service.UserService;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.security.SecurityHelper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +27,7 @@ public class UserController {
     private final SecurityHelper securityHelper;
 
     @Operation(summary = "사용자 등록", description = "접근 권한 : 최고관리자, 운영자")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserDto.class)))
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/user")
     public Response create(@Valid @RequestBody UserCreateDto userCreateDto) throws Exception {

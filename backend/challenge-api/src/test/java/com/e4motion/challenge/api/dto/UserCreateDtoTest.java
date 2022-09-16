@@ -38,54 +38,58 @@ class UserCreateDtoTest {
     public void validateOk() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
+        UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
         doReturn(userDto).when(userService).create(any());
 
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void validateUsername() throws Exception {
 
-        UserDto userDto = TestDataHelper.getUserDto1();
+        UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
-        userDto.setUsername(null);
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setUsername(null);
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername("");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setUsername("");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setUsername(" ");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userCreateDto.setUsername("Too long username exceed length 32");   // 34 length
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void validatePassword() throws Exception {
 
-        UserDto userDto = TestDataHelper.getUserDto1();
+        UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
-        userDto.setPassword(null);
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPassword(null);
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword("");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPassword("");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPassword(" ");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword("challenge");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPassword("challenge");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword("challenge1123");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPassword("challenge1123");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword("1123!@1123");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPassword("1123!@1123");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPassword("cha112!");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPassword("cha112!");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -93,17 +97,18 @@ class UserCreateDtoTest {
     public void validateNickname() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
+        UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
         doReturn(userDto).when(userService).create(any());
 
-        userDto.setNickname(null);
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        userCreateDto.setNickname(null);
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setNickname("");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        userCreateDto.setNickname("");
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setNickname(" ");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        userCreateDto.setNickname(" ");
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -111,26 +116,30 @@ class UserCreateDtoTest {
     public void validateEmail() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
+        UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
         doReturn(userDto).when(userService).create(any());
 
-        userDto.setEmail(null);
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        userCreateDto.setEmail(null);
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setEmail("");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        userCreateDto.setEmail("");
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setEmail(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setEmail(" ");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername("user1@email...");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setEmail("user1@email...");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername("user1email.com");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setEmail("user1email.com");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername("user1@emailcom");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setEmail("user1@emailcom");    // This is ok!!
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
+
+        userCreateDto.setEmail("user1-that-has-too-long-email-0123456789-0123456789-0123456789@email-domain-that-has-too-long-email-0123456789-0123456789-012.com");  // length 129
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
@@ -138,45 +147,46 @@ class UserCreateDtoTest {
     public void validatePhone() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
+        UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
         doReturn(userDto).when(userService).create(any());
 
-        userDto.setPhone(null);
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        userCreateDto.setPhone(null);
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setPhone("");
-        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+        userCreateDto.setPhone("");
+        assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setPhone(" ");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPhone(" ");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPhone("010-2222-3333");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPhone("010-2222-3333");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPhone("01022223333-");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPhone("01022223333-");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setPhone("01022223");
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setPhone("01022223");
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     public void validateAuthority() throws Exception {
 
-        UserDto userDto = TestDataHelper.getUserDto1();
+        UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
 
-        userDto.setAuthority(null);
-        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+        userCreateDto.setAuthority(null);
+        assertCreate(userCreateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
-    private void assertCreate(UserDto userDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+    private void assertCreate(UserCreateDto userCreateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 
         String uri = "/v2/user";
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonHelper.toJson(userDto)))
+                        .content(JsonHelper.toJson(userCreateDto)))
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
                     assertThat(response.getStatus()).isEqualTo(expectedStatus.value());

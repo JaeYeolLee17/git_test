@@ -50,4 +50,14 @@ public class UploadController {
 
         return new Response();
     }
+
+    @Operation(summary = "링크 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/link/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadLink(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadLink(file);
+
+        return new Response();
+    }
 }

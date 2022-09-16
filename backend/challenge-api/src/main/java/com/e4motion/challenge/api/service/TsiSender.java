@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.service;
 
-import com.e4motion.challenge.common.domain.TsiFilterBy;
+import com.e4motion.challenge.common.constant.TsiFilterBy;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface TsiSender {

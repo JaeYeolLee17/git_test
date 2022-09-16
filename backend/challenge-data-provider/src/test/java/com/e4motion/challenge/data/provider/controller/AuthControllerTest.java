@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
 import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import com.e4motion.challenge.common.response.Response;

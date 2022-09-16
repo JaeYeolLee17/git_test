@@ -3,7 +3,7 @@ package com.e4motion.challenge.api.repository.impl;
 import com.e4motion.challenge.api.domain.*;
 import com.e4motion.challenge.api.dto.*;
 import com.e4motion.challenge.api.repository.TsiRepositoryCustom;
-import com.e4motion.challenge.common.domain.TsiFilterBy;
+import com.e4motion.challenge.common.constant.TsiFilterBy;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;

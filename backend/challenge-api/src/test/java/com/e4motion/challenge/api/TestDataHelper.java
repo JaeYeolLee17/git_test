@@ -2,7 +2,7 @@ package com.e4motion.challenge.api;
 
 import com.e4motion.challenge.api.domain.*;
 import com.e4motion.challenge.api.dto.*;
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 
 import java.util.ArrayList;
 import java.util.Collections;

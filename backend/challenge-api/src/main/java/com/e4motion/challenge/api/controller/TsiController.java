@@ -3,7 +3,7 @@ package com.e4motion.challenge.api.controller;
 import com.e4motion.challenge.api.dto.TsiDto;
 import com.e4motion.challenge.api.service.TsiSender;
 import com.e4motion.challenge.api.service.TsiService;
-import com.e4motion.challenge.common.domain.TsiFilterBy;
+import com.e4motion.challenge.common.constant.TsiFilterBy;
 import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

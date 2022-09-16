@@ -27,7 +27,6 @@ public class UserController {
     private final SecurityHelper securityHelper;
 
     @Operation(summary = "사용자 등록", description = "접근 권한 : 최고관리자, 운영자")
-    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserDto.class)))
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/user")
     public Response create(@Valid @RequestBody UserCreateDto userCreateDto) throws Exception {
@@ -56,6 +55,7 @@ public class UserController {
     }
 
     @Operation(summary = "사용자 조회", description = "접근 권한 : 최고관리자, 운영자, 사용자(자기 자신만)")
+    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserDto.class)))
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
 	@GetMapping("/user/{username}")
     public Response get(@PathVariable String username) throws Exception {

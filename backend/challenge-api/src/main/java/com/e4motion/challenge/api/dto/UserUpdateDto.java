@@ -1,8 +1,8 @@
 package com.e4motion.challenge.api.dto;
 
-import com.e4motion.challenge.api.constant.Lengths;
+import com.e4motion.challenge.common.constant.FieldLengths;
 import com.e4motion.challenge.common.annotation.NullOrNotBlank;
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.utils.RegExpressions;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -20,25 +20,25 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class UserUpdateDto {
 
-    @Schema(maxLength = Lengths.USERNAME)
+    @Schema(maxLength = FieldLengths.USERNAME)
     @NullOrNotBlank
-    @Length(max = Lengths.USERNAME)
+    @Length(max = FieldLengths.USERNAME)
     private String username;
 
     @NullOrNotBlank
     private String oldPassword;
 
-    @Schema(maxLength = Lengths.PASSWORD)
-    @Length(max = Lengths.PASSWORD)
+    @Schema(maxLength = FieldLengths.PASSWORD)
+    @Length(max = FieldLengths.PASSWORD)
     @Pattern(regexp = RegExpressions.strongPassword)
     private String newPassword;
 
-    @Schema(maxLength = Lengths.NICKNAME)
-    @Length(max = Lengths.NICKNAME)
+    @Schema(maxLength = FieldLengths.NICKNAME)
+    @Length(max = FieldLengths.NICKNAME)
     private String nickname;
 
-    @Schema(maxLength = Lengths.EMAIL)
-    @Length(max = Lengths.EMAIL)
+    @Schema(maxLength = FieldLengths.EMAIL)
+    @Length(max = FieldLengths.EMAIL)
     @Email
     private String email;
 

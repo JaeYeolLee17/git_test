@@ -74,6 +74,7 @@ management:
     health:
       show-details: always
 
+# TODO: apply possible settings to SwaggerConfig
 springdoc:
   api-docs:
     enabled: true
@@ -87,8 +88,9 @@ springdoc:
       title: Challenge API
       description: REST API for Challenge
       version: 2.0.0
-    syntaxHighlight:                # because of performance
+    syntaxHighlight:                # because of ui performance
       activated: false
+  writer-with-order-by-keys: true   # for sorting schemas
 
 logging:
   level:

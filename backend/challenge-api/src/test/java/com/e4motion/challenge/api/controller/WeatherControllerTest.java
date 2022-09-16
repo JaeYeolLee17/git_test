@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.controller;
 
-import com.e4motion.challenge.api.dto.WeatherArea;
+import com.e4motion.challenge.api.constant.WeatherArea;
 import com.e4motion.challenge.api.dto.WeatherDto;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;

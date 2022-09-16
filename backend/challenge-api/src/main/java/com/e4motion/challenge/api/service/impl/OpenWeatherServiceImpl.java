@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.service.impl;
 
-import com.e4motion.challenge.api.dto.WeatherArea;
+import com.e4motion.challenge.api.constant.WeatherArea;
 import com.e4motion.challenge.api.dto.WeatherDto;
 import com.e4motion.challenge.api.service.OpenWeatherService;
 import com.e4motion.challenge.common.exception.customexception.OpenWeatherException;

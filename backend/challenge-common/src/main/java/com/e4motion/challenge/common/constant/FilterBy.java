@@ -1,4 +1,4 @@
-package com.e4motion.challenge.common.domain;
+package com.e4motion.challenge.common.constant;
 
 public enum FilterBy {
 

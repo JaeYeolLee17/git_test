@@ -1,6 +1,6 @@
-package com.e4motion.challenge.api.constant;
+package com.e4motion.challenge.common.constant;
 
-public class Lengths {
+public class FieldLengths {
 
     public static final int USERNAME = 32;
     public static final int PASSWORD = 128;

@@ -1,8 +1,8 @@
 package com.e4motion.challenge.api.domain;
 
-import com.e4motion.challenge.api.dto.TsiSignalInfo;
-import com.e4motion.challenge.api.dto.TsiSignalStatus;
-import com.e4motion.challenge.api.dto.TsiTimeReliability;
+import com.e4motion.challenge.api.constant.TsiSignalInfo;
+import com.e4motion.challenge.api.constant.TsiSignalStatus;
+import com.e4motion.challenge.api.constant.TsiTimeReliability;
 import lombok.*;
 
 import javax.persistence.*;

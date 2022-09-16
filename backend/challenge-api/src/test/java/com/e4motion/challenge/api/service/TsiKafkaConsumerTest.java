@@ -1,9 +1,9 @@
 package com.e4motion.challenge.api.service;
 
 import com.e4motion.challenge.api.dto.TsiHubDto;
-import com.e4motion.challenge.api.dto.TsiSignalInfo;
-import com.e4motion.challenge.api.dto.TsiSignalStatus;
-import com.e4motion.challenge.api.dto.TsiTimeReliability;
+import com.e4motion.challenge.api.constant.TsiSignalInfo;
+import com.e4motion.challenge.api.constant.TsiSignalStatus;
+import com.e4motion.challenge.api.constant.TsiTimeReliability;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

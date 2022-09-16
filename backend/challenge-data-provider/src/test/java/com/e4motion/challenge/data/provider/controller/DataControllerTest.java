@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import com.e4motion.challenge.common.domain.FilterBy;
+import com.e4motion.challenge.common.constant.FilterBy;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;

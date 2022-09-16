@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import com.e4motion.challenge.common.domain.FilterBy;
+import com.e4motion.challenge.common.constant.FilterBy;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.RegExpressions;
 import com.e4motion.challenge.data.provider.dto.DataListDto;

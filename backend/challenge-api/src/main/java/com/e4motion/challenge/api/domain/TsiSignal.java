@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_tsi_signal", uniqueConstraints = {@UniqueConstraint(columnNames = {"tsi_id", "info", "direction"})})
+@Table(name = "nt_tsi_signal", uniqueConstraints = @UniqueConstraint(columnNames = {"tsi_id", "info", "direction"}))
 public class TsiSignal extends BaseTimeEntity {
 
     @Id

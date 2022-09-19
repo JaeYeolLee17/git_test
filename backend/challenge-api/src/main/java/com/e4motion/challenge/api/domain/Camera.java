@@ -1,5 +1,6 @@
 package com.e4motion.challenge.api.domain;
 
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,10 +21,10 @@ public class Camera extends BaseTimeEntity {
     @Column(name = "camera_id")
     private Long cameraId;
 
-    @Column(name = "camera_no", length = 10, unique = true, nullable = false)
+    @Column(name = "camera_no", length = FieldLengths.CAMERA_NO, unique = true, nullable = false)
     private String cameraNo;
 
-    @Column(name = "password", length = 128, nullable = false)
+    @Column(name = "password", length = FieldLengths.PASSWORD, nullable = false)
     private String password;
 
     @ManyToOne

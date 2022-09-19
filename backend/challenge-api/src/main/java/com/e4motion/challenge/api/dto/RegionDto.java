@@ -30,7 +30,7 @@ public class RegionDto {
     @Valid
     private List<GpsDto> gps;
 
-    @Schema(description = "구역 정보 응답 시에만 포함")
+    @Schema(description = "구역 정보 응답 시에만 교차로 목록 포함함. 구역 정보 생성 및 수정 시 사용 안함.")
     private List<IntersectionDto> intersections;
 
 }

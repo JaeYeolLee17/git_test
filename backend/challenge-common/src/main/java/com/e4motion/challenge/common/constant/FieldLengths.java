@@ -11,4 +11,9 @@ public class FieldLengths {
     public static final int REGION_NO = 10;
     public static final int REGION_NAME = 32;
 
+    public static final int INTERSECTION_NO = 10;
+    public static final int INTERSECTION_NAME = 32;
+
+    public static final int CAMERA_NO = 10;
+
 }

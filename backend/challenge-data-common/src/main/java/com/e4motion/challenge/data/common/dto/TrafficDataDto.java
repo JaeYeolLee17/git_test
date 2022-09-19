@@ -38,6 +38,7 @@ public class TrafficDataDto {
 
     @NotNull
     @Size(min = MIN_LANE, max = MAX_LANE)
-    private @Valid List<LaneDataDto> ld;
+    @Valid
+    private List<LaneDataDto> ld;
 
 }

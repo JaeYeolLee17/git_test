@@ -7,6 +7,7 @@ import com.e4motion.challenge.api.domain.RegionGps;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -89,24 +91,13 @@ class RegionRepositoryTest {
 	}
 
 	@Test
-	void save_withDisorderRegionGps() {
+	void save_withDisorderedRegionGps() {
 
 		Region region = TestDataHelper.getRegion2();
 		List<RegionGps> gps = region.getGps();
-
-		List<RegionGps> disorderGps = new ArrayList<>();
-		disorderGps.add(gps.get(2));
-		disorderGps.add(gps.get(1));
-		disorderGps.add(gps.get(0));
-		region.setGps(disorderGps);
-
-		// check disordered
-		assertThat(gps.get(0).getLat()).isEqualTo(disorderGps.get(2).getLat());
-		assertThat(gps.get(0).getLng()).isEqualTo(disorderGps.get(2).getLng());
-		assertThat(gps.get(1).getLat()).isEqualTo(disorderGps.get(1).getLat());
-		assertThat(gps.get(1).getLng()).isEqualTo(disorderGps.get(1).getLng());
-		assertThat(gps.get(2).getLat()).isEqualTo(disorderGps.get(0).getLat());
-		assertThat(gps.get(2).getLng()).isEqualTo(disorderGps.get(0).getLng());
+		gps.get(0).setGpsOrder(2);
+		gps.get(1).setGpsOrder(1);
+		gps.get(2).setGpsOrder(0);
 
 		regionRepository.saveAndFlush(region);
 		entityManager.clear();
@@ -116,12 +107,31 @@ class RegionRepositoryTest {
 		assertThat(found.get().getGps().size()).isEqualTo(region.getGps().size());
 
 		// check ordered
-		assertThat(gps.get(0).getLat()).isEqualTo(found.get().getGps().get(0).getLat());
-		assertThat(gps.get(0).getLng()).isEqualTo(found.get().getGps().get(0).getLng());
+		assertThat(gps.get(2).getLat()).isEqualTo(found.get().getGps().get(0).getLat());
+		assertThat(gps.get(2).getLng()).isEqualTo(found.get().getGps().get(0).getLng());
 		assertThat(gps.get(1).getLat()).isEqualTo(found.get().getGps().get(1).getLat());
 		assertThat(gps.get(1).getLng()).isEqualTo(found.get().getGps().get(1).getLng());
-		assertThat(gps.get(2).getLat()).isEqualTo(found.get().getGps().get(2).getLat());
-		assertThat(gps.get(2).getLng()).isEqualTo(found.get().getGps().get(2).getLng());
+		assertThat(gps.get(0).getLat()).isEqualTo(found.get().getGps().get(2).getLat());
+		assertThat(gps.get(0).getLng()).isEqualTo(found.get().getGps().get(2).getLng());
+	}
+
+	@Test
+	void save_sameRegionGps() {
+
+		Region region = TestDataHelper.getRegion1();
+		region.getGps().get(1).setLat(region.getGps().get(0).getLat()); 	// first == second
+		region.getGps().get(1).setLng(region.getGps().get(0).getLng());
+
+		assertThrows(DataIntegrityViolationException.class, () -> regionRepository.saveAndFlush(region));
+	}
+
+	@Test
+	void save_sameRegionGpsOrder() {
+
+		Region region = TestDataHelper.getRegion1();
+		region.getGps().get(1).setGpsOrder(region.getGps().get(0).getGpsOrder()); 	// first == second
+
+		assertThrows(DataIntegrityViolationException.class, () -> regionRepository.saveAndFlush(region));
 	}
 
 	@Test

@@ -19,7 +19,7 @@ spring:
   jpa:
     database-platform: com.e4motion.challenge.common.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none                # none, create, update, create-drop
+      ddl-auto: create                # none, create, update, create-drop
     defer-datasource-initialization: true
     properties: 
       format_sql: true

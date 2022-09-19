@@ -11,7 +11,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_region_gps", uniqueConstraints = {@UniqueConstraint(columnNames = {"region_id", "lat", "lng"})})
+@Table(name = "nt_region_gps", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"region_id", "lat", "lng"}),
+        @UniqueConstraint(columnNames = {"region_id", "gps_order"})
+})
 public class RegionGps extends BaseTimeEntity {
 
     @Id

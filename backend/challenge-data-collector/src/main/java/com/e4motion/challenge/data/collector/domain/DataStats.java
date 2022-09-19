@@ -1,5 +1,6 @@
 package com.e4motion.challenge.data.collector.domain;
 
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "lt_traffic_data_m15", uniqueConstraints = {@UniqueConstraint(columnNames = {"t", "c"})})
+@Table(name = "lt_traffic_data_m15", uniqueConstraints = @UniqueConstraint(columnNames = {"t", "c"}))
 public class DataStats {
 
 	@Id
@@ -23,13 +24,13 @@ public class DataStats {
 	@Column(name = "t", nullable = false)
 	private LocalDateTime t;
 
-	@Column(name = "c", length = 10, nullable = false)
+	@Column(name = "c", length = FieldLengths.CAMERA_NO, nullable = false)
 	private String c;
 
-	@Column(name = "i", length = 10)
+	@Column(name = "i", length = FieldLengths.INTERSECTION_NO)
 	private String i;
 
-	@Column(name = "r", length = 10)
+	@Column(name = "r", length = FieldLengths.REGION_NO)
 	private String r;
 	
 	@Column(name = "p")

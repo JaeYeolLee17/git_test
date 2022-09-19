@@ -1,15 +1,12 @@
 package com.e4motion.challenge.api.controller;
 
-import com.e4motion.challenge.api.dto.UserCreateDto;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.service.UserService;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.security.SecurityHelper;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,9 +26,9 @@ public class UserController {
     @Operation(summary = "사용자 등록", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/user")
-    public Response create(@Valid @RequestBody UserCreateDto userCreateDto) throws Exception {
+    public Response create(@Valid @RequestBody UserDto userDto) throws Exception {
     	
-    	return new Response("user", userService.create(userCreateDto));
+    	return new Response("user", userService.create(userDto));
     }
 
     @Operation(summary = "사용자 수정", description = "접근 권한 : 최고관리자, 운영자, 사용자(자기 자신만)")
@@ -41,7 +38,16 @@ public class UserController {
 
         securityHelper.checkIfLoginUserForRoleUser(username);
 
+        preventUpdateDisabledOrAuthorityForRoleUser(userUpdateDto);
+
 		return new Response("user", userService.update(username, userUpdateDto));
+    }
+
+    private void preventUpdateDisabledOrAuthorityForRoleUser(UserUpdateDto userUpdateDto) {
+        if(AuthorityName.ROLE_USER.equals(securityHelper.getLoginRole())) {
+            userUpdateDto.setDisabled(null);
+            userUpdateDto.setAuthority(null);
+        }
     }
 
     @Operation(summary = "사용자 삭제", description = "접근 권한 : 최고관리자, 운영자")
@@ -55,7 +61,6 @@ public class UserController {
     }
 
     @Operation(summary = "사용자 조회", description = "접근 권한 : 최고관리자, 운영자, 사용자(자기 자신만)")
-    @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = UserDto.class)))
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
 	@GetMapping("/user/{username}")
     public Response get(@PathVariable String username) throws Exception {

@@ -37,7 +37,6 @@ public class UploadServiceImpl implements UploadService {
     private final RegionRepository regionRepository;
     private final LinkRepository linkRepository;
 
-
     @Transactional
     public void uploadCamera(MultipartFile file) throws IOException {
 

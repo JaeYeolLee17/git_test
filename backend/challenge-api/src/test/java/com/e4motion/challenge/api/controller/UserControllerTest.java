@@ -1,7 +1,6 @@
 package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.api.TestDataHelper;
-import com.e4motion.challenge.api.dto.UserCreateDto;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.service.UserService;
@@ -48,14 +47,14 @@ public class UserControllerTest {
 	@Test
 	public void createWithoutRole() throws Exception {
 
-		assertCreate(TestDataHelper.getUserCreateDto1(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
+		assertCreate(TestDataHelper.getUserDto1(), HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	public void createWithAdminRole() throws Exception {
 
-		UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
+		UserDto userCreateDto = TestDataHelper.getUserDto1();
 		UserDto userDto = TestDataHelper.getUserDto1();
 
 		doReturn(userDto).when(userService).create(any());
@@ -67,17 +66,17 @@ public class UserControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	public void createWithAdminRole_DuplicateUser() throws Exception {
 
-		UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 		doThrow(new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS)).when(userService).create(any());
 
-		assertCreate(userCreateDto, HttpStatus.CONFLICT, Response.FAIL, UserDuplicateException.CODE, UserDuplicateException.USERNAME_ALREADY_EXISTS);
+		assertCreate(userDto, HttpStatus.CONFLICT, Response.FAIL, UserDuplicateException.CODE, UserDuplicateException.USERNAME_ALREADY_EXISTS);
 	}
 
 	@Test
 	@WithMockUser(roles = "MANAGER")
 	public void createWithManagerRole() throws Exception {
 
-		UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
+		UserDto userCreateDto = TestDataHelper.getUserDto1();
 		UserDto userDto = TestDataHelper.getUserDto1();
 
 		doReturn(userDto).when(userService).create(any());
@@ -89,7 +88,7 @@ public class UserControllerTest {
 	@WithMockUser(roles = {"USER", "DATA", "CAMERA_ADMIN"})
 	public void createWithInaccessibleRoles() throws Exception {
 
-		assertCreate(TestDataHelper.getUserCreateDto1(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
+		assertCreate(TestDataHelper.getUserDto1(), HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 
 	@Test
@@ -283,13 +282,13 @@ public class UserControllerTest {
 		assertGetList(HttpStatus.FORBIDDEN, Response.FAIL, InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
 	}
 
-	private void assertCreate(UserCreateDto userCreateDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
+	private void assertCreate(UserDto userDto, HttpStatus expectedStatus, String expectedResult, String expectedCode, String expectedMessage) throws Exception {
 		
 		String uri = "/v2/user";
 	    
 	    mockMvc.perform(MockMvcRequestBuilders.post(uri)
 						.contentType(MediaType.APPLICATION_JSON)
-	    				.content(JsonHelper.toJson(userCreateDto)))
+	    				.content(JsonHelper.toJson(userDto)))
 				.andExpect(result -> {
 					MockHttpServletResponse response = result.getResponse();
 	    			assertThat(response.getStatus()).isEqualTo(expectedStatus.value());

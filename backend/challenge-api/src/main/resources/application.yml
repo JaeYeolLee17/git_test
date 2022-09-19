@@ -74,7 +74,6 @@ management:
     health:
       show-details: always
 
-# TODO: apply possible settings to SwaggerConfig
 springdoc:
   api-docs:
     enabled: true

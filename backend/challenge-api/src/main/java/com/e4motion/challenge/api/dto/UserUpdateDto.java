@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-@Schema(description = "사용자 수정 요청 DTO")
+@Schema(description = "사용자 수정 DTO")
 @Getter
 @Setter
 @ToString
@@ -45,6 +45,10 @@ public class UserUpdateDto {
     @Pattern(regexp = RegExpressions.emptyOrPhone)
     private String phone;
 
+    @Schema(description = "최고관리자, 운영자만 수정 허용")
+    private Boolean disabled;
+
+    @Schema(description = "최고관리자, 운영자만 수정 허용")
     private AuthorityName authority;
 
 }

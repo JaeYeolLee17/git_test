@@ -39,7 +39,7 @@ public class LinkServiceImpl implements LinkService {
         if (link.getEnd() != null) {
             link.setEnd(getIntersection(link.getEnd().getIntersectionNo()));
         }
-        link.setGps(getLinkGps(linkDto, link));
+        link.setGps(makeLinkGps(linkDto, link));
 
         return linkMapper.toLinkDto(linkRepository.save(link));
     }
@@ -62,7 +62,7 @@ public class LinkServiceImpl implements LinkService {
                         link.getGps().clear();
                         linkRepository.saveAndFlush(link);
 
-                        List<LinkGps> linkGps = getLinkGps(linkDto, link);
+                        List<LinkGps> linkGps = makeLinkGps(linkDto, link);
                         link.getGps().addAll(linkGps);
                     }
 
@@ -96,7 +96,7 @@ public class LinkServiceImpl implements LinkService {
                 .orElseThrow(() -> new IntersectionNotFoundException(IntersectionNotFoundException.INVALID_INTERSECTION_NO));
     }
 
-    private List<LinkGps> getLinkGps(LinkDto linkDto, Link link) {
+    private List<LinkGps> makeLinkGps(LinkDto linkDto, Link link) {
         if (linkDto.getGps() != null) {
             AtomicInteger order = new AtomicInteger();
             return linkDto.getGps().stream()

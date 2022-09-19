@@ -6,10 +6,10 @@ import com.e4motion.challenge.api.domain.QLink;
 import com.e4motion.challenge.api.domain.QLinkGps;
 import com.e4motion.challenge.api.dto.*;
 import com.e4motion.challenge.api.repository.DataStatsRepositoryCustom;
-import com.e4motion.challenge.common.domain.DailyGroupBy;
-import com.e4motion.challenge.common.domain.FilterBy;
-import com.e4motion.challenge.common.domain.GroupBy;
-import com.e4motion.challenge.common.domain.Period;
+import com.e4motion.challenge.common.constant.DailyGroupBy;
+import com.e4motion.challenge.common.constant.FilterBy;
+import com.e4motion.challenge.common.constant.GroupBy;
+import com.e4motion.challenge.common.constant.Period;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
@@ -400,7 +400,7 @@ public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
             projections = new Expression[] { dataStats.t.year(), dataStats.t.month(), dataStats.t.dayOfMonth() };
         } else if (Period.DAY_OF_WEEK.equals(period)) {
             projections = new Expression[] { dataStats.t.dayOfWeek() };
-        } else {
+        } else {    // WEEK_OF_YEAR
             projections = new Expression[] { dataStats.t.yearWeek() };
         }
 
@@ -461,7 +461,7 @@ public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
             groupBys = new Expression[] { dataStats.t.year(), dataStats.t.month(), dataStats.t.dayOfMonth() };
         } else if (Period.DAY_OF_WEEK.equals(period)) {
             groupBys = new Expression[] { dataStats.t.dayOfWeek() };
-        } else {
+        } else {    // WEEK_OF_YEAR
             groupBys = new Expression[] { dataStats.t.yearWeek() };
         }
 
@@ -485,7 +485,7 @@ public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
             orderBys = new OrderSpecifier[] { dataStats.t.year().asc(), dataStats.t.month().asc(), dataStats.t.dayOfMonth().asc() };
         } else if (Period.DAY_OF_WEEK.equals(period)) {
             orderBys = new OrderSpecifier[] { dataStats.t.dayOfWeek().asc() };
-        } else {
+        } else {    // WEEK_OF_YEAR
             orderBys = new OrderSpecifier[] { dataStats.t.yearWeek().asc() };
         }
 

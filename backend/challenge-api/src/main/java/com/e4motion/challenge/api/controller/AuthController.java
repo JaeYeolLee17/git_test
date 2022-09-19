@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e4motion.challenge.api.dto.LoginDto;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.security.CustomUser;
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.security.JwtTokenProvider;
 import com.e4motion.challenge.common.response.Response;
 

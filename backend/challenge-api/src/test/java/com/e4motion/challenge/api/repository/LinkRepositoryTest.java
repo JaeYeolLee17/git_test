@@ -1,13 +1,11 @@
 package com.e4motion.challenge.api.repository;
 
 import com.e4motion.challenge.api.TestDataHelper;
-import com.e4motion.challenge.api.domain.Intersection;
-import com.e4motion.challenge.api.domain.Link;
-import com.e4motion.challenge.api.domain.LinkGps;
-import com.e4motion.challenge.api.domain.Region;
+import com.e4motion.challenge.api.domain.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -107,6 +106,67 @@ class LinkRepositoryTest {
 
 		List<LinkGps> linkGps = linkGpsRepository.findAllByLink_LinkIdOrderByGpsOrder(link.getLinkId());
 		assertThat(linkGps.size()).isEqualTo(0);
+	}
+
+	@Test
+	void save_withDisorderedLinkGps() {
+
+		saveRegion1_2();
+		saveIntersection1_2();
+
+		Link link = TestDataHelper.getLink1();
+		link.setStart(intersection1);
+		link.setEnd(intersection2);
+		List<LinkGps> gps = link.getGps();
+		gps.get(0).setGpsOrder(2);
+		gps.get(1).setGpsOrder(1);
+		gps.get(2).setGpsOrder(0);
+
+		linkRepository.saveAndFlush(link);
+		entityManager.clear();
+
+		Optional<Link> found = linkRepository.findByStart_IntersectionNoAndEnd_IntersectionNo(link.getStart().getIntersectionNo(), link.getEnd().getIntersectionNo());
+		assertThat(found.isPresent()).isTrue();
+		assertThat(found.get().getGps().size()).isEqualTo(link.getGps().size());
+
+		// check ordered
+		assertThat(gps.get(2).getLat()).isEqualTo(found.get().getGps().get(0).getLat());
+		assertThat(gps.get(2).getLng()).isEqualTo(found.get().getGps().get(0).getLng());
+		assertThat(gps.get(1).getLat()).isEqualTo(found.get().getGps().get(1).getLat());
+		assertThat(gps.get(1).getLng()).isEqualTo(found.get().getGps().get(1).getLng());
+		assertThat(gps.get(0).getLat()).isEqualTo(found.get().getGps().get(2).getLat());
+		assertThat(gps.get(0).getLng()).isEqualTo(found.get().getGps().get(2).getLng());
+	}
+
+	@Test
+	void save_sameLinkGps() {
+
+		saveRegion1_2();
+		saveIntersection1_2();
+
+		Link link = TestDataHelper.getLink1();
+		link.setStart(intersection1);
+		link.setEnd(intersection2);
+
+		link.getGps().get(1).setLat(link.getGps().get(0).getLat()); 	// first == second
+		link.getGps().get(1).setLng(link.getGps().get(0).getLng());
+
+		assertThrows(DataIntegrityViolationException.class, () -> linkRepository.saveAndFlush(link));
+	}
+
+	@Test
+	void save_sameLinkGpsOrder() {
+
+		saveRegion1_2();
+		saveIntersection1_2();
+
+		Link link = TestDataHelper.getLink1();
+		link.setStart(intersection1);
+		link.setEnd(intersection2);
+
+		link.getGps().get(1).setGpsOrder(link.getGps().get(0).getGpsOrder()); 	// first == second
+
+		assertThrows(DataIntegrityViolationException.class, () -> linkRepository.saveAndFlush(link));
 	}
 
 	@Test

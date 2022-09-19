@@ -1,5 +1,6 @@
 package com.e4motion.challenge.data.provider.domain;
 
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,19 +21,19 @@ public class User extends BaseTimeEntity {
 	@Column(name = "user_id")
 	private Long userId;
 
-	@Column(name = "username", length = 128, unique = true, nullable = false)
+	@Column(name = "username", length = FieldLengths.USERNAME, unique = true, nullable = false)
 	private String username;
 
-	@Column(name = "password", length = 128, nullable = false)
+	@Column(name = "password", length = FieldLengths.PASSWORD, nullable = false)
 	private String password;
 
-	@Column(name = "nickname", length = 20)
+	@Column(name = "nickname", length = FieldLengths.NICKNAME)
 	private String nickname;
 
-	@Column(name = "email", length = 128)
+	@Column(name = "email", length = FieldLengths.EMAIL)
 	private String email;
 
-	@Column(name = "phone", length = 20)
+	@Column(name = "phone", length = FieldLengths.PHONE)
 	private String phone;
 
 	@Column(name = "disabled")

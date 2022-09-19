@@ -1,5 +1,6 @@
 package com.e4motion.challenge.api.domain;
 
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,10 +21,10 @@ public class Intersection extends BaseTimeEntity {
     @Column(name = "intersection_id")
     private Long intersectionId;
 
-    @Column(name = "intersection_no", length = 10, unique = true, nullable = false)
+    @Column(name = "intersection_no", length = FieldLengths.INTERSECTION_NO, unique = true, nullable = false)
     private String intersectionNo;
 
-    @Column(name = "intersection_name", length = 32)
+    @Column(name = "intersection_name", length = FieldLengths.INTERSECTION_NAME)
     private String intersectionName;
 
     @Column(name = "lat")

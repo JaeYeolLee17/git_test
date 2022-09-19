@@ -3,7 +3,6 @@ package com.e4motion.challenge.api.service;
 import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.domain.User;
-import com.e4motion.challenge.api.dto.UserCreateDto;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.mapper.UserMapper;
@@ -56,35 +55,35 @@ public class UserServiceTest {
 	public void create() throws Exception {
 		
 		// given
-		UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 
-		userCreateDto.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
-		User user = userMapper.toUser(userCreateDto);
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		User user = userMapper.toUser(userDto);
 		
-		doReturn(Optional.empty()).when(userRepository).findByUsername(userCreateDto.getUsername());
+		doReturn(Optional.empty()).when(userRepository).findByUsername(userDto.getUsername());
 		doReturn(user).when(userRepository).save(any());
 		
 		// when
-		UserDto createdUserDto = userService.create(userCreateDto);
+		UserDto createdUserDto = userService.create(userDto);
 		
 		// then
 		assertThat(createdUserDto).isNotNull();
-		assertEquals(createdUserDto, userCreateDto);
+		assertEquals(createdUserDto, userDto);
     }
 	
 	@Test
 	public void createDuplicateUser() throws Exception {
 		
 		// given
-		UserCreateDto userCreateDto = TestDataHelper.getUserCreateDto1();
+		UserDto userDto = TestDataHelper.getUserDto1();
 
-		userCreateDto.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
-		User user = userMapper.toUser(userCreateDto);
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		User user = userMapper.toUser(userDto);
 
-		doReturn(Optional.of(user)).when(userRepository).findByUsername(userCreateDto.getUsername());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 
 		// when
-		Exception ex = assertThrows(UserDuplicateException.class, () -> userService.create(userCreateDto));
+		Exception ex = assertThrows(UserDuplicateException.class, () -> userService.create(userDto));
 
 		// then
 		assertThat(ex.getMessage()).isEqualTo(UserDuplicateException.USERNAME_ALREADY_EXISTS);
@@ -95,15 +94,8 @@ public class UserServiceTest {
 		
 		// given
 		UserDto userDto = TestDataHelper.getUserDto2();
-		User user = User.builder()
-				.userId(2L)
-				.username(userDto.getUsername())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.nickname(userDto.getNickname())
-				.email(userDto.getEmail())
-				.phone(userDto.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-				.build();
+		User user = TestDataHelper.getUser2();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
 		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 		User updatedUser = User.builder()
@@ -113,6 +105,7 @@ public class UserServiceTest {
 				.nickname(userUpdateDto.getNickname())
 				.email(userUpdateDto.getEmail())
 				.phone(userUpdateDto.getPhone())
+				.disabled(userUpdateDto.getDisabled())
 				.authorities(Collections.singleton(new Authority(userUpdateDto.getAuthority())))
 				.build();
 		
@@ -132,15 +125,8 @@ public class UserServiceTest {
 
 		// given
 		UserDto userDto = TestDataHelper.getUserDto2();
-		User user = User.builder()
-				.userId(2L)
-				.username(userDto.getUsername())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.nickname(userDto.getNickname())
-				.email(userDto.getEmail())
-				.phone(userDto.getPhone())
-				.authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-				.build();
+		User user = TestDataHelper.getUser2();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
 		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
 		userUpdateDto.setOldPassword("wrong old password...");
@@ -189,16 +175,8 @@ public class UserServiceTest {
 		
 		// given
 		UserDto userDto = TestDataHelper.getUserDto1();
-		User user = User.builder()
-				.userId(1L)
-				.username(userDto.getUsername())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.nickname(userDto.getNickname())
-				.email(userDto.getEmail())
-				.phone(userDto.getPhone())
-				.disabled(userDto.getDisabled())
-				.authorities(Collections.singleton(new Authority(userDto.getAuthority())))
-				.build();
+		User user = TestDataHelper.getUser1();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		
 		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 		
@@ -214,28 +192,12 @@ public class UserServiceTest {
 		
 		// given
 		UserDto userDto1 = TestDataHelper.getUserDto1();
-		User user1 = User.builder()
-				.userId(1L)
-				.username(userDto1.getUsername())
-				.password(passwordEncoder.encode(userDto1.getPassword()))
-				.nickname(userDto1.getNickname())
-				.email(userDto1.getEmail())
-				.phone(userDto1.getPhone())
-				.disabled(userDto1.getDisabled())
-				.authorities(Collections.singleton(new Authority(userDto1.getAuthority())))
-				.build();
+		User user1 = TestDataHelper.getUser1();
+		user1.setPassword(passwordEncoder.encode(userDto1.getPassword()));
 
 		UserDto userDto2 = TestDataHelper.getUserDto2();
-		User user2 = User.builder()
-				.userId(1L)
-				.username(userDto2.getUsername())
-				.password(passwordEncoder.encode(userDto2.getPassword()))
-				.nickname(userDto2.getNickname())
-				.email(userDto2.getEmail())
-				.phone(userDto2.getPhone())
-				.disabled(userDto2.getDisabled())
-				.authorities(Collections.singleton(new Authority(userDto2.getAuthority())))
-				.build();
+		User user2 = TestDataHelper.getUser2();
+		user2.setPassword(passwordEncoder.encode(userDto2.getPassword()));
 
 		List<UserDto> userDtos = new ArrayList<>();
 		userDtos.add(userDto1);
@@ -257,13 +219,13 @@ public class UserServiceTest {
 		assertEquals(foundUserDtos.get(1), userDtos.get(1));
     }
 
-	private void assertEquals(UserDto userDto, UserCreateDto userCreateDto) {
+	private void assertEquals(UserDto userDto1, UserDto userDto2) {
 
-		assertThat(userDto.getUsername()).isEqualTo(userCreateDto.getUsername());
-		assertThat(userDto.getNickname()).isEqualTo(userCreateDto.getNickname());
-		assertThat(userDto.getEmail()).isEqualTo(userCreateDto.getEmail());
-		assertThat(userDto.getPhone()).isEqualTo(userCreateDto.getPhone());
-		assertThat(userDto.getAuthority()).isEqualTo(userCreateDto.getAuthority());
+		assertThat(userDto1.getUsername()).isEqualTo(userDto2.getUsername());
+		assertThat(userDto1.getNickname()).isEqualTo(userDto2.getNickname());
+		assertThat(userDto1.getEmail()).isEqualTo(userDto2.getEmail());
+		assertThat(userDto1.getPhone()).isEqualTo(userDto2.getPhone());
+		assertThat(userDto1.getAuthority()).isEqualTo(userDto2.getAuthority());
 	}
 
 	private void assertEquals(UserDto userDto, UserUpdateDto userUpdateDto) {
@@ -273,15 +235,5 @@ public class UserServiceTest {
 		assertThat(userDto.getEmail()).isEqualTo(userUpdateDto.getEmail());
 		assertThat(userDto.getPhone()).isEqualTo(userUpdateDto.getPhone());
 		assertThat(userDto.getAuthority()).isEqualTo(userUpdateDto.getAuthority());
-	}
-
-	private void assertEquals(UserDto userDto1, UserDto userDto2) {
-
-		assertThat(userDto1.getUsername()).isEqualTo(userDto2.getUsername());
-		assertThat(userDto1.getNickname()).isEqualTo(userDto2.getNickname());
-		assertThat(userDto1.getEmail()).isEqualTo(userDto2.getEmail());
-		assertThat(userDto1.getPhone()).isEqualTo(userDto2.getPhone());
-		assertThat(userDto1.getDisabled()).isEqualTo(userDto2.getDisabled());
-		assertThat(userDto1.getAuthority()).isEqualTo(userDto2.getAuthority());
 	}
 }

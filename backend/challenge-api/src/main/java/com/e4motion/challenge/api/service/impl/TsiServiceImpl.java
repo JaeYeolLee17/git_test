@@ -12,7 +12,7 @@ import com.e4motion.challenge.api.repository.TsiNodeRepository;
 import com.e4motion.challenge.api.repository.TsiRepository;
 import com.e4motion.challenge.api.repository.TsiSignalRepository;
 import com.e4motion.challenge.api.service.TsiService;
-import com.e4motion.challenge.common.domain.TsiFilterBy;
+import com.e4motion.challenge.common.constant.TsiFilterBy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

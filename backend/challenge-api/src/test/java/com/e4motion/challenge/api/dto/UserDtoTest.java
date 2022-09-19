@@ -25,7 +25,7 @@ import static org.mockito.Mockito.doReturn;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-class UserCreateDtoTest {
+class UserDtoTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -50,6 +50,8 @@ class UserCreateDtoTest {
 
         UserDto userDto = TestDataHelper.getUserDto1();
 
+        doReturn(userDto).when(userService).create(any());
+
         userDto.setUsername(null);
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
@@ -58,6 +60,12 @@ class UserCreateDtoTest {
 
         userDto.setUsername(" ");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userDto.setUsername("Too long username exceed length 32");  // length 34
+        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userDto.setUsername("Long username length 32 12345678");    // length 32
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -65,6 +73,8 @@ class UserCreateDtoTest {
     public void validatePassword() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
+
+        doReturn(userDto).when(userService).create(any());
 
         userDto.setPassword(null);
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
@@ -86,6 +96,14 @@ class UserCreateDtoTest {
 
         userDto.setPassword("cha112!");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        // length 129
+        userDto.setPassword("user12!@1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901");
+        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        // length 128
+        userDto.setPassword("user12!@123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -103,6 +121,12 @@ class UserCreateDtoTest {
         assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
 
         userDto.setNickname(" ");
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+
+        userDto.setNickname("Long nickname exceed length 32---");   // length 33
+        assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userDto.setNickname("Long nickname length 32 12345678");    // length 32
         assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
     }
 
@@ -123,14 +147,22 @@ class UserCreateDtoTest {
         userDto.setEmail(" ");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername("user1@email...");
+        userDto.setEmail("user1@email...");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername("user1email.com");
+        userDto.setEmail("user1email.com");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setUsername("user1@emailcom");
+        userDto.setEmail("user1@emailcom");    // This is ok!!
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+
+        // length 129
+        userDto.setEmail("user1-that-has-too-long-email-0123456789-0123456789-0123456789@email-domain-that-has-too-long-email-0123456789-0123456789-012.com");
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        // length 128
+        userDto.setEmail("user1-that-has-too-long-email-0123456789-0123456789-0123456789@email-domain-that-has-too-long-email-0123456789-0123456789-01.com");
+        assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test

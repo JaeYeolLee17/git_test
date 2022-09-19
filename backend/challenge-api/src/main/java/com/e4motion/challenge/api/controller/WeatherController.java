@@ -1,6 +1,6 @@
 package com.e4motion.challenge.api.controller;
 
-import com.e4motion.challenge.api.dto.WeatherArea;
+import com.e4motion.challenge.api.constant.WeatherArea;
 import com.e4motion.challenge.api.service.OpenWeatherService;
 import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;

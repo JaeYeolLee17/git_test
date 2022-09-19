@@ -1,9 +1,9 @@
 package com.e4motion.challenge.api.service.impl;
 
 import com.e4motion.challenge.api.dto.TsiBrokerDto;
-import com.e4motion.challenge.api.dto.TsiBrokerResponse;
+import com.e4motion.challenge.api.dto.TsiBrokerResponseDto;
 import com.e4motion.challenge.api.dto.TsiNodeDto;
-import com.e4motion.challenge.api.dto.TsiNodeResponse;
+import com.e4motion.challenge.api.dto.TsiNodeResponseDto;
 import com.e4motion.challenge.api.service.TsiHubService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +38,10 @@ public class TsiHubServiceImpl implements TsiHubService {
 
         List<TsiNodeDto> nodeDtos = null;
         try {
-            ResponseEntity<TsiNodeResponse> entity = restTemplate.exchange(nodeInfoUrl + apiToken,
-                    HttpMethod.POST, null, TsiNodeResponse.class);
+            ResponseEntity<TsiNodeResponseDto> entity = restTemplate.exchange(nodeInfoUrl + apiToken,
+                    HttpMethod.POST, null, TsiNodeResponseDto.class);
             if (entity.getStatusCode() == HttpStatus.OK) {
-                TsiNodeResponse response = entity.getBody();
+                TsiNodeResponseDto response = entity.getBody();
                 if (RESULT_SUCCESS.equals(response.getResultCode())) {
                     log.debug(response.getResultData().toString());
                     nodeDtos = response.getResultData();
@@ -60,10 +60,10 @@ public class TsiHubServiceImpl implements TsiHubService {
 
         TsiBrokerDto brokerDto = null;
         try {
-            ResponseEntity<TsiBrokerResponse> entity = restTemplate.exchange(brokerInfoUrl + apiToken,
-                    HttpMethod.POST, null, TsiBrokerResponse.class);
+            ResponseEntity<TsiBrokerResponseDto> entity = restTemplate.exchange(brokerInfoUrl + apiToken,
+                    HttpMethod.POST, null, TsiBrokerResponseDto.class);
             if (entity.getStatusCode() == HttpStatus.OK) {
-                TsiBrokerResponse response = entity.getBody();
+                TsiBrokerResponseDto response = entity.getBody();
                 if (RESULT_SUCCESS.equals(response.getResultCode())) {
                     log.debug(response.getResultData().toString());
                     brokerDto = response.getResultData();

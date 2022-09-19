@@ -1,8 +1,8 @@
 package com.e4motion.challenge.api.domain;
 
-import com.e4motion.challenge.api.dto.TsiSignalInfo;
-import com.e4motion.challenge.api.dto.TsiSignalStatus;
-import com.e4motion.challenge.api.dto.TsiTimeReliability;
+import com.e4motion.challenge.api.constant.TsiSignalInfo;
+import com.e4motion.challenge.api.constant.TsiSignalStatus;
+import com.e4motion.challenge.api.constant.TsiTimeReliability;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_tsi_signal", uniqueConstraints = {@UniqueConstraint(columnNames = {"tsi_id", "info", "direction"})})
+@Table(name = "nt_tsi_signal", uniqueConstraints = @UniqueConstraint(columnNames = {"tsi_id", "info", "direction"}))
 public class TsiSignal extends BaseTimeEntity {
 
     @Id

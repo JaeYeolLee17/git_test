@@ -2,12 +2,14 @@ package com.e4motion.challenge.data.collector.dto;
 
 import com.e4motion.challenge.common.utils.RegExpressions;
 import com.e4motion.challenge.data.common.dto.TrafficDataDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
+@Schema(description = "카메라 데이터 DTO")
 @Getter
 @Setter
 @ToString
@@ -32,6 +34,7 @@ public class CameraDataDto {
 
     @NotNull
     @Size(min = 1)
-    private @Valid List<TrafficDataDto> td;
+    @Valid
+    private List<TrafficDataDto> td;
 
 }

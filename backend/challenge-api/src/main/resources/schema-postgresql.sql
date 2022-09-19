@@ -103,7 +103,8 @@ CREATE TABLE public.nt_region_gps
     created_date timestamp without time zone,
     modified_date timestamp without time zone,
     CONSTRAINT nt_region_gps_pkey PRIMARY KEY (region_gps_id),
-    CONSTRAINT ukfi9a59s3sjqqwlywhw3mt8mdj UNIQUE (region_id, lat, lng),
+    CONSTRAINT ukqd0p67unwg59hqil4b0tfrj43 UNIQUE (region_id, lat, lng),
+    CONSTRAINT ukc3btbe07ekth4xaa2g3ey6no4 UNIQUE (region_id, gps_order),
     CONSTRAINT fkqanwdwnfx1ijtedyux6xjd84a FOREIGN KEY (region_id)
         REFERENCES public.nt_region (region_id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -248,7 +249,8 @@ CREATE TABLE public.nt_link_gps
     created_date timestamp without time zone,
     modified_date timestamp without time zone,
     CONSTRAINT nt_link_gps_pkey PRIMARY KEY (link_gps_id),
-    CONSTRAINT ukj5asivtra90oxw4tc2hkhv4w0 UNIQUE (link_id, lat, lng),
+    CONSTRAINT ukmv4041go3prl4c6vgpdyfh6wl UNIQUE (link_id, lat, lng),
+    CONSTRAINT ukrpl5qfbajac7t9l7fmrth94ub UNIQUE (link_id, gps_order),
     CONSTRAINT fk141vf5mygaaj07tjbyurbohu5 FOREIGN KEY (link_id)
         REFERENCES public.nt_link (link_id) MATCH SIMPLE
         ON UPDATE NO ACTION

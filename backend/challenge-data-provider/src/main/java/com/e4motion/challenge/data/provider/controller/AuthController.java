@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e4motion.challenge.data.provider.dto.LoginDto;
 import com.e4motion.challenge.data.provider.dto.UserDto;
 import com.e4motion.challenge.data.provider.security.CustomUser;
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.security.JwtTokenProvider;
 import com.e4motion.challenge.common.response.Response;
 
@@ -57,7 +57,6 @@ public class AuthController {
                 .nickname(userDetails.getNickname())
                 .email(userDetails.getEmail())
                 .phone(userDetails.getPhone())
-                .enabled(userDetails.isEnabled())
                 .authority(authorities.isEmpty() ? null : authorities.iterator().next())
                 .build();
 

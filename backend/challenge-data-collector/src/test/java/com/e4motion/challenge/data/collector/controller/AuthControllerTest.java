@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.collector.controller;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.data.collector.HBaseMockTest;
 import com.e4motion.challenge.data.collector.dto.CameraLoginDto;
 import com.e4motion.challenge.data.collector.security.CustomUser;

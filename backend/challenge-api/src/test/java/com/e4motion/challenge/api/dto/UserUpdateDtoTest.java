@@ -69,6 +69,12 @@ class UserUpdateDtoTest {
 
         userUpdateDto.setUsername(" ");
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setUsername("Too long username over length 32-");     // length 33
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setUsername("Long username length 32 12345678");      // length 32
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -116,6 +122,14 @@ class UserUpdateDtoTest {
 
         userUpdateDto.setNewPassword("cha112!");
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        // length 129
+        userUpdateDto.setNewPassword("user12!@1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901");
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        // length 128
+        userUpdateDto.setNewPassword("user12!@123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -137,6 +151,11 @@ class UserUpdateDtoTest {
         userUpdateDto.setNickname(" ");
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
+        userUpdateDto.setNickname("Long nickname exceed length 32---");     // length 33
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        userUpdateDto.setNickname("Long nickname length 32 12345678");      // length 32
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test
@@ -166,6 +185,14 @@ class UserUpdateDtoTest {
 
         userUpdateDto.setUsername("user1@emailcom");
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        // length 129
+        userUpdateDto.setEmail("user1-that-has-too-long-email-0123456789-0123456789-0123456789@email-domain-that-has-too-long-email-0123456789-0123456789-012.com");
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
+
+        // length 128
+        userUpdateDto.setEmail("user1-that-has-too-long-email-0123456789-0123456789-0123456789@email-domain-that-has-too-long-email-0123456789-0123456789-01.com");
+        assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
 
     @Test

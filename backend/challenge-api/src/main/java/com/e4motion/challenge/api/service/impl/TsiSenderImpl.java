@@ -5,7 +5,7 @@ import com.e4motion.challenge.api.dto.TsiDto;
 import com.e4motion.challenge.api.repository.IntersectionRepository;
 import com.e4motion.challenge.api.repository.TsiRepository;
 import com.e4motion.challenge.api.service.TsiSender;
-import com.e4motion.challenge.common.domain.TsiFilterBy;
+import com.e4motion.challenge.common.constant.TsiFilterBy;
 import com.e4motion.challenge.common.exception.customexception.IntersectionNotFoundException;
 import com.e4motion.challenge.common.security.SecurityHelper;
 import com.e4motion.challenge.common.utils.DateTimeHelper;

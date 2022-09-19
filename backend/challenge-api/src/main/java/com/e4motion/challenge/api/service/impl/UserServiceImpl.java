@@ -1,7 +1,6 @@
 package com.e4motion.challenge.api.service.impl;
 
 import com.e4motion.challenge.api.domain.Authority;
-import com.e4motion.challenge.api.dto.UserCreateDto;
 import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
 import com.e4motion.challenge.api.mapper.UserMapper;
@@ -29,16 +28,16 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     
     @Transactional
-    public UserDto create(UserCreateDto userCreateDto) {
+    public UserDto create(UserDto userDto) {
 
-    	userRepository.findByUsername(userCreateDto.getUsername())
+    	userRepository.findByUsername(userDto.getUsername())
 				.ifPresent(user -> {
 					throw new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS);
 				});
 
-		userCreateDto.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        return userMapper.toUserDto(userRepository.save(userMapper.toUser(userCreateDto)));
+        return userMapper.toUserDto(userRepository.save(userMapper.toUser(userDto)));
     }
     
     @Transactional
@@ -67,6 +66,10 @@ public class UserServiceImpl implements UserService {
 
 					if (userUpdateDto.getPhone() != null) {
 						user.setPhone(userUpdateDto.getPhone());
+					}
+
+					if (userUpdateDto.getDisabled() != null) {
+						user.setDisabled(userUpdateDto.getDisabled());
 					}
 
 					if (userUpdateDto.getAuthority() != null) {

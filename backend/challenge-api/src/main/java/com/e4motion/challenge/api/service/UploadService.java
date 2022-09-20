@@ -13,5 +13,7 @@ public interface UploadService {
 
     void uploadRegion(MultipartFile file) throws IOException, ParseException;
 
+    void uploadIntersection(MultipartFile file) throws IOException, ParseException;
+
     void uploadLink(MultipartFile file) throws IOException, ParseException;
 }

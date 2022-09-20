@@ -49,32 +49,58 @@ public class UploadServiceImpl implements UploadService {
 
         String password = passwordEncoder.encode("camera12!@");
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Camera> cameras = new ArrayList<>();
+        Camera camera = new Camera();
 
         for (CSVRecord record : records) {
 
-            Camera camera = Camera.builder()
-                    .cameraNo(getString(record, CameraHeaders.camera_no))
-                    .password(password)
-                    .intersection(getIntersection(getString(record, CameraHeaders.intersection_no)))
-                    .direction(getIntersection(getString(record, CameraHeaders.direction_no)))
-                    .lat(getDouble(record, CameraHeaders.lat))
-                    .lng(getDouble(record, CameraHeaders.lng))
-                    .distance(getInteger(record, CameraHeaders.distance))
-                    .rtspUrl(getString(record, CameraHeaders.rtsp_url))
-                    .rtspId(getString(record, CameraHeaders.rtsp_id))
-                    .rtspPassword(getString(record, CameraHeaders.rtsp_password))
-                    .serverUrl(getString(record, CameraHeaders.server_url))
-                    .sendCycle(getInteger(record, CameraHeaders.send_cycle))
-                    .collectCycle(getInteger(record, CameraHeaders.collect_cycle))
-                    .smallWidth(getInteger(record, CameraHeaders.s_width))
-                    .smallHeight(getInteger(record, CameraHeaders.s_height))
-                    .largeWidth(getInteger(record, CameraHeaders.l_width))
-                    .largeHeight(getInteger(record, CameraHeaders.l_height))
-                    .degree(getInteger(record, CameraHeaders.degree))
-                    .settingsUpdated(true)
-                    .lastDataTime(null)
-                    .build();
+            Optional<Camera> savedCamera = cameraRepository.findByCameraNo(getString(record, CameraHeaders.camera_no));
+
+            if (savedCamera.isPresent()) {
+                camera = savedCamera.get();
+                camera.setCameraNo(getString(record, CameraHeaders.camera_no));
+                camera.setPassword(password);
+                camera.setIntersection(getIntersection(getString(record, CameraHeaders.intersection_no)));
+                camera.setDirection(getIntersection(getString(record, CameraHeaders.direction_no)));
+                camera.setLat(getDouble(record, CameraHeaders.lat));
+                camera.setLng(getDouble(record, CameraHeaders.lng));
+                camera.setDistance(getInteger(record, CameraHeaders.distance));
+                camera.setRtspUrl(getString(record, CameraHeaders.rtsp_url));
+                camera.setRtspId(getString(record, CameraHeaders.rtsp_id));
+                camera.setRtspPassword(getString(record, CameraHeaders.rtsp_password));
+                camera.setServerUrl(getString(record, CameraHeaders.server_url));
+                camera.setSendCycle(getInteger(record, CameraHeaders.send_cycle));
+                camera.setCollectCycle(getInteger(record, CameraHeaders.collect_cycle));
+                camera.setSmallWidth(getInteger(record, CameraHeaders.s_width));
+                camera.setSmallHeight(getInteger(record, CameraHeaders.s_height));
+                camera.setLargeWidth(getInteger(record, CameraHeaders.l_width));
+                camera.setLargeHeight(getInteger(record, CameraHeaders.l_height));
+                camera.setDegree(getInteger(record, CameraHeaders.degree));
+                camera.setSettingsUpdated(true);
+                camera.setLastDataTime(null);
+            } else {
+                camera = Camera.builder()
+                        .cameraNo(getString(record, CameraHeaders.camera_no))
+                        .password(password)
+                        .intersection(getIntersection(getString(record, CameraHeaders.intersection_no)))
+                        .direction(getIntersection(getString(record, CameraHeaders.direction_no)))
+                        .lat(getDouble(record, CameraHeaders.lat))
+                        .lng(getDouble(record, CameraHeaders.lng))
+                        .distance(getInteger(record, CameraHeaders.distance))
+                        .rtspUrl(getString(record, CameraHeaders.rtsp_url))
+                        .rtspId(getString(record, CameraHeaders.rtsp_id))
+                        .rtspPassword(getString(record, CameraHeaders.rtsp_password))
+                        .serverUrl(getString(record, CameraHeaders.server_url))
+                        .sendCycle(getInteger(record, CameraHeaders.send_cycle))
+                        .collectCycle(getInteger(record, CameraHeaders.collect_cycle))
+                        .smallWidth(getInteger(record, CameraHeaders.s_width))
+                        .smallHeight(getInteger(record, CameraHeaders.s_height))
+                        .largeWidth(getInteger(record, CameraHeaders.l_width))
+                        .largeHeight(getInteger(record, CameraHeaders.l_height))
+                        .degree(getInteger(record, CameraHeaders.degree))
+                        .settingsUpdated(true)
+                        .lastDataTime(null)
+                        .build();
+            }
 
             String lane = null;
             String l = getString(record, CameraHeaders.lane);
@@ -97,10 +123,8 @@ public class UploadServiceImpl implements UploadService {
                     .direction(direction)
                     .build());
 
-            cameras.add(camera);
+            cameraRepository.save(camera);
         }
-
-        cameraRepository.saveAll(cameras);
     }
 
     @Transactional
@@ -163,7 +187,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Transactional
-    public void uploadRegion(MultipartFile file) throws IOException, ParseException {
+    public void uploadRegion(MultipartFile file) throws IOException {
 
         Iterable<CSVRecord> records = parseCsv(file, RegionHeaders.class);
         if (records == null) {
@@ -223,7 +247,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Transactional
-    public void uploadIntersection(MultipartFile file) throws IOException, ParseException {
+    public void uploadIntersection(MultipartFile file) throws IOException {
 
         Iterable<CSVRecord> records = parseCsv(file, IntersectionHeaders.class);
         if (records == null) {
@@ -238,7 +262,7 @@ public class UploadServiceImpl implements UploadService {
             Optional<Intersection> savedIntersection =
                     intersectionRepository.findByIntersectionNo(getString(record, IntersectionHeaders.intersection_no));
 
-            if(savedIntersection.isPresent()) {
+            if (savedIntersection.isPresent()) {
                 intersection = savedIntersection.get();
                 intersection.setIntersectionNo(getString(record, IntersectionHeaders.intersection_no));
                 intersection.setIntersectionName(getString(record, IntersectionHeaders.intersection_name));
@@ -264,7 +288,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Transactional
-    public void uploadLink(MultipartFile file) throws IOException, ParseException {
+    public void uploadLink(MultipartFile file) throws IOException {
 
         Iterable<CSVRecord> records = parseCsv(file, LinkHeaders.class);
         if (records == null) {
@@ -401,29 +425,27 @@ public class UploadServiceImpl implements UploadService {
 
     private enum CameraHeaders {
         camera_no,
+        password,
         intersection_no,
+        direction_no,
         lat,
         lng,
-        direction_no,
+        distance,
         rtsp_url,
-        server_url,
-        collect_cycle,
-        password,
         rtsp_id,
         rtsp_password,
+        server_url,
         send_cycle,
-        distance,
-        settings_updated,
-        last_data_time,
+        collect_cycle,
         s_width,
         s_height,
         l_width,
         l_height,
         degree,
         start_line,
+        lane,
         uturn,
         crosswalk,
-        lane,
         direction
     }
 

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: challenge-api
-        image: registry.emgglobal.co.kr:9443/challenge-api:0.0.1
+        image: registry.emgglobal.co.kr:9443/challenge-api:1.0.0
         imagePullPolicy: Always
         env:
           - name: SPRING_PROFILES_ACTIVE

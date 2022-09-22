@@ -1,6 +1,6 @@
 FROM gcr.io/distroless/java:8
 
-EXPOSE 8082
+EXPOSE 8092
 
 VOLUME /logs
 

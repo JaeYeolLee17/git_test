@@ -37,20 +37,10 @@ public class TsiController {
         return new Response("tsi", tsiDtos);
     }
 
-    //@Operation(summary = "교통신호정보 수신 등록", description = "접근 권한 : 최고관리자, 운영자, 사용자")
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
-    @Operation(summary = "교통신호정보 수신 등록")
-    @GetMapping(value = "/tsi/subscribe", produces = "text/event-stream")
+    @Operation(summary = "교통신호정보 수신 등록 - 인증 토큰 필요")
+    @GetMapping(value = "/tsi/subscribe")
     public SseEmitter subscribe(@RequestParam(value = "filterBy", required = false) TsiFilterBy filterBy,
                                 @RequestParam(value = "filterValue", required = false) String filterValue) {
-
-        return tsiSender.subscribe(filterBy, filterValue);
-    }
-
-    @Operation(summary = "교통신호정보 수신 등록 - 인증 토큰 필요")
-    @GetMapping(value = "/tsi/subscribe-with-token")
-    public SseEmitter subscribeWithToken(@RequestParam(value = "filterBy", required = false) TsiFilterBy filterBy,
-                                         @RequestParam(value = "filterValue", required = false) String filterValue) {
 
         return tsiSender.subscribe(filterBy, filterValue);
     }

@@ -9,10 +9,10 @@ resources:
 
 images:
 - name: registry.emgglobal.co.kr:9443/challenge-api
-  newTag: 0.0.1
+  newTag: 1.0.0
 - name: registry.emgglobal.co.kr:9443/challenge-data-collector
-  newTag: 0.0.1
+  newTag: 1.0.0
 - name: registry.emgglobal.co.kr:9443/challenge-data-provider
-  newTag: 0.0.1
+  newTag: 1.0.0
 - name: registry.emgglobal.co.kr:9443/challenge-monitor
-  newTag: 0.0.1
+  newTag: 1.0.0

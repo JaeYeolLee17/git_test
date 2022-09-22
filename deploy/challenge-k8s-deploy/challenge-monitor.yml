@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: challenge-monitor
-        image: registry.emgglobal.co.kr:9443/challenge-monitor:0.0.1
+        image: registry.emgglobal.co.kr:9443/challenge-monitor:1.0.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8090

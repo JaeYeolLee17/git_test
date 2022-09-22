@@ -38,7 +38,6 @@ public class UploadServiceImpl implements UploadService {
     private final RegionRepository regionRepository;
     private final LinkRepository linkRepository;
 
-
     @Transactional
     public void uploadRegion(MultipartFile file) throws IOException {
 
@@ -49,7 +48,7 @@ public class UploadServiceImpl implements UploadService {
 
         ArrayList<RegionGps> regionGps = new ArrayList<>();
         AtomicInteger gpsOrder = new AtomicInteger(0);
-        Region region = new Region();
+		Region region;
 
         String regionNo = "";
         String regionName = "";
@@ -108,7 +107,7 @@ public class UploadServiceImpl implements UploadService {
         }
 
         ArrayList<Intersection> intersections = new ArrayList<>();
-        Intersection intersection = new Intersection();
+        Intersection intersection;
 
         for (CSVRecord record : records) {
 
@@ -150,7 +149,7 @@ public class UploadServiceImpl implements UploadService {
 
         ArrayList<LinkGps> linkGps = new ArrayList<>();
         AtomicInteger gpsOrder = new AtomicInteger(0);
-        Link link = new Link();
+        Link link;
 
         String startNo = "";
         String endNo = "";
@@ -173,7 +172,7 @@ public class UploadServiceImpl implements UploadService {
                     linkRepository.saveAndFlush(link);
                 }
             } else {
-                link = link.builder()
+                link = Link.builder()
                         .start(getIntersection(startNo))
                         .end(getIntersection(endNo))
                         .build();
@@ -212,11 +211,7 @@ public class UploadServiceImpl implements UploadService {
 
             Optional<Camera> savedCamera = cameraRepository.findByCameraNo(getString(record, CameraHeaders.camera_no));
 
-            if (savedCamera.isPresent()) {
-                camera = savedCamera.get();
-            } else {
-                camera = new Camera();
-            }
+            camera = savedCamera.orElseGet(Camera::new);
 
             camera.setCameraNo(getString(record, CameraHeaders.camera_no));
             camera.setPassword(password);

@@ -21,26 +21,6 @@ public class UploadController {
 
     private final UploadService uploadService;
 
-    @Operation(summary = "카메라 정보", description = "접근 권한 : 최고관리자, 운영자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping(value = "/camera/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response uploadCamera(@RequestPart("file") MultipartFile file) throws Exception {
-
-        uploadService.uploadCamera(file);
-
-        return new Response();
-    }
-
-    @Operation(summary = "데이터 통계(15분 단위)", description = "접근 권한 : 최고관리자, 운영자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping(value = "/data/stats/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response uploadDataStats(@RequestPart("files") MultipartFile[] files) throws Exception {
-
-        uploadService.uploadDataStats(files);
-
-        return new Response();
-    }
-
     @Operation(summary = "구역 정보", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping(value = "/region/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -67,6 +47,26 @@ public class UploadController {
     public Response uploadLink(@RequestPart("file") MultipartFile file) throws Exception {
 
         uploadService.uploadLink(file);
+
+        return new Response();
+    }
+
+    @Operation(summary = "카메라 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/camera/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadCamera(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadCamera(file);
+
+        return new Response();
+    }
+
+    @Operation(summary = "데이터 통계(15분 단위)", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/data/stats/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadDataStats(@RequestPart("files") MultipartFile[] files) throws Exception {
+
+        uploadService.uploadDataStats(files);
 
         return new Response();
     }

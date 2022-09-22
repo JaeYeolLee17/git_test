@@ -40,153 +40,6 @@ public class UploadServiceImpl implements UploadService {
 
 
     @Transactional
-    public void uploadCamera(MultipartFile file) throws IOException {
-
-        Iterable<CSVRecord> records = parseCsv(file, CameraHeaders.class);
-        if (records == null) {
-            return;
-        }
-
-        String password = passwordEncoder.encode("camera12!@");
-        ObjectMapper mapper = new ObjectMapper();
-        Camera camera = new Camera();
-
-        for (CSVRecord record : records) {
-
-            Optional<Camera> savedCamera = cameraRepository.findByCameraNo(getString(record, CameraHeaders.camera_no));
-
-            if (savedCamera.isPresent()) {
-                camera = savedCamera.get();
-                camera.setCameraNo(getString(record, CameraHeaders.camera_no));
-                camera.setPassword(password);
-                camera.setIntersection(getIntersection(getString(record, CameraHeaders.intersection_no)));
-                camera.setDirection(getIntersection(getString(record, CameraHeaders.direction_no)));
-                camera.setLat(getDouble(record, CameraHeaders.lat));
-                camera.setLng(getDouble(record, CameraHeaders.lng));
-                camera.setDistance(getInteger(record, CameraHeaders.distance));
-                camera.setRtspUrl(getString(record, CameraHeaders.rtsp_url));
-                camera.setRtspId(getString(record, CameraHeaders.rtsp_id));
-                camera.setRtspPassword(getString(record, CameraHeaders.rtsp_password));
-                camera.setServerUrl(getString(record, CameraHeaders.server_url));
-                camera.setSendCycle(getInteger(record, CameraHeaders.send_cycle));
-                camera.setCollectCycle(getInteger(record, CameraHeaders.collect_cycle));
-                camera.setSmallWidth(getInteger(record, CameraHeaders.s_width));
-                camera.setSmallHeight(getInteger(record, CameraHeaders.s_height));
-                camera.setLargeWidth(getInteger(record, CameraHeaders.l_width));
-                camera.setLargeHeight(getInteger(record, CameraHeaders.l_height));
-                camera.setDegree(getInteger(record, CameraHeaders.degree));
-                camera.setSettingsUpdated(true);
-                camera.setLastDataTime(null);
-            } else {
-                camera = Camera.builder()
-                        .cameraNo(getString(record, CameraHeaders.camera_no))
-                        .password(password)
-                        .intersection(getIntersection(getString(record, CameraHeaders.intersection_no)))
-                        .direction(getIntersection(getString(record, CameraHeaders.direction_no)))
-                        .lat(getDouble(record, CameraHeaders.lat))
-                        .lng(getDouble(record, CameraHeaders.lng))
-                        .distance(getInteger(record, CameraHeaders.distance))
-                        .rtspUrl(getString(record, CameraHeaders.rtsp_url))
-                        .rtspId(getString(record, CameraHeaders.rtsp_id))
-                        .rtspPassword(getString(record, CameraHeaders.rtsp_password))
-                        .serverUrl(getString(record, CameraHeaders.server_url))
-                        .sendCycle(getInteger(record, CameraHeaders.send_cycle))
-                        .collectCycle(getInteger(record, CameraHeaders.collect_cycle))
-                        .smallWidth(getInteger(record, CameraHeaders.s_width))
-                        .smallHeight(getInteger(record, CameraHeaders.s_height))
-                        .largeWidth(getInteger(record, CameraHeaders.l_width))
-                        .largeHeight(getInteger(record, CameraHeaders.l_height))
-                        .degree(getInteger(record, CameraHeaders.degree))
-                        .settingsUpdated(true)
-                        .lastDataTime(null)
-                        .build();
-            }
-
-            String lane = null;
-            String l = getString(record, CameraHeaders.lane);
-            if (l != null) {
-                lane = mapper.writeValueAsString(mapper.readValue(l.replace("{", "[").replace("}", "]"), String[].class));
-            }
-
-            String direction = null;
-            String d = getString(record, CameraHeaders.direction);
-            if (d != null) {
-                direction = mapper.writeValueAsString(mapper.readValue(d.replace("{", "[").replace("}", "]"), Boolean[][].class));
-            }
-
-            camera.setRoad(CameraRoad.builder()
-                    .camera(camera)
-                    .startLine(record.get(CameraHeaders.start_line))
-                    .lane(lane)
-                    .uturn(record.get(CameraHeaders.uturn))
-                    .crosswalk(record.get(CameraHeaders.crosswalk))
-                    .direction(direction)
-                    .build());
-
-            cameraRepository.save(camera);
-        }
-    }
-
-    @Transactional
-    public void uploadDataStats(MultipartFile[] files) throws IOException, ParseException {
-
-        for (MultipartFile file : files) {
-
-            Iterable<CSVRecord> records = parseCsv(file, DataStatsHeaders.class);
-            if (records == null) {
-                continue;
-            }
-
-            ArrayList<DataStats> dataStats = new ArrayList<>();
-
-            for (CSVRecord record : records) {
-                dataStats.add(DataStats.builder()
-                        .t(DateTimeHelper.parseLocalDateTime(record.get(DataStatsHeaders.time)))
-                        .c(record.get(DataStatsHeaders.camera_no))
-                        .i(record.get(DataStatsHeaders.intersection_no))
-                        .r(record.get(DataStatsHeaders.region_no))
-                        .p(Integer.parseInt(record.get(DataStatsHeaders.p)))
-                        .sr0(Integer.parseInt(record.get(DataStatsHeaders.sr0)))
-                        .sr1(Integer.parseInt(record.get(DataStatsHeaders.sr1)))
-                        .sr2(Integer.parseInt(record.get(DataStatsHeaders.sr2)))
-                        .sr3(Integer.parseInt(record.get(DataStatsHeaders.sr3)))
-                        .sr4(Integer.parseInt(record.get(DataStatsHeaders.sr4)))
-                        .qmsrLen(Integer.parseInt(record.get(DataStatsHeaders.qmsr_len)))
-                        .qmsr0(Integer.parseInt(record.get(DataStatsHeaders.qmsr0)))
-                        .qmsr1(Integer.parseInt(record.get(DataStatsHeaders.qmsr1)))
-                        .qmsr2(Integer.parseInt(record.get(DataStatsHeaders.qmsr2)))
-                        .qmsr3(Integer.parseInt(record.get(DataStatsHeaders.qmsr3)))
-                        .qmsr4(Integer.parseInt(record.get(DataStatsHeaders.qmsr4)))
-                        .qtsr0(Integer.parseInt(record.get(DataStatsHeaders.qtsr0)))
-                        .qtsr1(Integer.parseInt(record.get(DataStatsHeaders.qtsr1)))
-                        .qtsr2(Integer.parseInt(record.get(DataStatsHeaders.qtsr2)))
-                        .qtsr3(Integer.parseInt(record.get(DataStatsHeaders.qtsr3)))
-                        .qtsr4(Integer.parseInt(record.get(DataStatsHeaders.qtsr4)))
-                        .lu0(Integer.parseInt(record.get(DataStatsHeaders.lu0)))
-                        .lu1(Integer.parseInt(record.get(DataStatsHeaders.lu1)))
-                        .lu2(Integer.parseInt(record.get(DataStatsHeaders.lu2)))
-                        .lu3(Integer.parseInt(record.get(DataStatsHeaders.lu3)))
-                        .lu4(Integer.parseInt(record.get(DataStatsHeaders.lu4)))
-                        .qmluLen(Integer.parseInt(record.get(DataStatsHeaders.qmlu_len)))
-                        .qmlu0(Integer.parseInt(record.get(DataStatsHeaders.qmlu0)))
-                        .qmlu1(Integer.parseInt(record.get(DataStatsHeaders.qmlu1)))
-                        .qmlu2(Integer.parseInt(record.get(DataStatsHeaders.qmlu2)))
-                        .qmlu3(Integer.parseInt(record.get(DataStatsHeaders.qmlu3)))
-                        .qmlu4(Integer.parseInt(record.get(DataStatsHeaders.qmlu4)))
-                        .qtlu0(Integer.parseInt(record.get(DataStatsHeaders.qtlu0)))
-                        .qtlu1(Integer.parseInt(record.get(DataStatsHeaders.qtlu1)))
-                        .qtlu2(Integer.parseInt(record.get(DataStatsHeaders.qtlu2)))
-                        .qtlu3(Integer.parseInt(record.get(DataStatsHeaders.qtlu3)))
-                        .qtlu4(Integer.parseInt(record.get(DataStatsHeaders.qtlu4)))
-                        .qtT(Integer.parseInt(record.get(DataStatsHeaders.qt_time)))
-                        .build());
-            }
-
-            dataStatsRepository.saveAll(dataStats);
-        }
-    }
-
-    @Transactional
     public void uploadRegion(MultipartFile file) throws IOException {
 
         Iterable<CSVRecord> records = parseCsv(file, RegionHeaders.class);
@@ -343,6 +196,134 @@ public class UploadServiceImpl implements UploadService {
         }
     }
 
+    @Transactional
+    public void uploadCamera(MultipartFile file) throws IOException {
+
+        Iterable<CSVRecord> records = parseCsv(file, CameraHeaders.class);
+        if (records == null) {
+            return;
+        }
+
+        String password = passwordEncoder.encode("camera12!@");
+        ObjectMapper mapper = new ObjectMapper();
+        Camera camera;
+
+        for (CSVRecord record : records) {
+
+            Optional<Camera> savedCamera = cameraRepository.findByCameraNo(getString(record, CameraHeaders.camera_no));
+
+            if (savedCamera.isPresent()) {
+                camera = savedCamera.get();
+            } else {
+                camera = new Camera();
+            }
+
+            camera.setCameraNo(getString(record, CameraHeaders.camera_no));
+            camera.setPassword(password);
+            camera.setIntersection(getIntersection(getString(record, CameraHeaders.intersection_no)));
+            camera.setDirection(getIntersection(getString(record, CameraHeaders.direction_no)));
+            camera.setLat(getDouble(record, CameraHeaders.lat));
+            camera.setLng(getDouble(record, CameraHeaders.lng));
+            camera.setDistance(getInteger(record, CameraHeaders.distance));
+            camera.setRtspUrl(getString(record, CameraHeaders.rtsp_url));
+            camera.setRtspId(getString(record, CameraHeaders.rtsp_id));
+            camera.setRtspPassword(getString(record, CameraHeaders.rtsp_password));
+            camera.setServerUrl(getString(record, CameraHeaders.server_url));
+            camera.setSendCycle(getInteger(record, CameraHeaders.send_cycle));
+            camera.setCollectCycle(getInteger(record, CameraHeaders.collect_cycle));
+            camera.setSmallWidth(getInteger(record, CameraHeaders.s_width));
+            camera.setSmallHeight(getInteger(record, CameraHeaders.s_height));
+            camera.setLargeWidth(getInteger(record, CameraHeaders.l_width));
+            camera.setLargeHeight(getInteger(record, CameraHeaders.l_height));
+            camera.setDegree(getInteger(record, CameraHeaders.degree));
+            camera.setSettingsUpdated(true);
+            camera.setLastDataTime(null);
+
+            String lane = null;
+            String l = getString(record, CameraHeaders.lane);
+            if (l != null) {
+
+                lane = mapper.writeValueAsString(mapper.readValue(l.replace("{", "[").replace("}", "]"), String[].class));
+            }
+
+            String direction = null;
+            String d = getString(record, CameraHeaders.direction);
+            if (d != null) {
+                direction = mapper.writeValueAsString(mapper.readValue(d.replace("{", "[").replace("}", "]"), Boolean[][].class));
+            }
+
+            camera.setRoad(CameraRoad.builder()
+                    .camera(camera)
+                    .startLine(record.get(CameraHeaders.start_line))
+                    .lane(lane)
+                    .uturn(record.get(CameraHeaders.uturn))
+                    .crosswalk(record.get(CameraHeaders.crosswalk))
+                    .direction(direction)
+                    .build());
+
+            cameraRepository.save(camera);
+        }
+    }
+
+    @Transactional
+    public void uploadDataStats(MultipartFile[] files) throws IOException, ParseException {
+
+        for (MultipartFile file : files) {
+
+            Iterable<CSVRecord> records = parseCsv(file, DataStatsHeaders.class);
+            if (records == null) {
+                continue;
+            }
+
+            ArrayList<DataStats> dataStats = new ArrayList<>();
+
+            for (CSVRecord record : records) {
+                dataStats.add(DataStats.builder()
+                        .t(DateTimeHelper.parseLocalDateTime(record.get(DataStatsHeaders.time)))
+                        .c(record.get(DataStatsHeaders.camera_no))
+                        .i(record.get(DataStatsHeaders.intersection_no))
+                        .r(record.get(DataStatsHeaders.region_no))
+                        .p(Integer.parseInt(record.get(DataStatsHeaders.p)))
+                        .sr0(Integer.parseInt(record.get(DataStatsHeaders.sr0)))
+                        .sr1(Integer.parseInt(record.get(DataStatsHeaders.sr1)))
+                        .sr2(Integer.parseInt(record.get(DataStatsHeaders.sr2)))
+                        .sr3(Integer.parseInt(record.get(DataStatsHeaders.sr3)))
+                        .sr4(Integer.parseInt(record.get(DataStatsHeaders.sr4)))
+                        .qmsrLen(Integer.parseInt(record.get(DataStatsHeaders.qmsr_len)))
+                        .qmsr0(Integer.parseInt(record.get(DataStatsHeaders.qmsr0)))
+                        .qmsr1(Integer.parseInt(record.get(DataStatsHeaders.qmsr1)))
+                        .qmsr2(Integer.parseInt(record.get(DataStatsHeaders.qmsr2)))
+                        .qmsr3(Integer.parseInt(record.get(DataStatsHeaders.qmsr3)))
+                        .qmsr4(Integer.parseInt(record.get(DataStatsHeaders.qmsr4)))
+                        .qtsr0(Integer.parseInt(record.get(DataStatsHeaders.qtsr0)))
+                        .qtsr1(Integer.parseInt(record.get(DataStatsHeaders.qtsr1)))
+                        .qtsr2(Integer.parseInt(record.get(DataStatsHeaders.qtsr2)))
+                        .qtsr3(Integer.parseInt(record.get(DataStatsHeaders.qtsr3)))
+                        .qtsr4(Integer.parseInt(record.get(DataStatsHeaders.qtsr4)))
+                        .lu0(Integer.parseInt(record.get(DataStatsHeaders.lu0)))
+                        .lu1(Integer.parseInt(record.get(DataStatsHeaders.lu1)))
+                        .lu2(Integer.parseInt(record.get(DataStatsHeaders.lu2)))
+                        .lu3(Integer.parseInt(record.get(DataStatsHeaders.lu3)))
+                        .lu4(Integer.parseInt(record.get(DataStatsHeaders.lu4)))
+                        .qmluLen(Integer.parseInt(record.get(DataStatsHeaders.qmlu_len)))
+                        .qmlu0(Integer.parseInt(record.get(DataStatsHeaders.qmlu0)))
+                        .qmlu1(Integer.parseInt(record.get(DataStatsHeaders.qmlu1)))
+                        .qmlu2(Integer.parseInt(record.get(DataStatsHeaders.qmlu2)))
+                        .qmlu3(Integer.parseInt(record.get(DataStatsHeaders.qmlu3)))
+                        .qmlu4(Integer.parseInt(record.get(DataStatsHeaders.qmlu4)))
+                        .qtlu0(Integer.parseInt(record.get(DataStatsHeaders.qtlu0)))
+                        .qtlu1(Integer.parseInt(record.get(DataStatsHeaders.qtlu1)))
+                        .qtlu2(Integer.parseInt(record.get(DataStatsHeaders.qtlu2)))
+                        .qtlu3(Integer.parseInt(record.get(DataStatsHeaders.qtlu3)))
+                        .qtlu4(Integer.parseInt(record.get(DataStatsHeaders.qtlu4)))
+                        .qtT(Integer.parseInt(record.get(DataStatsHeaders.qt_time)))
+                        .build());
+            }
+
+            dataStatsRepository.saveAll(dataStats);
+        }
+    }
+
     private Integer getInteger(CSVRecord record, Enum<?> header) {
         String s = record.get(header);
         if (s != null && s.length() > 0 && !s.equals("NULL")) {
@@ -423,6 +404,31 @@ public class UploadServiceImpl implements UploadService {
                 .parse(reader);
     }
 
+    private enum RegionHeaders {
+        region_no,
+        region_name,
+        lat,
+        lng
+    }
+
+    private enum IntersectionHeaders {
+        intersection_no,
+        intersection_name,
+        lat,
+        lng,
+        region_no,
+        national_no
+    }
+
+    private enum LinkHeaders {
+        start_no,
+        end_no,
+        start_name,
+        end_name,
+        lat,
+        lng
+    }
+
     private enum CameraHeaders {
         camera_no,
         password,
@@ -489,31 +495,4 @@ public class UploadServiceImpl implements UploadService {
         qtlu4,
         qt_time
     }
-
-    private enum RegionHeaders {
-        region_no,
-        region_name,
-        lat,
-        lng
-    }
-
-    private enum IntersectionHeaders {
-        intersection_no,
-        intersection_name,
-        lat,
-        lng,
-        region_no,
-        national_no
-    }
-
-    private enum LinkHeaders {
-        start_no,
-        end_no,
-        start_name,
-        end_name,
-        lat,
-        lng
-    }
-
-
 }

@@ -89,7 +89,6 @@ springdoc:
       version: 1.0.0
     syntaxHighlight:                # because of ui performance
       activated: false
-  writer-with-order-by-keys: true   # for sorting schemas
 
 logging:
   level:

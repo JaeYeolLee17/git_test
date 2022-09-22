@@ -377,7 +377,7 @@ function DashboardMap({
             };
 
             const events = new EventSourcePolyfill(
-                Request.TSI_SUBSCRIBE_WITH_TOKEN_URL,
+                Request.TSI_SUBSCRIBE_URL,
                 eventSourceInitDict
             );
             setTsiSubscribe(events);

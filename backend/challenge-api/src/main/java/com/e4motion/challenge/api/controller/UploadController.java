@@ -21,6 +21,36 @@ public class UploadController {
 
     private final UploadService uploadService;
 
+    @Operation(summary = "구역 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/region/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadRegion(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadRegion(file);
+
+        return new Response();
+    }
+
+    @Operation(summary = "교차로 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/intersection/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadIntersection(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadIntersection(file);
+
+        return new Response();
+    }
+
+    @Operation(summary = "링크 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/link/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadLink(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadLink(file);
+
+        return new Response();
+    }
+
     @Operation(summary = "카메라 정보", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping(value = "/camera/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -37,26 +67,6 @@ public class UploadController {
     public Response uploadDataStats(@RequestPart("files") MultipartFile[] files) throws Exception {
 
         uploadService.uploadDataStats(files);
-
-        return new Response();
-    }
-
-    @Operation(summary = "구역 정보", description = "접근 권한 : 최고관리자, 운영자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping(value = "/region/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response uploadRegion(@RequestPart("file") MultipartFile file) throws Exception {
-
-        uploadService.uploadRegion(file);
-
-        return new Response();
-    }
-
-    @Operation(summary = "링크 정보", description = "접근 권한 : 최고관리자, 운영자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping(value = "/link/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response uploadLink(@RequestPart("file") MultipartFile file) throws Exception {
-
-        uploadService.uploadLink(file);
 
         return new Response();
     }

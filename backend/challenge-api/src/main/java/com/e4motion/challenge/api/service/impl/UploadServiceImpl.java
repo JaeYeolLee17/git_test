@@ -4,6 +4,7 @@ import com.e4motion.challenge.api.domain.*;
 import com.e4motion.challenge.api.repository.*;
 import com.e4motion.challenge.api.service.UploadService;
 import com.e4motion.challenge.common.exception.customexception.IntersectionNotFoundException;
+import com.e4motion.challenge.common.exception.customexception.RegionNotFoundException;
 import com.e4motion.challenge.common.utils.DateTimeHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,163 @@ public class UploadServiceImpl implements UploadService {
     private final LinkRepository linkRepository;
 
     @Transactional
+    public void uploadRegion(MultipartFile file) throws IOException {
+
+        Iterable<CSVRecord> records = parseCsv(file, RegionHeaders.class);
+        if (records == null) {
+            return;
+        }
+
+        ArrayList<RegionGps> regionGps = new ArrayList<>();
+        AtomicInteger gpsOrder = new AtomicInteger(0);
+		Region region;
+
+        String regionNo = "";
+        String regionName = "";
+        String lastRegionNo = "";
+
+        for (CSVRecord record : records) {
+
+            if (getString(record, RegionHeaders.region_no) != null) {
+                regionNo = getString(record, RegionHeaders.region_no);
+                regionName = getString(record, RegionHeaders.region_name);
+                regionGps.clear();
+            }
+
+            Optional<Region> savedRegion = regionRepository.findByRegionNo(regionNo);
+
+            if (savedRegion.isPresent()) {
+                region = savedRegion.get();
+                region.setRegionNo(regionNo);
+                region.setRegionName(regionName);
+
+                if (Objects.equals(regionNo, getString(record, RegionHeaders.region_no))) {
+                    region.getGps().clear();
+                    regionRepository.saveAndFlush(region);
+                }
+            } else {
+                region = Region.builder()
+                        .regionNo(regionNo)
+                        .regionName(regionName)
+                        .intersections(getIntersectionList(regionNo))
+                        .build();
+                region.setGps(regionGps);
+            }
+
+            if (!Objects.equals(lastRegionNo, regionNo)) {
+                gpsOrder = new AtomicInteger(0);
+            }
+
+            region.getGps().add(RegionGps.builder()
+                    .region(region)
+                    .lat(getDouble(record, RegionHeaders.lat))
+                    .lng(getDouble(record, RegionHeaders.lng))
+                    .gpsOrder(gpsOrder.incrementAndGet())
+                    .build());
+            regionRepository.save(region);
+
+            lastRegionNo = regionNo;
+        }
+    }
+
+    @Transactional
+    public void uploadIntersection(MultipartFile file) throws IOException {
+
+        Iterable<CSVRecord> records = parseCsv(file, IntersectionHeaders.class);
+        if (records == null) {
+            return;
+        }
+
+        ArrayList<Intersection> intersections = new ArrayList<>();
+        Intersection intersection;
+
+        for (CSVRecord record : records) {
+
+            Optional<Intersection> savedIntersection =
+                    intersectionRepository.findByIntersectionNo(getString(record, IntersectionHeaders.intersection_no));
+
+            if (savedIntersection.isPresent()) {
+                intersection = savedIntersection.get();
+                intersection.setIntersectionNo(getString(record, IntersectionHeaders.intersection_no));
+                intersection.setIntersectionName(getString(record, IntersectionHeaders.intersection_name));
+                intersection.setLat(getDouble(record, IntersectionHeaders.lat));
+                intersection.setLng(getDouble(record, IntersectionHeaders.lng));
+                intersectionRepository.save(intersection);
+            } else {
+                intersection = Intersection.builder()
+                        .intersectionNo(getString(record, IntersectionHeaders.intersection_no))
+                        .intersectionName(getString(record, IntersectionHeaders.intersection_name))
+                        .lat(getDouble(record, IntersectionHeaders.lat))
+                        .lng(getDouble(record, IntersectionHeaders.lng))
+                        .region(getRegion(getString(record, IntersectionHeaders.region_no)))
+                        .nationalId(getLong(record, IntersectionHeaders.national_no))
+                        .build();
+                intersection.setCameras(getCameraList(getString(record, IntersectionHeaders.region_no),
+                        getString(record, IntersectionHeaders.intersection_no)));
+                intersections.add(intersection);
+            }
+        }
+
+        intersectionRepository.saveAll(intersections);
+    }
+
+    @Transactional
+    public void uploadLink(MultipartFile file) throws IOException {
+
+        Iterable<CSVRecord> records = parseCsv(file, LinkHeaders.class);
+        if (records == null) {
+            return;
+        }
+
+        ArrayList<LinkGps> linkGps = new ArrayList<>();
+        AtomicInteger gpsOrder = new AtomicInteger(0);
+        Link link;
+
+        String startNo = "";
+        String endNo = "";
+        String lastStratNo = "";
+
+        for (CSVRecord record : records) {
+            if (getString(record, LinkHeaders.start_no) != null) {
+                startNo = getString(record, LinkHeaders.start_no);
+                endNo = getString(record, LinkHeaders.end_no);
+                linkGps.clear();
+            }
+            Optional<Link> savedLink = linkRepository.findByStart_IntersectionNoAndEnd_IntersectionNo(startNo, endNo);
+
+            if (savedLink.isPresent()) {
+                link = savedLink.get();
+                link.setStart(getIntersection(startNo));
+                link.setEnd(getIntersection(endNo));
+                if (Objects.equals(startNo, getString(record, LinkHeaders.start_no))) {
+                    link.getGps().clear();
+                    linkRepository.saveAndFlush(link);
+                }
+            } else {
+                link = Link.builder()
+                        .start(getIntersection(startNo))
+                        .end(getIntersection(endNo))
+                        .build();
+                link.setGps(linkGps);
+            }
+
+            if (!Objects.equals(lastStratNo, startNo)) {
+                gpsOrder = new AtomicInteger(0);
+            }
+
+            link.getGps().add(LinkGps.builder()
+                    .link(link)
+                    .lat(getDouble(record, LinkHeaders.lat))
+                    .lng(getDouble(record, LinkHeaders.lng))
+                    .gpsOrder(gpsOrder.incrementAndGet())
+                    .build());
+            linkRepository.save(link);
+
+            lastStratNo = startNo;
+        }
+    }
+
+    @Transactional
     public void uploadCamera(MultipartFile file) throws IOException {
 
         Iterable<CSVRecord> records = parseCsv(file, CameraHeaders.class);
@@ -47,36 +205,39 @@ public class UploadServiceImpl implements UploadService {
 
         String password = passwordEncoder.encode("camera12!@");
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Camera> cameras = new ArrayList<>();
+        Camera camera;
 
         for (CSVRecord record : records) {
 
-            Camera camera = Camera.builder()
-                    .cameraNo(getString(record, CameraHeaders.camera_no))
-                    .password(password)
-                    .intersection(getIntersection(getString(record, CameraHeaders.intersection_no)))
-                    .direction(getIntersection(getString(record, CameraHeaders.direction_no)))
-                    .lat(getDouble(record, CameraHeaders.lat))
-                    .lng(getDouble(record, CameraHeaders.lng))
-                    .distance(getInteger(record, CameraHeaders.distance))
-                    .rtspUrl(getString(record, CameraHeaders.rtsp_url))
-                    .rtspId(getString(record, CameraHeaders.rtsp_id))
-                    .rtspPassword(getString(record, CameraHeaders.rtsp_password))
-                    .serverUrl(getString(record, CameraHeaders.server_url))
-                    .sendCycle(getInteger(record, CameraHeaders.send_cycle))
-                    .collectCycle(getInteger(record, CameraHeaders.collect_cycle))
-                    .smallWidth(getInteger(record, CameraHeaders.s_width))
-                    .smallHeight(getInteger(record, CameraHeaders.s_height))
-                    .largeWidth(getInteger(record, CameraHeaders.l_width))
-                    .largeHeight(getInteger(record, CameraHeaders.l_height))
-                    .degree(getInteger(record, CameraHeaders.degree))
-                    .settingsUpdated(true)
-                    .lastDataTime(null)
-                    .build();
+            Optional<Camera> savedCamera = cameraRepository.findByCameraNo(getString(record, CameraHeaders.camera_no));
+
+            camera = savedCamera.orElseGet(Camera::new);
+
+            camera.setCameraNo(getString(record, CameraHeaders.camera_no));
+            camera.setPassword(password);
+            camera.setIntersection(getIntersection(getString(record, CameraHeaders.intersection_no)));
+            camera.setDirection(getIntersection(getString(record, CameraHeaders.direction_no)));
+            camera.setLat(getDouble(record, CameraHeaders.lat));
+            camera.setLng(getDouble(record, CameraHeaders.lng));
+            camera.setDistance(getInteger(record, CameraHeaders.distance));
+            camera.setRtspUrl(getString(record, CameraHeaders.rtsp_url));
+            camera.setRtspId(getString(record, CameraHeaders.rtsp_id));
+            camera.setRtspPassword(getString(record, CameraHeaders.rtsp_password));
+            camera.setServerUrl(getString(record, CameraHeaders.server_url));
+            camera.setSendCycle(getInteger(record, CameraHeaders.send_cycle));
+            camera.setCollectCycle(getInteger(record, CameraHeaders.collect_cycle));
+            camera.setSmallWidth(getInteger(record, CameraHeaders.s_width));
+            camera.setSmallHeight(getInteger(record, CameraHeaders.s_height));
+            camera.setLargeWidth(getInteger(record, CameraHeaders.l_width));
+            camera.setLargeHeight(getInteger(record, CameraHeaders.l_height));
+            camera.setDegree(getInteger(record, CameraHeaders.degree));
+            camera.setSettingsUpdated(true);
+            camera.setLastDataTime(null);
 
             String lane = null;
             String l = getString(record, CameraHeaders.lane);
             if (l != null) {
+
                 lane = mapper.writeValueAsString(mapper.readValue(l.replace("{", "[").replace("}", "]"), String[].class));
             }
 
@@ -95,10 +256,8 @@ public class UploadServiceImpl implements UploadService {
                     .direction(direction)
                     .build());
 
-            cameras.add(camera);
+            cameraRepository.save(camera);
         }
-
-        cameraRepository.saveAll(cameras);
     }
 
     @Transactional
@@ -160,115 +319,28 @@ public class UploadServiceImpl implements UploadService {
         }
     }
 
-    @Transactional
-    public void uploadRegion(MultipartFile file) throws IOException, ParseException {
-        Iterable<CSVRecord> records = parseCsv(file, RegionHeaders.class);
-        if (records == null) {
-            return;
+    private Integer getInteger(CSVRecord record, Enum<?> header) {
+        String s = record.get(header);
+        if (s != null && s.length() > 0 && !s.equals("NULL")) {
+            return Integer.parseInt(s);
         }
-
-        ArrayList<RegionGps> regionGps = new ArrayList<>();
-        AtomicInteger gpsOrder = new AtomicInteger(0);
-        Region region = new Region();
-
-        String regionNo = "";
-        String regionName = "";
-        String lastRegionNo = "";
-
-        for (CSVRecord record : records) {
-
-            if (getString(record, RegionHeaders.region_no) != null) {
-                regionNo = getString(record, RegionHeaders.region_no);
-                regionName = getString(record, RegionHeaders.region_name);
-                regionGps.clear();
-            }
-
-            Optional<Region> savedRegion = regionRepository.findByRegionNo(regionNo);
-
-            if (savedRegion.isPresent()) {
-                region = savedRegion.get();
-
-                if (Objects.equals(regionNo, getString(record, RegionHeaders.region_no))) {
-                    region.getGps().clear();
-                    regionRepository.saveAndFlush(region);
-                }
-            } else {
-                region = Region.builder()
-                        .regionNo(regionNo)
-                        .regionName(regionName)
-                        .intersections(getIntersectionList(regionNo))
-                        .build();
-                region.setGps(regionGps);
-            }
-
-            if (!Objects.equals(lastRegionNo, regionNo)) {
-                gpsOrder = new AtomicInteger(0);
-            }
-
-            region.getGps().add(RegionGps.builder()
-                    .region(region)
-                    .lat(getDouble(record, RegionHeaders.lat))
-                    .lng(getDouble(record, RegionHeaders.lng))
-                    .gpsOrder(gpsOrder.incrementAndGet())
-                    .build());
-            regionRepository.save(region);
-
-            lastRegionNo = regionNo;
-        }
+        return null;
     }
 
-    @Transactional
-    public void uploadLink(MultipartFile file) throws IOException, ParseException {
-        Iterable<CSVRecord> records = parseCsv(file, LinkHeaders.class);
-        if (records == null) {
-            return;
+    private Long getLong(CSVRecord record, Enum<?> header) {
+        String s = record.get(header);
+        if (s != null && s.length() > 0 && !s.equals("NULL")) {
+            return Long.parseLong(s);
         }
+        return null;
+    }
 
-        ArrayList<LinkGps> linkGps = new ArrayList<>();
-        AtomicInteger gpsOrder = new AtomicInteger(0);
-        Link link = new Link();
-
-        String startNo = "";
-        String endNo = "";
-        String lastStratNo = "";
-
-        for (CSVRecord record : records) {
-            if (getString(record, LinkHeaders.start_no) != null) {
-                startNo = getString(record, LinkHeaders.start_no);
-                endNo = getString(record, LinkHeaders.end_no);
-                linkGps.clear();
-            }
-            Optional<Link> savedLink = linkRepository.findByStart_IntersectionNoAndEnd_IntersectionNo(startNo, endNo);
-
-            if (savedLink.isPresent()) {
-                link = savedLink.get();
-
-                if (Objects.equals(startNo, getString(record, LinkHeaders.start_no))) {
-                    link.getGps().clear();
-                    linkRepository.saveAndFlush(link);
-                }
-            } else {
-                link = link.builder()
-                        .start(getIntersection(startNo))
-                        .end(getIntersection(endNo))
-                        .build();
-                link.setGps(linkGps);
-            }
-
-            if (!Objects.equals(lastStratNo, startNo)) {
-                gpsOrder = new AtomicInteger(0);
-            }
-
-            link.getGps().add(LinkGps.builder()
-                    .link(link)
-                    .lat(getDouble(record, LinkHeaders.lat))
-                    .lng(getDouble(record, LinkHeaders.lng))
-                    .gpsOrder(gpsOrder.incrementAndGet())
-                    .build());
-            linkRepository.save(link);
-
-            lastStratNo = startNo;
+    private Double getDouble(CSVRecord record, Enum<?> header) {
+        String s = record.get(header);
+        if (s != null && s.length() > 0 && !s.equals("NULL")) {
+            return Double.parseDouble(s);
         }
+        return null;
     }
 
     private String getString(CSVRecord record, Enum<?> header) {
@@ -279,18 +351,11 @@ public class UploadServiceImpl implements UploadService {
         return null;
     }
 
-    private Integer getInteger(CSVRecord record, Enum<?> header) {
-        String s = record.get(header);
-        if (s != null && s.length() > 0 && !s.equals("NULL")) {
-            return Integer.parseInt(s);
-        }
-        return null;
-    }
+    private Region getRegion(String regionNo) {
 
-    private Double getDouble(CSVRecord record, Enum<?> header) {
-        String s = record.get(header);
-        if (s != null && s.length() > 0 && !s.equals("NULL")) {
-            return Double.parseDouble(s);
+        if (regionNo != null) {
+            return regionRepository.findByRegionNo(regionNo)
+                    .orElseThrow(() -> new RegionNotFoundException(RegionNotFoundException.INVALID_REGION_NO));
         }
         return null;
     }
@@ -312,6 +377,14 @@ public class UploadServiceImpl implements UploadService {
         return null;
     }
 
+    private List<Camera> getCameraList(String regionNo, String intersectionNo) {
+
+        if (regionNo != null && intersectionNo != null) {
+            return cameraRepository.findAllByRegionNoIntersectionNo(regionNo, intersectionNo);
+        }
+        return null;
+    }
+
     private CSVParser parseCsv(MultipartFile file, Class<? extends Enum<?>> headers) throws IOException {
 
         if (!TEXT_CSV.equals(file.getContentType())) {
@@ -326,31 +399,54 @@ public class UploadServiceImpl implements UploadService {
                 .parse(reader);
     }
 
-    private enum CameraHeaders {
-        camera_no,
+    private enum RegionHeaders {
+        region_no,
+        region_name,
+        lat,
+        lng
+    }
+
+    private enum IntersectionHeaders {
         intersection_no,
+        intersection_name,
         lat,
         lng,
-        direction_no,
-        rtsp_url,
-        server_url,
-        collect_cycle,
+        region_no,
+        national_no
+    }
+
+    private enum LinkHeaders {
+        start_no,
+        end_no,
+        start_name,
+        end_name,
+        lat,
+        lng
+    }
+
+    private enum CameraHeaders {
+        camera_no,
         password,
+        intersection_no,
+        direction_no,
+        lat,
+        lng,
+        distance,
+        rtsp_url,
         rtsp_id,
         rtsp_password,
+        server_url,
         send_cycle,
-        distance,
-        settings_updated,
-        last_data_time,
+        collect_cycle,
         s_width,
         s_height,
         l_width,
         l_height,
         degree,
         start_line,
+        lane,
         uturn,
         crosswalk,
-        lane,
         direction
     }
 
@@ -393,21 +489,5 @@ public class UploadServiceImpl implements UploadService {
         qtlu3,
         qtlu4,
         qt_time
-    }
-
-    private enum RegionHeaders {
-        region_no,
-        region_name,
-        lat,
-        lng
-    }
-
-    private enum LinkHeaders {
-        start_no,
-        end_no,
-        start_name,
-        end_name,
-        lat,
-        lng
     }
 }

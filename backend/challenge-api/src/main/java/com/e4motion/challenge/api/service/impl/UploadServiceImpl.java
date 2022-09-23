@@ -31,12 +31,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UploadServiceImpl implements UploadService {
 
     private final static String TEXT_CSV = "text/csv";
-    private final CameraRepository cameraRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final IntersectionRepository intersectionRepository;
-    private final DataStatsRepository dataStatsRepository;
     private final RegionRepository regionRepository;
+    private final IntersectionRepository intersectionRepository;
     private final LinkRepository linkRepository;
+    private final CameraRepository cameraRepository;
+    private final DataStatsRepository dataStatsRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Transactional
     public void uploadRegion(MultipartFile file) throws IOException {
@@ -48,7 +49,7 @@ public class UploadServiceImpl implements UploadService {
 
         ArrayList<RegionGps> regionGps = new ArrayList<>();
         AtomicInteger gpsOrder = new AtomicInteger(0);
-		Region region;
+        Region region;
 
         String regionNo = "";
         String regionName = "";
@@ -66,21 +67,19 @@ public class UploadServiceImpl implements UploadService {
 
             if (savedRegion.isPresent()) {
                 region = savedRegion.get();
-                region.setRegionNo(regionNo);
-                region.setRegionName(regionName);
 
                 if (Objects.equals(regionNo, getString(record, RegionHeaders.region_no))) {
                     region.getGps().clear();
                     regionRepository.saveAndFlush(region);
                 }
             } else {
-                region = Region.builder()
-                        .regionNo(regionNo)
-                        .regionName(regionName)
-                        .intersections(getIntersectionList(regionNo))
-                        .build();
+                region = new Region();
                 region.setGps(regionGps);
             }
+
+            region.setRegionNo(regionNo);
+            region.setRegionName(regionName);
+            region.setIntersections(getIntersectionList(regionNo));
 
             if (!Objects.equals(lastRegionNo, regionNo)) {
                 gpsOrder = new AtomicInteger(0);
@@ -92,6 +91,7 @@ public class UploadServiceImpl implements UploadService {
                     .lng(getDouble(record, RegionHeaders.lng))
                     .gpsOrder(gpsOrder.incrementAndGet())
                     .build());
+
             regionRepository.save(region);
 
             lastRegionNo = regionNo;
@@ -114,29 +114,19 @@ public class UploadServiceImpl implements UploadService {
             Optional<Intersection> savedIntersection =
                     intersectionRepository.findByIntersectionNo(getString(record, IntersectionHeaders.intersection_no));
 
-            if (savedIntersection.isPresent()) {
-                intersection = savedIntersection.get();
-                intersection.setIntersectionNo(getString(record, IntersectionHeaders.intersection_no));
-                intersection.setIntersectionName(getString(record, IntersectionHeaders.intersection_name));
-                intersection.setLat(getDouble(record, IntersectionHeaders.lat));
-                intersection.setLng(getDouble(record, IntersectionHeaders.lng));
-                intersectionRepository.save(intersection);
-            } else {
-                intersection = Intersection.builder()
-                        .intersectionNo(getString(record, IntersectionHeaders.intersection_no))
-                        .intersectionName(getString(record, IntersectionHeaders.intersection_name))
-                        .lat(getDouble(record, IntersectionHeaders.lat))
-                        .lng(getDouble(record, IntersectionHeaders.lng))
-                        .region(getRegion(getString(record, IntersectionHeaders.region_no)))
-                        .nationalId(getLong(record, IntersectionHeaders.national_no))
-                        .build();
-                intersection.setCameras(getCameraList(getString(record, IntersectionHeaders.region_no),
-                        getString(record, IntersectionHeaders.intersection_no)));
-                intersections.add(intersection);
-            }
-        }
+            intersection = savedIntersection.orElseGet(Intersection::new);
 
-        intersectionRepository.saveAll(intersections);
+            intersection.setIntersectionNo(getString(record, IntersectionHeaders.intersection_no));
+            intersection.setIntersectionName(getString(record, IntersectionHeaders.intersection_name));
+            intersection.setLat(getDouble(record, IntersectionHeaders.lat));
+            intersection.setLng(getDouble(record, IntersectionHeaders.lng));
+            intersection.setNationalId(getLong(record, IntersectionHeaders.national_no));
+            intersection.setRegion(getRegion(getString(record, IntersectionHeaders.region_no)));
+            intersection.setCameras(getCameraList(getString(record, IntersectionHeaders.region_no),
+                    getString(record, IntersectionHeaders.intersection_no)));
+
+            intersectionRepository.save(intersection);
+        }
     }
 
     @Transactional
@@ -161,23 +151,23 @@ public class UploadServiceImpl implements UploadService {
                 endNo = getString(record, LinkHeaders.end_no);
                 linkGps.clear();
             }
+
             Optional<Link> savedLink = linkRepository.findByStart_IntersectionNoAndEnd_IntersectionNo(startNo, endNo);
 
             if (savedLink.isPresent()) {
                 link = savedLink.get();
-                link.setStart(getIntersection(startNo));
-                link.setEnd(getIntersection(endNo));
+
                 if (Objects.equals(startNo, getString(record, LinkHeaders.start_no))) {
                     link.getGps().clear();
                     linkRepository.saveAndFlush(link);
                 }
             } else {
-                link = Link.builder()
-                        .start(getIntersection(startNo))
-                        .end(getIntersection(endNo))
-                        .build();
+                link = new Link();
                 link.setGps(linkGps);
             }
+
+            link.setStart(getIntersection(startNo));
+            link.setEnd(getIntersection(endNo));
 
             if (!Objects.equals(lastStratNo, startNo)) {
                 gpsOrder = new AtomicInteger(0);
@@ -189,6 +179,7 @@ public class UploadServiceImpl implements UploadService {
                     .lng(getDouble(record, LinkHeaders.lng))
                     .gpsOrder(gpsOrder.incrementAndGet())
                     .build());
+
             linkRepository.save(link);
 
             lastStratNo = startNo;
@@ -203,11 +194,17 @@ public class UploadServiceImpl implements UploadService {
             return;
         }
 
-        String password = passwordEncoder.encode("camera12!@");
+        String password = "";
         ObjectMapper mapper = new ObjectMapper();
         Camera camera;
 
         for (CSVRecord record : records) {
+
+            if (getString(record, CameraHeaders.password) != null) {
+                password = passwordEncoder.encode(getString(record, CameraHeaders.password));
+            } else {
+                password = passwordEncoder.encode("camera12!@");
+            }
 
             Optional<Camera> savedCamera = cameraRepository.findByCameraNo(getString(record, CameraHeaders.camera_no));
 
@@ -417,8 +414,8 @@ public class UploadServiceImpl implements UploadService {
 
     private enum LinkHeaders {
         start_no,
-        end_no,
         start_name,
+        end_no,
         end_name,
         lat,
         lng

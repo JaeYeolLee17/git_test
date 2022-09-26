@@ -44,16 +44,16 @@ public class Camera extends BaseTimeEntity {
     @Column(name = "distance")
     private Integer distance;
 
-    @Column(name = "rtsp_url", length = 128)
+    @Column(name = "rtsp_url", length = FieldLengths.RTSP_URL)
     private String rtspUrl;
 
-    @Column(name = "rtsp_id", length = 32)
+    @Column(name = "rtsp_id", length = FieldLengths.RTSP_ID)
     private String rtspId;
 
-    @Column(name = "rtsp_password", length = 128)
+    @Column(name = "rtsp_password", length = FieldLengths.RTSP_PASSWORD)
     private String rtspPassword;
 
-    @Column(name = "server_url", length = 128)
+    @Column(name = "server_url", length = FieldLengths.SERVER_URL)
     private String serverUrl;
 
     @Column(name = "send_cycle")

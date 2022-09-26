@@ -3,6 +3,7 @@ package com.e4motion.challenge.api.domain;
 import com.e4motion.challenge.api.constant.TsiSignalInfo;
 import com.e4motion.challenge.api.constant.TsiSignalStatus;
 import com.e4motion.challenge.api.constant.TsiTimeReliability;
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,18 +27,18 @@ public class TsiSignal extends BaseTimeEntity {
     @JoinColumn(name = "tsi_id")
     private Tsi tsi;
 
-    @Column(name = "info", length = 20)
+    @Column(name = "info", length = FieldLengths.TSI_SIGNAL_INFO)
     @Enumerated(EnumType.STRING)
     private TsiSignalInfo info;
 
-    @Column(name = "time_reliability", length = 20)
+    @Column(name = "time_reliability", length = FieldLengths.TSI_TIME_RELIABILITY)
     @Enumerated(EnumType.STRING)
     private TsiTimeReliability timeReliability;
 
     @Column(name = "person")
     private Boolean person;
 
-    @Column(name = "status", length = 20)
+    @Column(name = "status", length = FieldLengths.TSI_SIGNAL_STATUS)
     @Enumerated(EnumType.STRING)
     private TsiSignalStatus status;
 

@@ -37,7 +37,8 @@ public class TsiController {
         return new Response("tsi", tsiDtos);
     }
 
-    @Operation(summary = "교통신호정보 수신 등록 - 인증 토큰 필요")
+    @Operation(summary = "교통신호정보 수신 등록", description = "접근 권한 : 최고관리자, 운영자, 사용자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @GetMapping(value = "/tsi/subscribe")
     public SseEmitter subscribe(@RequestParam(value = "filterBy", required = false) TsiFilterBy filterBy,
                                 @RequestParam(value = "filterValue", required = false) String filterValue) {

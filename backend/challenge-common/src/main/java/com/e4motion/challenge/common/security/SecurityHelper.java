@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
 @Component
 public class SecurityHelper {
 
+    public String getLoginUsername() {
+        return getLoginUser().getUsername();
+    }
+
     public AuthorityName getLoginRole() {
         return getAuthority(getLoginUser());
     }

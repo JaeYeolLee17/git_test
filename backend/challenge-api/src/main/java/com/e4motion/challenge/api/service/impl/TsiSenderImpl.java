@@ -33,7 +33,7 @@ public class TsiSenderImpl implements TsiSender {
 
     private final IntersectionRepository intersectionRepository;
     private final TsiRepository tsiRepository;
-    private final SecurityHelper securityHelper;        // TODO: authentication header for javascript EventSource
+    private final SecurityHelper securityHelper;
     private final ConcurrentHashMap<String, EmitterInfo> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter subscribe(TsiFilterBy filterBy, String filterValue) {
@@ -104,8 +104,7 @@ public class TsiSenderImpl implements TsiSender {
     }
 
     private String getEmitterId() {
-        //return securityHelper.getLoginUsername() + SPACE + DateTimeHelper.formatLocalDateTime(LocalDateTime.now());
-        return "admin" + SPACE + DateTimeHelper.formatLocalDateTime(LocalDateTime.now());
+        return securityHelper.getLoginUsername() + SPACE + DateTimeHelper.formatLocalDateTime(LocalDateTime.now());
     }
 
     private String getSseId(String emitterId) {

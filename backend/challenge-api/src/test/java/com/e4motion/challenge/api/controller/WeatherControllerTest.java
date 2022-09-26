@@ -2,7 +2,7 @@ package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.api.constant.WeatherArea;
 import com.e4motion.challenge.api.dto.WeatherDto;
-import com.e4motion.challenge.api.service.OpenWeatherService;
+import com.e4motion.challenge.api.service.WeatherService;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.JsonHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +32,7 @@ public class WeatherControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    OpenWeatherService openWeatherService;
+    WeatherService weatherService;
 
     @Test
     public void mockMvcIsNotNull() throws Exception {
@@ -43,7 +43,7 @@ public class WeatherControllerTest {
     public void getWithoutRole() throws Exception {
 
         WeatherDto expectedWeather = createWeatherDto();
-        doReturn(expectedWeather).when(openWeatherService).get(WeatherArea.Daegu);
+        doReturn(expectedWeather).when(weatherService).get(WeatherArea.Daegu);
 
         assertGet(HttpStatus.UNAUTHORIZED, Response.FAIL, WeatherArea.Daegu, null);
     }
@@ -53,7 +53,7 @@ public class WeatherControllerTest {
     public void getWithAdminRole() throws Exception {
 
         WeatherDto expectedWeather = createWeatherDto();
-        doReturn(expectedWeather).when(openWeatherService).get(WeatherArea.Daegu);
+        doReturn(expectedWeather).when(weatherService).get(WeatherArea.Daegu);
 
         assertGet(HttpStatus.OK, Response.OK, WeatherArea.Daegu, expectedWeather);
     }
@@ -63,7 +63,7 @@ public class WeatherControllerTest {
     public void getWithManagerRole() throws Exception {
 
         WeatherDto expectedWeather = createWeatherDto();
-        doReturn(expectedWeather).when(openWeatherService).get(WeatherArea.Daegu);
+        doReturn(expectedWeather).when(weatherService).get(WeatherArea.Daegu);
 
         assertGet(HttpStatus.OK, Response.OK, WeatherArea.Daegu, createWeatherDto());
     }
@@ -73,7 +73,7 @@ public class WeatherControllerTest {
     public void getWithUserRole() throws Exception {
 
         WeatherDto expectedWeather = createWeatherDto();
-        doReturn(expectedWeather).when(openWeatherService).get(WeatherArea.Daegu);
+        doReturn(expectedWeather).when(weatherService).get(WeatherArea.Daegu);
 
         assertGet(HttpStatus.OK, Response.OK, WeatherArea.Daegu, createWeatherDto());
     }

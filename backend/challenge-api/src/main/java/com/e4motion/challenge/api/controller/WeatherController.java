@@ -1,7 +1,7 @@
 package com.e4motion.challenge.api.controller;
 
 import com.e4motion.challenge.api.constant.WeatherArea;
-import com.e4motion.challenge.api.service.OpenWeatherService;
+import com.e4motion.challenge.api.service.WeatherService;
 import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,20 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "v2")
 public class WeatherController {
 
-    private static final String AREA_DEFAULT = "Daegu";
+    private final WeatherService weatherService;
 
-    // TODO: by sjkim
-    // TODO: weather service interface 이름은 그냥 WeatherService로.
-    private final OpenWeatherService openWeatherService;
-
-    // TODO: by sjkim
-    // TODO: required=true, 그러면 defaultValue 도 필요없고.
-    @Operation(summary = "날씨 데이터", description = "접근 권한 : 최고관리자, 운영자, 사용자")
+    @Operation(summary = "날씨 정보", description = "접근 권한 : 최고관리자, 운영자, 사용자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
     @GetMapping("/weather")
-    public Response get(@RequestParam(required = false, defaultValue = AREA_DEFAULT) WeatherArea area) throws Exception {
+    public Response get(@RequestParam(required = true) WeatherArea area) throws Exception {
 
-        return new Response("weather", openWeatherService.get(area));
+        return new Response("weather", weatherService.get(area));
     }
 }
 

@@ -67,7 +67,7 @@ public class CameraServiceImpl implements CameraService {
                         settingsUpdated = true;
                     }
 
-                    if (cameraDto.getPassword() != null) {          // TODO: old, new to update?
+                    if (cameraDto.getPassword() != null) {
                         camera.setPassword(passwordEncoder.encode(cameraDto.getPassword()));
                         settingsUpdated = true;
                     }
@@ -149,7 +149,7 @@ public class CameraServiceImpl implements CameraService {
                     }
 
                     if (cameraDto.getRoad() != null) {
-                        try {           // TODO: exception 을 어떻게 처리해야 할까?
+                        try {
                             CameraRoad cameraRoad = cameraMapper.toCameraRoad(cameraDto.getRoad());
                             if (camera.getRoad() != null) {
                                 camera.getRoad().setStartLine(cameraRoad.getStartLine());

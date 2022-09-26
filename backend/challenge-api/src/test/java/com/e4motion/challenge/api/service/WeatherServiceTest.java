@@ -20,10 +20,10 @@ import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class OpenWeatherServiceTest {
+class WeatherServiceTest {
 
     @Autowired
-    OpenWeatherService openWeatherService;
+    WeatherService weatherService;
 
     @MockBean
     RestTemplate restTemplate;
@@ -39,8 +39,8 @@ class OpenWeatherServiceTest {
 
         doReturn(expectedWeather).when(restTemplate).getForObject(url, WeatherDto.class, area);
 
-        assertThat(openWeatherService.get(area)).isNotNull();
-        assertThat(openWeatherService.get(area).getId()).isEqualTo(expectedWeather.getId());
+        assertThat(weatherService.get(area)).isNotNull();
+        assertThat(weatherService.get(area).getId()).isEqualTo(expectedWeather.getId());
     }
 
     @Test
@@ -48,7 +48,7 @@ class OpenWeatherServiceTest {
 
         doThrow(RestClientException.class).when(restTemplate).getForObject(url, WeatherDto.class, WeatherArea.Daegu);
 
-        Assertions.assertThrows(OpenWeatherException.class, () -> openWeatherService.get(WeatherArea.Daegu));
+        Assertions.assertThrows(OpenWeatherException.class, () -> weatherService.get(WeatherArea.Daegu));
     }
 
     private WeatherDto createWeatherDto(WeatherArea area) throws JsonProcessingException {

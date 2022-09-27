@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "10. 날씨")
+@Tag(name = "11. 날씨")
 @Slf4j
 @RequiredArgsConstructor
 @RestController

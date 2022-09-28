@@ -14,4 +14,6 @@ public interface DownloadService {
     ResponseEntity<byte[]> downloadLink(HttpServletResponse response) throws IOException;
 
     ResponseEntity<byte[]> downloadCamera(HttpServletResponse response) throws IOException;
+
+    ResponseEntity<byte[]> generateLinkByIntersection(HttpServletResponse response) throws IOException;
 }

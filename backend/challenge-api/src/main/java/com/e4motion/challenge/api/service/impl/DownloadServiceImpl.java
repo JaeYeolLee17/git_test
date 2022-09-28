@@ -19,10 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -138,7 +135,7 @@ public class DownloadServiceImpl implements DownloadService {
     public ResponseEntity<byte[]> downloadCamera(HttpServletResponse response) throws IOException {
 
         String csvFileName = "cameras.csv";
-        String[] csvHeader = {"camera_no,password","intersection_no","direction_no","lat","lng","distance","rtsp_url","rtsp_id","rtsp_password","server_url","send_cycle","collect_cycle","s_width","s_height","l_width","l_height","degree","start_line","lane","uturn","crosswalk","direction"};
+        String[] csvHeader = {"camera_no,password", "intersection_no", "direction_no", "lat", "lng", "distance", "rtsp_url", "rtsp_id", "rtsp_password", "server_url", "send_cycle", "collect_cycle", "s_width", "s_height", "l_width", "l_height", "degree", "start_line", "lane", "uturn", "crosswalk", "direction"};
 
         List<List<Object>> csvBody = new ArrayList<>();
 
@@ -170,6 +167,62 @@ public class DownloadServiceImpl implements DownloadService {
                     camera.getRoad().getDirection()));
         }
 
+        return makeCsv(csvFileName, csvHeader, csvBody);
+    }
+
+    @Transactional
+    public ResponseEntity<byte[]> generateLinkByIntersection(HttpServletResponse response) throws IOException {
+
+        String csvFileName = "linkbyintersection.csv";
+        String[] csvHeader = {"intersection_no", "intersection_name", "near_intersection_no", "near_intersection_name"};
+
+        List<List<Object>> csvBody = new ArrayList<>();
+
+        List<Intersection> allIntersection = intersectionRepository.findAll();
+
+        ArrayList<Link> links = new ArrayList<>();
+
+        String lastNo = null;
+        String linkNo;
+
+        for (Intersection intersection : allIntersection) {
+            linkNo = intersection.getIntersectionNo();
+
+            for (Camera camera : intersection.getCameras()) {
+                if (Objects.equals(lastNo, linkNo)) {
+                    csvBody.add(Arrays.asList(null,
+                            null,
+                            camera.getDirection().getIntersectionNo(),
+                            camera.getDirection().getIntersectionName()));
+                } else {
+                    if (intersection.getRegion() == null) {
+                        csvBody.add(Arrays.asList(intersection.getIntersectionNo(),
+                                intersection.getIntersectionName(),
+                                camera.getDirection().getIntersectionNo(),
+                                camera.getDirection().getIntersectionName()));
+                    }
+                    csvBody.add(Arrays.asList(intersection.getIntersectionNo(),
+                            intersection.getIntersectionName(),
+                            camera.getDirection().getIntersectionNo(),
+                            camera.getDirection().getIntersectionName()));
+                }
+
+                Optional<Link> savedLink = linkRepository.findByStart_IntersectionNoAndEnd_IntersectionNo(intersection.getIntersectionNo(),
+                        camera.getDirection().getIntersectionNo());
+
+                if (!savedLink.isPresent()) {
+                    links.add(Link.builder()
+                            .start(intersection)
+                            .end(camera.getDirection())
+                            .build());
+                }
+
+                lastNo = linkNo;
+            }
+            lastNo = intersection.getIntersectionNo();
+        }
+
+        linkRepository.saveAll(links);
         return makeCsv(csvFileName, csvHeader, csvBody);
     }
 

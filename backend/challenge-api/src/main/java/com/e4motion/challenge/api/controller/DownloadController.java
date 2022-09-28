@@ -51,4 +51,12 @@ public class DownloadController {
 
         return downloadService.downloadCamera(response);
     }
+
+    @Operation(summary = "링크 정보 자동생성", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @GetMapping(value = "/link/file/generate", produces = "text/csv")
+    public ResponseEntity<byte[]> generateLinkByIntersection(HttpServletResponse response) throws Exception {
+
+        return downloadService.generateLinkByIntersection(response);
+    }
 }

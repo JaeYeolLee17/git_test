@@ -28,10 +28,7 @@ public class RegionServiceImpl implements RegionService {
     @Transactional
     public RegionDto create(RegionDto regionDto) {
 
-        regionRepository.findByRegionNo(regionDto.getRegionNo())
-                .ifPresent(region -> {
-                    throw new RegionDuplicateException(RegionDuplicateException.REGION_NO_ALREADY_EXISTS);
-                });
+        checkIfRegionExists(regionDto.getRegionNo());
 
         Region region = regionMapper.toRegion(regionDto);
         region.setGps(makeRegionGps(regionDto, region));
@@ -44,7 +41,8 @@ public class RegionServiceImpl implements RegionService {
 
         return regionRepository.findByRegionNo(regionNo)
                 .map(region -> {
-                    if (regionDto.getRegionNo() != null) {
+                    if (regionDto.getRegionNo() != null && !regionDto.getRegionNo().equals(region.getRegionNo())) {
+                        checkIfRegionExists(regionDto.getRegionNo());
                         region.setRegionNo(regionDto.getRegionNo());
                     }
 
@@ -82,6 +80,15 @@ public class RegionServiceImpl implements RegionService {
 
         Sort sort = Sort.by("regionNo").ascending();
         return regionMapper.toRegionDto(regionRepository.findAll(sort));
+    }
+
+    private void checkIfRegionExists(String regionNo) {
+
+        regionRepository.findByRegionNo(regionNo)
+                .ifPresent(region -> {
+                    throw new RegionDuplicateException(RegionDuplicateException.REGION_NO_ALREADY_EXISTS);
+                });
+
     }
 
     private List<RegionGps> makeRegionGps(RegionDto regionDto, Region region) {

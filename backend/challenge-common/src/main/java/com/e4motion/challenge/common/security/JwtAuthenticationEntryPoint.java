@@ -24,17 +24,19 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	@Override
 	public void commence(HttpServletRequest request,
 						 HttpServletResponse response,
-						 AuthenticationException authenticationException) throws IOException {
+						 AuthenticationException exception) throws IOException {
 
-		// BadCredentialsException : invalid password when login.
 		// InsufficientAuthenticationException : no token or invalid token.
+		// BadCredentialsException : invalid password when login.
 		// DisabledException : disabled user when login.
-		
-		ResponseFail responseFail = new ResponseFail(UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
-		if (authenticationException instanceof BadCredentialsException) {
+
+		ResponseFail responseFail;
+		if (exception instanceof BadCredentialsException) {
 			responseFail = new ResponseFail(UnauthorizedException.CODE, UnauthorizedException.INVALID_PASSWORD);
-		} else if (authenticationException instanceof DisabledException) {
+		} else if (exception instanceof DisabledException) {
 			responseFail = new ResponseFail(UnauthorizedException.CODE, UnauthorizedException.DISABLED_USER);
+		} else {
+			responseFail = new ResponseFail(UnauthorizedException.CODE, UnauthorizedException.UNAUTHORIZED_TOKEN);
 		}
 
     	response.setStatus(HttpStatus.UNAUTHORIZED.value());

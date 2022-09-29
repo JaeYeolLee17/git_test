@@ -6,7 +6,7 @@ public class FieldLengths {
 
     public static final int USERNAME = 32;
     public static final int PASSWORD = 128;
-    public static final int NICKNAME = 32;
+    public static final int NAME = 32;
     public static final int EMAIL = 128;
     public static final int PHONE = 20;
 

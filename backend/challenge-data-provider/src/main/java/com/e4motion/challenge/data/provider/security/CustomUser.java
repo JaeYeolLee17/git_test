@@ -12,17 +12,15 @@ public class CustomUser extends User {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Long userId;
-	private final String nickname;
+	private final String name;
 	private final String email;
 	private final String phone;
 
-	public CustomUser(Long userId, String username, String password, String nickname, String email, String phone, Boolean disabled,
+	public CustomUser(String username, String password, String name, String email, String phone, Boolean disabled,
 					  Collection<? extends GrantedAuthority> authorities) {
 
 		super(username, password, disabled == null || !disabled, true, true, true, authorities);
-		this.userId = userId;
-		this.nickname = nickname;
+		this.name = name;
 		this.email = email;
 		this.phone = phone;
 	}

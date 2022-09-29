@@ -28,8 +28,8 @@ public class User extends BaseTimeEntity {
 	@Column(name = "password", length = FieldLengths.PASSWORD, nullable = false)
 	private String password;
 
-	@Column(name = "nickname", length = FieldLengths.NICKNAME)
-	private String nickname;
+	@Column(name = "name", length = FieldLengths.NAME)
+	private String name;
 
 	@Column(name = "email", length = FieldLengths.EMAIL)
 	private String email;

@@ -134,7 +134,7 @@ class UserUpdateDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateNickname() throws Exception {
+    public void validateName() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
         UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
@@ -142,19 +142,19 @@ class UserUpdateDtoTest {
         doReturn(userDto).when(userService).update(any(), any());
         doNothing().when(securityHelper).checkIfLoginUserForRoleUser(userDto.getUsername());
 
-        userUpdateDto.setNickname(null);
+        userUpdateDto.setName(null);
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userUpdateDto.setNickname("");
+        userUpdateDto.setName("");
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userUpdateDto.setNickname(" ");
+        userUpdateDto.setName(" ");
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
 
-        userUpdateDto.setNickname("Long nickname exceed length 32---");     // length 33
+        userUpdateDto.setName("Long name exceed length 32-------");     // length 33
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userUpdateDto.setNickname("Long nickname length 32 12345678");      // length 32
+        userUpdateDto.setName("Long name length 32 123456789012");      // length 32
         assertUpdate(userDto.getUsername(), userUpdateDto, HttpStatus.OK, Response.OK, null, null);
     }
 

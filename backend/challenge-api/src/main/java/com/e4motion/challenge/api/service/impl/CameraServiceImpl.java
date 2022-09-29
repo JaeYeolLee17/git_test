@@ -31,10 +31,7 @@ public class CameraServiceImpl implements CameraService {
     @Transactional
     public CameraDto create(CameraDto cameraDto) {
 
-        cameraRepository.findByCameraNo(cameraDto.getCameraNo())
-                .ifPresent(intersection -> {
-                    throw new CameraDuplicateException(CameraDuplicateException.CAMERA_NO_ALREADY_EXISTS);
-                });
+        checkIfCameraExists(cameraDto.getCameraNo());
 
         cameraDto.setPassword(passwordEncoder.encode(cameraDto.getPassword()));
         cameraDto.setSettingsUpdated(true);
@@ -62,7 +59,8 @@ public class CameraServiceImpl implements CameraService {
 
                     boolean settingsUpdated = false;
 
-                    if (cameraDto.getCameraNo() != null) {
+                    if (cameraDto.getCameraNo() != null && !cameraDto.getCameraNo().equals(camera.getCameraNo())) {
+                        checkIfCameraExists(cameraDto.getCameraNo());
                         camera.setCameraNo(cameraDto.getCameraNo());
                         settingsUpdated = true;
                     }
@@ -191,6 +189,14 @@ public class CameraServiceImpl implements CameraService {
     public List<CameraDto> getList(String regionNo, String intersectionNo) {
 
         return cameraMapper.toCameraDto(cameraRepository.findAllByRegionNoIntersectionNo(regionNo, intersectionNo));
+    }
+
+    private void checkIfCameraExists(String cameraNo) {
+
+        cameraRepository.findByCameraNo(cameraNo)
+                .ifPresent(intersection -> {
+                    throw new CameraDuplicateException(CameraDuplicateException.CAMERA_NO_ALREADY_EXISTS);
+                });
     }
 
     private Intersection getIntersection(String intersectionNo) {

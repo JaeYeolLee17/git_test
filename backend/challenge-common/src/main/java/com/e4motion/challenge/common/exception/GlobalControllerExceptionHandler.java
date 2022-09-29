@@ -20,93 +20,93 @@ public class GlobalControllerExceptionHandler {
 	
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(value = UnauthorizedException.class)
-	public Response handleUnauthorizedException(UnauthorizedException ex) {
+	public Response handleUnauthorizedException(UnauthorizedException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 	
 	@ResponseStatus(value = HttpStatus.FORBIDDEN)
 	@ExceptionHandler(value = InaccessibleException.class)
-	public Response handleInaccessibleException(InaccessibleException ex) {
+	public Response handleInaccessibleException(InaccessibleException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 	
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = UserNotFoundException.class)
-	public Response handleUserNotFoundException(UserNotFoundException ex) {
+	public Response handleUserNotFoundException(UserNotFoundException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(value = UserDuplicateException.class)
-	public Response handleUserDuplicateException(UserDuplicateException ex) {
+	public Response handleUserDuplicateException(UserDuplicateException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = RegionNotFoundException.class)
-	public Response handleRegionNotFoundException(RegionNotFoundException ex) {
+	public Response handleRegionNotFoundException(RegionNotFoundException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(value = RegionDuplicateException.class)
-	public Response handleRegionDuplicateException(RegionDuplicateException ex) {
+	public Response handleRegionDuplicateException(RegionDuplicateException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = IntersectionNotFoundException.class)
-	public Response handleIntersectionNotFoundException(IntersectionNotFoundException ex) {
+	public Response handleIntersectionNotFoundException(IntersectionNotFoundException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(value = IntersectionDuplicateException.class)
-	public Response handleIntersectionDuplicateException(IntersectionDuplicateException ex) {
+	public Response handleIntersectionDuplicateException(IntersectionDuplicateException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = LinkNotFoundException.class)
-	public Response handleLinkNotFoundException(LinkNotFoundException ex) {
+	public Response handleLinkNotFoundException(LinkNotFoundException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(value = LinkDuplicateException.class)
-	public Response handleLinkDuplicateException(LinkDuplicateException ex) {
+	public Response handleLinkDuplicateException(LinkDuplicateException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = CameraNotFoundException.class)
-	public Response handleCameraNotFoundException(CameraNotFoundException ex) {
+	public Response handleCameraNotFoundException(CameraNotFoundException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 	
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(value = CameraDuplicateException.class)
-	public Response handleCameraDuplicateException(CameraDuplicateException ex) {
+	public Response handleCameraDuplicateException(CameraDuplicateException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value = InvalidParamException.class)
-	public Response handleInvalidParamException(InvalidParamException ex) {
+	public Response handleInvalidParamException(InvalidParamException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -115,16 +115,16 @@ public class GlobalControllerExceptionHandler {
 			MissingServletRequestParameterException.class,			// Exception by param missing
 			MethodArgumentTypeMismatchException.class,				// Exception by Json parser for type mismatch
 			ConstraintViolationException.class})					// Exception by @Validated in request param
-	public Response handleParamsException(Exception ex) {
+	public Response handleParamsException(Exception e) {
 
-		return new ResponseFail(InvalidParamException.CODE, ex.getMessage());
+		return new ResponseFail(InvalidParamException.CODE, e.getMessage());
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(OpenWeatherException.class)
-	public Response handleOpenWeatherUrlException(OpenWeatherException ex) {
+	public Response handleOpenWeatherUrlException(OpenWeatherException e) {
 
-		return new ResponseFail(ex.getCode(), ex.getMessage());
+		return new ResponseFail(e.getCode(), e.getMessage());
 	}
 
 }

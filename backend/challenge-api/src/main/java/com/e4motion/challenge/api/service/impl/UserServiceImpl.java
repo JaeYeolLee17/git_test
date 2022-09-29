@@ -30,10 +30,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto create(UserDto userDto) {
 
-    	userRepository.findByUsername(userDto.getUsername())
-				.ifPresent(user -> {
-					throw new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS);
-				});
+		checkIfUsernameExists(userDto.getUsername());
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
@@ -45,7 +42,8 @@ public class UserServiceImpl implements UserService {
 
     	return userRepository.findByUsername(username)
 				.map(user -> {
-					if (userUpdateDto.getUsername() != null) {
+					if (userUpdateDto.getUsername() != null && !userUpdateDto.getUsername().equals(user.getUsername())) {
+						checkIfUsernameExists(userUpdateDto.getUsername());
 						user.setUsername(userUpdateDto.getUsername());
 					}
 
@@ -56,8 +54,8 @@ public class UserServiceImpl implements UserService {
 						user.setPassword(passwordEncoder.encode(userUpdateDto.getNewPassword()));
 					}
 
-					if (userUpdateDto.getNickname() != null) {
-						user.setNickname(userUpdateDto.getNickname());
+					if (userUpdateDto.getName() != null) {
+						user.setName(userUpdateDto.getName());
 					}
 
 					if (userUpdateDto.getEmail() != null) {
@@ -101,4 +99,12 @@ public class UserServiceImpl implements UserService {
 		Sort sort = Sort.by("userId").ascending();
         return userMapper.toUserDto(userRepository.findAll(sort));
     }
+
+	private void checkIfUsernameExists(String username) {
+
+		userRepository.findByUsername(username)
+				.ifPresent(user -> {
+					throw new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS);
+				});
+	}
 }

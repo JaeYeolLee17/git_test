@@ -108,25 +108,25 @@ class UserDtoTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void validateNickname() throws Exception {
+    public void validateName() throws Exception {
 
         UserDto userDto = TestDataHelper.getUserDto1();
 
         doReturn(userDto).when(userService).create(any());
 
-        userDto.setNickname(null);
+        userDto.setName(null);
         assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setNickname("");
+        userDto.setName("");
         assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setNickname(" ");
+        userDto.setName(" ");
         assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
 
-        userDto.setNickname("Long nickname exceed length 32---");   // length 33
+        userDto.setName("Long name exceed length 32-------");   // length 33
         assertCreate(userDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        userDto.setNickname("Long nickname length 32 12345678");    // length 32
+        userDto.setName("Long name length 32 123456789012");    // length 32
         assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
     }
 

@@ -24,12 +24,14 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 					   HttpServletResponse response,
 					   AccessDeniedException accessDeniedException) throws IOException {
 
+		// AccessDeniedException : no access authority by role.
+
 		ResponseFail fail = new ResponseFail(InaccessibleException.CODE, InaccessibleException.ACCESS_DENIED);
-    	response.setStatus(HttpStatus.FORBIDDEN.value());
+		response.setStatus(HttpStatus.FORBIDDEN.value());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-		
-		PrintWriter out = response.getWriter(); 
+
+		PrintWriter out = response.getWriter();
 		out.print(fail);
 		out.flush();
 		out.close();

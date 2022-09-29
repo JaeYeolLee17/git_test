@@ -102,7 +102,7 @@ public class UserServiceTest {
 				.userId(2L)
 				.username(userUpdateDto.getUsername())
 				.password(passwordEncoder.encode(userUpdateDto.getNewPassword()))
-				.nickname(userUpdateDto.getNickname())
+				.name(userUpdateDto.getName())
 				.email(userUpdateDto.getEmail())
 				.phone(userUpdateDto.getPhone())
 				.disabled(userUpdateDto.getDisabled())
@@ -222,7 +222,7 @@ public class UserServiceTest {
 	private void assertEquals(UserDto userDto1, UserDto userDto2) {
 
 		assertThat(userDto1.getUsername()).isEqualTo(userDto2.getUsername());
-		assertThat(userDto1.getNickname()).isEqualTo(userDto2.getNickname());
+		assertThat(userDto1.getName()).isEqualTo(userDto2.getName());
 		assertThat(userDto1.getEmail()).isEqualTo(userDto2.getEmail());
 		assertThat(userDto1.getPhone()).isEqualTo(userDto2.getPhone());
 		assertThat(userDto1.getAuthority()).isEqualTo(userDto2.getAuthority());
@@ -231,7 +231,7 @@ public class UserServiceTest {
 	private void assertEquals(UserDto userDto, UserUpdateDto userUpdateDto) {
 
 		assertThat(userDto.getUsername()).isEqualTo(userUpdateDto.getUsername());
-		assertThat(userDto.getNickname()).isEqualTo(userUpdateDto.getNickname());
+		assertThat(userDto.getName()).isEqualTo(userUpdateDto.getName());
 		assertThat(userDto.getEmail()).isEqualTo(userUpdateDto.getEmail());
 		assertThat(userDto.getPhone()).isEqualTo(userUpdateDto.getPhone());
 		assertThat(userDto.getAuthority()).isEqualTo(userUpdateDto.getAuthority());

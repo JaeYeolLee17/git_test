@@ -29,9 +29,9 @@ public class UserDto {
     @Pattern(regexp = RegExpressions.strongPassword)
     private String password;
 
-    @Schema(maxLength = FieldLengths.NICKNAME)
-    @Length(max = FieldLengths.NICKNAME)
-    private String nickname;
+    @Schema(maxLength = FieldLengths.NAME)
+    @Length(max = FieldLengths.NAME)
+    private String name;
 
     @Schema(maxLength = FieldLengths.EMAIL)
     @Length(max = FieldLengths.EMAIL)

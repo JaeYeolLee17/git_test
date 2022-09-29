@@ -33,9 +33,9 @@ public class UserUpdateDto {
     @Pattern(regexp = RegExpressions.strongPassword)
     private String newPassword;
 
-    @Schema(maxLength = FieldLengths.NICKNAME)
-    @Length(max = FieldLengths.NICKNAME)
-    private String nickname;
+    @Schema(maxLength = FieldLengths.NAME)
+    @Length(max = FieldLengths.NAME)
+    private String name;
 
     @Schema(maxLength = FieldLengths.EMAIL)
     @Length(max = FieldLengths.EMAIL)

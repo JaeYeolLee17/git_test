@@ -53,7 +53,7 @@ springdoc:
     info:
       title: Challenge Data Collector API
       description: REST API for Challenge Data Collector
-      version: 1.0.0
+      version: 2.0.0
     syntaxHighlight:                # because of ui performance
       activated: false
 

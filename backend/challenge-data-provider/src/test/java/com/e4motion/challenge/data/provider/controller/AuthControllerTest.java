@@ -171,8 +171,7 @@ public class AuthControllerTest extends HBaseMockTest {
 
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
 
-		return new CustomUser(1L,
-				username,
+		return new CustomUser(username,
 				passwordEncoder.encode(password),
 				null,
 				null,

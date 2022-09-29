@@ -54,7 +54,7 @@ public class AuthController {
 
         UserDto userDto = UserDto.builder()
         		.username(userDetails.getUsername())
-                .nickname(userDetails.getNickname())
+                .name(userDetails.getName())
         		.email(userDetails.getEmail())
         		.phone(userDetails.getPhone())
         		.authority(authorities.isEmpty() ? null : authorities.iterator().next())

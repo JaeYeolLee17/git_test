@@ -11,7 +11,7 @@ public class DateTimeHelper {
     public static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
     public static final String dateFormat = "yyyy-MM-dd";
 
-    public static LocalDateTime parseLocalDateTime(String dateTime) throws ParseException {
+    public static LocalDateTime parseLocalDateTime(String dateTime) {
         return LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern(DateTimeHelper.dateTimeFormat));
     }
 

@@ -28,10 +28,7 @@ public class IntersectionServiceImpl implements IntersectionService {
     @Transactional
     public IntersectionDto create(IntersectionDto intersectionDto) {
 
-        intersectionRepository.findByIntersectionNo(intersectionDto.getIntersectionNo())
-                .ifPresent(intersection -> {
-                    throw new IntersectionDuplicateException(IntersectionDuplicateException.INTERSECTION_NO_ALREADY_EXISTS);
-                });
+        checkIfIntersectionExists(intersectionDto.getIntersectionNo());
 
         Intersection intersection = intersectionMapper.toIntersection(intersectionDto);
         if (intersection.getRegion() != null) {
@@ -46,7 +43,9 @@ public class IntersectionServiceImpl implements IntersectionService {
 
         return intersectionRepository.findByIntersectionNo(intersectionNo)
                 .map(intersection -> {
-                    if (intersectionDto.getIntersectionNo() != null) {
+                    if (intersectionDto.getIntersectionNo() != null &&
+                            !intersectionDto.getIntersectionNo().equals(intersection.getIntersectionNo())) {
+                        checkIfIntersectionExists(intersectionDto.getIntersectionNo());
                         intersection.setIntersectionNo(intersectionDto.getIntersectionNo());
                     }
 
@@ -93,6 +92,15 @@ public class IntersectionServiceImpl implements IntersectionService {
                 intersectionRepository.findAllByRegion_RegionNo(regionNo, sort) : intersectionRepository.findAll(sort);
 
         return intersectionMapper.toIntersectionDto(intersections);
+    }
+
+    private void checkIfIntersectionExists(String intersectionNo) {
+
+        intersectionRepository.findByIntersectionNo(intersectionNo)
+                .ifPresent(intersection -> {
+                    throw new IntersectionDuplicateException(IntersectionDuplicateException.INTERSECTION_NO_ALREADY_EXISTS);
+                });
+
     }
 
     private Region getRegion(String regionNo) {

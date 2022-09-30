@@ -57,7 +57,7 @@ export type KakaoMapAvlType = {
 export type kakaoMapCenterType = {
     lat: number;
     lng: number;
-}
+};
 
 export const displayRegion = (region: KakaoMapRegionType) => {
     if (region === undefined) return null;
@@ -642,6 +642,7 @@ function KakaoMap({
     center,
     zoomLevel,
     onChangedZoomLevel,
+    onClickMap,
 }: {
     style: KakaoMapStyleType;
     transitionState?: string | undefined;
@@ -654,6 +655,10 @@ function KakaoMap({
     center?: kakaoMapCenterType | undefined;
     zoomLevel?: number | undefined;
     onChangedZoomLevel?: (level: number) => void;
+    onClickMap?: (
+        target: kakao.maps.Map,
+        mouseEvent: kakao.maps.event.MouseEvent
+    ) => void;
 }) {
     const [kakaoMap, setKakaoMap] = useState<kakao.maps.Map>();
     const [level, setLevel] = useState<number>(7);
@@ -1196,20 +1201,32 @@ function KakaoMap({
             onChangedZoomLevel(map.getLevel());
     };
 
+    const handleClick = (
+        target: kakao.maps.Map,
+        mouseEvent: kakao.maps.event.MouseEvent
+    ) => {
+        if (onClickMap !== undefined) onClickMap(target, mouseEvent);
+    };
+
     return (
         <Map
             center={
-                center === undefined || "" ?
-                { // 지도의 중심좌표
-                    lat: 35.85810060700929,
-                    lng: 128.55729938820272
-                }
-                : center
+                center === undefined || ""
+                    ? {
+                          // 지도의 중심좌표
+                          lat: 35.85810060700929,
+                          lng: 128.55729938820272,
+                      }
+                    : center
             }
             style={style}
             level={level}
             onCreate={(map) => handleMap(map)}
             onZoomChanged={(map) => onZoomChanged(map)}
+            onClick={(
+                target: kakao.maps.Map,
+                mouseEvent: kakao.maps.event.MouseEvent
+            ) => handleClick(target, mouseEvent)}
         >
             {region?.isShow && displayRegion(region)}
             {displayIntersection(intersections)}

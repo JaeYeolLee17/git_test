@@ -9,24 +9,24 @@ import styles from "../pages/ManagementCamera.module.css";
 import * as Common from "../commons/common";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import editBtn from "../assets/images/btn_list_edit_n.svg"
+import editBtn from "../assets/images/btn_list_edit_n.svg";
 
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 
 type rows = {
-    id: string,
-    region: string,
-    intersection: string,
-    cameraDirection: string
-}
+    id: string;
+    region: string;
+    intersection: string;
+    cameraDirection: string;
+};
 
-type columns ={
-    field: string,
-    headerName: string,
-    flex: number,
-    cellRenderer: any
-  }
+type columns = {
+    field: string;
+    headerName: string;
+    flex: number;
+    cellRenderer: any;
+};
 
 function ManagementCamera() {
     const userDetails = useAuthState();
@@ -52,34 +52,36 @@ function ManagementCamera() {
         {
             field: "intersection",
             headerName: "교차로",
-            flex: 2,            
-            cellRenderer: undefined
+            flex: 2,
+            cellRenderer: undefined,
         },
         {
             field: "cameraDirection",
             headerName: "카메라 설치 방향",
             flex: 3,
-            cellRenderer: undefined
+            cellRenderer: undefined,
         },
         {
             field: "data",
             headerName: "",
             flex: 1,
-            cellRenderer: (params :any) => {
+            cellRenderer: (params: any) => {
                 return (
                     <Button
                         onClick={(e) => {
-                            navigate(
-                                Common.PAGE_MANAGEMENT_CAMERA_DETAIL, {
-                                state :listCamera.find(function(data){ return data.cameraNo === params.data.id })})
-                        }
-                    }>
+                            navigate(Common.PAGE_MANAGEMENT_CAMERA_DETAIL, {
+                                state: listCamera.find(function (data) {
+                                    return data.cameraNo === params.data.id;
+                                }),
+                            });
+                        }}
+                    >
                         <img src={editBtn} width={20}></img>
                     </Button>
-                )
-            }
-        }
-      ];
+                );
+            },
+        },
+    ];
 
     useEffect(() => {
         requestCameras();
@@ -141,11 +143,11 @@ function ManagementCamera() {
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item md={7}>
-                    <TableManagement 
-                            columns={columns} 
-                            rows={rows}
-                            selectedId={selectedCameraNo}
-                            clickEvent={onRowClick}
+                    <TableManagement
+                        columns={columns}
+                        rows={rows}
+                        selectedId={selectedCameraNo}
+                        clickEvent={onRowClick}
                     />
                 </Grid>
                 <Grid item md={5}>
@@ -163,7 +165,15 @@ function ManagementCamera() {
                                 clickEvent: handleClickCamera,
                             }}
                             zoomLevel={zoomLevel}
-                            center={selectedCameraNo === "" ? undefined : listCamera.find(function(data){ return data.cameraNo === selectedCameraNo }).gps}
+                            center={
+                                selectedCameraNo === ""
+                                    ? undefined
+                                    : listCamera.find(function (data) {
+                                          return (
+                                              data.cameraNo === selectedCameraNo
+                                          );
+                                      }).gps
+                            }
                         />
                     </Box>
                 </Grid>

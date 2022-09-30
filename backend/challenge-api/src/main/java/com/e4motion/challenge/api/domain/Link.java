@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_link", uniqueConstraints = {@UniqueConstraint(columnNames = {"start_id", "end_id"})})
+@Table(name = "nt_link", uniqueConstraints = @UniqueConstraint(columnNames = {"start_id", "end_id"}))
 public class Link extends BaseTimeEntity {
 
     @Id

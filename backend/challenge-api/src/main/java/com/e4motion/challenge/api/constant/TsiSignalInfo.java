@@ -1,4 +1,4 @@
-package com.e4motion.challenge.api.dto;
+package com.e4motion.challenge.api.constant;
 
 public enum TsiSignalInfo {
 

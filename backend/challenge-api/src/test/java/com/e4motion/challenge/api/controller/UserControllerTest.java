@@ -54,15 +54,17 @@ public class UserControllerTest {
 	@WithMockUser(roles = "ADMIN")
 	public void createWithAdminRole() throws Exception {
 
+		UserDto userCreateDto = TestDataHelper.getUserDto1();
 		UserDto userDto = TestDataHelper.getUserDto1();
+
 		doReturn(userDto).when(userService).create(any());
 
-		assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+		assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
-	public void createWithAdminRole_DuplicateUser() throws Exception {	// create duplicate user
+	public void createWithAdminRole_DuplicateUser() throws Exception {
 
 		UserDto userDto = TestDataHelper.getUserDto1();
 		doThrow(new UserDuplicateException(UserDuplicateException.USERNAME_ALREADY_EXISTS)).when(userService).create(any());
@@ -74,10 +76,12 @@ public class UserControllerTest {
 	@WithMockUser(roles = "MANAGER")
 	public void createWithManagerRole() throws Exception {
 
+		UserDto userCreateDto = TestDataHelper.getUserDto1();
 		UserDto userDto = TestDataHelper.getUserDto1();
+
 		doReturn(userDto).when(userService).create(any());
 
-		assertCreate(userDto, HttpStatus.OK, Response.OK, null, null);
+		assertCreate(userCreateDto, HttpStatus.OK, Response.OK, null, null);
 	}
 
 	@Test

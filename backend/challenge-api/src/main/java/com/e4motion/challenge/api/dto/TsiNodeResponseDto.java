@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TsiNodeResponse {
+public class TsiNodeResponseDto {
 
     private String resultCode;
 

@@ -1,24 +1,16 @@
 package com.e4motion.challenge.api.controller;
 
+import com.e4motion.challenge.api.dto.UserDto;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
+import com.e4motion.challenge.api.service.UserService;
+import com.e4motion.challenge.common.constant.AuthorityName;
+import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.security.SecurityHelper;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.e4motion.challenge.api.dto.UserDto;
-import com.e4motion.challenge.api.service.UserService;
-import com.e4motion.challenge.common.response.Response;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -46,7 +38,16 @@ public class UserController {
 
         securityHelper.checkIfLoginUserForRoleUser(username);
 
+        preventUpdateDisabledOrAuthorityForRoleUser(userUpdateDto);
+
 		return new Response("user", userService.update(username, userUpdateDto));
+    }
+
+    private void preventUpdateDisabledOrAuthorityForRoleUser(UserUpdateDto userUpdateDto) {
+        if(AuthorityName.ROLE_USER.equals(securityHelper.getLoginRole())) {
+            userUpdateDto.setDisabled(null);
+            userUpdateDto.setAuthority(null);
+        }
     }
 
     @Operation(summary = "사용자 삭제", description = "접근 권한 : 최고관리자, 운영자")

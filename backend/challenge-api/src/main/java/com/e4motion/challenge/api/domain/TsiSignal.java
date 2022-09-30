@@ -1,8 +1,9 @@
 package com.e4motion.challenge.api.domain;
 
-import com.e4motion.challenge.api.dto.TsiSignalInfo;
-import com.e4motion.challenge.api.dto.TsiSignalStatus;
-import com.e4motion.challenge.api.dto.TsiTimeReliability;
+import com.e4motion.challenge.api.constant.TsiSignalInfo;
+import com.e4motion.challenge.api.constant.TsiSignalStatus;
+import com.e4motion.challenge.api.constant.TsiTimeReliability;
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_tsi_signal", uniqueConstraints = {@UniqueConstraint(columnNames = {"tsi_id", "info", "direction"})})
+@Table(name = "nt_tsi_signal", uniqueConstraints = @UniqueConstraint(columnNames = {"tsi_id", "info", "direction"}))
 public class TsiSignal extends BaseTimeEntity {
 
     @Id
@@ -26,18 +27,18 @@ public class TsiSignal extends BaseTimeEntity {
     @JoinColumn(name = "tsi_id")
     private Tsi tsi;
 
-    @Column(name = "info", length = 20)
+    @Column(name = "info", length = FieldLengths.TSI_SIGNAL_INFO)
     @Enumerated(EnumType.STRING)
     private TsiSignalInfo info;
 
-    @Column(name = "time_reliability", length = 20)
+    @Column(name = "time_reliability", length = FieldLengths.TSI_TIME_RELIABILITY)
     @Enumerated(EnumType.STRING)
     private TsiTimeReliability timeReliability;
 
     @Column(name = "person")
     private Boolean person;
 
-    @Column(name = "status", length = 20)
+    @Column(name = "status", length = FieldLengths.TSI_SIGNAL_STATUS)
     @Enumerated(EnumType.STRING)
     private TsiSignalStatus status;
 

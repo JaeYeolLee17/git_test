@@ -3,12 +3,12 @@ package com.e4motion.challenge.api.controller;
 import com.e4motion.challenge.api.dto.StatsDailyDto;
 import com.e4motion.challenge.api.dto.StatsLinkDto;
 import com.e4motion.challenge.api.dto.StatsPeriodDto;
-import com.e4motion.challenge.common.domain.DailyGroupBy;
-import com.e4motion.challenge.common.domain.FilterBy;
-import com.e4motion.challenge.common.domain.GroupBy;
+import com.e4motion.challenge.common.constant.DailyGroupBy;
+import com.e4motion.challenge.common.constant.FilterBy;
+import com.e4motion.challenge.common.constant.GroupBy;
 import com.e4motion.challenge.api.dto.StatsMfdDto;
 import com.e4motion.challenge.api.service.DataStatsService;
-import com.e4motion.challenge.common.domain.Period;
+import com.e4motion.challenge.common.constant.Period;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.DateTimeHelper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Tag(name = " 8. 데이터 통계")
+@Tag(name = " 8. 교통데이터 통계")
 @RequiredArgsConstructor
 @RestController 
 @RequestMapping(path = "v2")

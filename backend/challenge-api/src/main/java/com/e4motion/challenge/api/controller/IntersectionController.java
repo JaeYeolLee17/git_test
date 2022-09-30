@@ -19,7 +19,6 @@ public class IntersectionController {
     
 	private final IntersectionService intersectionService;
 
-    // TODO: 파일 일괄 등록 및 수정
     @Operation(summary = "교차로 등록", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping("/intersection")

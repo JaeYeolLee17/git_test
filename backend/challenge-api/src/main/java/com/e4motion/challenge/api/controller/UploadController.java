@@ -13,17 +13,47 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = " 9. 파일 데이터 업로드")
+@Tag(name = " 9. 데이터 업로드")
 @RequiredArgsConstructor
-@RestController 
+@RestController
 @RequestMapping(path = "v2")
 public class UploadController {
 
     private final UploadService uploadService;
 
+    @Operation(summary = "구역 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/region/file/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadRegion(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadRegion(file);
+
+        return new Response();
+    }
+
+    @Operation(summary = "교차로 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/intersection/file/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadIntersection(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadIntersection(file);
+
+        return new Response();
+    }
+
+    @Operation(summary = "링크 정보", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/link/file/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadLink(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadLink(file);
+
+        return new Response();
+    }
+
     @Operation(summary = "카메라 정보", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping(value = "/camera/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/camera/file/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Response uploadCamera(@RequestPart("file") MultipartFile file) throws Exception {
 
         uploadService.uploadCamera(file);
@@ -33,11 +63,11 @@ public class UploadController {
 
     @Operation(summary = "데이터 통계(15분 단위)", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @PostMapping(value = "/data/stats/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/data/stats/files/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Response uploadDataStats(@RequestPart("files") MultipartFile[] files) throws Exception {
 
         uploadService.uploadDataStats(files);
 
-    	return new Response();
+        return new Response();
     }
 }

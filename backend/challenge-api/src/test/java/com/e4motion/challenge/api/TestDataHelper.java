@@ -2,7 +2,7 @@ package com.e4motion.challenge.api;
 
 import com.e4motion.challenge.api.domain.*;
 import com.e4motion.challenge.api.dto.*;
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +18,7 @@ public class TestDataHelper {
                 .nickname("nickname1")
                 .email("user1@email.com")
                 .phone("01022223333")
-                .enabled(true)
+                .disabled(false)
                 .authority(AuthorityName.ROLE_USER)
                 .build();
     }
@@ -31,7 +31,7 @@ public class TestDataHelper {
                 .nickname("nickname2")
                 .email("user2@email.com")
                 .phone("01044445555")
-                .enabled(true)
+                .disabled(null)
                 .authority(AuthorityName.ROLE_USER)
                 .build();
     }
@@ -45,58 +45,32 @@ public class TestDataHelper {
                 .nickname("nicknameupdated")
                 .email("emailupdated@email.com")
                 .phone("01088889999")
-                .enabled(true)
+                .disabled(false)
                 .authority(AuthorityName.ROLE_ADMIN)
                 .build();
     }
 
     public static User getUser1() {
 
-        return User.builder()
-                .userId(1L)
-                .username("user1")
-                .password("user12!@")
-                .nickname("nickname1")
-                .email("user1@email.com")
-                .phone("01022223333")
-                .enabled(true)
-                .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
-                .build();
+        return getUser(1L, getUserDto1());
     }
 
     public static User getUser2() {
 
+        return getUser(2L, getUserDto2());
+    }
+
+    private static User getUser(long id, UserDto userDto) {
+
         return User.builder()
-                .userId(2L)
-                .username("user2")
-                .password("user12!@")
-                .nickname("nickname2")
-                .email("user2@email.com")
-                .phone("01044445555")
-                .enabled(true)
-                .authorities(Collections.singleton(new Authority(AuthorityName.ROLE_USER)))
-                .build();
-    }
-
-    public static UserDto getAdminUserDto() {
-
-        return UserDto.builder()
-                .username("admin")
-                .password("challenge1123!")
-                .nickname("adminname1")
-                .enabled(true)
-                .authority(AuthorityName.ROLE_ADMIN)
-                .build();
-    }
-
-    public static UserDto getManagerUserDto() {
-
-        return UserDto.builder()
-                .username("manager")
-                .password("challenge1123!")
-                .nickname("managername1")
-                .enabled(true)
-                .authority(AuthorityName.ROLE_MANAGER)
+                .userId(id)
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .nickname(userDto.getNickname())
+                .email(userDto.getEmail())
+                .phone(userDto.getPhone())
+                .disabled(userDto.getDisabled())
+                .authorities(Collections.singleton(new Authority(userDto.getAuthority())))
                 .build();
     }
 
@@ -134,33 +108,27 @@ public class TestDataHelper {
 
     public static Region getRegion1() {
 
-        Region region = Region.builder()
-                .regionId(1L)
-                .regionNo("R01")
-                .regionName("예비사업구역")
-                .build();
-
-        List<RegionGps> gps = new ArrayList<>();
-        gps.add(RegionGps.builder().regionGpsId(1L).region(region).lat(35.1).lng(128.1).gpsOrder(1).build());
-        gps.add(RegionGps.builder().regionGpsId(2L).region(region).lat(35.2).lng(128.2).gpsOrder(2).build());
-        gps.add(RegionGps.builder().regionGpsId(3L).region(region).lat(35.3).lng(128.3).gpsOrder(3).build());
-        region.setGps(gps);
-
-        return region;
+        return getRegion(1L, getRegionDto1());
     }
 
     public static Region getRegion2() {
 
+        return getRegion(2L, getRegionDto2());
+    }
+
+    public static Region getRegion(long id, RegionDto regionDto) {
+
         Region region = Region.builder()
-                .regionId(2L)
-                .regionNo("R02")
-                .regionName("구역02")
+                .regionId(id)
+                .regionNo(regionDto.getRegionNo())
+                .regionName(regionDto.getRegionName())
                 .build();
 
         List<RegionGps> gps = new ArrayList<>();
-        gps.add(RegionGps.builder().regionGpsId(4L).region(region).lat(35.4).lng(128.4).gpsOrder(1).build());
-        gps.add(RegionGps.builder().regionGpsId(5L).region(region).lat(35.5).lng(128.5).gpsOrder(2).build());
-        gps.add(RegionGps.builder().regionGpsId(6L).region(region).lat(35.6).lng(128.6).gpsOrder(3).build());
+        for (GpsDto gpsDto: regionDto.getGps()) {
+            int i = gps.size() + 1;
+            gps.add(RegionGps.builder().regionGpsId((long)i).region(region).lat(gpsDto.getLat()).lng(gpsDto.getLng()).gpsOrder(i).build());
+        }
         region.setGps(gps);
 
         return region;
@@ -190,27 +158,33 @@ public class TestDataHelper {
 
     public static Intersection getIntersection1() {
 
+        IntersectionDto intersectionDto = getIntersectionDto1();
+        Region region = getRegion1();
+
         return Intersection.builder()
                 .intersectionId(1L)
-                .intersectionNo("I0001")
-                .intersectionName("이현삼거리")
-                .lat(35.8784855520347)
-                .lng(128.539885742538)
-                .region(getRegion1())
-                .nationalId(1520005300L)
+                .intersectionNo(intersectionDto.getIntersectionNo())
+                .intersectionName(intersectionDto.getIntersectionName())
+                .lat(intersectionDto.getGps().getLat())
+                .lng(intersectionDto.getGps().getLng())
+                .region(region)
+                .nationalId(intersectionDto.getNationalId())
                 .build();
     }
 
     public static Intersection getIntersection2() {
 
+        IntersectionDto intersectionDto = getIntersectionDto2();
+        Region region = getRegion2();
+
         return Intersection.builder()
                 .intersectionId(2L)
-                .intersectionNo("I0002")
-                .intersectionName("배고개삼거리")
-                .lat(35.8787525882359)
-                .lng(128.547154632069)
-                .region(getRegion2())
-                .nationalId(1520005400L)
+                .intersectionNo(intersectionDto.getIntersectionNo())
+                .intersectionName(intersectionDto.getIntersectionName())
+                .lat(intersectionDto.getGps().getLat())
+                .lng(intersectionDto.getGps().getLng())
+                .region(region)
+                .nationalId(intersectionDto.getNationalId())
                 .build();
     }
 
@@ -299,7 +273,7 @@ public class TestDataHelper {
                 .lastDataTime(null)
                 .build();
 
-        CameraRoad cameraRoadDto = CameraRoad.builder()
+        CameraRoad cameraRoad = CameraRoad.builder()
                 .cameraRoadId(1L)
                 .camera(camera)
                 .startLine("125.70 85.12 84.10 12.87")
@@ -308,7 +282,7 @@ public class TestDataHelper {
                 .crosswalk("123.12 80.00 128.15 20.5 100.1 81.00 108.1 20.6")
                 .direction("[[true,true,false],[true,false,false]]")
                 .build();
-        camera.setRoad(cameraRoadDto);
+        camera.setRoad(cameraRoad);
 
         return camera;
     }
@@ -334,7 +308,7 @@ public class TestDataHelper {
                 .lastDataTime(null)
                 .build();
 
-        CameraRoad cameraRoadDto = CameraRoad.builder()
+        CameraRoad cameraRoad = CameraRoad.builder()
                 .cameraRoadId(2L)
                 .camera(camera)
                 .startLine("125.70 85.12 84.10 12.87")
@@ -343,7 +317,7 @@ public class TestDataHelper {
                 .crosswalk("123.12 80.00 128.15 20.5 100.1 81.00 108.1 20.6")
                 .direction("[[],[]]")
                 .build();
-        camera.setRoad(cameraRoadDto);
+        camera.setRoad(cameraRoad);
 
         return camera;
     }

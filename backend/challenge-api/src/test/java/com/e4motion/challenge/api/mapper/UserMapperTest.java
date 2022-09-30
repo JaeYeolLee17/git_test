@@ -56,7 +56,7 @@ public class UserMapperTest {
 		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());
 		assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
 		assertThat(userDto.getPhone()).isEqualTo(user.getPhone());
-		assertThat(userDto.getEnabled()).isEqualTo(user.getEnabled());
+		assertThat(userDto.getDisabled()).isEqualTo(user.getDisabled());
 		assertThat(userDto.getAuthority()).isEqualTo(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName());
 	}
 
@@ -68,7 +68,7 @@ public class UserMapperTest {
 		assertThat(userDto.getNickname()).isEqualTo(user.getNickname());
 		assertThat(userDto.getEmail()).isEqualTo(user.getEmail());
 		assertThat(userDto.getPhone()).isEqualTo(user.getPhone());
-		assertThat(userDto.getEnabled()).isEqualTo(user.getEnabled());
+		assertThat(userDto.getDisabled()).isEqualTo(user.getDisabled());
 		assertThat(userDto.getAuthority()).isEqualTo(user.getAuthorities().isEmpty() ? null : user.getAuthorities().iterator().next().getAuthorityName());
 	}
 }

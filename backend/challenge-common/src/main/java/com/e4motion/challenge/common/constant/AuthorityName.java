@@ -1,4 +1,4 @@
-package com.e4motion.challenge.common.domain;
+package com.e4motion.challenge.common.constant;
 
 public enum AuthorityName {
 	  
@@ -7,8 +7,7 @@ public enum AuthorityName {
 	ROLE_USER,
 	ROLE_DATA,
 	ROLE_CAMERA_ADMIN,
-	ROLE_CAMERA,
-	ROLE_AVL_CAR
+	ROLE_CAMERA
 	
 }
 

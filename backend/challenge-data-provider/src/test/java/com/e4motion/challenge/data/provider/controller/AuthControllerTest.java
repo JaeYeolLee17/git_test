@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.UnauthorizedException;
 import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import com.e4motion.challenge.common.response.Response;
@@ -47,7 +47,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	UserDetailsService userDetailsService;
 
 	@Test
-	public void loginWithAdminUser() throws Exception {
+	public void loginWithAdminRole() throws Exception {
 
 		String username = "admin";
 		String password = "challenge1123!";
@@ -59,7 +59,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	}
 
 	@Test
-	public void loginWithManagerUser() throws Exception {
+	public void loginWithManagerRole() throws Exception {
 
 		String username = "manager";
 		String password = "challenge1123!";
@@ -71,7 +71,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	}
 
 	@Test
-	public void loginWithUser() throws Exception {
+	public void loginWithUserRole() throws Exception {
 
 		String username = "user1";
 		String password = "user12!@";
@@ -83,7 +83,7 @@ public class AuthControllerTest extends HBaseMockTest {
 	}
 	
 	@Test
-	public void loginWithDataUser() throws Exception {
+	public void loginWithDataRole() throws Exception {
 		
 		String username = "algorithm";
 		String password = "data12!@";
@@ -126,7 +126,7 @@ public class AuthControllerTest extends HBaseMockTest {
 		String password = "data12!@";
 		AuthorityName authority = AuthorityName.ROLE_DATA;
 
-		doReturn(getUserDetails(username, password, authority, false)).when(userDetailsService).loadUserByUsername(username);
+		doReturn(getUserDetails(username, password, authority, true)).when(userDetailsService).loadUserByUsername(username);
 
 		assertLogin(username, password, HttpStatus.UNAUTHORIZED, Response.FAIL, UnauthorizedException.CODE, UnauthorizedException.DISABLED_USER);
 	}
@@ -164,10 +164,10 @@ public class AuthControllerTest extends HBaseMockTest {
 
 	private UserDetails getUserDetails(String username, String password, AuthorityName authority) {
 
-		return getUserDetails(username, password, authority, true);
+		return getUserDetails(username, password, authority, null);
 	}
 
-	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean enabled) {
+	private UserDetails getUserDetails(String username, String password, AuthorityName authority, Boolean disabled) {
 
 		Set<GrantedAuthority> grantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(authority.toString()));
 
@@ -177,7 +177,7 @@ public class AuthControllerTest extends HBaseMockTest {
 				null,
 				null,
 				null,
-				enabled,
+				disabled,
 				grantedAuthorities);
 	}
 }

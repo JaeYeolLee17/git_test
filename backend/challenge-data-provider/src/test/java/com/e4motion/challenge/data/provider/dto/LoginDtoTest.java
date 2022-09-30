@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.provider.dto;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.InvalidParamException;
 import com.e4motion.challenge.common.exception.customexception.UserNotFoundException;
 import com.e4motion.challenge.common.response.Response;
@@ -130,7 +130,7 @@ class LoginDtoTest extends HBaseMockTest {
                 null,
                 null,
                 null,
-                true,
+                false,
                 grantedAuthorities);
     }
 }

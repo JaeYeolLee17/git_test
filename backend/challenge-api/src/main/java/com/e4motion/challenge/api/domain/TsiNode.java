@@ -1,5 +1,6 @@
 package com.e4motion.challenge.api.domain;
 
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class TsiNode extends BaseTimeEntity {
     @Column(name = "node_id", unique = true, nullable = false)
     private Long nodeId;
 
-    @Column(name = "node_name", length = 32)
+    @Column(name = "node_name", length = FieldLengths.TSI_NODE_NAME)
     private String nodeName;
 
     @Column(name = "lat")

@@ -127,9 +127,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-    
-    // Expose authentication manager bean
-    @Override @Bean
+
+    @Bean       // Expose authentication manager bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }

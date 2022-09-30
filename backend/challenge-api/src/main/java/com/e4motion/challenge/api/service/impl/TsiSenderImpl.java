@@ -5,7 +5,7 @@ import com.e4motion.challenge.api.dto.TsiDto;
 import com.e4motion.challenge.api.repository.IntersectionRepository;
 import com.e4motion.challenge.api.repository.TsiRepository;
 import com.e4motion.challenge.api.service.TsiSender;
-import com.e4motion.challenge.common.domain.TsiFilterBy;
+import com.e4motion.challenge.common.constant.TsiFilterBy;
 import com.e4motion.challenge.common.exception.customexception.IntersectionNotFoundException;
 import com.e4motion.challenge.common.security.SecurityHelper;
 import com.e4motion.challenge.common.utils.DateTimeHelper;
@@ -33,7 +33,7 @@ public class TsiSenderImpl implements TsiSender {
 
     private final IntersectionRepository intersectionRepository;
     private final TsiRepository tsiRepository;
-    private final SecurityHelper securityHelper;        // TODO: authentication header for javascript EventSource
+    private final SecurityHelper securityHelper;
     private final ConcurrentHashMap<String, EmitterInfo> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter subscribe(TsiFilterBy filterBy, String filterValue) {
@@ -104,8 +104,7 @@ public class TsiSenderImpl implements TsiSender {
     }
 
     private String getEmitterId() {
-        //return securityHelper.getLoginUsername() + SPACE + DateTimeHelper.formatLocalDateTime(LocalDateTime.now());
-        return "admin" + SPACE + DateTimeHelper.formatLocalDateTime(LocalDateTime.now());
+        return securityHelper.getLoginUsername() + SPACE + DateTimeHelper.formatLocalDateTime(LocalDateTime.now());
     }
 
     private String getSseId(String emitterId) {

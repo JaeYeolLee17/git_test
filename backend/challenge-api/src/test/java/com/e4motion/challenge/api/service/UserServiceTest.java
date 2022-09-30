@@ -58,10 +58,10 @@ public class UserServiceTest {
 		UserDto userDto = TestDataHelper.getUserDto1();
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		User newUser = userMapper.toUser(userDto);
+		User user = userMapper.toUser(userDto);
 		
 		doReturn(Optional.empty()).when(userRepository).findByUsername(userDto.getUsername());
-		doReturn(newUser).when(userRepository).save(any());
+		doReturn(user).when(userRepository).save(any());
 		
 		// when
 		UserDto createdUserDto = userService.create(userDto);
@@ -78,9 +78,9 @@ public class UserServiceTest {
 		UserDto userDto = TestDataHelper.getUserDto1();
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		User newUser = userMapper.toUser(userDto);
+		User user = userMapper.toUser(userDto);
 
-		doReturn(Optional.of(newUser)).when(userRepository).findByUsername(userDto.getUsername());
+		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 
 		// when
 		Exception ex = assertThrows(UserDuplicateException.class, () -> userService.create(userDto));
@@ -94,18 +94,18 @@ public class UserServiceTest {
 		
 		// given
 		UserDto userDto = TestDataHelper.getUserDto2();
+		User user = TestDataHelper.getUser2();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
 		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
-
-		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		User user = userMapper.toUser(userDto);
-
 		User updatedUser = User.builder()
-				.userId(1L)
+				.userId(2L)
 				.username(userUpdateDto.getUsername())
 				.password(passwordEncoder.encode(userUpdateDto.getNewPassword()))
 				.nickname(userUpdateDto.getNickname())
 				.email(userUpdateDto.getEmail())
 				.phone(userUpdateDto.getPhone())
+				.disabled(userUpdateDto.getDisabled())
 				.authorities(Collections.singleton(new Authority(userUpdateDto.getAuthority())))
 				.build();
 		
@@ -116,14 +116,8 @@ public class UserServiceTest {
 		UserDto updatedUserDto = userService.update(userDto.getUsername(), userUpdateDto);
  
 		// then
-		userDto.setUsername(userUpdateDto.getUsername());
-		userDto.setNickname(userUpdateDto.getNickname());
-		userDto.setEmail(userUpdateDto.getEmail());
-		userDto.setPhone(userUpdateDto.getPhone());
-		userDto.setAuthority(userUpdateDto.getAuthority());
-
 		assertThat(updatedUserDto).isNotNull();
-		assertEquals(updatedUserDto, userDto);
+		assertEquals(updatedUserDto, userUpdateDto);
     }
 
 	@Test
@@ -131,12 +125,11 @@ public class UserServiceTest {
 
 		// given
 		UserDto userDto = TestDataHelper.getUserDto2();
+		User user = TestDataHelper.getUser2();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
 		UserUpdateDto userUpdateDto = TestDataHelper.getUserUpdateDto();
-
 		userUpdateDto.setOldPassword("wrong old password...");
-
-		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		User user = userMapper.toUser(userDto);
 
 		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 
@@ -182,9 +175,8 @@ public class UserServiceTest {
 		
 		// given
 		UserDto userDto = TestDataHelper.getUserDto1();
-
-		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		User user = userMapper.toUser(userDto);
+		User user = TestDataHelper.getUser1();
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		
 		doReturn(Optional.of(user)).when(userRepository).findByUsername(userDto.getUsername());
 		
@@ -200,18 +192,16 @@ public class UserServiceTest {
 		
 		// given
 		UserDto userDto1 = TestDataHelper.getUserDto1();
-		
+		User user1 = TestDataHelper.getUser1();
+		user1.setPassword(passwordEncoder.encode(userDto1.getPassword()));
+
 		UserDto userDto2 = TestDataHelper.getUserDto2();
-		
+		User user2 = TestDataHelper.getUser2();
+		user2.setPassword(passwordEncoder.encode(userDto2.getPassword()));
+
 		List<UserDto> userDtos = new ArrayList<>();
 		userDtos.add(userDto1);
 		userDtos.add(userDto2);
-
-		userDto1.setPassword(passwordEncoder.encode(userDto1.getPassword()));
-		User user1 = userMapper.toUser(userDto1);
-
-		userDto2.setPassword(passwordEncoder.encode(userDto2.getPassword()));
-		User user2 = userMapper.toUser(userDto2);
 		
 		List<User> users = new ArrayList<>();
 		users.add(user1);
@@ -236,5 +226,14 @@ public class UserServiceTest {
 		assertThat(userDto1.getEmail()).isEqualTo(userDto2.getEmail());
 		assertThat(userDto1.getPhone()).isEqualTo(userDto2.getPhone());
 		assertThat(userDto1.getAuthority()).isEqualTo(userDto2.getAuthority());
+	}
+
+	private void assertEquals(UserDto userDto, UserUpdateDto userUpdateDto) {
+
+		assertThat(userDto.getUsername()).isEqualTo(userUpdateDto.getUsername());
+		assertThat(userDto.getNickname()).isEqualTo(userUpdateDto.getNickname());
+		assertThat(userDto.getEmail()).isEqualTo(userUpdateDto.getEmail());
+		assertThat(userDto.getPhone()).isEqualTo(userUpdateDto.getPhone());
+		assertThat(userDto.getAuthority()).isEqualTo(userUpdateDto.getAuthority());
 	}
 }

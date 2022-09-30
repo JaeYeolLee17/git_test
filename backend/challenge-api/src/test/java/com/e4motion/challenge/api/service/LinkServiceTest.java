@@ -47,7 +47,6 @@ public class LinkServiceTest {
 		IntersectionDto intersectionDto2 = TestDataHelper.getIntersectionDto2();
 		intersectionService.create(intersectionDto2);
 
-
 		LinkDto linkDto1 = TestDataHelper.getLinkDto1();
 		LinkDto created = linkService.create(linkDto1);
 
@@ -56,20 +55,20 @@ public class LinkServiceTest {
 		assertEquals(found, created);
 
 		// duplicated start, end intersection no
-		Exception ex = assertThrows(LinkDuplicateException.class, () ->linkService.create(linkDto1));
+		Exception ex = assertThrows(LinkDuplicateException.class, () -> linkService.create(linkDto1));
 		assertThat(ex.getMessage()).isEqualTo(LinkDuplicateException.LINK_START_END_ALREADY_EXISTS);
 
 		// invalid intersection no
 		LinkDto linkDto2 = TestDataHelper.getLinkDto1();
 		linkDto2.getStart().setIntersectionNo("I0099");
 
-		ex = assertThrows(IntersectionNotFoundException.class, () ->linkService.create(linkDto2));
+		ex = assertThrows(IntersectionNotFoundException.class, () -> linkService.create(linkDto2));
 		assertThat(ex.getMessage()).isEqualTo(IntersectionNotFoundException.INVALID_INTERSECTION_NO);
 
 		LinkDto linkDto3 = TestDataHelper.getLinkDto1();
 		linkDto3.getEnd().setIntersectionNo("I0088");
 
-		ex = assertThrows(IntersectionNotFoundException.class, () ->linkService.create(linkDto3));
+		ex = assertThrows(IntersectionNotFoundException.class, () -> linkService.create(linkDto3));
 		assertThat(ex.getMessage()).isEqualTo(IntersectionNotFoundException.INVALID_INTERSECTION_NO);
     }
 
@@ -121,7 +120,7 @@ public class LinkServiceTest {
 		assertEquals(found, updateLinkDto1);
 
 		// invalid link id
-		Exception ex = assertThrows(LinkNotFoundException.class, () ->linkService.update(100L, linkDto1));
+		Exception ex = assertThrows(LinkNotFoundException.class, () -> linkService.update(100L, linkDto1));
 		assertThat(ex.getMessage()).isEqualTo(LinkNotFoundException.INVALID_LINK_ID);
 
 		// invalid intersection no

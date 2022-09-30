@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.provider.controller;
 
-import com.e4motion.challenge.common.domain.FilterBy;
+import com.e4motion.challenge.common.constant.FilterBy;
 import com.e4motion.challenge.common.response.Response;
 import com.e4motion.challenge.common.utils.RegExpressions;
 import com.e4motion.challenge.data.provider.dto.DataListDto;
@@ -8,7 +8,6 @@ import com.e4motion.challenge.data.provider.service.DataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.CharSet;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +39,7 @@ public class DataController {
 
     private final DataService dataService;
 
-    @Operation(summary = "데이터", description = "접근 권한 : 데이터 사용자, MAX LIMIT : 100,000")
+    @Operation(summary = "데이터", description = "접근 권한 : 데이터 사용자, MAX LIMIT : " + MAX_LIMIT)
     @PreAuthorize("hasRole('ROLE_DATA')")
     @GetMapping("/data")
     public Response get(@RequestParam(value = "startTime", required = true) @Pattern(regexp = startTimePattern) String startTime,
@@ -49,7 +48,7 @@ public class DataController {
                         @RequestParam(value = "filterBy", required = false) FilterBy filterBy,
                         @RequestParam(value = "filterValue", required = false) String filterValue) {
 
-        DataListDto dataList = dataService.get(getRequestMap(startTime, endTime, limit, filterBy, filterValue));
+        DataListDto dataList = dataService.get(makeRequestMap(startTime, endTime, limit, filterBy, filterValue));
 
         Response response = new Response("data", dataList.getData());
         response.setData("nextTime", dataList.getNextTime());
@@ -57,7 +56,7 @@ public class DataController {
         return response;
     }
 
-    @Operation(summary = "데이터 파일", description = "접근 권한 : 데이터 사용자, MAX LIMIT : 100,000")
+    @Operation(summary = "데이터 파일", description = "접근 권한 : 데이터 사용자, MAX LIMIT : " + MAX_LIMIT)
     @PreAuthorize("hasRole('ROLE_DATA')")
     @GetMapping(value = "/data/file", produces = TEXT_CSV)
     public void getAsFile(@RequestParam(value = "startTime", required = true) @Pattern(regexp = startTimePattern) String startTime,
@@ -73,10 +72,10 @@ public class DataController {
         String filename = "data-" + LocalDateTime.now() + ".csv";
         response.setHeader("Content-disposition", "attachment;filename=" + filename);
 
-        dataService.write(getRequestMap(startTime, endTime, limit, filterBy, filterValue), response.getWriter());
+        dataService.write(makeRequestMap(startTime, endTime, limit, filterBy, filterValue), response.getWriter());
     }
 
-    private HashMap<String, Object> getRequestMap(String startTime, String endTime, Integer limit, FilterBy filterBy, String filterValue) {
+    private HashMap<String, Object> makeRequestMap(String startTime, String endTime, Integer limit, FilterBy filterBy, String filterValue) {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("startTime", startTime);

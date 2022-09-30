@@ -1,6 +1,6 @@
 package com.e4motion.challenge.common.security;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.InaccessibleException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,6 +17,10 @@ public class SecurityHelper {
 
     public String getLoginUsername() {
         return getLoginUser().getUsername();
+    }
+
+    public AuthorityName getLoginRole() {
+        return getAuthority(getLoginUser());
     }
 
     public void checkIfLoginUserForRoleUser(String username) {

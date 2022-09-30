@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TAG=0.0.1
+export TAG=1.0.0
 export REGISTRY=registry.emgglobal.co.kr:9443
 
 docker build -t $REGISTRY/challenge-api:$TAG ../backend/challenge-api

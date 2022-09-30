@@ -19,20 +19,6 @@ public class CameraMapperTest {
 	ObjectMapper jsonMapper = new ObjectMapper();
 
 	@Test
-	public void toStringCamera() {
-
-		Camera camera = TestDataHelper.getCamera1();
-		assertThat(camera.toString()).isNotNull();
-	}
-
-	@Test
-	public void toStringCameraDto() {
-
-		CameraDto cameraDto = TestDataHelper.getCameraDto1();
-		assertThat(cameraDto.toString()).isNotNull();
-	}
-
-	@Test
 	public void mappingCameraRoadLane() throws JsonProcessingException {
 
 		// String[] -> json string

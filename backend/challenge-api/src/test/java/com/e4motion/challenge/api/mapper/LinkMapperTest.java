@@ -14,20 +14,6 @@ public class LinkMapperTest {
 	LinkMapper mapper = Mappers.getMapper(LinkMapper.class);
 
 	@Test
-	public void toStringLink() {
-
-		Link link = TestDataHelper.getLink1();
-		assertThat(link.toString()).isNotNull();
-	}
-
-	@Test
-	public void toStringLinkDto() {
-
-		LinkDto linkDto = TestDataHelper.getLinkDto1();
-		assertThat(linkDto.toString()).isNotNull();
-	}
-
-	@Test
     public void toRegionDto() {
 
 		Link link = TestDataHelper.getLink1();

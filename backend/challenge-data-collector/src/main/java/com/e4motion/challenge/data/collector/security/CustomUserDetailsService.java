@@ -1,6 +1,6 @@
 package com.e4motion.challenge.data.collector.security;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import com.e4motion.challenge.common.exception.customexception.CameraNotFoundException;
 import com.e4motion.challenge.data.collector.domain.Camera;
 import com.e4motion.challenge.data.collector.repository.CameraRepository;

@@ -3,7 +3,7 @@ package com.e4motion.challenge.api.controller;
 import com.e4motion.challenge.api.dto.TsiDto;
 import com.e4motion.challenge.api.service.TsiSender;
 import com.e4motion.challenge.api.service.TsiService;
-import com.e4motion.challenge.common.domain.TsiFilterBy;
+import com.e4motion.challenge.common.constant.TsiFilterBy;
 import com.e4motion.challenge.common.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,20 +37,11 @@ public class TsiController {
         return new Response("tsi", tsiDtos);
     }
 
-    //@Operation(summary = "교통신호정보 수신 등록", description = "접근 권한 : 최고관리자, 운영자, 사용자")
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
-    @Operation(summary = "교통신호정보 수신 등록")
-    @GetMapping(value = "/tsi/subscribe", produces = "text/event-stream")
+    @Operation(summary = "교통신호정보 수신 등록", description = "접근 권한 : 최고관리자, 운영자, 사용자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER')")
+    @GetMapping(value = "/tsi/subscribe")
     public SseEmitter subscribe(@RequestParam(value = "filterBy", required = false) TsiFilterBy filterBy,
                                 @RequestParam(value = "filterValue", required = false) String filterValue) {
-
-        return tsiSender.subscribe(filterBy, filterValue);
-    }
-
-    @Operation(summary = "교통신호정보 수신 등록 - 인증 토큰 필요")
-    @GetMapping(value = "/tsi/subscribe-with-token")
-    public SseEmitter subscribeWithToken(@RequestParam(value = "filterBy", required = false) TsiFilterBy filterBy,
-                                       @RequestParam(value = "filterValue", required = false) String filterValue) {
 
         return tsiSender.subscribe(filterBy, filterValue);
     }

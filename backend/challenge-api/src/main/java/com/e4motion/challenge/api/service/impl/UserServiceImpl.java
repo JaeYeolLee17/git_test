@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
 				});
 
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		userDto.setEnabled(true);
 
         return userMapper.toUserDto(userRepository.save(userMapper.toUser(userDto)));
     }
@@ -46,15 +45,15 @@ public class UserServiceImpl implements UserService {
 
     	return userRepository.findByUsername(username)
 				.map(user -> {
+					if (userUpdateDto.getUsername() != null) {
+						user.setUsername(userUpdateDto.getUsername());
+					}
+
 					if (userUpdateDto.getNewPassword() != null) {
 						if (userUpdateDto.getOldPassword() == null || !passwordEncoder.matches(userUpdateDto.getOldPassword(), user.getPassword())) {
 							throw new UnauthorizedException(UnauthorizedException.INVALID_PASSWORD);
 						}
 						user.setPassword(passwordEncoder.encode(userUpdateDto.getNewPassword()));
-					}
-
-					if (userUpdateDto.getUsername() != null) {
-						user.setUsername(userUpdateDto.getUsername());
 					}
 
 					if (userUpdateDto.getNickname() != null) {
@@ -69,8 +68,8 @@ public class UserServiceImpl implements UserService {
 						user.setPhone(userUpdateDto.getPhone());
 					}
 
-					if (userUpdateDto.getEnabled() != null) {
-						user.setEnabled(userUpdateDto.getEnabled());
+					if (userUpdateDto.getDisabled() != null) {
+						user.setDisabled(userUpdateDto.getDisabled());
 					}
 
 					if (userUpdateDto.getAuthority() != null) {

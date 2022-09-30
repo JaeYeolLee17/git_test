@@ -1,5 +1,6 @@
 package com.e4motion.challenge.api.domain;
 
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,10 +21,10 @@ public class Camera extends BaseTimeEntity {
     @Column(name = "camera_id")
     private Long cameraId;
 
-    @Column(name = "camera_no", length = 10, unique = true, nullable = false)
+    @Column(name = "camera_no", length = FieldLengths.CAMERA_NO, unique = true, nullable = false)
     private String cameraNo;
 
-    @Column(name = "password", length = 128, nullable = false)
+    @Column(name = "password", length = FieldLengths.PASSWORD, nullable = false)
     private String password;
 
     @ManyToOne
@@ -43,16 +44,16 @@ public class Camera extends BaseTimeEntity {
     @Column(name = "distance")
     private Integer distance;
 
-    @Column(name = "rtsp_url", length = 128)
+    @Column(name = "rtsp_url", length = FieldLengths.RTSP_URL)
     private String rtspUrl;
 
-    @Column(name = "rtsp_id", length = 32)
+    @Column(name = "rtsp_id", length = FieldLengths.RTSP_ID)
     private String rtspId;
 
-    @Column(name = "rtsp_password", length = 128)
+    @Column(name = "rtsp_password", length = FieldLengths.RTSP_PASSWORD)
     private String rtspPassword;
 
-    @Column(name = "server_url", length = 128)
+    @Column(name = "server_url", length = FieldLengths.SERVER_URL)
     private String serverUrl;
 
     @Column(name = "send_cycle")

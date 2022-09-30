@@ -22,7 +22,8 @@ public class TsiHubRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        // TODO: 최소 실행 뿐 아니라 주기적으로 노드정보를 확인하고, 다시 Consumer 를 돌려야 하지 않을까?
+        // TODO: 최소 실행 뿐 아니라 주기적으로 노드정보를 확인하고, 다시 Consumer 를 돌려야 함.
+        // TODO: 예비사업 운영서버와의 충돌로 인해 일시적으로 막아둠.
         //startTsiHub();
     }
 

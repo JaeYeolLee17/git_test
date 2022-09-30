@@ -13,20 +13,6 @@ public class IntersectionMapperTest {
 	IntersectionMapper mapper = Mappers.getMapper(IntersectionMapper.class);
 
 	@Test
-	public void toStringIntersection() {
-
-		Intersection intersection = TestDataHelper.getIntersection1();
-		assertThat(intersection.toString()).isNotNull();
-	}
-
-	@Test
-	public void toStringIntersectionDto() {
-
-		IntersectionDto intersectionDto = TestDataHelper.getIntersectionDto1();
-		assertThat(intersectionDto.toString()).isNotNull();
-	}
-
-	@Test
     public void toIntersectionDto() {
 
 		Intersection intersection = TestDataHelper.getIntersection1();

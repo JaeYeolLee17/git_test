@@ -22,7 +22,6 @@ hbase:
       clientPort: 2181
 
 jwt:
-  header: Authorization
   secret: jwt secret smart city challenge
   token-validity-in-seconds: 86400
 
@@ -52,7 +51,7 @@ springdoc:
       title: Challenge Data Provider API
       description: REST API for Challenge Data Provider
       version: 1.0.0
-    syntaxHighlight:                # because of performance
+    syntaxHighlight:                # because of ui performance
       activated: false
 
 logging:

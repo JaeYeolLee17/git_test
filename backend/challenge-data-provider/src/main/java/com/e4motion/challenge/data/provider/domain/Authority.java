@@ -1,6 +1,7 @@
 package com.e4motion.challenge.data.provider.domain;
 
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
+import com.e4motion.challenge.common.constant.FieldLengths;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 public class Authority {
 
 	@Id
-	@Column(name = "authority_name", length = 20)
+	@Column(name = "authority_name", length = FieldLengths.AUTHORITY_NAME)
 	@Enumerated(EnumType.STRING)
 	private AuthorityName authorityName;
 

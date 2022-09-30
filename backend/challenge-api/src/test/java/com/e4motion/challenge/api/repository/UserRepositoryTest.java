@@ -4,7 +4,7 @@ import com.e4motion.challenge.api.TestDataHelper;
 import com.e4motion.challenge.api.domain.Authority;
 import com.e4motion.challenge.api.domain.User;
 import com.e4motion.challenge.api.dto.UserUpdateDto;
-import com.e4motion.challenge.common.domain.AuthorityName;
+import com.e4motion.challenge.common.constant.AuthorityName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -111,7 +111,7 @@ class UserRepositoryTest {
 		assertThat(user1.getNickname()).isEqualTo(user2.getNickname());
 		assertThat(user1.getEmail()).isEqualTo(user2.getEmail());
 		assertThat(user1.getPhone()).isEqualTo(user2.getPhone());
-		assertThat(user1.getEnabled()).isEqualTo(user2.getEnabled());
+		assertThat(user1.getDisabled()).isEqualTo(user2.getDisabled());
 		assertThat(user1.getAuthorities().size()).isEqualTo(user2.getAuthorities().size());
 		if (user1.getAuthorities().size() > 0) {
 			assertThat(user1.getAuthorities().iterator().next().getAuthorityName())

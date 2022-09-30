@@ -11,7 +11,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "nt_link_gps", uniqueConstraints = {@UniqueConstraint(columnNames = {"link_id", "lat", "lng"})})
+@Table(name = "nt_link_gps", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"link_id", "lat", "lng"}),
+        @UniqueConstraint(columnNames = {"link_id", "gps_order"})
+})
 public class LinkGps extends BaseTimeEntity {
 
     @Id

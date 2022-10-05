@@ -38,6 +38,7 @@ function CameraDetail() {
     }, [location.state]);
 
     const onSelectedCamera = (selectedCamera: any) => {
+        // console.log("selectedCamera", selectedCamera);
         setSelectedCameraList((selectedCameraList) => [
             ...selectedCameraList,
             selectedCamera,
@@ -101,9 +102,17 @@ function CameraDetail() {
                 disabled: false,
             },
             {
+                name: "degree",
+                data:
+                    selectedCamera.degree === null ? "" : selectedCamera.degree,
+                width: 4,
+                required: false,
+                disabled: false,
+            },
+            {
                 name: "empty2",
                 data: "",
-                width: 8,
+                width: 4,
                 required: false,
                 disabled: false,
             },
@@ -227,6 +236,7 @@ function CameraDetail() {
         ["gpsLat", String.camera_gps_lat],
         ["gpsLng", String.camera_gps_lng],
         ["distance", String.distance],
+        ["degree", String.camera_degree],
         ["rtspUrl", String.rtsp_url],
         ["rtsId", String.rts_id],
         ["rtsPassword", String.rts_password],
@@ -292,6 +302,7 @@ function CameraDetail() {
                 lng: camera.gpsLng,
             },
             distance: camera.distance,
+            degree: camera.degree,
             rtspUrl: camera.rtspUrl,
             rtspId: camera.rtsId,
             rtspPassword: camera.rtspPassword,
@@ -309,6 +320,8 @@ function CameraDetail() {
                 crosswalk: camera.crosswalk,
             },
         };
+
+        // console.log("updateData", updateData);
 
         requestUpdateCameras(updateData);
     };
@@ -342,6 +355,36 @@ function CameraDetail() {
         });
     };
 
+    const onChangeCameraData = (item: any, data: any) => {
+        // console.log(item, data);
+        // console.log(selectedCameraList);
+
+        setSelectedCameraList((prevState) => {
+            const newState = prevState.map((obj) => {
+                if (
+                    item === "degree" &&
+                    Number(data) >= 0 &&
+                    Number(data) <= 35
+                )
+                    obj.degree = data;
+                return obj;
+            });
+
+            return newState;
+        });
+
+        setCameraData((prevState) => {
+            const newState = prevState.map((obj) => {
+                if (obj.name === item) {
+                    return { ...obj, data: data };
+                }
+                return obj;
+            });
+
+            return newState;
+        });
+    };
+
     return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
@@ -351,6 +394,7 @@ function CameraDetail() {
                         title={title}
                         response={cameraData}
                         clickEvent={onClickEvent}
+                        onChangeData={onChangeCameraData}
                     />
                 </Grid>
                 <Grid item xs={5}>

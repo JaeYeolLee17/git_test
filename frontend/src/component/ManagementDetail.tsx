@@ -27,9 +27,16 @@ type responseType = {
     title: Map<string, string>;
     response: tableDataType[];
     clickEvent: any;
+    onChangeData?: (item: any, data: any) => void;
 };
 
-function ManagementDetail({ type, title, response, clickEvent }: responseType) {
+function ManagementDetail({
+    type,
+    title,
+    response,
+    clickEvent,
+    onChangeData,
+}: responseType) {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({});
     const changeData: any = {};
@@ -44,6 +51,7 @@ function ManagementDetail({ type, title, response, clickEvent }: responseType) {
     }, [response]);
 
     const onChangeEvent = (item: any, data: any) => {
+        if (onChangeData !== undefined) onChangeData(item, data);
         setTempResponse((prevState) => {
             const newState = prevState.map((obj) => {
                 if (obj.name === "gpsLat" && item === "gpsLat") {

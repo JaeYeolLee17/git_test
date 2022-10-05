@@ -53,6 +53,7 @@ export const direction_name = "카메라 설치 방향";
 export const camera_gps_lat = "카메라 GPS 정보(lat)";
 export const camera_gps_lng = "카메라 GPS 정보(lng)";
 export const distance = "카메라 대기열 인식 영역 거리";
+export const camera_degree = "카메라 각도(0~35)";
 export const rtsp_url = "카메라 영상 스트리밍 주소";
 export const rts_id = "카메라 RTSP 접속 ID";
 export const rts_password = "카메라 RTSP 접속 Password";

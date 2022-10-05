@@ -94,6 +94,8 @@ export const PAGE_MANAGEMENT_INTERSECTION_DETAIL =
     "/management/intersection/detail";
 export const PAGE_MANAGEMENT_REGION = "/management/region";
 export const PAGE_MANAGEMENT_REGION_DETAIL = "/management/region/detail";
+export const PAGE_MANAGEMENT_LINK = "/management/link";
+export const PAGE_MANAGEMENT_LINK_DETAIL = "/management/link/detail";
 export const PAGE_MANAGEMENT_EMERGENCY = "/management/emergency";
 export const PAGE_MANAGEMENT_EMERGENCY_DETAIL = "/management/emergency/detail";
 export const PAGE_MANAGEMENT_USER = "/management/user";

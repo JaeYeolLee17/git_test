@@ -1,0 +1,11 @@
+.wrapper {
+    display: flex;
+}
+
+.box {
+    height: calc(100vh - 128px);
+    min-height: 800px;
+    margin: 24px 24px 24px -16px;
+    padding: 32px;
+    background-color: #ffffff;
+}

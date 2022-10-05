@@ -10,6 +10,7 @@ import * as Utils from "../utils/utils";
 import * as Common from "../commons/common";
 
 import imgEmergencyVehiclePin from "../assets/images/ico_map_emergency_vehicle_pin.png";
+import { selectedGridRowsCountSelector } from "@mui/x-data-grid";
 // import imgCamera_0_f from "../assets/images/btn_map_cctv_40_0_f.svg";
 
 export type KakaoMapStyleType = {
@@ -57,6 +58,11 @@ export type KakaoMapAvlType = {
 export type kakaoMapCenterType = {
     lat: number;
     lng: number;
+};
+
+export type KakaoMapEditLinksType = {
+    list: any[];
+    selected: any;
 };
 
 export const displayRegion = (region: KakaoMapRegionType) => {
@@ -430,6 +436,63 @@ const getMoveGPSPosition = (
     return { lat: toDeg(tranlateLat), lng: toDeg(tranlateLng) };
 };
 
+export const displayEditLinks = (editLinks: KakaoMapEditLinksType) => {
+    if (editLinks === undefined) return null;
+
+    if (editLinks.list) {
+        //console.log("links", links);
+        return editLinks.list.map((link, index) => {
+            return (
+                <div key={link.linkId}>
+                    {link.linkId === editLinks.selected.linkId ? (
+                        <>
+                            <Polyline
+                                path={editLinks.selected.gps}
+                                strokeWeight={8} // 선의 두께 입니다
+                                strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
+                                strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                                strokeStyle={"solid"} // 선의 스타일입니다
+                                zIndex={2}
+                            />
+                            <Polyline
+                                path={editLinks.selected.gps}
+                                endArrow={true}
+                                strokeWeight={4} // 선의 두께 입니다
+                                strokeColor={Common.trafficColorBusy} // 선의 색깔입니다
+                                strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                                strokeStyle={"solid"} // 선의 스타일입니다
+                                zIndex={3}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Polyline
+                                path={link.gps}
+                                strokeWeight={8} // 선의 두께 입니다
+                                strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
+                                strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                                strokeStyle={"solid"} // 선의 스타일입니다
+                                zIndex={2}
+                            />
+                            <Polyline
+                                path={link.gps}
+                                endArrow={true}
+                                strokeWeight={4} // 선의 두께 입니다
+                                strokeColor={Common.trafficColorNormal} // 선의 색깔입니다
+                                strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                                strokeStyle={"solid"} // 선의 스타일입니다
+                                zIndex={3}
+                            />
+                        </>
+                    )}
+                </div>
+            );
+        });
+    }
+
+    return null;
+};
+
 export const displayTsi = (tsi: KakaoMapTsiType) => {
     if (tsi === undefined) return null;
 
@@ -637,6 +700,7 @@ function KakaoMap({
     intersections,
     cameras,
     links,
+    editLinks,
     tsi,
     avl,
     center,
@@ -650,6 +714,7 @@ function KakaoMap({
     intersections?: KakaoMapIntersectionsType | undefined;
     cameras?: KakaoMapCamerasType | undefined;
     links?: KakaoMapLinksType | undefined;
+    editLinks?: KakaoMapEditLinksType | undefined;
     tsi?: KakaoMapTsiType | undefined;
     avl?: KakaoMapAvlType | undefined;
     center?: kakaoMapCenterType | undefined;
@@ -1234,6 +1299,7 @@ function KakaoMap({
             {links?.isShow &&
                 kakaoMap !== undefined &&
                 displayLinks(links, kakaoMap, level)}
+            {editLinks && displayEditLinks(editLinks)}
             {tsi?.isShow && displayTsi(tsi)}
             {avl?.isShow && displayAvl(avl)}
         </Map>

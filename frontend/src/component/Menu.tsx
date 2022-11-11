@@ -112,6 +112,12 @@ const menuData: menuType[] = [
                 role: [Common.Authority.ROLE_ADMIN],
             },
             {
+                title: "링크 관리",
+                link: `${Common.PAGE_MANAGEMENT_LINK}`,
+                icon: "Menu08",
+                role: [Common.Authority.ROLE_ADMIN],
+            },
+            {
                 title: "구역 관리",
                 link: `${Common.PAGE_MANAGEMENT_REGION}`,
                 icon: "Menu08",

@@ -22,6 +22,8 @@ import RegionDetail from "./pages/RegionDetail";
 import EmergencyDetail from "./pages/EmergencyDetail";
 import UserDetail from "./pages/UserDetail";
 import StatEmergency from "./pages/StatEmergency";
+import ManagementLink from "./pages/ManagementLink";
+import LinkDetail from "./pages/LinkDetail";
 
 // declare global {
 //     interface Window {
@@ -163,6 +165,26 @@ function App() {
                         <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
                             <DashboardLayout>
                                 <IntersectionDetail />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_LINK}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <ManagementLink />
+                            </DashboardLayout>
+                        </PrivateRoute>
+                    }
+                ></Route>
+                <Route
+                    path={Common.PAGE_MANAGEMENT_LINK_DETAIL}
+                    element={
+                        <PrivateRoute role={[Common.Authority.ROLE_ADMIN]}>
+                            <DashboardLayout>
+                                <LinkDetail />
                             </DashboardLayout>
                         </PrivateRoute>
                     }

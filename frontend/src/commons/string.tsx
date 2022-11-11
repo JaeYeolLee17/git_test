@@ -1,5 +1,6 @@
 export const back = "이전";
 export const save = "저장";
+export const undo = "되돌리기";
 
 export const chart_no_data = "조회된 데이터 없음";
 export const chart_today = "당일 현재";
@@ -52,6 +53,7 @@ export const direction_name = "카메라 설치 방향";
 export const camera_gps_lat = "카메라 GPS 정보(lat)";
 export const camera_gps_lng = "카메라 GPS 정보(lng)";
 export const distance = "카메라 대기열 인식 영역 거리";
+export const camera_degree = "카메라 각도(0~35)";
 export const rtsp_url = "카메라 영상 스트리밍 주소";
 export const rts_id = "카메라 RTSP 접속 ID";
 export const rts_password = "카메라 RTSP 접속 Password";
@@ -76,6 +78,12 @@ export const intersection_no = "교차로 No.";
 export const intersection_name = "교차로 이름";
 export const gps_lat = "위도";
 export const gps_lng = "경도";
+
+//link
+export const link_no = "링크 No.";
+export const link_start = "시작 교차로";
+export const link_end = "종료 교차로";
+export const link_gps = "GPS";
 
 //user
 export const username = "아이디";

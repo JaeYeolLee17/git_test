@@ -9,6 +9,9 @@ export const CAMERA_LIST_URL = DEFAULT_URL + "cameras";
 export const INTERSECTION_URL = DEFAULT_URL + "intersection";
 export const INTERSECTION_LIST_URL = DEFAULT_URL + "intersections";
 
+export const LINK_URL = DEFAULT_URL + "link";
+export const LINK_LIST_URL = DEFAULT_URL + "links";
+
 export const REGION_URL = DEFAULT_URL + "region";
 export const REGIONS_LIST_URL = DEFAULT_URL + "regions";
 

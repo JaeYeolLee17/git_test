@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
-import * as String from "../commons/string"
+import * as String from "../commons/string";
 
 type intersectionDataType = {
     distance: number;
@@ -30,6 +30,8 @@ function IntersectionDetail() {
     >([]);
     const [intersectionData, setIntersectionData] = useState<any[]>([]);
 
+    const [centerGps, setCenterGps] = useState<any>(undefined);
+
     useEffect(() => {
         location.state !== null && onSelectedIntersection(location.state);
     }, [location.state]);
@@ -40,39 +42,50 @@ function IntersectionDetail() {
             selectedIntersection,
         ]);
 
+        setCenterGps({ ...selectedIntersection.gps });
+
         setIntersectionData([
             {
                 name: "intersectionNo",
                 data: selectedIntersection.intersectionNo,
-                width: 6,
+                width: 12,
                 required: true,
                 disabled: true,
             },
             {
                 name: "intersectionName",
                 data: selectedIntersection.intersectionName,
-                width: 6,
+                width: 12,
                 required: true,
                 disabled: false,
             },
             {
                 name: "regionName",
-                data: selectedIntersection.region === null ? "" : selectedIntersection.region.regionName,
-                width: 6,
+                data:
+                    selectedIntersection.region === null
+                        ? ""
+                        : selectedIntersection.region.regionName,
+                width: 12,
                 required: false,
                 disabled: true,
             },
             {
                 name: "gpsLat",
-                data: selectedIntersection.gps === null ? "" : selectedIntersection.gps.lat,
-                width: 6,
+                data:
+                    selectedIntersection.gps === null
+                        ? ""
+                        : selectedIntersection.gps.lat,
+                width: 12,
                 required: true,
                 disabled: true,
             },
             {
                 name: "gpsLng",
-                data: selectedIntersection.gps === null ? "" : selectedIntersection.gps.lng,
-                width: 6,
+                data:
+                    selectedIntersection.gps === null
+                        ? ""
+                        : selectedIntersection.gps.lng,
+                width: 12,
                 required: false,
                 disabled: true,
             },
@@ -80,19 +93,23 @@ function IntersectionDetail() {
     };
 
     const title: Map<string, string> = new Map([
-        ["intersectionNo" , String.intersection_no],
-        ["intersectionName" , String.intersection_name],
-        ["regionName" , String.region_name],
-        ["gpsLat" , String.gps_lat],
-        ["gpsLng" , String.gps_lng]
-      ]);
+        ["intersectionNo", String.intersection_no],
+        ["intersectionName", String.intersection_name],
+        ["regionName", String.region_name],
+        ["gpsLat", String.gps_lat],
+        ["gpsLng", String.gps_lng],
+    ]);
 
-    const requestAxiosUpdateIntersections = async (intersectionData: intersectionDataType) => {
+    const requestAxiosUpdateIntersections = async (
+        intersectionData: intersectionDataType
+    ) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
-            Request.INTERSECTION_URL + "/" +selectedIntersectionList[0].intersectionNo,
+            Request.INTERSECTION_URL +
+                "/" +
+                selectedIntersectionList[0].intersectionNo,
             intersectionData
         );
 
@@ -121,33 +138,62 @@ function IntersectionDetail() {
 
     const onClickEvent = (type: string, intersection: any) => {
         const updateData = {
-            "intersectionNo": selectedIntersectionList[0].intersectionNo,
-            "intersectionName": intersection.intersectionName,
-            "gps": {
-              "lat": intersection.gpsLat,
-              "lng": intersection.gpsLng
+            intersectionNo: selectedIntersectionList[0].intersectionNo,
+            intersectionName: intersection.intersectionName,
+            gps: {
+                lat: intersection.gpsLat,
+                lng: intersection.gpsLng,
             },
-            "region": {
-              "regionNo": selectedIntersectionList[0].region.regionNo,
-              "regionName": intersection.regionName
-            }
-        }
+            region: {
+                regionNo: selectedIntersectionList[0].region.regionNo,
+                regionName: intersection.regionName,
+            },
+        };
 
         requestUpdateIntersections(updateData);
+    };
+
+    const handleClickMap = (
+        target: kakao.maps.Map,
+        mouseEvent: kakao.maps.event.MouseEvent
+    ) => {
+        setSelectedIntersectionList((prevState) => {
+            const newState = prevState.map((obj) => {
+                obj.gps.lat = mouseEvent.latLng.getLat();
+                obj.gps.lng = mouseEvent.latLng.getLng();
+                return obj;
+            });
+
+            return newState;
+        });
+
+        setIntersectionData((prevState) => {
+            const newState = prevState.map((obj) => {
+                if (obj.name === "gpsLat") {
+                    return { ...obj, data: mouseEvent.latLng.getLat() };
+                } else if (obj.name === "gpsLng") {
+                    return { ...obj, data: mouseEvent.latLng.getLng() };
+                }
+
+                return obj;
+            });
+
+            return newState;
+        });
     };
 
     return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
-                <Grid item xs={8}>
+                <Grid item xs={5}>
                     <ManagementDetail
-                        type="edit"
+                        type='edit'
                         title={title}
                         response={intersectionData}
                         clickEvent={onClickEvent}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={7}>
                     <Box className={styles.box}>
                         <KakaoMap
                             style={{
@@ -158,14 +204,17 @@ function IntersectionDetail() {
                             intersections={{
                                 list: selectedIntersectionList,
                                 selected: null,
-                                clickEvent: () => {undefined},
+                                clickEvent: () => {
+                                    undefined;
+                                },
                                 showEdge: true,
                             }}
                             center={{
-                                lat: selectedIntersectionList[0] !== undefined && selectedIntersectionList[0].gps.lat,
-                                lng: selectedIntersectionList[0] !== undefined && selectedIntersectionList[0].gps.lng
+                                lat: centerGps !== undefined && centerGps.lat,
+                                lng: centerGps !== undefined && centerGps.lng,
                             }}
                             zoomLevel={3}
+                            onClickMap={handleClickMap}
                         />
                     </Box>
                 </Grid>

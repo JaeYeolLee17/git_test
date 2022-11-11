@@ -7,7 +7,7 @@ pipeline {
     stage('git pull') {
       steps {
         git url: 'https://sjkim_emotion@bitbucket.org/emgglobal/smart-city-challenge.git', 
-            branch: 'prod', 
+            branch: 'dev',
             credentialsId: 'b07620dd-74f5-486d-bba7-c671cfbb3825'
       }
     }

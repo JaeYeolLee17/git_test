@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: challenge-data-provider
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: challenge-data-provider
@@ -18,7 +18,7 @@ spec:
         imagePullPolicy: Always
         env:
           - name: SPRING_PROFILES_ACTIVE
-            value: "prod"
+            value: "dev"
         ports:
         - containerPort: 8093
         resources:
@@ -46,7 +46,7 @@ metadata:
   name: challenge-data-provider
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.0.253
+  loadBalancerIP: 192.168.0.248
   selector:
     app: challenge-data-provider
   ports:

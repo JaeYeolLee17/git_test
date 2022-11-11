@@ -18,6 +18,6 @@ public class JsonHelper {
 
     public static <T> T fromJsonObject(Object object, Class<T> clazz) {
 
-        return new ObjectMapper().convertValue(object, clazz);
+        return new ObjectMapper().registerModule(new JavaTimeModule()).convertValue(object, clazz);
     }
 }

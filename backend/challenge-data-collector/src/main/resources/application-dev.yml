@@ -11,7 +11,7 @@ hbase:
       clientPort: 2181
 
 challenge-api:
-  url: http://192.268.0.246:8091/v2/camera/
+  url: http://192.168.0.246:8091/v2/camera/
 
 logging:
   level:

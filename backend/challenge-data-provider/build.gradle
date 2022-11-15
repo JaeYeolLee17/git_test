@@ -27,7 +27,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.4.0'
 
 	implementation group: 'org.springframework.data', name: 'spring-data-hadoop-hbase', version: '2.5.0.RELEASE'
 	implementation ('org.apache.hbase:hbase-client:1.7.1') {

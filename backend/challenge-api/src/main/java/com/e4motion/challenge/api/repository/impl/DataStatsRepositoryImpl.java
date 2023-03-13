@@ -30,10 +30,6 @@ import java.util.Objects;
 @Repository
 public class DataStatsRepositoryImpl implements DataStatsRepositoryCustom {
 
-    // TODO: !!! query 결과물이 데이터베이스 구조와 달리 1:M 인 경우 직접 매핑으로 인한 속도 저하...
-    // TODO: 통계 결과물을 데이터베이스처럼 펼쳐볼까?
-    // TODO: 필요에 따라 SUM 된 통계테이블을 VIEW 로 만들면 속도가 좀 개선될까?
-
     private final JPAQueryFactory queryFactory;
 
     private final QDataStats dataStats = QDataStats.dataStats;

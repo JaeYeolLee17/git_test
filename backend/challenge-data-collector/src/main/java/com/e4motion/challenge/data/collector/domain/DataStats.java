@@ -36,6 +36,7 @@ public class DataStats {
 	@Column(name = "p")
 	private Integer p;
 
+	// TODO: s, r, l, u 분리, 차종별 합산.
 	@Column(name = "sr0")
 	private Integer sr0;
 
@@ -51,6 +52,7 @@ public class DataStats {
 	@Column(name = "sr4")
 	private Integer sr4;
 
+	// TODO: queue max 관련 삭제
 	@Column(name = "qmsr_len")
 	private Integer qmsrLen;
 
@@ -69,6 +71,7 @@ public class DataStats {
 	@Column(name = "qmsr4")
 	private Integer qmsr4;
 
+	// TODO: queue total s, r, l, u 합산, 차종별 합산.
 	@Column(name = "qtsr0")
 	private Integer qtsr0;
 

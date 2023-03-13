@@ -22,7 +22,7 @@ public class DownloadController {
 
     @Operation(summary = "구역 정보 다운로드", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @GetMapping(value = "/region/file/download", produces = "text/csv")
+    @GetMapping(value = "/region/file", produces = "text/csv")
     public ResponseEntity<byte[]> downloadRegion(HttpServletResponse response) throws Exception {
 
         return downloadService.downloadRegion(response);
@@ -30,7 +30,7 @@ public class DownloadController {
 
     @Operation(summary = "교차로 정보 다운로드", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @GetMapping(value = "/intersection/file/download", produces = "text/csv")
+    @GetMapping(value = "/intersection/file", produces = "text/csv")
     public ResponseEntity<byte[]> downloadIntersection(HttpServletResponse response) throws Exception {
 
         return downloadService.downloadIntersection(response);
@@ -38,25 +38,25 @@ public class DownloadController {
 
     @Operation(summary = "링크 정보 다운로드", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @GetMapping(value = "/link/file/download", produces = "text/csv")
+    @GetMapping(value = "/link/file", produces = "text/csv")
     public ResponseEntity<byte[]> downloadLink(HttpServletResponse response) throws Exception {
 
         return downloadService.downloadLink(response);
     }
 
-    @Operation(summary = "카메라 정보 다운로드", description = "접근 권한 : 최고관리자, 운영자")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
-    @GetMapping(value = "/camera/file/download", produces = "text/csv")
-    public ResponseEntity<byte[]> downloadCamera(HttpServletResponse response) throws Exception {
-
-        return downloadService.downloadCamera(response);
-    }
-
-    @Operation(summary = "링크 정보 자동생성", description = "접근 권한 : 최고관리자, 운영자")
+    @Operation(summary = "링크 정보 생성", description = "접근 권한 : 최고관리자, 운영자")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @GetMapping(value = "/link/file/generate", produces = "text/csv")
     public ResponseEntity<byte[]> generateLinkByIntersection(HttpServletResponse response) throws Exception {
 
         return downloadService.generateLinkByIntersection(response);
+    }
+
+    @Operation(summary = "카메라 정보 다운로드", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @GetMapping(value = "/camera/file", produces = "text/csv")
+    public ResponseEntity<byte[]> downloadCamera(HttpServletResponse response) throws Exception {
+
+        return downloadService.downloadCamera(response);
     }
 }

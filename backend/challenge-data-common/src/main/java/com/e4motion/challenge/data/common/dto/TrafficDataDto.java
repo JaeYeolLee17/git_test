@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TrafficDataDto {
 
-    public final static int CAR_TYPE = 5;   // TODO: heavy 까지 6개.
+    public final static int CAR_TYPE = 5;   // TODO: + heavy
 
     public final static int MIN_LANE = 1;
     public final static int MAX_LANE = 12;

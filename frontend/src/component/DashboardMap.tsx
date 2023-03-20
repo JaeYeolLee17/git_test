@@ -30,6 +30,7 @@ import RTSPStreamer from "./RTSPStreamer";
 import AvlInfo from "./AvlInfo";
 
 import { EventSourcePolyfill } from "event-source-polyfill";
+import OsmMap from "./OsmMap";
 
 function DashboardMap({
     transitionState,
@@ -44,21 +45,14 @@ function DashboardMap({
         selectedIntersectionNo: string;
         selectedIntersectionName: string | undefined;
     };
-    onChangedSelectedItem: ({
-        cameraNo,
-        intersectionNo,
-    }: {
-        cameraNo: string | null;
-        intersectionNo: string;
-    }) => void;
+    onChangedSelectedItem: ({ cameraNo, intersectionNo }: { cameraNo: string | null; intersectionNo: string }) => void;
 }) {
     const userDetails = useAuthState();
 
     const [listCamera, setListCamera] = useState<Array<any>>([]);
     const [selectedCameraNo, setSelectedCameraNo] = useState<string | null>("");
 
-    const [selectedIntersectionNo, setSelectedIntersectionNo] =
-        useState<string>("");
+    const [selectedIntersectionNo, setSelectedIntersectionNo] = useState<string>("");
 
     const [listLink, setListLink] = useState<Array<any>>([]);
 
@@ -74,16 +68,13 @@ function DashboardMap({
     const [showTsi, setShowTsi] = useState<boolean>(true);
     const [showAvlDatas, setShowAvlDatas] = useState<boolean>(true);
 
-    const [streamIntersectionCameras, setStreamIntersectionCameras] = useState<
-        Array<any>
-    >([]);
+    const [streamIntersectionCameras, setStreamIntersectionCameras] = useState<Array<any>>([]);
 
     const [mapZoomLevel, setMapZoomLevel] = useState<number>(7);
 
     const [requestLinkEndTime, setRequestLinkEndTime] = useState<string>("");
 
-    const [trafficInformationBottom, setTrafficInformationBottom] =
-        useState<number>(0);
+    const [trafficInformationBottom, setTrafficInformationBottom] = useState<number>(0);
 
     const [tsiSubscribe, setTsiSubscribe] = useState<any>(null);
 
@@ -106,9 +97,7 @@ function DashboardMap({
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.CAMERA_LIST_URL);
         return response.data;
     };
 
@@ -161,25 +150,17 @@ function DashboardMap({
 
         setRequestLinkEndTime(endTime);
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.STAT_LINK_URL,
-            {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.STAT_LINK_URL, {
+            params: {
+                startTime: startTime,
+                endTime: endTime,
+            },
+        });
 
         return response.data;
     };
 
-    const {
-        loading: loadinLink,
-        error: errorLink,
-        data: resultLink,
-        execute: requestLink,
-    } = useAsyncAxios(requestAxiosLink);
+    const { loading: loadinLink, error: errorLink, data: resultLink, execute: requestLink } = useAsyncAxios(requestAxiosLink);
 
     useEffect(() => {
         if (resultLink === null) return;
@@ -227,18 +208,11 @@ function DashboardMap({
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.TSI_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.TSI_URL);
         return response.data;
     };
 
-    const {
-        loading: loadingTsi,
-        error: errorTsi,
-        data: resultTsi,
-        execute: requestTsi,
-    } = useAsyncAxios(requestAxiosTsi);
+    const { loading: loadingTsi, error: errorTsi, data: resultTsi, execute: requestTsi } = useAsyncAxios(requestAxiosTsi);
 
     useEffect(() => {
         if (resultTsi === null) return;
@@ -273,18 +247,11 @@ function DashboardMap({
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.AVL_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.AVL_URL);
         return response.data;
     };
 
-    const {
-        loading: loadingAvlDatas,
-        error: errorAvlDatas,
-        data: resultAvlDatas,
-        execute: requestAvlDatas,
-    } = useAsyncAxios(requestAxiosAvlDatas);
+    const { loading: loadingAvlDatas, error: errorAvlDatas, data: resultAvlDatas, execute: requestAvlDatas } = useAsyncAxios(requestAxiosAvlDatas);
 
     useEffect(() => {
         if (resultAvlDatas === null) return;
@@ -314,26 +281,11 @@ function DashboardMap({
     // };
 
     const getLocalStorageData = () => {
-        setShowRegion(
-            localStorage.showRegion === undefined ||
-                localStorage.showRegion === "true"
-        );
-        setShowCameras(
-            localStorage.showCameras === undefined ||
-                localStorage.showCameras === "true"
-        );
-        setShowLinks(
-            localStorage.showLinks === undefined ||
-                localStorage.showLinks === "true"
-        );
-        setShowTsi(
-            localStorage.showTsi === undefined ||
-                localStorage.showTsi === "true"
-        );
-        setShowAvlDatas(
-            localStorage.showAvlDatas === undefined ||
-                localStorage.showAvlDatas === "true"
-        );
+        setShowRegion(localStorage.showRegion === undefined || localStorage.showRegion === "true");
+        setShowCameras(localStorage.showCameras === undefined || localStorage.showCameras === "true");
+        setShowLinks(localStorage.showLinks === undefined || localStorage.showLinks === "true");
+        setShowTsi(localStorage.showTsi === undefined || localStorage.showTsi === "true");
+        setShowAvlDatas(localStorage.showAvlDatas === undefined || localStorage.showAvlDatas === "true");
     };
 
     const setLocalStorageData = () => {
@@ -429,12 +381,7 @@ function DashboardMap({
             return;
         }
 
-        setStreamIntersectionCameras(
-            Utils.utilGetInstsectionCamerasByIntersectionNo(
-                listCamera,
-                selectedIntersectionNo
-            )
-        );
+        setStreamIntersectionCameras(Utils.utilGetInstsectionCamerasByIntersectionNo(listCamera, selectedIntersectionNo));
     }, [selectedIntersectionNo]);
 
     const handleClickCamera = (cameraNo: string, intersectionNo: string) => {
@@ -523,13 +470,7 @@ function DashboardMap({
             <Box className={styles.mapBtnsWrap}>
                 <ul>
                     <li>
-                        <ToggleImageButton
-                            bOn={showLinks}
-                            onClick={onClickLinks}
-                            imageOn={btnTrafficOn}
-                            imageOff={btnTrafficOff}
-                            tooltip={"links"}
-                        />
+                        <ToggleImageButton bOn={showLinks} onClick={onClickLinks} imageOn={btnTrafficOn} imageOff={btnTrafficOff} tooltip={"links"} />
                     </li>
                     <li>
                         <ToggleImageButton
@@ -541,13 +482,7 @@ function DashboardMap({
                         />
                     </li>
                     <li>
-                        <ToggleImageButton
-                            bOn={showTsi}
-                            onClick={onClickTsi}
-                            imageOn={btnSignalLampOn}
-                            imageOff={btnSignalLampOff}
-                            tooltip={"Tsi"}
-                        />
+                        <ToggleImageButton bOn={showTsi} onClick={onClickTsi} imageOn={btnSignalLampOn} imageOff={btnSignalLampOff} tooltip={"Tsi"} />
                     </li>
                     <li>
                         <ToggleImageButton
@@ -559,13 +494,7 @@ function DashboardMap({
                         />
                     </li>
                     <li>
-                        <ToggleImageButton
-                            bOn={showRegion}
-                            onClick={onClickRegion}
-                            imageOn={btnAreaOn}
-                            imageOff={btnAreaOff}
-                            tooltip={"region"}
-                        />
+                        <ToggleImageButton bOn={showRegion} onClick={onClickRegion} imageOn={btnAreaOn} imageOff={btnAreaOff} tooltip={"region"} />
                     </li>
                 </ul>
             </Box>
@@ -573,29 +502,19 @@ function DashboardMap({
             <Box className={styles.mapZoombtnsWrap}>
                 <ul>
                     <li>
-                        <button
-                            className={styles.mapZoombtns}
-                            onClick={onClickZoomPlus}
-                        >
+                        <button className={styles.mapZoombtns} onClick={onClickZoomPlus}>
                             <img src={btnZoomPlus} />
                         </button>
                     </li>
                     <li>
-                        <button
-                            className={styles.mapZoombtns}
-                            onClick={onClickZoomMinus}
-                        >
+                        <button className={styles.mapZoombtns} onClick={onClickZoomMinus}>
                             <img src={btnZoomMinus} />
                         </button>
                     </li>
                 </ul>
             </Box>
 
-            <TrafficInformation
-                show={showLinks}
-                time={requestLinkEndTime}
-                bottom={trafficInformationBottom}
-            />
+            <TrafficInformation show={showLinks} time={requestLinkEndTime} bottom={trafficInformationBottom} />
 
             {intersections?.selectedIntersectionName !== undefined ? (
                 <RTSPStreamer
@@ -607,7 +526,7 @@ function DashboardMap({
                 />
             ) : null}
 
-            <KakaoMap
+            <OsmMap
                 style={{
                     width: "100%",
                     height: "calc(100vh - 80px)",
@@ -648,13 +567,7 @@ function DashboardMap({
                 onChangedZoomLevel={onChangedZoomLevel}
             />
             {showAvlDatas && (
-                <AvlInfo
-                    list={listAvlDatas}
-                    selected={selectedAvl}
-                    onChangedSelectedEmergencyCarNumber={
-                        onChangedSelectedEmergencyCarNumber
-                    }
-                />
+                <AvlInfo list={listAvlDatas} selected={selectedAvl} onChangedSelectedEmergencyCarNumber={onChangedSelectedEmergencyCarNumber} />
             )}
             {/* <StreamIntersection
                 streamIntersectionCameras={streamIntersectionCameras}

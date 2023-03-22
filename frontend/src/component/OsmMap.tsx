@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polygon, Polyline, Circle } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polygon, Polyline, Circle, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import * as Utils from "../utils/utils";
 import * as Common from "../commons/common";
 import L from "leaflet";
+import styles from "./OsmMap.module.css";
 
 import imgEmergencyVehiclePin from "../assets/images/ico_map_emergency_vehicle_pin.png";
 
@@ -103,13 +104,15 @@ export const displayIntersection = (intersections: OsmMapIntersectionsType | und
                 return (
                     <Circle
                         key={intersection.intersectionNo}
-                        center={[intersection.gps.lat, intersection.gps.lng]}
+                        center={intersection.gps}
                         radius={150}
                         pathOptions={{ weight: 1, color: strokeColor, opacity: 1, fillColor: fillColor, fillOpacity: 0.4 }}
                         //zIndex={5}
-                        /*onClick={(marker: kakao.maps.Circle) => {
-                            intersections.clickEvent(intersection.intersectionNo);
-                        }}*/
+                        eventHandlers={{
+                            click: () => {
+                                intersections.clickEvent(intersection.intersectionNo);
+                            },
+                        }}
                     />
                 );
             });
@@ -142,9 +145,11 @@ export const displayCamera = (cameras: OsmMapCamerasType, level: number) => {
                 key={camera.cameraNo}
                 position={camera.gps}
                 icon={icon}
-                /*onClick={(marker: kakao.maps.Marker) => {
-                    cameras.clickEvent(camera.cameraNo, camera.intersection.intersectionNo);
-                }}*/
+                eventHandlers={{
+                    click: () => {
+                        cameras.clickEvent(camera.cameraNo, camera.intersection.intersectionNo);
+                    },
+                }}
             />
         );
     });
@@ -218,7 +223,6 @@ export const displayLinks = (links: OsmMapLinksType, level: number, kakaoMap?: k
                                 //zIndex={3}
                             />
                         )}
-
                         <Polyline
                             positions={link.link.gps}
                             pathOptions={{ weight: 8, color: Common.trafficColorBorder, opacity: 1 }}
@@ -336,8 +340,7 @@ export const displayEditLinks = (editLinks: OsmMapEditLinksType) => {
                             <Polyline
                                 positions={editLinks.selected.gps}
                                 pathOptions={{ weight: 8, color: Common.trafficColorBorder, opacity: 1 }}
-                                /*
-                                strokeStyle={"solid"}
+                                /*strokeStyle={"solid"}
                                 zIndex={2}*/
                             />
                             <Polyline
@@ -353,8 +356,7 @@ export const displayEditLinks = (editLinks: OsmMapEditLinksType) => {
                             <Polyline
                                 positions={data}
                                 pathOptions={{ weight: 8, color: Common.trafficColorBorder, opacity: 1 }}
-                                /*
-                                strokeStyle={"solid"}
+                                /*strokeStyle={"solid"}
                                 zIndex={2}*/
                             />
                             <Polyline
@@ -575,6 +577,13 @@ function OsmMap({
         if (onClickMap !== undefined) onClickMap(target, mouseEvent);
     };
 
+    /*const mapEvents = useMapEvents({
+        zoomend: () => {
+            setLevel(mapEvents.getZoom());
+            if (onChangedZoomLevel !== undefined) onChangedZoomLevel(mapEvents.getZoom());
+        },
+    });*/
+
     return (
         <MapContainer
             center={
@@ -586,8 +595,10 @@ function OsmMap({
                     : center
             }
             style={style}
+            className={styles.darkMap}
             zoom={13}
             scrollWheelZoom={true}
+            minZoom={8}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

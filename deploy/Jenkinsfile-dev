@@ -41,9 +41,7 @@ pipeline {
                     sourceFiles: 'deploy/challenge-k8s-deploy/*',
                     removePrefix: 'deploy/challenge-k8s-deploy/',
                     remoteDirectory: 'smart-city-challenge/deploy',
-                    execCommand: 'export KUBECONFIG=/etc/kubernetes/admin.conf; \
-                                  chown $(id -u):$(id -g) /etc/kubernetes/admin.conf; \
-                                  cd smart-city-challenge/deploy && chmod 755 *.sh; \
+                    execCommand: 'cd smart-city-challenge/deploy && chmod 755 *.sh; \
                                   ./challenge-stop.sh; \
                                   ./challenge-start.sh;'
                 )

@@ -44,9 +44,6 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "build:dev": "env-cmd -f .env.development react-scripts build",
-        "build:prod": "env-cmd -f .env.production react-scripts build",
-        "build:nextdev": "env-cmd -f .env.nextdevelopment react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },

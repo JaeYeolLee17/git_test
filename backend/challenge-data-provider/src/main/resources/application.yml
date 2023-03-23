@@ -27,7 +27,8 @@ jwt:
 
 cors:
   origins: >
-    http://localhost:${server.port}
+    http://localhost:8093,
+    http://125.143.64.233:8093
 
 management:
   endpoints:

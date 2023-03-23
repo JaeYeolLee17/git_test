@@ -30,7 +30,8 @@ challenge-api:
 
 cors:
   origins: >
-    http://localhost:${server.port}
+    http://localhost:8092,
+    http://125.143.64.233:8092
 
 management:
   endpoints:

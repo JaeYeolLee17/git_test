@@ -58,12 +58,9 @@ jwt:
 cors:
   origins: >
     http://localhost:3000,
-    http://127.0.0.1:3000,
-    http://192.168.0.17:3000,
-    http://192.168.1.3:3000,
     http://192.168.0.249:8090,
+    http://192.168.0.11, 
     http://125.143.64.233,
-    http://192.168.0.11
 
 management:
   endpoints:

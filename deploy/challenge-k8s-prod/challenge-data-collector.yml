@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: challenge-data-collector
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: challenge-data-collector
+  template:
+    metadata:
+      labels:
+        app: challenge-data-collector
+    spec:
+      containers:
+      - name: challenge-data-collector
+        image: registry.emgglobal.co.kr:9443/challenge-data-collector:2.0.0
+        imagePullPolicy: Always
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "dev"
+        ports:
+        - containerPort: 8092
+#        resources:
+#          requests:
+#            memory: 512Mi
+#          limits:
+#            memory: 4Gi
+      hostAliases:
+        - ip: 192.168.0.21
+          hostnames:
+            - challenge.k8s01.e4motion.com
+            - challenge-k8s01
+        - ip: 192.168.0.22
+          hostnames:
+            - challenge.k8s02.e4motion.com
+            - challenge-k8s02
+        - ip: 192.168.0.23
+          hostnames:
+            - challenge.k8s03.e4motion.com
+            - challenge-k8s03
+        - ip: 192.168.0.24
+          hostnames:
+            - challenge.k8s04.e4motion.com
+            - challenge-k8s04
+        - ip: 192.168.0.25
+          hostnames:
+            - challenge.k8s05.e4motion.com
+            - challenge-k8s05
+        - ip: 192.168.0.26
+          hostnames:
+            - challenge.k8s06.e4motion.com
+            - challenge-k8s06
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: challenge-data-collector
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.0.13
+  selector:
+    app: challenge-data-collector
+  ports:
+    - port: 8092
+      targetPort: 8092

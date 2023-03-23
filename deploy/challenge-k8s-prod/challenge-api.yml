@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: challenge-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: challenge-api
+  template:
+    metadata:
+      labels:
+        app: challenge-api
+    spec:
+      containers:
+      - name: challenge-api
+        image: registry.emgglobal.co.kr:9443/challenge-api:2.0.0
+        imagePullPolicy: Always
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "dev"
+        ports:
+        - containerPort: 8091
+#        resources:
+#          requests:
+#            memory: 512Mi
+#          limits:
+#            memory: 4Gi
+#        volumeMounts:
+#        - mountPath: /logs
+#          name: host-path
+#      volumes:
+#      - name: host-path
+#        hostPath:
+#          path: /var/log/challenge-api
+#          type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: challenge-api
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.0.12
+  selector:
+    app: challenge-api
+  ports:
+    - port: 8091
+      targetPort: 8091

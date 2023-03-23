@@ -14,7 +14,7 @@ pipeline {
     stage ('frontend build') {
       tools { nodejs "NodeJS16" }
       steps {
-        sh 'cd frontend && rm -rf build && npm install --save --legacy-peer-deps'
+        sh 'cd frontend && rm -rf build && npm install --save --legacy-peer-deps && npm run build'
       }
     }
     stage ('backend build') {

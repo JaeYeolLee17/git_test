@@ -34,7 +34,7 @@ pipeline {
           failOnError: true,
           publishers: [
             sshPublisherDesc(
-              configName: 'DevRt40',
+              configName: 'DevChallenge03',
               verbose: true,
               transfers: [
                 sshTransfer(

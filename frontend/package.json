@@ -26,11 +26,13 @@
         "event-source-polyfill": "^1.0.31",
         "http-proxy-middleware": "^2.0.6",
         "jsmpeg": "^1.0.0",
+        "leaflet": "^1.9.3",
         "moment": "^2.29.4",
         "react": "^18.2.0",
         "react-apexcharts": "^1.4.0",
         "react-dom": "^18.2.0",
         "react-kakao-maps-sdk": "^1.1.1",
+        "react-leaflet": "^4.2.1",
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
         "react-table": "^7.8.0",
@@ -41,13 +43,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "start:dev": "env-cmd -f .env.development react-scripts start",
-        "start:prod": "env-cmd -f .env.production react-scripts start",
-        "start:nextdev": "env-cmd -f .env.nextdevelopment react-scripts start",
         "build": "react-scripts build",
-        "build:dev": "env-cmd -f .env.development react-scripts build",
-        "build:prod": "env-cmd -f .env.production react-scripts build",
-        "build:nextdev": "env-cmd -f .env.nextdevelopment react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
@@ -70,6 +66,7 @@
         ]
     },
     "devDependencies": {
+        "@types/leaflet": "^1.9.3",
         "@types/react-table": "^7.7.12",
         "@typescript-eslint/eslint-plugin": "^5.28.0",
         "@typescript-eslint/parser": "^5.28.0",

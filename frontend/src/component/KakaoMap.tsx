@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    Map,
-    MapMarker,
-    Polygon,
-    Circle,
-    Polyline,
-} from "react-kakao-maps-sdk";
+import { Map, MapMarker, Polygon, Circle, Polyline } from "react-kakao-maps-sdk";
 import * as Utils from "../utils/utils";
 import * as Common from "../commons/common";
 
@@ -67,13 +61,9 @@ export type KakaoMapEditLinksType = {
 
 export const displayRegion = (region: KakaoMapRegionType) => {
     if (region === undefined) return null;
-    if (region.current.gps === undefined || region.current.gps === null)
-        return null;
+    if (region.current.gps === undefined || region.current.gps === null) return null;
     //console.log("displayRegion", JSON.stringify(region));
-    if (
-        Utils.utilIsEmptyObj(region.current) === false &&
-        Utils.utilIsEmptyArray(region.current.gps) === false
-    ) {
+    if (Utils.utilIsEmptyObj(region.current) === false && Utils.utilIsEmptyArray(region.current.gps) === false) {
         return (
             <Polygon
                 path={region.current.gps}
@@ -90,19 +80,14 @@ export const displayRegion = (region: KakaoMapRegionType) => {
     return null;
 };
 
-export const displayIntersection = (
-    intersections: KakaoMapIntersectionsType | undefined
-) => {
+export const displayIntersection = (intersections: KakaoMapIntersectionsType | undefined) => {
     if (intersections === undefined) return null;
 
     // console.log("intersections", JSON.stringify(intersections));
 
     if (Utils.utilIsEmptyArray(intersections.list) === false) {
         return intersections.list
-            .filter(
-                (intersection) =>
-                    intersections.showEdge || intersection.region !== null
-            )
+            .filter((intersection) => intersections.showEdge || intersection.region !== null)
             .map((intersection) => {
                 let strokeColor;
                 let fillColor;
@@ -134,9 +119,7 @@ export const displayIntersection = (
                         fillOpacity={0.4} // 채우기 불투명도 입니다
                         zIndex={5}
                         onClick={(marker: kakao.maps.Circle) => {
-                            intersections.clickEvent(
-                                intersection.intersectionNo
-                            );
+                            intersections.clickEvent(intersection.intersectionNo);
                         }}
                     />
                 );
@@ -170,12 +153,7 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
         //     (camera.degree ? camera.degree : "0") +
         //     (isSelected ? "_f" : "_n") +
         //     ".svg";
-        const imageUrl =
-            "imgCamera" +
-            (normalState ? "" : "_e") +
-            "_" +
-            (camera.degree ? camera.degree : "0") +
-            (isSelected ? "_f" : "_n");
+        const imageUrl = "imgCamera" + (normalState ? "" : "_e") + "_" + (camera.degree ? camera.degree : "0") + (isSelected ? "_f" : "_n");
 
         const imageData = Utils.getCameraImageByKey(imageUrl);
 
@@ -199,21 +177,14 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
                     },
                 }}
                 onClick={(marker: kakao.maps.Marker) => {
-                    cameras.clickEvent(
-                        camera.cameraNo,
-                        camera.intersection.intersectionNo
-                    );
+                    cameras.clickEvent(camera.cameraNo, camera.intersection.intersectionNo);
                 }}
             />
         );
     });
 };
 
-export const displayLinks = (
-    links: KakaoMapLinksType,
-    kakaoMap: kakao.maps.Map,
-    level: number
-) => {
+export const displayLinks = (links: KakaoMapLinksType, kakaoMap: kakao.maps.Map, level: number) => {
     if (links === undefined) return null;
     if (kakaoMap === undefined) return null;
 
@@ -223,9 +194,7 @@ export const displayLinks = (
         //console.log("links", links);
         if (level >= 5) {
             return links.list.map((link, index) => {
-                const qtsrlu = Utils.utilConvertQtsrlu15Minute(
-                    link.data[0].qtsrlu
-                );
+                const qtsrlu = Utils.utilConvertQtsrlu15Minute(link.data[0].qtsrlu);
                 const srlu = Utils.utilConvertSrlu15Minute(link.data[0].srlu);
 
                 //const speed = (srlu / qtsrlu).toFixed(2);
@@ -275,11 +244,7 @@ export const displayLinks = (
                 const srColor = Utils.utilGetSpeedColor(srSpeed);
                 const luColor = Utils.utilGetSpeedColor(luSpeed);
 
-                const luPath = Utils.utilConvertParallelLines(
-                    kakaoMap,
-                    level,
-                    link.link.gps
-                );
+                const luPath = Utils.utilConvertParallelLines(kakaoMap, level, link.link.gps);
 
                 const key = link.link.startId + "_" + link.link.endId;
 
@@ -336,20 +301,11 @@ export const displayLinks = (
 const getTrafficSignalType = (tsi: KakaoMapTsiType, signalDatas: any) => {
     //let signalType = "d";
 
-    const displaySignals = signalDatas.tsiSignalInfos.filter(
-        (signalInfo: any) =>
-            signalInfo.info === "LEFT" || signalInfo.info === "STRAIGHT"
-    );
+    const displaySignals = signalDatas.tsiSignalInfos.filter((signalInfo: any) => signalInfo.info === "LEFT" || signalInfo.info === "STRAIGHT");
 
-    const greenLeftSignals = displaySignals.filter(
-        (signalInfo: any) =>
-            signalInfo.info === "LEFT" && signalInfo.status === "GREEN"
-    );
+    const greenLeftSignals = displaySignals.filter((signalInfo: any) => signalInfo.info === "LEFT" && signalInfo.status === "GREEN");
 
-    const greenStrightSignals = displaySignals.filter(
-        (signalInfo: any) =>
-            signalInfo.info === "STRAIGHT" && signalInfo.status === "GREEN"
-    );
+    const greenStrightSignals = displaySignals.filter((signalInfo: any) => signalInfo.info === "STRAIGHT" && signalInfo.status === "GREEN");
 
     if (greenLeftSignals.length > 0 && greenStrightSignals.length > 0) {
         return "sl";
@@ -359,23 +315,17 @@ const getTrafficSignalType = (tsi: KakaoMapTsiType, signalDatas: any) => {
         return "s";
     }
 
-    const redSignals = displaySignals.filter(
-        (signalInfo: any) => signalInfo.status === "RED"
-    );
+    const redSignals = displaySignals.filter((signalInfo: any) => signalInfo.status === "RED");
     if (redSignals.length > 0) {
         return "r";
     }
 
-    const yellowSignals = displaySignals.filter(
-        (signalInfo: any) => signalInfo.status === "YELLOW"
-    );
+    const yellowSignals = displaySignals.filter((signalInfo: any) => signalInfo.status === "YELLOW");
     if (yellowSignals.length > 0) {
         return "y";
     }
 
-    const redFlashingSignals = displaySignals.filter(
-        (signalInfo: any) => signalInfo.status === "RED_FLAHING"
-    );
+    const redFlashingSignals = displaySignals.filter((signalInfo: any) => signalInfo.status === "RED_FLAHING");
     if (redFlashingSignals.length > 0) {
         if (tsi.blink === true) {
             return "r";
@@ -384,9 +334,7 @@ const getTrafficSignalType = (tsi: KakaoMapTsiType, signalDatas: any) => {
         }
     }
 
-    const yellowFlashingSignals = displaySignals.filter(
-        (signalInfo: any) => signalInfo.status === "YELLOW_FLAHING"
-    );
+    const yellowFlashingSignals = displaySignals.filter((signalInfo: any) => signalInfo.status === "YELLOW_FLAHING");
     if (yellowFlashingSignals.length > 0) {
         if (tsi.blink === true) {
             return "y";
@@ -405,11 +353,7 @@ const toDeg = (brng: number) => {
     return (brng * 180) / Math.PI;
 };
 
-const getMoveGPSPosition = (
-    gps: Common.GpsPosition,
-    bearing: number,
-    distance: number
-) => {
+const getMoveGPSPosition = (gps: Common.GpsPosition, bearing: number, distance: number) => {
     let originalLat = gps.lat;
     let originalLng = gps.lng;
 
@@ -419,10 +363,7 @@ const getMoveGPSPosition = (
     originalLat = toRad(originalLat);
     originalLng = toRad(originalLng);
 
-    const tranlateLat = Math.asin(
-        Math.sin(originalLat) * Math.cos(distance) +
-            Math.cos(originalLat) * Math.sin(distance) * Math.cos(bearing)
-    );
+    const tranlateLat = Math.asin(Math.sin(originalLat) * Math.cos(distance) + Math.cos(originalLat) * Math.sin(distance) * Math.cos(bearing));
 
     const tranlateLng =
         originalLng +
@@ -501,16 +442,12 @@ export const displayTsi = (tsi: KakaoMapTsiType) => {
         return tsi.list.map((tsiData) => {
             const currentDateTime = new Date();
             const lastSignalDateTime = new Date(tsiData.time);
-            const signalDateInterval =
-                currentDateTime.getTime() - lastSignalDateTime.getTime();
+            const signalDateInterval = currentDateTime.getTime() - lastSignalDateTime.getTime();
 
             let signalType = "d";
             if (tsiData.error !== 0) {
                 signalType = "e";
-            } else if (
-                signalDateInterval > defaultTrafficeIntervalTime ||
-                tsiData.time === undefined
-            ) {
+            } else if (signalDateInterval > defaultTrafficeIntervalTime || tsiData.time === undefined) {
                 signalType = "e";
             }
 
@@ -536,13 +473,8 @@ export const displayTsi = (tsi: KakaoMapTsiType) => {
                 let imageUrl = "imgSignalLamp_";
                 const signalDirectionType = signalData.direction / 45;
                 let imageType = 4;
-                if (
-                    signalType === "s" ||
-                    signalType === "l" ||
-                    signalType === "sl"
-                ) {
-                    if (signalDirectionType < 4)
-                        imageType = signalDirectionType + 4;
+                if (signalType === "s" || signalType === "l" || signalType === "sl") {
+                    if (signalDirectionType < 4) imageType = signalDirectionType + 4;
                     else imageType = signalDirectionType - 4;
                 } else {
                     imageType = signalDirectionType % 2;
@@ -551,11 +483,7 @@ export const displayTsi = (tsi: KakaoMapTsiType) => {
                 imageUrl += String(imageType) + "_" + signalType;
                 const imageData = Utils.getTrafficLightImageByKey(imageUrl);
 
-                const position = getMoveGPSPosition(
-                    tsiData.gps,
-                    signalData.direction,
-                    0.05
-                );
+                const position = getMoveGPSPosition(tsiData.gps, signalData.direction, 0.05);
 
                 if (position === null) return null;
 
@@ -621,13 +549,9 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
             //     (avlData.carNo === avl.selected ? "_p" : "_n") +
             //     ".svg";
 
-            const vehicleImageUrl =
-                "imgEmergencyVehicle_" +
-                statusInfo[status] +
-                (avlData.carNo === avl.selected ? "_p" : "_n");
+            const vehicleImageUrl = "imgEmergencyVehicle_" + statusInfo[status] + (avlData.carNo === avl.selected ? "_p" : "_n");
 
-            const vehicleImageData =
-                Utils.getEmergencyVehicleImageByKey(vehicleImageUrl);
+            const vehicleImageData = Utils.getEmergencyVehicleImageByKey(vehicleImageUrl);
 
             //console.log(vehicleImageUrl);
 
@@ -720,10 +644,7 @@ function KakaoMap({
     center?: kakaoMapCenterType | undefined;
     zoomLevel?: number | undefined;
     onChangedZoomLevel?: (level: number) => void;
-    onClickMap?: (
-        target: kakao.maps.Map,
-        mouseEvent: kakao.maps.event.MouseEvent
-    ) => void;
+    onClickMap?: (target: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => void;
 }) {
     const [kakaoMap, setKakaoMap] = useState<kakao.maps.Map>();
     const [level, setLevel] = useState<number>(7);
@@ -734,10 +655,7 @@ function KakaoMap({
         if (transitionState === "entering" || transitionState === "exiting") {
             //console.log(transitionState, kakaoMap?.getCenter());
             setTempCenter(kakaoMap?.getCenter());
-        } else if (
-            transitionState === "entered" ||
-            transitionState === "exited"
-        ) {
+        } else if (transitionState === "entered" || transitionState === "exited") {
             if (tempCenter != undefined) {
                 //console.log(transitionState, tempCenter);
                 kakaoMap?.relayout();
@@ -1262,14 +1180,10 @@ function KakaoMap({
     const onZoomChanged = (map: kakao.maps.Map) => {
         setLevel(map.getLevel());
 
-        if (onChangedZoomLevel !== undefined)
-            onChangedZoomLevel(map.getLevel());
+        if (onChangedZoomLevel !== undefined) onChangedZoomLevel(map.getLevel());
     };
 
-    const handleClick = (
-        target: kakao.maps.Map,
-        mouseEvent: kakao.maps.event.MouseEvent
-    ) => {
+    const handleClick = (target: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => {
         if (onClickMap !== undefined) onClickMap(target, mouseEvent);
     };
 
@@ -1288,17 +1202,12 @@ function KakaoMap({
             level={level}
             onCreate={(map) => handleMap(map)}
             onZoomChanged={(map) => onZoomChanged(map)}
-            onClick={(
-                target: kakao.maps.Map,
-                mouseEvent: kakao.maps.event.MouseEvent
-            ) => handleClick(target, mouseEvent)}
+            onClick={(target: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => handleClick(target, mouseEvent)}
         >
             {region?.isShow && displayRegion(region)}
             {displayIntersection(intersections)}
             {cameras?.isShow && displayCamera(cameras, level)}
-            {links?.isShow &&
-                kakaoMap !== undefined &&
-                displayLinks(links, kakaoMap, level)}
+            {links?.isShow && kakaoMap !== undefined && displayLinks(links, kakaoMap, level)}
             {editLinks && displayEditLinks(editLinks)}
             {tsi?.isShow && displayTsi(tsi)}
             {avl?.isShow && displayAvl(avl)}

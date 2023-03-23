@@ -12,6 +12,7 @@ import KakaoMap from "../component/KakaoMap";
 import styles from "../pages/ManagementLink.module.css";
 import TableManagement from "../component/TableManagement";
 import { useNavigate } from "react-router-dom";
+import OsmMap from "../component/OsmMap";
 
 type rows = {
     id: string;
@@ -64,9 +65,7 @@ function ManagementLink() {
                         onClick={(e) => {
                             navigate(Common.PAGE_MANAGEMENT_LINK_DETAIL, {
                                 state: {
-                                    selected: listEditLink.find(function (
-                                        data
-                                    ) {
+                                    selected: listEditLink.find(function (data) {
                                         return data.linkId === params.data.id;
                                     }),
                                     list: listEditLink,
@@ -89,24 +88,17 @@ function ManagementLink() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.LINK_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.LINK_LIST_URL);
 
         return response.data;
     };
 
-    const {
-        loading: loadingLinks,
-        error: errorLinks,
-        data: resultLinks,
-        execute: requestLinks,
-    } = useAsyncAxios(requestAxiosLinks);
+    const { loading: loadingLinks, error: errorLinks, data: resultLinks, execute: requestLinks } = useAsyncAxios(requestAxiosLinks);
 
     useEffect(() => {
         if (resultLinks === null) return;
 
-        //console.log("resultLinks", resultLinks);
+        console.log("resultLinks", resultLinks);
 
         setListEditLink(resultLinks.links);
 
@@ -141,16 +133,11 @@ function ManagementLink() {
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item md={7}>
-                    <TableManagement
-                        columns={columns}
-                        rows={rows}
-                        selectedId={selectedLink.selectedId}
-                        clickEvent={onRowClick}
-                    />
+                    <TableManagement columns={columns} rows={rows} selectedId={selectedLink.selectedId} clickEvent={onRowClick} />
                 </Grid>
                 <Grid item md={5}>
                     <Box className={styles.box}>
-                        <KakaoMap
+                        <OsmMap
                             style={{
                                 width: "100%",
                                 height: "100%",
@@ -161,11 +148,7 @@ function ManagementLink() {
                                 list: listEditLink,
                                 selected: selectedLink,
                             }}
-                            center={
-                                Utils.utilIsEmptyObj(selectedLink)
-                                    ? undefined
-                                    : selectedLink.start.gps
-                            }
+                            center={Utils.utilIsEmptyObj(selectedLink) ? undefined : selectedLink.start.gps}
                         />
                     </Box>
                 </Grid>

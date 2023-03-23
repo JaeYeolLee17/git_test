@@ -1,5 +1,14 @@
-const DEFAULT_URL =
-    process.env.REACT_APP_API_URI + process.env.REACT_APP_API_PREFIX;
+const getApiUrl = () => {
+    const hostname = window.location.hostname;
+    // console.log("getApiUrl", hostname);
+    if (hostname.includes(process.env.REACT_APP_DEV_URI)) {
+        return process.env.REACT_APP_DEV_API_URI;
+    } else if (hostname.includes(process.env.REACT_APP_PROD_URI)) {
+        return process.env.REACT_APP_PROD_API_URI;
+    } else return process.env.REACT_APP_DEV_API_URI;
+};
+
+const DEFAULT_URL = getApiUrl() + process.env.REACT_APP_API_PREFIX;
 
 export const LOGIN_URL = DEFAULT_URL + "login";
 

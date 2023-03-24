@@ -14,7 +14,7 @@ pipeline {
     stage ('frontend build') {
       tools { nodejs "NodeJS16" }
       steps {
-        sh 'cd frontend && rm -rf build && npm install && npm run build:prod'
+        sh 'cd frontend && rm -rf build && npm install --save --legacy-peer-deps && npm run build'
       }
     }
     stage ('backend build') {
@@ -41,9 +41,7 @@ pipeline {
                     sourceFiles: 'deploy/challenge-k8s-prod/*',
                     removePrefix: 'deploy/challenge-k8s-prod/',
                     remoteDirectory: 'smart-city-challenge/deploy',
-                    execCommand: 'export KUBECONFIG=/etc/kubernetes/admin.conf; \
-                                  chown $(id -u):$(id -g) /etc/kubernetes/admin.conf; \
-                                  cd smart-city-challenge/deploy && chmod 755 *.sh; \
+                    execCommand: 'cd smart-city-challenge/deploy && chmod 755 *.sh; \
                                   ./challenge-stop.sh; \
                                   ./challenge-start.sh;'
                 )

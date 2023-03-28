@@ -27,54 +27,18 @@ spec:
 #          limits:
 #            memory: 4Gi
       hostAliases:
-        - ip: 192.168.0.21
-          hostnames:
-            - challenge.k8s01.e4motion.com
-            - challenge-k8s01
-        - ip: 192.168.0.22
-          hostnames:
-            - challenge.k8s02.e4motion.com
-            - challenge-k8s02
-        - ip: 192.168.0.23
-          hostnames:
-            - challenge.k8s03.e4motion.com
-            - challenge-k8s03
-        - ip: 192.168.0.24
-          hostnames:
-            - challenge.k8s04.e4motion.com
-            - challenge-k8s04
-        - ip: 192.168.0.25
-          hostnames:
-            - challenge.k8s05.e4motion.com
-            - challenge-k8s05
-        - ip: 192.168.0.26
-          hostnames:
-            - challenge.k8s06.e4motion.com
-            - challenge-k8s06
-        - ip: 192.168.0.41
-          hostnames:
-            - challenge.data01.e4motion.com
-            - challenge-data01
-        - ip: 192.168.0.42
-          hostnames:
-            - challenge.data02.e4motion.com
-            - challenge-data02
-        - ip: 192.168.0.43
-          hostnames:
-            - challenge.data03.e4motion.com
-            - challenge-data03
-        - ip: 192.168.0.44
-          hostnames:
-            - challenge.data04.e4motion.com
-            - challenge-data04
-        - ip: 192.168.0.45
-          hostnames:
-            - challenge.data05.e4motion.com
-            - challenge-data05
-        - ip: 192.168.0.46
-          hostnames:
-            - challenge.data06.e4motion.com
-            - challenge-data06
+      - ip: 192.168.0.41
+        hostnames:
+        - challenge.data01.e4motion.com
+        - challenge-data01
+      - ip: 192.168.0.42
+        hostnames:
+        - challenge.data02.e4motion.com
+        - challenge-data02
+      - ip: 192.168.0.43
+        hostnames:
+        - challenge.data03.e4motion.com
+        - challenge-data03
 ---
 apiVersion: v1
 kind: Service

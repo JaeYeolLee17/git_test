@@ -6,7 +6,7 @@ spring:
 
 hbase:
   zookeeper:
-    quorum: challenge.data01.e4motion.com,challenge.data02.e4motion.com,challenge.data03.e4motion.com
+    quorum: 192.168.0.41,192.168.0.42,192.168.0.43
     property:
       clientPort: 2181
 

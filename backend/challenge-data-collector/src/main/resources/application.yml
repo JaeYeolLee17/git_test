@@ -26,7 +26,7 @@ jwt:
   token-validity-in-seconds: 86400
 
 challenge-api:
-  url: http://192.168.0.246:8091/v2/camera/
+  url: http://192.168.0.251:8091/v2/camera/
 
 cors:
   origins: >

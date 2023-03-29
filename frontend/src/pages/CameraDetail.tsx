@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import KakaoMap from "../component/KakaoMap";
+import OsmMap from "../component/OsmMap";
 import ManagementDetail from "../component/ManagementDetail";
 import { useAuthState } from "../provider/AuthProvider";
 import { useAsyncAxios } from "../utils/customHooks";
@@ -13,6 +13,7 @@ import * as Common from "../commons/common";
 import * as String from "../commons/string";
 
 import Box from "@mui/material/Box";
+import KakaoMap from "../component/KakaoMap";
 
 type cameraDataType = {
     distance: number;
@@ -26,9 +27,7 @@ function CameraDetail() {
     const userDetails = useAuthState();
     const navigate = useNavigate();
 
-    const [selectedCameraList, setSelectedCameraList] = useState<Array<any>>(
-        []
-    );
+    const [selectedCameraList, setSelectedCameraList] = useState<Array<any>>([]);
     const [cameraData, setCameraData] = useState<any[]>([]);
     const [centerGps, setCenterGps] = useState<any>(undefined);
 
@@ -39,10 +38,7 @@ function CameraDetail() {
 
     const onSelectedCamera = (selectedCamera: any) => {
         // console.log("selectedCamera", selectedCamera);
-        setSelectedCameraList((selectedCameraList) => [
-            ...selectedCameraList,
-            selectedCamera,
-        ]);
+        setSelectedCameraList((selectedCameraList) => [...selectedCameraList, selectedCamera]);
 
         setCenterGps({ ...selectedCamera.gps });
         setCameraData([
@@ -62,20 +58,14 @@ function CameraDetail() {
             },
             {
                 name: "intersectionName",
-                data:
-                    selectedCamera.intersection === null
-                        ? ""
-                        : selectedCamera.intersection.intersectionName,
+                data: selectedCamera.intersection === null ? "" : selectedCamera.intersection.intersectionName,
                 width: 6,
                 required: true,
                 disabled: true,
             },
             {
                 name: "directionName",
-                data:
-                    selectedCamera.direction === null
-                        ? ""
-                        : selectedCamera.direction.intersectionName,
+                data: selectedCamera.direction === null ? "" : selectedCamera.direction.intersectionName,
                 width: 6,
                 required: true,
                 disabled: true,
@@ -103,8 +93,7 @@ function CameraDetail() {
             },
             {
                 name: "degree",
-                data:
-                    selectedCamera.degree === null ? "" : selectedCamera.degree,
+                data: selectedCamera.degree === null ? "" : selectedCamera.degree,
                 width: 4,
                 required: false,
                 disabled: false,
@@ -188,40 +177,28 @@ function CameraDetail() {
             },
             {
                 name: "startLine",
-                data:
-                    selectedCamera.road === null
-                        ? ""
-                        : selectedCamera.road.startLine,
+                data: selectedCamera.road === null ? "" : selectedCamera.road.startLine,
                 width: 4,
                 required: false,
                 disabled: true,
             },
             {
                 name: "uturn",
-                data:
-                    selectedCamera.road === null
-                        ? ""
-                        : selectedCamera.road.uturn,
+                data: selectedCamera.road === null ? "" : selectedCamera.road.uturn,
                 width: 4,
                 required: false,
                 disabled: true,
             },
             {
                 name: "crosswalk",
-                data:
-                    selectedCamera.road === null
-                        ? ""
-                        : selectedCamera.road.crosswalk,
+                data: selectedCamera.road === null ? "" : selectedCamera.road.crosswalk,
                 width: 4,
                 required: false,
                 disabled: true,
             },
             {
                 name: "lane",
-                data:
-                    selectedCamera.road === null
-                        ? ""
-                        : selectedCamera.road.lane,
+                data: selectedCamera.road === null ? "" : selectedCamera.road.lane,
                 width: 4,
                 required: false,
                 disabled: true,
@@ -257,10 +234,7 @@ function CameraDetail() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
-            Request.CAMERA_URL + "/" + selectedCameraList[0].cameraNo,
-            updateData
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(Request.CAMERA_URL + "/" + selectedCameraList[0].cameraNo, updateData);
 
         return response.data;
     };
@@ -289,8 +263,7 @@ function CameraDetail() {
         const updateData = {
             cameraNo: camera.cameraNo,
             intersection: {
-                intersectionNo:
-                    selectedCameraList[0].intersection.intersectionNo,
+                intersectionNo: selectedCameraList[0].intersection.intersectionNo,
                 intersectionName: camera.intersectionName,
             },
             direction: {
@@ -326,14 +299,11 @@ function CameraDetail() {
         requestUpdateCameras(updateData);
     };
 
-    const handleClickMap = (
-        target: kakao.maps.Map,
-        mouseEvent: kakao.maps.event.MouseEvent
-    ) => {
+    const changeLocation = (lat: number, lng: number) => {
         setSelectedCameraList((prevState) => {
             const newState = prevState.map((obj) => {
-                obj.gps.lat = mouseEvent.latLng.getLat();
-                obj.gps.lng = mouseEvent.latLng.getLng();
+                obj.gps.lat = lat;
+                obj.gps.lng = lng;
                 return obj;
             });
 
@@ -343,9 +313,9 @@ function CameraDetail() {
         setCameraData((prevState) => {
             const newState = prevState.map((obj) => {
                 if (obj.name === "gpsLat") {
-                    return { ...obj, data: mouseEvent.latLng.getLat() };
+                    return { ...obj, data: lat };
                 } else if (obj.name === "gpsLng") {
-                    return { ...obj, data: mouseEvent.latLng.getLng() };
+                    return { ...obj, data: lng };
                 }
 
                 return obj;
@@ -361,12 +331,7 @@ function CameraDetail() {
 
         setSelectedCameraList((prevState) => {
             const newState = prevState.map((obj) => {
-                if (
-                    item === "degree" &&
-                    Number(data) >= 0 &&
-                    Number(data) <= 35
-                )
-                    obj.degree = data;
+                if (item === "degree" && Number(data) >= 0 && Number(data) <= 35) obj.degree = data;
                 return obj;
             });
 
@@ -389,17 +354,11 @@ function CameraDetail() {
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={7}>
-                    <ManagementDetail
-                        type='edit'
-                        title={title}
-                        response={cameraData}
-                        clickEvent={onClickEvent}
-                        onChangeData={onChangeCameraData}
-                    />
+                    <ManagementDetail type="edit" title={title} response={cameraData} clickEvent={onClickEvent} onChangeData={onChangeCameraData} />
                 </Grid>
                 <Grid item xs={5}>
                     <Box className={styles.box}>
-                        <KakaoMap
+                        <OsmMap
                             style={{
                                 width: "100%",
                                 height: "calc(100vh - 80px)",
@@ -412,13 +371,16 @@ function CameraDetail() {
                                 clickEvent: () => {
                                     undefined;
                                 },
+                                dragEvent: (lat, lng) => {
+                                    changeLocation(lat, lng);
+                                }, //OsmMap
                             }}
-                            center={{
-                                lat: centerGps !== undefined && centerGps.lat,
-                                lng: centerGps !== undefined && centerGps.lng,
-                            }}
-                            zoomLevel={3}
-                            onClickMap={handleClickMap}
+                            // center={{
+                            //     lat: centerGps !== undefined && centerGps.lat,
+                            //     lng: centerGps !== undefined && centerGps.lng,
+                            // }}
+                            //zoomLevel={3}
+                            //onClickMap={changeLocation} //KakaoMap
                         />
                     </Box>
                 </Grid>

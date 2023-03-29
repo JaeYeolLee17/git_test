@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polygon, Polyline, Circle, useMapEvents } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import React, { useEffect, useState, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Polygon, Polyline, useMapEvents, Circle } from "react-leaflet";
 import * as Utils from "../utils/utils";
 import * as Common from "../commons/common";
-import L from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import styles from "./OsmMap.module.css";
+import "leaflet/dist/leaflet.css";
 
-import imgEmergencyVehiclePin from "../assets/images/ico_map_emergency_vehicle_pin.png";
+import intersectionImage from "../assets/images/intersection.svg";
 
 export type OsmMapStyleType = {
     width: string | number;
@@ -24,6 +24,7 @@ export type OsmMapIntersectionsType = {
     selected: string | null;
     clickEvent: (intersectionNo: string) => void;
     showEdge?: boolean;
+    dragEvent?: (lat: number, lng: number) => void;
 };
 
 export type OsmMapCamerasType = {
@@ -31,6 +32,7 @@ export type OsmMapCamerasType = {
     isShow: boolean;
     selected: string | null;
     clickEvent: (cameraNo: string, intersectionNo: string) => void;
+    dragEvent?: (lat: number, lng: number) => void;
 };
 
 export type OsmMapLinksType = {
@@ -50,7 +52,7 @@ export type OsmMapAvlType = {
     selected: string;
 };
 
-export type kakaoMapCenterType = {
+export type OsmMapCenterType = {
     lat: number;
     lng: number;
 };
@@ -101,19 +103,45 @@ export const displayIntersection = (intersections: OsmMapIntersectionsType | und
 
                 if (intersection.gps === null) return null;
 
+                const icon = L.icon({
+                    iconUrl: intersectionImage,
+                    iconRetinaUrl: intersectionImage,
+                    iconAnchor: [20, 20],
+                    iconSize: [40, 40],
+                });
+
                 return (
-                    <Circle
+                    <Marker
                         key={intersection.intersectionNo}
-                        center={intersection.gps}
-                        radius={150}
-                        pathOptions={{ weight: 1, color: strokeColor, opacity: 1, fillColor: fillColor, fillOpacity: 0.4 }}
-                        //zIndex={5}
+                        position={intersection.gps}
+                        icon={icon}
+                        draggable={intersections.dragEvent !== undefined}
                         eventHandlers={{
                             click: () => {
                                 intersections.clickEvent(intersection.intersectionNo);
                             },
+                            dragend: (event: L.LeafletEvent) => {
+                                intersections.dragEvent !== undefined &&
+                                    intersections.dragEvent(event.target.getLatLng().lat, event.target.getLatLng().lng);
+                            },
                         }}
                     />
+                    // <Circle
+                    //     key={intersection.intersectionNo}
+                    //     center={intersection.gps}
+                    //     radius={10}
+                    //     pathOptions={{ weight: 1, color: strokeColor, opacity: 1, fillColor: fillColor, fillOpacity: 0.4 }}
+                    //     //zIndex={5}
+                    //     eventHandlers={{
+                    //         click: () => {
+                    //             intersections.clickEvent(intersection.intersectionNo);
+                    //         },
+                    //         dragend: (event: L.LeafletEvent) => {
+                    //             const latlng = event.target.getLatLng();
+                    //             console.log(`lat: ${latlng.lat}, lng: ${latlng.lng}`);
+                    //         },
+                    //     }}
+                    // />
                 );
             });
     }
@@ -145,9 +173,13 @@ export const displayCamera = (cameras: OsmMapCamerasType, level: number) => {
                 key={camera.cameraNo}
                 position={camera.gps}
                 icon={icon}
+                draggable={cameras.dragEvent !== undefined}
                 eventHandlers={{
                     click: () => {
                         cameras.clickEvent(camera.cameraNo, camera.intersection.intersectionNo);
+                    },
+                    dragend: (event: L.LeafletEvent) => {
+                        cameras.dragEvent !== undefined && cameras.dragEvent(event.target.getLatLng().lat, event.target.getLatLng().lng);
                     },
                 }}
             />
@@ -330,19 +362,10 @@ export const displayEditLinks = (editLinks: OsmMapEditLinksType) => {
     if (editLinks.list) {
         //console.log("links", links);
         return editLinks.list.map((link, index) => {
-            const data: any = [];
-            link.gps.map((value: any) => data.push([value.lat, value.lng]));
-            console.log("data", data);
             return (
                 <div key={link.linkId}>
                     {link.linkId === editLinks.selected.linkId ? (
                         <>
-                            <Polyline
-                                positions={editLinks.selected.gps}
-                                pathOptions={{ weight: 8, color: Common.trafficColorBorder, opacity: 1 }}
-                                /*strokeStyle={"solid"}
-                                zIndex={2}*/
-                            />
                             <Polyline
                                 positions={editLinks.selected.gps}
                                 pathOptions={{ weight: 4, color: Common.trafficColorBorder, opacity: 0.9 }}
@@ -354,13 +377,7 @@ export const displayEditLinks = (editLinks: OsmMapEditLinksType) => {
                     ) : (
                         <>
                             <Polyline
-                                positions={data}
-                                pathOptions={{ weight: 8, color: Common.trafficColorBorder, opacity: 1 }}
-                                /*strokeStyle={"solid"}
-                                zIndex={2}*/
-                            />
-                            <Polyline
-                                positions={data}
+                                positions={link.gps}
                                 pathOptions={{ weight: 4, color: Common.trafficColorNormal, opacity: 0.9 }}
                                 /*endArrow={true}
                                 strokeStyle={"solid"}
@@ -512,6 +529,21 @@ export const displayAvl = (avl: OsmMapAvlType) => {
     return null;
 };
 
+function MapEvents({ onZoom, onClick }: { onZoom: (level: number) => void; onClick: (location: L.LatLng) => void }) {
+    const mapEvents = useMapEvents({
+        zoomend: () => {
+            console.log("zoom: " + mapEvents.getZoom());
+            onZoom(mapEvents.getZoom());
+        },
+        click: (e) => {
+            console.log("lnglnt: " + e.latlng);
+            onClick(e.latlng);
+        },
+    });
+
+    return null;
+}
+
 function OsmMap({
     style,
     transitionState,
@@ -536,14 +568,13 @@ function OsmMap({
     editLinks?: OsmMapEditLinksType | undefined;
     tsi?: OsmMapTsiType | undefined;
     avl?: OsmMapAvlType | undefined;
-    center?: kakaoMapCenterType | undefined;
+    center?: OsmMapCenterType | undefined;
     zoomLevel?: number | undefined;
     onChangedZoomLevel?: (level: number) => void;
-    onClickMap?: (target: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => void;
+    onClickMap?: (lat: number, lng: number) => void;
 }) {
     const [kakaoMap, setOsmMap] = useState<kakao.maps.Map>();
     const [level, setLevel] = useState<number>(7);
-
     const [tempCenter, setTempCenter] = useState<kakao.maps.LatLng>();
 
     useEffect(() => {
@@ -567,22 +598,43 @@ function OsmMap({
         setOsmMap(map);
     };
 
-    const onZoomChanged = (map: kakao.maps.Map) => {
-        setLevel(map.getLevel());
+    const onZoomChanged = (level: number) => {
+        setLevel(level);
 
-        if (onChangedZoomLevel !== undefined) onChangedZoomLevel(map.getLevel());
+        if (onChangedZoomLevel !== undefined) onChangedZoomLevel(level);
+        console.log("TODO zoom 됐을 때 레벨을 한번 볼까요~?", location);
     };
 
-    const handleClick = (target: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => {
-        if (onClickMap !== undefined) onClickMap(target, mouseEvent);
+    const handleClick = (location: L.LatLng) => {
+        if (onClickMap !== undefined) onClickMap(location.lat, location.lng);
+    };
+    const kakaoLevel: number[] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    const osmLevel: number[] = [18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7];
+
+    const convert = (value: number) => {
+        console.log("kakao level:" + value + ", osm level:" + osmLevel[kakaoLevel.findIndex((e) => e === value)]);
+        /*map.setView(
+            center === undefined || ""
+                ? {
+                      lat: 35.85810060700929,
+                      lng: 128.55729938820272,
+                  }
+                : center,
+            osmLevel[kakaoLevel.findIndex((e) => e === value)]
+        );
+        */
+        return osmLevel[kakaoLevel.findIndex((e) => e === value)];
     };
 
-    /*const mapEvents = useMapEvents({
-        zoomend: () => {
-            setLevel(mapEvents.getZoom());
-            if (onChangedZoomLevel !== undefined) onChangedZoomLevel(mapEvents.getZoom());
-        },
-    });*/
+    // const map = useMapEvents({
+    //     click() {
+    //         map.locate();
+    //     },
+    //     locationfound(e) {
+    //         console.log("position", e.latlng);
+    //         map.flyTo(e.latlng, map.getZoom());
+    //     },
+    // });
 
     return (
         <MapContainer
@@ -604,6 +656,7 @@ function OsmMap({
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
             />
+            <MapEvents onZoom={onZoomChanged} onClick={handleClick} />
             {region?.isShow && displayRegion(region)}
             {displayIntersection(intersections)}
             {cameras?.isShow && displayCamera(cameras, level)}

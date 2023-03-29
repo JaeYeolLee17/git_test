@@ -9,22 +9,23 @@ import styles from "../pages/ManagementRegion.module.css";
 import * as Common from "../commons/common";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import editBtn from "../assets/images/btn_list_edit_n.svg"
+import editBtn from "../assets/images/btn_list_edit_n.svg";
 
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import OsmMap from "../component/OsmMap";
 
 type rows = {
     id: string;
     name: string;
 };
 
-type columns ={
-    field: string,
-    headerName: string,
-    flex: number,
-    cellRenderer: any
-  }
+type columns = {
+    field: string;
+    headerName: string;
+    flex: number;
+    cellRenderer: any;
+};
 
 function ManagementRegion() {
     const userDetails = useAuthState();
@@ -39,34 +40,35 @@ function ManagementRegion() {
             field: "id",
             headerName: "구역 No.",
             flex: 2,
-            cellRenderer: undefined
+            cellRenderer: undefined,
         },
         {
             field: "name",
             headerName: "구역 이름",
             flex: 2,
-            cellRenderer: undefined
+            cellRenderer: undefined,
         },
         {
             field: "data",
             headerName: "",
             flex: 1,
-            cellRenderer: (params :any) => {
+            cellRenderer: (params: any) => {
                 return (
-                    <Button onClick={(e) => {
-                        navigate(Common.PAGE_MANAGEMENT_REGION_DETAIL, {
-                            state: listRegion.find(function (data) {
-                                return data.regionNo === params.data.id;
-                            }),
-                        });
-                    }}
+                    <Button
+                        onClick={(e) => {
+                            navigate(Common.PAGE_MANAGEMENT_REGION_DETAIL, {
+                                state: listRegion.find(function (data) {
+                                    return data.regionNo === params.data.id;
+                                }),
+                            });
+                        }}
                     >
-                        <img src={editBtn} width={20}/>
+                        <img src={editBtn} width={20} />
                     </Button>
-                )
-            }
-        }
-      ];
+                );
+            },
+        },
+    ];
 
     useEffect(() => {
         requestRegions();
@@ -76,19 +78,12 @@ function ManagementRegion() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.REGIONS_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.REGIONS_LIST_URL);
 
         return response.data;
     };
 
-    const {
-        loading: loadingRegions,
-        error: errorRegions,
-        data: resultRegions,
-        execute: requestRegions,
-    } = useAsyncAxios(requestAxiosRegions);
+    const { loading: loadingRegions, error: errorRegions, data: resultRegions, execute: requestRegions } = useAsyncAxios(requestAxiosRegions);
 
     useEffect(() => {
         if (resultRegions === null) return;
@@ -119,23 +114,22 @@ function ManagementRegion() {
 
     const onRowClick = (regionNo: string) => {
         setSelectedRegionNo(regionNo);
-        setSelectedRegionData(listRegion.find(function(data){return data.regionNo === regionNo}));
+        setSelectedRegionData(
+            listRegion.find(function (data) {
+                return data.regionNo === regionNo;
+            })
+        );
     };
 
     return (
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={7}>
-                    <TableManagement 
-                        columns={columns} 
-                        rows={rows}
-                        selectedId={selectedRegionNo}
-                        clickEvent={onRowClick}
-                    />
+                    <TableManagement columns={columns} rows={rows} selectedId={selectedRegionNo} clickEvent={onRowClick} />
                 </Grid>
                 <Grid item xs={5}>
                     <Box className={styles.box}>
-                        <KakaoMap
+                        <OsmMap
                             style={{
                                 width: "100%",
                                 height: "100%",
@@ -145,7 +139,7 @@ function ManagementRegion() {
                                 current: {
                                     regionNo: selectedRegionData !== undefined ? selectedRegionData.regionNo : "",
                                     regionName: selectedRegionData !== undefined ? selectedRegionData.regionName : "",
-                                    gps: selectedRegionData !== undefined ? selectedRegionData.gps : ""
+                                    gps: selectedRegionData !== undefined ? selectedRegionData.gps : "",
                                 },
                                 isShow: true,
                             }}

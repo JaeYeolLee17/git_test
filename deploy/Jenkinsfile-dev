@@ -7,14 +7,14 @@ pipeline {
     stage('git pull') {
       steps {
         git url: 'https://sjkim_emotion@bitbucket.org/emgglobal/smart-city-challenge.git', 
-            branch: 'dev', 
+            branch: 'dev',
             credentialsId: 'b07620dd-74f5-486d-bba7-c671cfbb3825'
       }
     }
     stage ('frontend build') {
       tools { nodejs "NodeJS16" }
       steps {
-        sh 'cd frontend && rm -rf build && npm install && npm run build:nextdev'
+        sh 'cd frontend && rm -rf build && npm install --save --legacy-peer-deps && npm run build'
       }
     }
     stage ('backend build') {
@@ -27,23 +27,23 @@ pipeline {
         sh 'cd deploy && ./challenge-docker-build-push.sh'
       }
     }
-    stage('docker deploy over ssh') {
+    stage('kubernetes deploy over ssh') {
       steps([$class: 'BapSshPromotionPublisherPlugin']) {
         sshPublisher(
           continueOnError: false,
           failOnError: true,
           publishers: [
             sshPublisherDesc(
-              configName: 'DevChallenge01',
+              configName: 'DevChallenge03',
               verbose: true,
               transfers: [
                 sshTransfer(
-                    sourceFiles: 'deploy/challenge-docker-deploy/*',
-                    removePrefix: 'deploy/challenge-docker-deploy/',
+                    sourceFiles: 'deploy/challenge-k8s-deploy/*',
+                    removePrefix: 'deploy/challenge-k8s-deploy/',
                     remoteDirectory: 'smart-city-challenge/deploy',
                     execCommand: 'cd smart-city-challenge/deploy && chmod 755 *.sh; \
                                   ./challenge-stop.sh; \
-                                  ./challenge-start.sh'
+                                  ./challenge-start.sh;'
                 )
               ]
             )

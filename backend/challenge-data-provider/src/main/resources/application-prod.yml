@@ -1,12 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.0.231:5432/challenge2022
+    url: jdbc:postgresql://192.168.0.31:5432/challenge
     username: challenge
-    password: challenge1123!
+    password: challenge123!
 
 hbase:
   zookeeper:
-    quorum: devchallenge01.e4motion.com,devchallenge02.e4motion.com,devchallenge03.e4motion.com
+    quorum: 192.168.0.41,192.168.0.42,192.168.0.43
     property:
       clientPort: 2181
 

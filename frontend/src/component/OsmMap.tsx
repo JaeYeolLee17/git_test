@@ -355,8 +355,6 @@ const getMoveGPSPosition = (gps: Common.GpsPosition, bearing: number, distance: 
 };
 
 export const displayEditLinks = (editLinks: OsmMapEditLinksType) => {
-    console.log("links", editLinks);
-
     if (editLinks === undefined) return null;
 
     if (editLinks.list) {
@@ -661,7 +659,7 @@ function OsmMap({
             {/* {links?.isShow && kakaoMap !== undefined && displayLinks(links, kakaoMap, level)} */}
             {editLinks && displayEditLinks(editLinks)}
             {tsi?.isShow && displayTsi(tsi)}
-            {avl?.isShow && displayAvl(avl)}
+            {/*avl?.isShow && displayAvl(avl)*/}
         </MapContainer>
     );
 }

@@ -59,23 +59,15 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
 
         if (!Utils.utilIsEmptyObj(dataMfd)) {
             const todayLastIndex = dataMfd.data.length - 1;
-            const todayAvgWaitCar =
-                dataMfd.data[todayLastIndex].qtsrlu / (15 * 60);
+            const todayAvgWaitCar = dataMfd.data[todayLastIndex].qtsrlu / (15 * 60);
             const todayPassCar = dataMfd.data[todayLastIndex].srlu;
 
-            const todayXData = Utils.utilConvertQtsrlu15Minute(
-                dataMfd.data[todayLastIndex].qtsrlu
-            );
-            const todayYData = Utils.utilConvertSrlu15Minute(
-                dataMfd.data[todayLastIndex].srlu
-            );
+            const todayXData = Utils.utilConvertQtsrlu15Minute(dataMfd.data[todayLastIndex].qtsrlu);
+            const todayYData = Utils.utilConvertSrlu15Minute(dataMfd.data[todayLastIndex].srlu);
             const todaySpeed = todayYData / todayXData;
 
             const lastStatDataHour = dataMfd.data[dataMfd.data.length - 1].hour;
-            const lastStatDataMinute =
-                dataMfd.data[dataMfd.data.length - 1].min;
-
-            // console.log("Today", todayPassCar, todayAvgWaitCar, todaySpeed);
+            const lastStatDataMinute = dataMfd.data[dataMfd.data.length - 1].min;
 
             defaultData[0].today = round(todayPassCar);
             defaultData[1].today = round(todayAvgWaitCar);
@@ -83,34 +75,20 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
 
             if (!Utils.utilIsEmptyObj(dataLastWeekMfd)) {
                 const lastWeekMfd = dataLastWeekMfd.data.filter((data: any) => {
-                    if (
-                        data.hour === lastStatDataHour &&
-                        data.min === lastStatDataMinute
-                    ) {
+                    if (data.hour === lastStatDataHour && data.min === lastStatDataMinute) {
                         return true;
                     }
                     return false;
                 });
 
                 if (lastWeekMfd) {
-                    const lastWeekAvgWaitCar =
-                        lastWeekMfd[0].qtsrlu / (15 * 60);
+                    const lastWeekAvgWaitCar = lastWeekMfd[0].qtsrlu / (15 * 60);
                     const lastWeekPassCar = lastWeekMfd[0].srlu;
 
-                    const lastWeekXData = Utils.utilConvertQtsrlu15Minute(
-                        lastWeekMfd[0].qtsrlu
-                    );
-                    const lastWeekYData = Utils.utilConvertSrlu15Minute(
-                        lastWeekMfd[0].srlu
-                    );
+                    const lastWeekXData = Utils.utilConvertQtsrlu15Minute(lastWeekMfd[0].qtsrlu);
+                    const lastWeekYData = Utils.utilConvertSrlu15Minute(lastWeekMfd[0].srlu);
                     const lastWeekSpeed = lastWeekYData / lastWeekXData;
 
-                    // console.log(
-                    //     "Last Week",
-                    //     lastWeekPassCar,
-                    //     lastWeekAvgWaitCar,
-                    //     lastWeekSpeed
-                    // );
                     defaultData[0].lastweek = round(lastWeekPassCar);
                     defaultData[1].lastweek = round(lastWeekAvgWaitCar);
                     defaultData[2].lastweek = round(lastWeekSpeed);
@@ -118,38 +96,20 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
             }
 
             if (!Utils.utilIsEmptyObj(dataLastMonthAvgMfd)) {
-                const lastMonthAvgMfd = dataLastMonthAvgMfd.data.filter(
-                    (data: any) => {
-                        if (
-                            data.hour === lastStatDataHour &&
-                            data.min === lastStatDataMinute
-                        ) {
-                            return true;
-                        }
-                        return false;
+                const lastMonthAvgMfd = dataLastMonthAvgMfd.data.filter((data: any) => {
+                    if (data.hour === lastStatDataHour && data.min === lastStatDataMinute) {
+                        return true;
                     }
-                );
+                    return false;
+                });
 
                 if (lastMonthAvgMfd) {
-                    const lastMonthAvgWaitCar =
-                        lastMonthAvgMfd[0].qtsrlu / 4 / (15 * 60);
+                    const lastMonthAvgWaitCar = lastMonthAvgMfd[0].qtsrlu / 4 / (15 * 60);
                     const lastMonthPassCar = lastMonthAvgMfd[0].srlu / 4;
 
-                    const lastMonthXData =
-                        Utils.utilConvertQtsrlu15Minute(
-                            lastMonthAvgMfd[0].qtsrlu
-                        ) / 4;
-                    const lastMonthYData =
-                        Utils.utilConvertSrlu15Minute(lastMonthAvgMfd[0].srlu) /
-                        4;
+                    const lastMonthXData = Utils.utilConvertQtsrlu15Minute(lastMonthAvgMfd[0].qtsrlu) / 4;
+                    const lastMonthYData = Utils.utilConvertSrlu15Minute(lastMonthAvgMfd[0].srlu) / 4;
                     const lastMonthSpeed = lastMonthYData / lastMonthXData;
-
-                    // console.log(
-                    //     "Last Month",
-                    //     lastMonthPassCar,
-                    //     lastMonthAvgWaitCar,
-                    //     lastMonthSpeed
-                    // );
 
                     defaultData[0].lastmonthavg = round(lastMonthPassCar);
                     defaultData[1].lastmonthavg = round(lastMonthAvgWaitCar);
@@ -161,8 +121,7 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
         return defaultData;
     }, [dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd]);
 
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({ columns, data });
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
 
     const handleIndicate = (column: HeaderGroup) => {
         let color = null;
@@ -181,12 +140,7 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
             default:
                 break;
         }
-        return color ? (
-            <span
-                className={styles.circleIndicator}
-                style={{ backgroundColor: `${color}` }}
-            />
-        ) : null;
+        return color ? <span className={styles.circleIndicator} style={{ backgroundColor: `${color}` }} /> : null;
     };
 
     const handleCell = (cell: Cell) => {
@@ -222,20 +176,14 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
             <table className={styles.chartTable} {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup) => {
-                        const { key, ...restHeaderGroupProps } =
-                            headerGroup.getHeaderGroupProps();
+                        const { key, ...restHeaderGroupProps } = headerGroup.getHeaderGroupProps();
                         return (
                             <tr key={key} {...restHeaderGroupProps}>
                                 {headerGroup.headers.map((column) => {
-                                    const { key, ...restHeaderProps } =
-                                        column.getHeaderProps();
+                                    const { key, ...restHeaderProps } = column.getHeaderProps();
                                     return (
                                         <th key={key} {...restHeaderProps}>
-                                            <Box
-                                                className={
-                                                    styles.indicatorContainer
-                                                }
-                                            >
+                                            <Box className={styles.indicatorContainer}>
                                                 {handleIndicate(column)}
                                                 {column.render("Header")}
                                             </Box>
@@ -254,8 +202,7 @@ function TableMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                         return (
                             <tr key={key} {...restRowProps}>
                                 {row.cells.map((cell) => {
-                                    const { key, ...restCellProps } =
-                                        cell.getCellProps();
+                                    const { key, ...restCellProps } = cell.getCellProps();
                                     return (
                                         <td key={key} {...restCellProps}>
                                             {handleCell(cell)}

@@ -20,26 +20,18 @@ function SelectorIntersection({
     const userDetails = useAuthState();
 
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
-    const [listSelectIntersections, setListSelectIntersections] = useState<
-        Array<SelectorItemType>
-    >([{ value: "all", innerHTML: String.total }]);
-    const [listSelectIntersectionItem, setListSelectIntersectionItem] =
-        useState<SelectorItemType>({ value: "all", innerHTML: String.total });
+    const [listSelectIntersections, setListSelectIntersections] = useState<Array<SelectorItemType>>([{ value: "all", innerHTML: String.total }]);
+    const [listSelectIntersectionItem, setListSelectIntersectionItem] = useState<SelectorItemType>({ value: "all", innerHTML: String.total });
 
     const requestAxiosIntersectionList = async () => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.INTERSECTION_LIST_URL,
-            {
-                params: {
-                    ...(currentRegionInfo.regionNo !== "all"
-                        ? { regionNo: currentRegionInfo.regionNo }
-                        : {}),
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.INTERSECTION_LIST_URL, {
+            params: {
+                ...(currentRegionInfo.regionNo !== "all" ? { regionNo: currentRegionInfo.regionNo } : {}),
+            },
+        });
         return response.data;
     };
 
@@ -52,7 +44,6 @@ function SelectorIntersection({
 
     useEffect(() => {
         if (resultIntersectionList === null) return;
-
         // console.log("resultIntersectionList", resultIntersectionList);
 
         setListIntersections(resultIntersectionList.intersections);
@@ -76,7 +67,6 @@ function SelectorIntersection({
     //             },
     //         });
 
-    //         //console.log(JSON.stringify(response?.data));
     //         setListIntersections(response?.data.intersections);
     //     } catch (err) {
     //         console.log(err);
@@ -95,8 +85,6 @@ function SelectorIntersection({
         if (Utils.utilIsEmptyArray(listIntersections)) {
             return;
         }
-
-        //console.log("listIntersections", listIntersections);
 
         const topItem = { value: "all", innerHTML: String.total };
 
@@ -122,10 +110,7 @@ function SelectorIntersection({
 
     useEffect(() => {
         if (Utils.utilIsEmptyObj(listSelectIntersectionItem)) return;
-        const currentIntersectionInfos = listIntersections.filter(
-            (intersection) =>
-                intersection.intersectionNo === listSelectIntersectionItem.value
-        );
+        const currentIntersectionInfos = listIntersections.filter((intersection) => intersection.intersectionNo === listSelectIntersectionItem.value);
 
         let currentIntersectionInfo = null;
 
@@ -143,10 +128,7 @@ function SelectorIntersection({
     useEffect(() => {
         if (listSelectIntersectionItem.value === selectedIntersectionNo) return;
 
-        const listSelectItems = listSelectIntersections.filter(
-            (selectorIntersection) =>
-                selectorIntersection.value === selectedIntersectionNo
-        );
+        const listSelectItems = listSelectIntersections.filter((selectorIntersection) => selectorIntersection.value === selectedIntersectionNo);
 
         if (!Utils.utilIsEmptyArray(listSelectItems)) {
             setListSelectIntersectionItem(listSelectItems[0]);

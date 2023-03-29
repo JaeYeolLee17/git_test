@@ -8,7 +8,7 @@ import styles from "./UserDetail.module.css";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
-import * as String from "../commons/string"
+import * as String from "../commons/string";
 
 type userDataType = {
     distance: number;
@@ -31,19 +31,15 @@ function UserDetail() {
     useEffect(() => {
         onSelectedUser(location.state);
         location.state === null ? setPageType("add") : setPageType("edit");
-
     }, [location.state]);
 
     const onSelectedUser = (selectedUser: any) => {
-        setSelectedUserList((selectedUserList) => [
-            ...selectedUserList,
-            selectedUser,
-        ]);
+        setSelectedUserList((selectedUserList) => [...selectedUserList, selectedUser]);
 
         setUserData([
             {
                 name: "username",
-                data: selectedUser === null ? "" : selectedUser.username ,
+                data: selectedUser === null ? "" : selectedUser.username,
                 width: 6,
                 required: true,
                 disabled: selectedUser === null ? false : true,
@@ -112,39 +108,29 @@ function UserDetail() {
             },
         ]);
     };
-    
+
     const title: Map<string, string> = new Map([
-        ["username" , String.username],
-        ["nickname" , String.nickname],
-        ["oldPassword" , String.old_password],
-        ["newPassword" , String.new_password],
-        ["passwordConfirm" , String.new_password_confirm],
-        ["email" , String.email],
-        ["phone" , String.phone],
-        ["authority" , String.authority]
-      ]);
+        ["username", String.username],
+        ["nickname", String.nickname],
+        ["oldPassword", String.old_password],
+        ["newPassword", String.new_password],
+        ["passwordConfirm", String.new_password_confirm],
+        ["email", String.email],
+        ["phone", String.phone],
+        ["authority", String.authority],
+    ]);
 
     //addUser
     const requestAxiosAddUser = async (userData: userDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        console.log("userData : " + userData);
-
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).post(
-            Request.USER_URL,
-            userData 
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).post(Request.USER_URL, userData);
 
         return response.data;
     };
 
-    const {
-        loading: loadingAddUser,
-        error: errorAddUser,
-        data: resultAddUser,
-        execute: requestAddUser,
-    } = useAsyncAxios(requestAxiosAddUser);
+    const { loading: loadingAddUser, error: errorAddUser, data: resultAddUser, execute: requestAddUser } = useAsyncAxios(requestAxiosAddUser);
 
     useEffect(() => {
         if (resultAddUser === null) return;
@@ -164,12 +150,7 @@ function UserDetail() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        console.log("userData : " + userData);
-
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
-            Request.USER_URL + "/" + selectedUserList[0].username,
-            userData 
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(Request.USER_URL + "/" + selectedUserList[0].username, userData);
 
         return response.data;
     };
@@ -194,71 +175,65 @@ function UserDetail() {
         console.log("errorUser", errorUpdateUser);
     }, [errorUpdateUser]);
 
-    const onClickEvent = (type :string, user: any) => {
-
+    const onClickEvent = (type: string, user: any) => {
         const updateUserData: any = {
-            "username": user.username,
-            "nickname": user.nickname,
-            "email": user.email,
-            "phone": user.phone,
-            "authority": user.authority
-        }
+            username: user.username,
+            nickname: user.nickname,
+            email: user.email,
+            phone: user.phone,
+            authority: user.authority,
+        };
 
-        switch(type){
+        switch (type) {
             case "add":
                 addUserstep(user, updateUserData);
-            break;
+                break;
             case "edit":
                 editUserStep(user, updateUserData);
-            break;
+                break;
             default:
                 break;
         }
-        
+
         type === "add" ? requestAddUser(updateUserData) : requestUpdateUser(updateUserData);
     };
 
     const addUserstep = (user: any, updateUserData: any) => {
-        if(user.newPassword !== user.newPasswordConfirm){
+        if (user.newPassword !== user.newPasswordConfirm) {
             alert("비밀번호 확인이 일치하지 않습니다.");
             return;
-        } else if(!passwordRule.test(user.newPassword)){
-            alert('비밀번호를 숫자, 영문, 특수문자 8자~16자로 입력하세요');
+        } else if (!passwordRule.test(user.newPassword)) {
+            alert("비밀번호를 숫자, 영문, 특수문자 8자~16자로 입력하세요");
             return;
         } else {
-            updateUserData["password"] =  user.newPassword;
+            updateUserData["password"] = user.newPassword;
         }
     };
 
-    const editUserStep = (user: any, updateUserData:any) => {
-        if(user.newPassword !== ""){
-            if(user.oldPassword === ""){
+    const editUserStep = (user: any, updateUserData: any) => {
+        if (user.newPassword !== "") {
+            if (user.oldPassword === "") {
                 alert("기존 비밀번호를 입력하세요.");
                 return;
-            } else if(user.newPasswordConfirm === ""){
+            } else if (user.newPasswordConfirm === "") {
                 alert("비밀번호 확인을 입력해주세요.");
                 return;
-            } else if(user.newPassword !== user.newPasswordConfirm){
+            } else if (user.newPassword !== user.newPasswordConfirm) {
                 alert("비밀번호 확인이 일치하지 않습니다.");
                 return;
-            } else if(!passwordRule.test(user.newPassword)){
-                alert('비밀번호를 숫자, 영문, 특수문자 8자~16자로 입력하세요');
+            } else if (!passwordRule.test(user.newPassword)) {
+                alert("비밀번호를 숫자, 영문, 특수문자 8자~16자로 입력하세요");
                 return;
             } else {
-                updateUserData["oldPassword"] =  user.oldPassword;
-                updateUserData["newPassword"] =  user.newPassword;
+                updateUserData["oldPassword"] = user.oldPassword;
+                updateUserData["newPassword"] = user.newPassword;
             }
         }
     };
 
     return (
         <div className={styles.wrapper}>
-            <ManagementDetail 
-                type={type}
-                title={title}
-                response={userData} 
-                clickEvent={onClickEvent} 
-            />
+            <ManagementDetail type={type} title={title} response={userData} clickEvent={onClickEvent} />
         </div>
     );
 }

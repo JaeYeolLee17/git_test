@@ -18,28 +18,17 @@ type StreamIntersectionType = {
     onChangedSelectedCameraNo: (cameraNo: string) => void;
 };
 
-function StreamIntersection({
-    streamIntersectionCameras,
-    selectedCameraNo,
-    onChangedSelectedCameraNo,
-}: StreamIntersectionType) {
-    const [listStreamResponse, setListStreamResponse] = useState<Array<any>>(
-        []
-    );
+function StreamIntersection({ streamIntersectionCameras, selectedCameraNo, onChangedSelectedCameraNo }: StreamIntersectionType) {
+    const [listStreamResponse, setListStreamResponse] = useState<Array<any>>([]);
 
     const [showNoCamera, setShowNoCamera] = useState<boolean>(false);
 
     useEffect(() => {
         requestStreamStop(listStreamResponse);
-
         setShowNoCamera(false);
 
-        //console.log("streamIntersectionCameras", streamIntersectionCameras);
-
         if (Utils.utilIsEmptyArray(streamIntersectionCameras) === false) {
-            const streamCameraInfo = makeStreamCameraList(
-                streamIntersectionCameras
-            );
+            const streamCameraInfo = makeStreamCameraList(streamIntersectionCameras);
             requestStreamStart(streamCameraInfo);
         }
     }, [streamIntersectionCameras]);
@@ -62,25 +51,16 @@ function StreamIntersection({
                 camera.height = cameraItem.smallHeight;
             }
 
-            if (
-                Utils.utilIsPremakeIntersection(
-                    cameraItem.intersection.intersectionNo
-                )
-            ) {
+            if (Utils.utilIsPremakeIntersection(cameraItem.intersection.intersectionNo)) {
                 if (bHighResolution === "true") {
                     camera.url = cameraItem.rtspUrl + "s";
                 } else {
                     camera.url = cameraItem.rtspUrl;
                 }
             } else {
-                const idPassword =
-                    cameraItem.rtspId + ":" + cameraItem.rtspPassword + "@";
+                const idPassword = cameraItem.rtspId + ":" + cameraItem.rtspPassword + "@";
 
-                const url = [
-                    cameraItem.rtspUrl.slice(0, 7),
-                    idPassword,
-                    cameraItem.rtspUrl.slice(7),
-                ].join("");
+                const url = [cameraItem.rtspUrl.slice(0, 7), idPassword, cameraItem.rtspUrl.slice(7)].join("");
 
                 if (bHighResolution === "true") {
                     camera.url = url + "&subtype=0";
@@ -106,20 +86,14 @@ function StreamIntersection({
         if (Utils.utilIsEmptyArray(streamCameraInfo)) return;
 
         try {
-            //console.log(streamCameraInfo);
             const response = await axios.post(Request.STREAM_URL_START, {
                 data: streamCameraInfo,
             });
 
-            //console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
-
             const result = response?.data?.result;
-            //console.log("result", result);
-
             setListStreamResponse(response?.data?.streams);
         } catch (err) {
-            console.log(err);
+            console.log("error", err);
         }
     };
 
@@ -127,20 +101,15 @@ function StreamIntersection({
         if (Utils.utilIsEmptyArray(streamCameraInfo)) return;
 
         try {
-            //console.log("streamCameraInfo", streamCameraInfo);
             const response = await axios.post(Request.STREAM_URL_STOP, {
                 data: streamCameraInfo,
             });
-
-            //console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
-
             //const result = response?.data?.result;
             //console.log("result", result);
 
             setListStreamResponse(response?.data?.streams);
         } catch (err) {
-            console.log(err);
+            console.log("error", err);
         }
     };
 
@@ -149,21 +118,13 @@ function StreamIntersection({
     }, 10000);
 
     const showCameraStream = (cameraNo: string) => {
-        if (
-            listStreamResponse === undefined ||
-            listStreamResponse.filter === undefined
-        )
-            return <Box className={styles.rtspVideo} />;
+        if (listStreamResponse === undefined || listStreamResponse.filter === undefined) return <Box className={styles.rtspVideo} />;
 
         const streams = listStreamResponse.filter((stream) => {
             return stream.cameraId === cameraNo;
         });
 
-        return streams[0] !== undefined ? (
-            <StreamCamera className={styles.rtspVideo} stream={streams[0]} />
-        ) : (
-            <Box className={styles.rtspVideo} />
-        );
+        return streams[0] !== undefined ? <StreamCamera className={styles.rtspVideo} stream={streams[0]} /> : <Box className={styles.rtspVideo} />;
     };
 
     const onCameraClicked = (cameraNo: string) => {
@@ -178,12 +139,7 @@ function StreamIntersection({
                         <Box
                             key={camera.cameraNo}
                             className={
-                                selectedCameraNo === camera.cameraNo
-                                    ? [
-                                          styles.cameraCard,
-                                          styles.cameraCardSelected,
-                                      ].join(" ")
-                                    : styles.cameraCard
+                                selectedCameraNo === camera.cameraNo ? [styles.cameraCard, styles.cameraCardSelected].join(" ") : styles.cameraCard
                             }
                             onClick={() => {
                                 onCameraClicked(camera.cameraNo);
@@ -194,9 +150,7 @@ function StreamIntersection({
                                 <Box className={styles.cameraCardNoshow}>
                                     <Box className={styles.noshowContent}>
                                         <img src={imgCameraNoShow} />
-                                        <Box className={styles.noshowText}>
-                                            카메라 준비중
-                                        </Box>
+                                        <Box className={styles.noshowText}>카메라 준비중</Box>
                                     </Box>
                                 </Box>
                             ) : null}
@@ -204,10 +158,7 @@ function StreamIntersection({
                             <Box
                                 className={
                                     selectedCameraNo === camera.cameraNo
-                                        ? [
-                                              styles.cameraCardText,
-                                              styles.cameraCardTextSelected,
-                                          ].join(" ")
+                                        ? [styles.cameraCardText, styles.cameraCardTextSelected].join(" ")
                                         : styles.cameraCardText
                                 }
                             >

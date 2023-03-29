@@ -7,6 +7,7 @@ import styles from "./OsmMap.module.css";
 import "leaflet/dist/leaflet.css";
 
 import intersectionImage from "../assets/images/intersection.svg";
+import intersectionPressImage from "../assets/images/intersection_p.svg";
 
 export type OsmMapStyleType = {
     width: string | number;
@@ -78,36 +79,39 @@ export const displayRegion = (region: OsmMapRegionType) => {
     return null;
 };
 
-export const displayIntersection = (intersections: OsmMapIntersectionsType | undefined) => {
+export const displayIntersection = (intersections: OsmMapIntersectionsType | undefined, level: number) => {
     if (intersections === undefined) return null;
-    // console.log("intersections", JSON.stringify(intersections));
+
     if (Utils.utilIsEmptyArray(intersections.list) === false) {
         return intersections.list
             .filter((intersection) => intersections.showEdge || intersection.region !== null)
             .map((intersection) => {
                 let strokeColor;
                 let fillColor;
+                let iconImage;
 
                 if (intersection.intersectionNo === intersections.selected) {
                     strokeColor = "#ff8000";
                     fillColor = "#ff9900";
+                    iconImage = intersectionPressImage;
                 } else {
                     if (intersection.region !== null) {
                         strokeColor = "#ffff00";
                         fillColor = "#ffee00";
+                        iconImage = intersectionImage;
                     } else {
                         strokeColor = "#ffff00";
                         fillColor = "#707070";
+                        iconImage = intersectionImage;
                     }
                 }
 
                 if (intersection.gps === null) return null;
-
                 const icon = L.icon({
                     iconUrl: intersectionImage,
-                    iconRetinaUrl: intersectionImage,
-                    iconAnchor: [20, 20],
-                    iconSize: [40, 40],
+                    iconRetinaUrl: iconImage,
+                    iconAnchor: level < 15 ? [20, 20] : level < 17 ? [40, 40] : [120, 120],
+                    iconSize: level < 15 ? [40, 40] : level < 17 ? [80, 80] : [240, 240],
                 });
 
                 return (
@@ -125,6 +129,7 @@ export const displayIntersection = (intersections: OsmMapIntersectionsType | und
                                     intersections.dragEvent(event.target.getLatLng().lat, event.target.getLatLng().lng);
                             },
                         }}
+                        zIndexOffset={5}
                     />
                     // <Circle
                     //     key={intersection.intersectionNo}
@@ -151,8 +156,6 @@ export const displayIntersection = (intersections: OsmMapIntersectionsType | und
 
 export const displayCamera = (cameras: OsmMapCamerasType, level: number) => {
     if (cameras === undefined) return null;
-
-    // console.log("cameras", JSON.stringify(cameras));
     return cameras.list?.map((camera) => {
         const normalState = true; // TODO
         const isSelected = camera.cameraNo === cameras.selected;
@@ -182,6 +185,7 @@ export const displayCamera = (cameras: OsmMapCamerasType, level: number) => {
                         cameras.dragEvent !== undefined && cameras.dragEvent(event.target.getLatLng().lat, event.target.getLatLng().lng);
                     },
                 }}
+                zIndexOffset={10}
             />
         );
     });
@@ -193,7 +197,6 @@ export const displayLinks = (links: OsmMapLinksType, level: number, kakaoMap?: k
     if (kakaoMap === undefined) return null;
 
     if (links.list) {
-        //console.log("links", links);
         if (level >= 5) {
             return links.list.map((link, index) => {
                 const qtsrlu = Utils.utilConvertQtsrlu15Minute(link.data[0].qtsrlu);
@@ -358,7 +361,6 @@ export const displayEditLinks = (editLinks: OsmMapEditLinksType) => {
     if (editLinks === undefined) return null;
 
     if (editLinks.list) {
-        //console.log("links", links);
         return editLinks.list.map((link, index) => {
             return (
                 <div key={link.linkId}>
@@ -414,10 +416,7 @@ export const displayTsi = (tsi: OsmMapTsiType) => {
                 return null;
             }
 
-            //console.log("tsiData", tsiData);
-
             const datas = tsiData.tsiSignals.map((signalData: any) => {
-                //console.log("signalData", signalData);
                 if (signalType !== "e") {
                     signalType = getTrafficSignalType(tsi, signalData);
                 }
@@ -459,21 +458,15 @@ export const displayAvl = (avl: OsmMapAvlType) => {
 
     if (Utils.utilIsEmptyArray(avl.list) === false) {
         return avl.list.map((avlData) => {
-            //console.log("avlData", avlData);
-
             const naviPath = avlData.path.slice(-1)[0].gps;
-            //console.log("naviPath", naviPath);
 
             let currPosition = null;
             if (Utils.utilIsEmptyArray(avlData.track) === false) {
                 currPosition = avlData.track[0].gps;
             }
-            //console.log("currPosition", currPosition);
 
             const destPosition = avlData.gps;
-            //console.log("destPosition", destPosition);
             const status = avlData.status.slice(-1)[0].name;
-            //console.log("status", status);
 
             const statusInfo: { [key: string]: string } = {
                 출동: "r",
@@ -490,8 +483,6 @@ export const displayAvl = (avl: OsmMapAvlType) => {
                 iconRetinaUrl: vehicleImageData,
                 iconSize: [40, 40],
             });
-
-            //console.log(vehicleImageUrl);
 
             return (
                 <div key={avlData.carNo}>
@@ -570,16 +561,14 @@ function OsmMap({
     onClickMap?: (lat: number, lng: number) => void;
 }) {
     const [kakaoMap, setOsmMap] = useState<kakao.maps.Map>();
-    const [level, setLevel] = useState<number>(7);
+    const [level, setLevel] = useState<number>(13);
     const [tempCenter, setTempCenter] = useState<kakao.maps.LatLng>();
 
     useEffect(() => {
         if (transitionState === "entering" || transitionState === "exiting") {
-            //console.log(transitionState, kakaoMap?.getCenter());
             setTempCenter(kakaoMap?.getCenter());
         } else if (transitionState === "entered" || transitionState === "exited") {
             if (tempCenter != undefined) {
-                //console.log(transitionState, tempCenter);
                 kakaoMap?.relayout();
                 kakaoMap?.setCenter(tempCenter);
             }
@@ -587,7 +576,7 @@ function OsmMap({
     }, [transitionState]);
 
     useEffect(() => {
-        if (zoomLevel !== undefined) setLevel(zoomLevel);
+        //if (zoomLevel !== undefined) setLevel(zoomLevel);
     }, [zoomLevel]);
 
     const handleMap = (map: kakao.maps.Map) => {
@@ -607,7 +596,6 @@ function OsmMap({
     const osmLevel: number[] = [18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7];
 
     const convert = (value: number) => {
-        console.log("kakao level:" + value + ", osm level:" + osmLevel[kakaoLevel.findIndex((e) => e === value)]);
         /*map.setView(
             center === undefined || ""
                 ? {
@@ -653,7 +641,7 @@ function OsmMap({
             />
             <MapEvents onZoom={onZoomChanged} onClick={handleClick} />
             {region?.isShow && displayRegion(region)}
-            {displayIntersection(intersections)}
+            {displayIntersection(intersections, level)}
             {cameras?.isShow && displayCamera(cameras, level)}
             {links?.isShow && displayLinks(links, level, kakaoMap)}
             {/* {links?.isShow && kakaoMap !== undefined && displayLinks(links, kakaoMap, level)} */}

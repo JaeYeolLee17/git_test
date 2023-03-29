@@ -30,31 +30,21 @@ const transitionChart: { [key: string]: string } = {
 const Dashboard = () => {
     const [chartOpen, setChartOpen] = useState<boolean>(false);
     const [selectedRegionNo, setSelectedRegionNo] = useState<string>("");
-    const [selectedRegionName, setSelectedRegionName] = useState<
-        string | undefined
-    >("");
-    const [currentRegionInfo, setCurrentRegionInfo] =
-        useState<Common.RegionInfo>({ regionNo: "all" });
+    const [selectedRegionName, setSelectedRegionName] = useState<string | undefined>("");
+    const [currentRegionInfo, setCurrentRegionInfo] = useState<Common.RegionInfo>({ regionNo: "all" });
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
-    const [selectedIntersectionNo, setSelectedIntersectionNo] =
-        useState<string>("");
-    const [selectedIntersectionName, setSelectedIntersectionName] = useState<
-        string | undefined
-    >("");
+    const [selectedIntersectionNo, setSelectedIntersectionNo] = useState<string>("");
+    const [selectedIntersectionName, setSelectedIntersectionName] = useState<string | undefined>("");
 
     const [transitionState, setTransitionState] = useState<string>("");
 
     const onChangedCurrentRegion = (regionItem: Common.RegionInfo) => {
-        //console.log("regionItem", regionItem);
         setSelectedRegionNo(regionItem.regionNo);
         setSelectedRegionName(regionItem.regionName);
         setCurrentRegionInfo(regionItem);
     };
 
-    const onChangedCurrentIntersection = (
-        intersectionItem: Common.IntersectionInfo
-    ) => {
-        //console.log("intersectionItem", intersectionItem);
+    const onChangedCurrentIntersection = (intersectionItem: Common.IntersectionInfo) => {
         setSelectedIntersectionNo(intersectionItem.intersectionNo);
         setSelectedIntersectionName(intersectionItem.intersectionName);
     };
@@ -82,12 +72,7 @@ const Dashboard = () => {
                                 overflow: "hidden",
                             }}
                         >
-                            <Box
-                                className={[
-                                    styles.dashboardMap,
-                                    transitionMap[state],
-                                ].join(" ")}
-                            >
+                            <Box className={[styles.dashboardMap, transitionMap[state]].join(" ")}>
                                 {/* <FormControlLabel
                                     control={
                                         <Switch
@@ -104,66 +89,35 @@ const Dashboard = () => {
                                     currentRegionInfo={currentRegionInfo}
                                     intersections={{
                                         listIntersections: listIntersections,
-                                        selectedIntersectionNo:
-                                            selectedIntersectionNo,
-                                        selectedIntersectionName:
-                                            selectedIntersectionName,
+                                        selectedIntersectionNo: selectedIntersectionNo,
+                                        selectedIntersectionName: selectedIntersectionName,
                                     }}
                                     onChangedSelectedItem={(item) => {
-                                        setSelectedIntersectionNo(
-                                            item.intersectionNo
-                                        );
+                                        setSelectedIntersectionNo(item.intersectionNo);
                                     }}
                                 />
-                                <button
-                                    className={styles.btnExpansion}
-                                    onClick={handleChartOpen}
-                                >
-                                    {chartOpen ? (
-                                        <ArrowBackIosNewIcon fontSize="small" />
-                                    ) : (
-                                        <ArrowForwardIosIcon fontSize="small" />
-                                    )}
+                                <button className={styles.btnExpansion} onClick={handleChartOpen}>
+                                    {chartOpen ? <ArrowBackIosNewIcon fontSize="small" /> : <ArrowForwardIosIcon fontSize="small" />}
                                 </button>
                                 <Box className={styles.mapSelectWrap}>
                                     <ul>
                                         <li>
-                                            <SelectorRegion
-                                                selectedRegionNo={
-                                                    selectedRegionNo
-                                                }
-                                                onChangedCurrentRegion={
-                                                    onChangedCurrentRegion
-                                                }
-                                            />
+                                            <SelectorRegion selectedRegionNo={selectedRegionNo} onChangedCurrentRegion={onChangedCurrentRegion} />
                                         </li>
                                         <li>
                                             <SelectorIntersection
-                                                currentRegionInfo={
-                                                    currentRegionInfo
-                                                }
-                                                selectedIntersectionNo={
-                                                    selectedIntersectionNo
-                                                }
-                                                onChangedIntersectionList={(
-                                                    list
-                                                ) => {
+                                                currentRegionInfo={currentRegionInfo}
+                                                selectedIntersectionNo={selectedIntersectionNo}
+                                                onChangedIntersectionList={(list) => {
                                                     setListIntersections(list);
                                                 }}
-                                                onChangedCurrentIntersection={
-                                                    onChangedCurrentIntersection
-                                                }
+                                                onChangedCurrentIntersection={onChangedCurrentIntersection}
                                             />
                                         </li>
                                     </ul>
                                 </Box>
                             </Box>
-                            <Box
-                                className={[
-                                    styles.dashboardChart,
-                                    transitionChart[state],
-                                ].join(" ")}
-                            >
+                            <Box className={[styles.dashboardChart, transitionChart[state]].join(" ")}>
                                 <DashboardMfd
                                     regionNo={selectedRegionNo}
                                     regionName={selectedRegionName}

@@ -37,7 +37,6 @@ function CameraDetail() {
     }, [location.state]);
 
     const onSelectedCamera = (selectedCamera: any) => {
-        // console.log("selectedCamera", selectedCamera);
         setSelectedCameraList((selectedCameraList) => [...selectedCameraList, selectedCamera]);
 
         setCenterGps({ ...selectedCamera.gps });
@@ -294,8 +293,6 @@ function CameraDetail() {
             },
         };
 
-        // console.log("updateData", updateData);
-
         requestUpdateCameras(updateData);
     };
 
@@ -326,9 +323,6 @@ function CameraDetail() {
     };
 
     const onChangeCameraData = (item: any, data: any) => {
-        // console.log(item, data);
-        // console.log(selectedCameraList);
-
         setSelectedCameraList((prevState) => {
             const newState = prevState.map((obj) => {
                 if (item === "degree" && Number(data) >= 0 && Number(data) <= 35) obj.degree = data;

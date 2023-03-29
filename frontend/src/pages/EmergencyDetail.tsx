@@ -6,16 +6,16 @@ import { useAsyncAxios } from "../utils/customHooks";
 import { useNavigate } from "react-router-dom";
 import styles from "./EmergencyDetail.module.css";
 import * as Utils from "../utils/utils";
-import * as Request from "../commons/request"
+import * as Request from "../commons/request";
 import * as Common from "../commons/common";
-import * as String from "../commons/string"
+import * as String from "../commons/string";
 
 type emergencyDataType = {
-    distance: number,
-    serverUrl: string,
-    sendCycle: number,
-    collectCycle: number 
-}
+    distance: number;
+    serverUrl: string;
+    sendCycle: number;
+    collectCycle: number;
+};
 
 function EmergencyDetail() {
     const location = useLocation();
@@ -27,72 +27,69 @@ function EmergencyDetail() {
 
     useEffect(() => {
         location.state !== null && onSelectedEmergency(location.state);
-    }, [location.state])
+    }, [location.state]);
 
     const onSelectedEmergency = (selectedEmergency: any) => {
-        setSelectedEmergencyList(selectedEmergencyList => [...selectedEmergencyList, selectedEmergency]);
-        
-        setEmergencyData([{
-            name: "carNo",
-            data: selectedEmergency.carNo,
-            width:6,
-            required: true,
-            disabled: true
-        },
-        {
-            name: "",
-            data: "",
-            width:6,
-            required: false,
-            disabled: false
-        },
-        {
-            name: "password",
-            data: "",
-            width:6,
-            required: false,
-            disabled: false
-        },
-        {
-            name: "passwordConfirm",
-            data: "",
-            width:6,
-            required: false,
-            disabled: false
-        },
-        {
-            name: "wardId",
-            data: selectedEmergency.wardId,
-            width:6,
-            required: false,
-            disabled: false
-        },
-        {
-            name: "wardName",
-            data: selectedEmergency.wardName,
-            width:6,
-            required: true,
-            disabled: false
-        }
+        setSelectedEmergencyList((selectedEmergencyList) => [...selectedEmergencyList, selectedEmergency]);
+
+        setEmergencyData([
+            {
+                name: "carNo",
+                data: selectedEmergency.carNo,
+                width: 6,
+                required: true,
+                disabled: true,
+            },
+            {
+                name: "",
+                data: "",
+                width: 6,
+                required: false,
+                disabled: false,
+            },
+            {
+                name: "password",
+                data: "",
+                width: 6,
+                required: false,
+                disabled: false,
+            },
+            {
+                name: "passwordConfirm",
+                data: "",
+                width: 6,
+                required: false,
+                disabled: false,
+            },
+            {
+                name: "wardId",
+                data: selectedEmergency.wardId,
+                width: 6,
+                required: false,
+                disabled: false,
+            },
+            {
+                name: "wardName",
+                data: selectedEmergency.wardName,
+                width: 6,
+                required: true,
+                disabled: false,
+            },
         ]);
     };
 
-    const title: Map<string, string> = new Map([
-      ]);
+    const title: Map<string, string> = new Map([]);
 
-    const requestAxiosUpdateEmergencys = async(emergencyData: emergencyDataType) => {
+    const requestAxiosUpdateEmergencys = async (emergencyData: emergencyDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        console.log("emergencyData : " + emergencyData);
-
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).post(
-            Request.EMERGENCY_URL + "/" + selectedEmergencyList[0].emergencyId,
-            { emergencyData }
-        ); 
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).post(Request.EMERGENCY_URL + "/" + selectedEmergencyList[0].emergencyId, {
+            emergencyData,
+        });
 
         return response.data;
-    }
+    };
 
     const {
         loading: loadingEmergencys,
@@ -103,10 +100,9 @@ function EmergencyDetail() {
 
     useEffect(() => {
         if (resultUpdateEmergencys === null) return;
-        
+
         navigate(Common.PAGE_MANAGEMENT_EMERGENCY);
         alert("수정되었습니다.");
-
     }, [resultUpdateEmergencys]);
 
     useEffect(() => {
@@ -115,20 +111,15 @@ function EmergencyDetail() {
         console.log("errorEmergencys", errorUpdateEmergencys);
     }, [errorUpdateEmergencys]);
 
-    const onClickEvent = (type: string, emergencys :any) => {
+    const onClickEvent = (type: string, emergencys: any) => {
         requestUpdateEmergencys(emergencys);
     };
-    
-    return(
+
+    return (
         <div className={styles.wrapper}>
-            <ManagementDetail 
-                type="edit"
-                title={title}
-                response={emergencyData} 
-                clickEvent={onClickEvent}
-            />
+            <ManagementDetail type="edit" title={title} response={emergencyData} clickEvent={onClickEvent} />
         </div>
-    )
+    );
 }
 
 export default EmergencyDetail;

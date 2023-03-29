@@ -41,13 +41,9 @@ function LinkDetail() {
 
         setEditLinkList(state.list);
         setSelectedLink(state.selected);
-
-        console.log("state", state);
-        console.log("editLinkList", state.list);
     }, [location.state]);
 
     useEffect(() => {
-        // console.log("selectedLink", selectedLink);
         if (!Utils.utilIsEmptyObj(selectedLink)) {
             const gpsString = JSON.stringify(selectedLink.gps);
             setUpdateLinkData([
@@ -110,7 +106,6 @@ function LinkDetail() {
     const displayInput = () => {
         if (updateLinkData !== undefined) {
             return updateLinkData.map((item: any) => {
-                // console.log("item", item);
                 return (
                     <Grid item xs={item.width} key={item.name}>
                         {item.name.substring(0, 5) === "empty" && <></>}

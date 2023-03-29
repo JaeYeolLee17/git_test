@@ -5,35 +5,22 @@ import * as String from "../commons/string";
 //const { kakao } = window;
 
 export const utilGetCamera = (listCamera: any[], cameraNo: string) => {
-    const camera: any[] = listCamera.filter(
-        (element) => element.cameraNo === cameraNo
-    );
+    const camera: any[] = listCamera.filter((element) => element.cameraNo === cameraNo);
     return camera[0];
 };
 
-export const utilGetInstsectionCameras = (
-    listCamera: any[],
-    cameraNo: string
-) => {
+export const utilGetInstsectionCameras = (listCamera: any[], cameraNo: string) => {
     const cameraData: any = utilGetCamera(listCamera, cameraNo);
     // let cameras = listCamera.filter(
     //     (camera) =>
     //         cameraData.intersection.intersectionId ===
     //         camera.intersection.intersectionId
     // );
-    return utilGetInstsectionCamerasByIntersectionNo(
-        listCamera,
-        cameraData.intersection.intersectionNo
-    );
+    return utilGetInstsectionCamerasByIntersectionNo(listCamera, cameraData.intersection.intersectionNo);
 };
 
-export const utilGetInstsectionCamerasByIntersectionNo = (
-    listCamera: any[],
-    intersectionNo: string
-) => {
-    const cameras: any[] = listCamera.filter(
-        (camera) => intersectionNo === camera.intersection.intersectionNo
-    );
+export const utilGetInstsectionCamerasByIntersectionNo = (listCamera: any[], intersectionNo: string) => {
+    const cameras: any[] = listCamera.filter((camera) => intersectionNo === camera.intersection.intersectionNo);
     return cameras;
 };
 
@@ -55,13 +42,7 @@ export const utilFormatDateYYYYMMDD000000 = (date: Date) => {
     const year: number = date.getFullYear();
     const month: number = date.getMonth() + 1;
     const day: number = date.getDate();
-    const format: string =
-        year +
-        "-" +
-        (month < 10 ? "0" + month : month) +
-        "-" +
-        (day < 10 ? "0" + day : day) +
-        " 00:00:00";
+    const format: string = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day) + " 00:00:00";
 
     return format;
 };
@@ -93,12 +74,7 @@ export const utilFormatDateYYYYMMDD = (date: Date) => {
     const month: number = date.getMonth() + 1;
     const day: number = date.getDate();
 
-    const format: string =
-        year +
-        "-" +
-        (month < 10 ? "0" + month : month) +
-        "-" +
-        (day < 10 ? "0" + day : day);
+    const format: string = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
 
     return format;
 };
@@ -123,11 +99,7 @@ export const utilGetSpeedColor = (speed: number) => {
     }
 };
 
-export const utilConvertParallelLines = (
-    map: kakao.maps.Map,
-    level: number,
-    list: Common.GpsPosition[]
-) => {
+export const utilConvertParallelLines = (map: kakao.maps.Map, level: number, list: Common.GpsPosition[]) => {
     const path: Common.GpsPosition[] = [];
     if (!map) return null;
 
@@ -151,16 +123,10 @@ export const utilConvertParallelLines = (
     });
 
     originalPath.map((kakaoGps, index: number, array: kakao.maps.LatLng[]) => {
-        //console.log("index", index);
-        //console.log("array", array[0]);
         if (index === 0) return null;
 
-        const p1: kakao.maps.Point = mapProjection.pointFromCoords(
-            array[index - 1]
-        );
-        const p2: kakao.maps.Point = mapProjection.pointFromCoords(
-            array[index]
-        );
+        const p1: kakao.maps.Point = mapProjection.pointFromCoords(array[index - 1]);
+        const p2: kakao.maps.Point = mapProjection.pointFromCoords(array[index]);
         let theta: number = Math.atan2(p1.x - p2.x, p1.y - p2.y) + Math.PI / 2;
 
         // // 방향 바로잡기
@@ -171,14 +137,8 @@ export const utilConvertParallelLines = (
         const dy: number = Math.round(gap * Math.cos(theta));
 
         // // 간격 적용된 left right point
-        const p1l: kakao.maps.Point = new kakao.maps.Point(
-            p1.x - dx,
-            p1.y - dy
-        );
-        const p2l: kakao.maps.Point = new kakao.maps.Point(
-            p2.x - dx,
-            p2.y - dy
-        );
+        const p1l: kakao.maps.Point = new kakao.maps.Point(p1.x - dx, p1.y - dy);
+        const p2l: kakao.maps.Point = new kakao.maps.Point(p2.x - dx, p2.y - dy);
 
         if (index === 1) {
             const position1 = mapProjection.coordsFromPoint(p1l);
@@ -219,7 +179,6 @@ export const utilConvertParallelLines = (
 
 export const utilAxios = () => {
     const token = JSON.parse(localStorage.getItem("currentUser") || "{}").token;
-    // console.log("token", token);
     const instance = axios.create({
         headers: {
             "Content-Type": "application/json",
@@ -266,12 +225,7 @@ export const utilIsEmptyObj = (obj: Record<string, any>) => {
 };
 
 export const utilIsEmptyArray = (array: Array<any>) => {
-    if (
-        array !== null &&
-        array !== undefined &&
-        Array.isArray(array) &&
-        array.length
-    ) {
+    if (array !== null && array !== undefined && Array.isArray(array) && array.length) {
         return false;
     }
 
@@ -319,86 +273,50 @@ export const utilConvertChartSeriesCarType = (dataCarType: any) => {
     const taxi_srluDatas: Common.ChartElement[] = initDataArrayinStatChart();
     const bus_srluDatas: Common.ChartElement[] = initDataArrayinStatChart();
     const truck_srluDatas: Common.ChartElement[] = initDataArrayinStatChart();
-    const motocycle_srluDatas: Common.ChartElement[] =
-        initDataArrayinStatChart();
+    const motocycle_srluDatas: Common.ChartElement[] = initDataArrayinStatChart();
 
-    const normal_qtsrluDatas: Common.ChartElement[] =
-        initDataArrayinStatChart();
+    const normal_qtsrluDatas: Common.ChartElement[] = initDataArrayinStatChart();
     const taxi_qtsrluDatas: Common.ChartElement[] = initDataArrayinStatChart();
     const bus_qtsrluDatas: Common.ChartElement[] = initDataArrayinStatChart();
     const truck_qtsrluDatas: Common.ChartElement[] = initDataArrayinStatChart();
-    const motocycle_qtsrluDatas: Common.ChartElement[] =
-        initDataArrayinStatChart();
+    const motocycle_qtsrluDatas: Common.ChartElement[] = initDataArrayinStatChart();
 
     const personDatas: Common.ChartElement[] = initDataArrayinStatChart();
 
     // skip if no data
     if (!utilIsEmptyObj(dataCarType)) {
         dataCarType.data.forEach((seriesData: any) => {
-            const normal_srluData = normal_srluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (normal_srluData !== undefined)
-                normal_srluData.y = seriesData.srlu[0];
+            const normal_srluData = normal_srluDatas.find((data) => data.x === seriesData.hour);
+            if (normal_srluData !== undefined) normal_srluData.y = seriesData.srlu[0];
 
-            const taxi_srluData = taxi_srluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (taxi_srluData !== undefined)
-                taxi_srluData.y = seriesData.srlu[1];
+            const taxi_srluData = taxi_srluDatas.find((data) => data.x === seriesData.hour);
+            if (taxi_srluData !== undefined) taxi_srluData.y = seriesData.srlu[1];
 
-            const bus_srluData = bus_srluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
+            const bus_srluData = bus_srluDatas.find((data) => data.x === seriesData.hour);
             if (bus_srluData !== undefined) bus_srluData.y = seriesData.srlu[2];
 
-            const truck_srluData = truck_srluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (truck_srluData !== undefined)
-                truck_srluData.y = seriesData.srlu[3];
+            const truck_srluData = truck_srluDatas.find((data) => data.x === seriesData.hour);
+            if (truck_srluData !== undefined) truck_srluData.y = seriesData.srlu[3];
 
-            const motocycle_srluData = motocycle_srluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (motocycle_srluData !== undefined)
-                motocycle_srluData.y = seriesData.srlu[4];
+            const motocycle_srluData = motocycle_srluDatas.find((data) => data.x === seriesData.hour);
+            if (motocycle_srluData !== undefined) motocycle_srluData.y = seriesData.srlu[4];
 
-            const normal_qtsrluData = normal_qtsrluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (normal_qtsrluData !== undefined)
-                normal_qtsrluData.y = (seriesData.qtsrlu[0] / 3600).toFixed(1);
+            const normal_qtsrluData = normal_qtsrluDatas.find((data) => data.x === seriesData.hour);
+            if (normal_qtsrluData !== undefined) normal_qtsrluData.y = (seriesData.qtsrlu[0] / 3600).toFixed(1);
 
-            const taxi_qtsrluData = taxi_qtsrluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (taxi_qtsrluData !== undefined)
-                taxi_qtsrluData.y = (seriesData.qtsrlu[1] / 3600).toFixed(1);
+            const taxi_qtsrluData = taxi_qtsrluDatas.find((data) => data.x === seriesData.hour);
+            if (taxi_qtsrluData !== undefined) taxi_qtsrluData.y = (seriesData.qtsrlu[1] / 3600).toFixed(1);
 
-            const bus_qtsrluData = bus_qtsrluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (bus_qtsrluData !== undefined)
-                bus_qtsrluData.y = (seriesData.qtsrlu[2] / 3600).toFixed(1);
+            const bus_qtsrluData = bus_qtsrluDatas.find((data) => data.x === seriesData.hour);
+            if (bus_qtsrluData !== undefined) bus_qtsrluData.y = (seriesData.qtsrlu[2] / 3600).toFixed(1);
 
-            const truck_qtsrluData = truck_qtsrluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (truck_qtsrluData !== undefined)
-                truck_qtsrluData.y = (seriesData.qtsrlu[3] / 3600).toFixed(1);
+            const truck_qtsrluData = truck_qtsrluDatas.find((data) => data.x === seriesData.hour);
+            if (truck_qtsrluData !== undefined) truck_qtsrluData.y = (seriesData.qtsrlu[3] / 3600).toFixed(1);
 
-            const motocycle_qtsrluData = motocycle_qtsrluDatas.find(
-                (data) => data.x === seriesData.hour
-            );
-            if (motocycle_qtsrluData !== undefined)
-                motocycle_qtsrluData.y = (seriesData.qtsrlu[4] / 3600).toFixed(
-                    1
-                );
+            const motocycle_qtsrluData = motocycle_qtsrluDatas.find((data) => data.x === seriesData.hour);
+            if (motocycle_qtsrluData !== undefined) motocycle_qtsrluData.y = (seriesData.qtsrlu[4] / 3600).toFixed(1);
 
-            const personData = personDatas.find(
-                (data) => data.x === seriesData.hour
-            );
+            const personData = personDatas.find((data) => data.x === seriesData.hour);
             if (personData !== undefined) personData.y = seriesData.p;
         });
     }
@@ -453,10 +371,7 @@ export const utilConvertChartSeriesCarType = (dataCarType: any) => {
     return { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson };
 };
 
-export const utilConvertChartSeriesCamera = (
-    dataCamera: any,
-    listCamera: any
-) => {
+export const utilConvertChartSeriesCamera = (dataCamera: any, listCamera: any) => {
     const seriesChartSrlu: Common.ChartData[] = [];
     const seriesChartQtsrlu: Common.ChartData[] = [];
     const seriesChartPerson: Common.ChartData[] = [];
@@ -465,20 +380,13 @@ export const utilConvertChartSeriesCamera = (
         dataCamera.forEach((seriesData: any) => {
             let name = "";
             if (listCamera !== undefined) {
-                const cameraInfo = utilGetCamera(
-                    listCamera,
-                    seriesData.cameraNo
-                );
-                name =
-                    cameraInfo.direction.intersectionName +
-                    String.camera_direction_unit;
+                const cameraInfo = utilGetCamera(listCamera, seriesData.cameraNo);
+                name = cameraInfo.direction.intersectionName + String.camera_direction_unit;
             }
 
             const srluDatas: Common.ChartElement[] = initDataArrayinStatChart();
-            const qtsrluDatas: Common.ChartElement[] =
-                initDataArrayinStatChart();
-            const personDatas: Common.ChartElement[] =
-                initDataArrayinStatChart();
+            const qtsrluDatas: Common.ChartElement[] = initDataArrayinStatChart();
+            const personDatas: Common.ChartElement[] = initDataArrayinStatChart();
 
             seriesData.data.forEach((data: any) => {
                 const hour = data.hour;
@@ -486,14 +394,10 @@ export const utilConvertChartSeriesCamera = (
                 const srluData = srluDatas.find((srlu) => srlu.x === hour);
                 if (srluData !== undefined) srluData.y = data.srluSum;
 
-                const qtsrluData = qtsrluDatas.find(
-                    (qtsrlu) => qtsrlu.x === hour
-                );
+                const qtsrluData = qtsrluDatas.find((qtsrlu) => qtsrlu.x === hour);
                 if (qtsrluData !== undefined) qtsrluData.y = data.qtsrluSum;
 
-                const personData = personDatas.find(
-                    (person) => person.x === hour
-                );
+                const personData = personDatas.find((person) => person.x === hour);
                 if (personData !== undefined) personData.y = data.p;
             });
 
@@ -528,18 +432,12 @@ const convertWeekOfYearString = (year: number, weekOfYear: number) => {
     startOfYear.setFullYear(year, 0, 1);
     //startOfYear.setMonth(0, 1);
 
-    if (startOfYear.getDay() === 0)
-        startOfYear.setDate(startOfYear.getDate() + 1);
-    else if (startOfYear.getDay() === 5)
-        startOfYear.setDate(startOfYear.getDate() + 3);
-    else if (startOfYear.getDay() === 6)
-        startOfYear.setDate(startOfYear.getDate() + 2);
-    else if (startOfYear.getDay() === 2)
-        startOfYear.setDate(startOfYear.getDate() - 1);
-    else if (startOfYear.getDay() === 3)
-        startOfYear.setDate(startOfYear.getDate() - 2);
-    else if (startOfYear.getDay() === 4)
-        startOfYear.setDate(startOfYear.getDate() - 3);
+    if (startOfYear.getDay() === 0) startOfYear.setDate(startOfYear.getDate() + 1);
+    else if (startOfYear.getDay() === 5) startOfYear.setDate(startOfYear.getDate() + 3);
+    else if (startOfYear.getDay() === 6) startOfYear.setDate(startOfYear.getDate() + 2);
+    else if (startOfYear.getDay() === 2) startOfYear.setDate(startOfYear.getDate() - 1);
+    else if (startOfYear.getDay() === 3) startOfYear.setDate(startOfYear.getDate() - 2);
+    else if (startOfYear.getDay() === 4) startOfYear.setDate(startOfYear.getDate() - 3);
 
     const startOfWeek: Date = new Date(startOfYear);
     startOfWeek.setDate(startOfWeek.getDate() + (weekOfYear - 1) * 7);
@@ -586,25 +484,9 @@ const convertDayOfWeekString = (dayOfWeek: number) => {
 };
 
 const getNameFromSeriesData = (seriesData: any) => {
-    if (
-        seriesData.year !== null &&
-        seriesData.month !== null &&
-        seriesData.day !== null
-    ) {
-        return (
-            "20" +
-            to2Digit(seriesData.year) +
-            "-" +
-            to2Digit(seriesData.month) +
-            "-" +
-            to2Digit(seriesData.day)
-        );
-    } else if (
-        seriesData.year !== null &&
-        seriesData.month === null &&
-        seriesData.day === null &&
-        seriesData.weekOfYear !== null
-    ) {
+    if (seriesData.year !== null && seriesData.month !== null && seriesData.day !== null) {
+        return "20" + to2Digit(seriesData.year) + "-" + to2Digit(seriesData.month) + "-" + to2Digit(seriesData.day);
+    } else if (seriesData.year !== null && seriesData.month === null && seriesData.day === null && seriesData.weekOfYear !== null) {
         return convertWeekOfYearString(seriesData.year, seriesData.weekOfYear);
     } else if (
         seriesData.year !== null &&
@@ -613,14 +495,8 @@ const getNameFromSeriesData = (seriesData: any) => {
         seriesData.dayOfWeek === null &&
         seriesData.weekOfYear === null
     ) {
-        return (
-            "20" + to2Digit(seriesData.year) + "-" + to2Digit(seriesData.month)
-        );
-    } else if (
-        seriesData.year === null &&
-        seriesData.month === null &&
-        seriesData.day === null
-    ) {
+        return "20" + to2Digit(seriesData.year) + "-" + to2Digit(seriesData.month);
+    } else if (seriesData.year === null && seriesData.month === null && seriesData.day === null) {
         return convertDayOfWeekString(seriesData.dayOfWeek);
     }
 
@@ -641,36 +517,27 @@ export const utilConvertChartSeriesPeriod = (dataStat: any) => {
             const name = getNameFromSeriesData(seriesData);
 
             const srluDatas: Common.ChartElement[] = initDataArrayinStatChart();
-            const qtsrluDatas: Common.ChartElement[] =
-                initDataArrayinStatChart();
-            const speedDatas: Common.ChartElement[] =
-                initDataArrayinStatChart();
-            const personDatas: Common.ChartElement[] =
-                initDataArrayinStatChart();
+            const qtsrluDatas: Common.ChartElement[] = initDataArrayinStatChart();
+            const speedDatas: Common.ChartElement[] = initDataArrayinStatChart();
+            const personDatas: Common.ChartElement[] = initDataArrayinStatChart();
             const mfdDatas: Common.ChartElement[] = initDataArrayinStatChart();
 
             seriesData.data.forEach((data: any) => {
                 const qtsrlu = data.qtsrlu / 3600; // 1시간 단위
                 const srlu = (data.srlu * 100) / 1000; // 100m -> km로 변환 // 1시간단위
 
-                //console.log("updateStatPeriod : " + JSON.stringify(seriesData.data[j]));
-
                 const hour = data.hour;
 
                 const srluData = srluDatas.find((srlu) => srlu.x === hour);
                 if (srluData !== undefined) srluData.y = data.srlu;
 
-                const qtsrluData = qtsrluDatas.find(
-                    (qtsrlu) => qtsrlu.x === hour
-                );
+                const qtsrluData = qtsrluDatas.find((qtsrlu) => qtsrlu.x === hour);
                 if (qtsrluData !== undefined) qtsrluData.y = data.qtsrlu;
 
                 const speedData = speedDatas.find((speed) => speed.x === hour);
                 if (speedData !== undefined) speedData.y = srlu / qtsrlu;
 
-                const personData = personDatas.find(
-                    (person) => person.x === hour
-                );
+                const personData = personDatas.find((person) => person.x === hour);
                 if (personData !== undefined) personData.y = data.p;
 
                 mfdDatas[hour].x = qtsrlu;
@@ -721,12 +588,7 @@ export const getCurrentDateTime = () => {
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
 
-    const today =
-        year +
-        "-" +
-        (month < 10 ? "0" + month : month) +
-        "-" +
-        (date < 10 ? "0" + date : date);
+    const today = year + "-" + (month < 10 ? "0" + month : month) + "-" + (date < 10 ? "0" + date : date);
     const time =
         (hour < 12 ? "오전" : "오후") +
         " " +
@@ -1146,7 +1008,7 @@ import imgWeatherShowerRain from "../assets/images/ico-weather-showerrain.svg";
 import imgWeatherSnow from "../assets/images/ico-weather-snow.svg";
 import imgWeatherThunderstorm from "../assets/images/ico-weather-thunderstorm.svg";
 
-const imagesWeather: {[key: string]: any} = {
+const imagesWeather: { [key: string]: any } = {
     imgWeatherBrokenClouds,
     imgWeatherClearSky,
     imgWeatherFewClouds,
@@ -1155,9 +1017,9 @@ const imagesWeather: {[key: string]: any} = {
     imgWeatherScatteredClouds,
     imgWeatherShowerRain,
     imgWeatherSnow,
-    imgWeatherThunderstorm
+    imgWeatherThunderstorm,
 };
 
 export const getWeatherImageByKey = (key: string) => {
     return imagesWeather[key];
-}
+};

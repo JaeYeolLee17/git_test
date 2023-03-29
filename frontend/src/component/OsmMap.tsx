@@ -532,11 +532,9 @@ export const displayAvl = (avl: OsmMapAvlType) => {
 function MapEvents({ onZoom, onClick }: { onZoom: (level: number) => void; onClick: (location: L.LatLng) => void }) {
     const mapEvents = useMapEvents({
         zoomend: () => {
-            console.log("zoom: " + mapEvents.getZoom());
             onZoom(mapEvents.getZoom());
         },
         click: (e) => {
-            console.log("lnglnt: " + e.latlng);
             onClick(e.latlng);
         },
     });
@@ -602,7 +600,6 @@ function OsmMap({
         setLevel(level);
 
         if (onChangedZoomLevel !== undefined) onChangedZoomLevel(level);
-        console.log("TODO zoom 됐을 때 레벨을 한번 볼까요~?", location);
     };
 
     const handleClick = (location: L.LatLng) => {
@@ -650,7 +647,7 @@ function OsmMap({
             className={styles.darkMap}
             zoom={13}
             scrollWheelZoom={true}
-            minZoom={8}
+            minZoom={13}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

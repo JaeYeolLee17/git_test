@@ -41,7 +41,7 @@ metadata:
   name: challenge-api
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.0.246
+  loadBalancerIP: 192.168.0.251
   selector:
     app: challenge-api
   ports:

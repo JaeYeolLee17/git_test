@@ -1,6 +1,6 @@
 const getApiUrl = () => {
     const hostname = window.location.hostname;
-    // console.log("getApiUrl", hostname);
+    console.log("getApiUrl", hostname);
     if (hostname.includes(process.env.REACT_APP_DEV_URI)) {
         return process.env.REACT_APP_DEV_API_URI;
     } else if (hostname.includes(process.env.REACT_APP_PROD_URI)) {

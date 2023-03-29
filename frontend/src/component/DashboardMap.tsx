@@ -86,7 +86,7 @@ function DashboardMap({
         }
 
         if (showTsi) requestTsi();
-        if (showAvlDatas) requestAvlDatas();
+        //if (showAvlDatas) requestAvlDatas();
     };
 
     useInterval(() => {

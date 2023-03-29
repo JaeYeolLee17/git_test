@@ -64,7 +64,7 @@ export type KakaoMapEditLinksType = {
 export const displayRegion = (region: KakaoMapRegionType) => {
     if (region === undefined) return null;
     if (region.current.gps === undefined || region.current.gps === null) return null;
-    //console.log("displayRegion", JSON.stringify(region));
+
     if (Utils.utilIsEmptyObj(region.current) === false && Utils.utilIsEmptyArray(region.current.gps) === false) {
         return (
             <Polygon
@@ -84,8 +84,6 @@ export const displayRegion = (region: KakaoMapRegionType) => {
 
 export const displayIntersection = (intersections: KakaoMapIntersectionsType | undefined) => {
     if (intersections === undefined) return null;
-
-    // console.log("intersections", JSON.stringify(intersections));
 
     if (Utils.utilIsEmptyArray(intersections.list) === false) {
         return intersections.list
@@ -134,8 +132,6 @@ export const displayIntersection = (intersections: KakaoMapIntersectionsType | u
 export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
     if (cameras === undefined) return null;
 
-    // console.log("cameras", JSON.stringify(cameras));
-
     return cameras.list?.map((camera) => {
         const normalState = true; // TODO
         const isSelected = camera.cameraNo === cameras.selected;
@@ -178,10 +174,7 @@ export const displayLinks = (links: KakaoMapLinksType, kakaoMap: kakao.maps.Map,
     if (links === undefined) return null;
     if (kakaoMap === undefined) return null;
 
-    // console.log("links", JSON.stringify(links));
-
     if (links.list) {
-        //console.log("links", links);
         if (level >= 5) {
             return links.list.map((link, index) => {
                 const qtsrlu = Utils.utilConvertQtsrlu15Minute(link.data[0].qtsrlu);
@@ -371,7 +364,6 @@ export const displayEditLinks = (editLinks: KakaoMapEditLinksType) => {
     if (editLinks === undefined) return null;
 
     if (editLinks.list) {
-        console.log("kakao links", editLinks);
         return editLinks.list.map((link, index) => {
             return (
                 <div key={link.linkId}>
@@ -443,18 +435,11 @@ export const displayTsi = (tsi: KakaoMapTsiType) => {
 
             signalType = "d"; // TODO: Code for Demo
 
-            // if (tsiData.nodeId === "1570190800") {
-            //     console.log("tsiData", tsiData);
-            // }
-
             if (tsiData.nodeId === 2222) {
                 return null;
             }
 
-            //console.log("tsiData", tsiData);
-
             const datas = tsiData.tsiSignals.map((signalData: any) => {
-                //console.log("signalData", signalData);
                 if (signalType !== "e") {
                     signalType = getTrafficSignalType(tsi, signalData);
                 }
@@ -510,21 +495,15 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
 
     if (Utils.utilIsEmptyArray(avl.list) === false) {
         return avl.list.map((avlData) => {
-            //console.log("avlData", avlData);
-
             const naviPath = avlData.path.slice(-1)[0].gps;
-            //console.log("naviPath", naviPath);
 
             let currPosition = null;
             if (Utils.utilIsEmptyArray(avlData.track) === false) {
                 currPosition = avlData.track[0].gps;
             }
-            //console.log("currPosition", currPosition);
 
             const destPosition = avlData.gps;
-            //console.log("destPosition", destPosition);
             const status = avlData.status.slice(-1)[0].name;
-            //console.log("status", status);
 
             const statusInfo: { [key: string]: string } = {
                 출동: "r",
@@ -534,10 +513,7 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
             };
 
             const vehicleImageUrl = "imgEmergencyVehicle_" + statusInfo[status] + (avlData.carNo === avl.selected ? "_p" : "_n");
-
             const vehicleImageData = Utils.getEmergencyVehicleImageByKey(vehicleImageUrl);
-
-            //console.log(vehicleImageUrl);
 
             return (
                 <div key={avlData.carNo}>
@@ -630,11 +606,9 @@ function KakaoMap({
 
     useEffect(() => {
         if (transitionState === "entering" || transitionState === "exiting") {
-            //console.log(transitionState, kakaoMap?.getCenter());
             setTempCenter(kakaoMap?.getCenter());
         } else if (transitionState === "entered" || transitionState === "exited") {
             if (tempCenter != undefined) {
-                //console.log(transitionState, tempCenter);
                 kakaoMap?.relayout();
                 kakaoMap?.setCenter(tempCenter);
             }

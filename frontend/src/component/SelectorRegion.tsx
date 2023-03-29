@@ -11,41 +11,28 @@ import { SelectChangeEvent } from "@mui/material/Select";
 
 import styles from "./Selector.module.css";
 
-function SelectorRegion({
-    selectedRegionNo,
-    onChangedRegionList,
-    onChangedCurrentRegion,
-}: Common.SelectorRegion) {
+function SelectorRegion({ selectedRegionNo, onChangedRegionList, onChangedCurrentRegion }: Common.SelectorRegion) {
     const userDetails = useAuthState();
 
     const [listRegions, setListRegions] = useState<Array<any>>([]);
-    const [listSelectRegions, setListSelectRegions] = useState<
-        Array<SelectorItemType>
-    >([{ value: "all", innerHTML: String.total }]);
-    const [listSelectRegionItem, setListSelectRegionItem] =
-        useState<SelectorItemType>({ value: "all", innerHTML: String.total });
+    const [listSelectRegions, setListSelectRegions] = useState<Array<SelectorItemType>>([{ value: "all", innerHTML: String.total }]);
+    const [listSelectRegionItem, setListSelectRegionItem] = useState<SelectorItemType>({ value: "all", innerHTML: String.total });
 
     const requestRegionList = async () => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.REGIONS_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.REGIONS_LIST_URL);
 
         return response.data;
     };
 
-    const {
-        loading,
-        error: errorRegionList,
-        data: resultRegionList,
-    } = useAsyncAxios(requestRegionList, true);
+    const { loading, error: errorRegionList, data: resultRegionList } = useAsyncAxios(requestRegionList, true);
 
     useEffect(() => {
         if (resultRegionList === null) return;
-
         // console.log("resultRegionList", resultRegionList);
+
         setListRegions(resultRegionList.regions);
     }, [resultRegionList]);
 
@@ -62,7 +49,6 @@ function SelectorRegion({
     //             userDetails.token
     //         ).get(Request.REGIONS_LIST_URL);
 
-    //         //console.log(JSON.stringify(response?.data));
     //         setListRegions(response?.data.regions);
     //     } catch (err) {
     //         console.log(err);
@@ -82,8 +68,6 @@ function SelectorRegion({
             return;
         }
 
-        // console.log("list", listRegions);
-
         const topItem = { value: "all", innerHTML: String.total };
 
         let newList = [];
@@ -91,7 +75,6 @@ function SelectorRegion({
 
         newList = newList.concat(
             listRegions.map((region) => {
-                //console.log(region);
                 return { value: region.regionNo, innerHTML: region.regionName };
             })
         );
@@ -106,9 +89,7 @@ function SelectorRegion({
             return;
         }
 
-        const currentRegionInfos = listRegions.filter(
-            (region) => region.regionNo === listSelectRegionItem.value
-        );
+        const currentRegionInfos = listRegions.filter((region) => region.regionNo === listSelectRegionItem.value);
 
         let currentRegionInfo = null;
 
@@ -118,8 +99,6 @@ function SelectorRegion({
             currentRegionInfo = currentRegionInfos[0];
         }
 
-        //console.log("currentRegionInfo", currentRegionInfo);
-
         if (onChangedCurrentRegion !== undefined) {
             onChangedCurrentRegion(currentRegionInfo);
         }
@@ -128,9 +107,7 @@ function SelectorRegion({
     useEffect(() => {
         if (listSelectRegionItem.value === selectedRegionNo) return;
 
-        const listSelectItems = listSelectRegions.filter(
-            (selectorRegion) => selectorRegion.value === selectedRegionNo
-        );
+        const listSelectItems = listSelectRegions.filter((selectorRegion) => selectorRegion.value === selectedRegionNo);
 
         if (!Utils.utilIsEmptyArray(listSelectItems)) {
             setListSelectRegionItem(listSelectItems[0]);
@@ -147,12 +124,7 @@ function SelectorRegion({
     return (
         <>
             {listSelectRegions.length > 0 ? (
-                <Selector
-                    className={styles.mapSelectorWrapper}
-                    list={listSelectRegions}
-                    selected={listSelectRegionItem}
-                    onChange={onChangeRegions}
-                />
+                <Selector className={styles.mapSelectorWrapper} list={listSelectRegions} selected={listSelectRegionItem} onChange={onChangeRegions} />
             ) : null}
         </>
     );

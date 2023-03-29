@@ -48,94 +48,37 @@ function AvlInfo({
                 break;
         }
 
-        console.log("status", status);
-        console.log(name);
-
         return name;
     };
 
     const displayAvlInfo = (list: any[], selected: string) => {
         if (Utils.utilIsEmptyArray(list) === false) {
             return list.map((avlData: any) => {
-                // console.log("carNo", avlData.carNo);
-                // console.log(
-                //     "statusName",
-                //     avlData.status[avlData.status.length - 1].name
-                // );
-                // console.log("belongs", avlData.wardName);
-                // console.log("selected", selected);
-
-                // console.log("dest", avlData.path[0].destination);
-
-                //console.log(vehicleImageUrl);
-
                 return (
                     <Box
                         key={avlData.carNo}
-                        className={[
-                            styles.emergencyVehicle,
-                            selected === avlData.carNo
-                                ? styles.emergencyVehicleSelected
-                                : "",
-                        ].join(" ")}
-                        onClick={() =>
-                            onChangedSelectedEmergencyCarNumber(avlData.carNo)
-                        }
+                        className={[styles.emergencyVehicle, selected === avlData.carNo ? styles.emergencyVehicleSelected : ""].join(" ")}
+                        onClick={() => onChangedSelectedEmergencyCarNumber(avlData.carNo)}
                     >
-                        <Box
-                            className={[
-                                styles.infoHeader,
-                                selected === avlData.carNo
-                                    ? styles.infoHeaderSelected
-                                    : "",
-                            ].join(" ")}
-                        >
+                        <Box className={[styles.infoHeader, selected === avlData.carNo ? styles.infoHeaderSelected : ""].join(" ")}>
                             <strong>{avlData.carNo}</strong>
-                            <span
-                                className={[
-                                    styles.status,
-                                    getStatusClass(
-                                        avlData.status[
-                                            avlData.status.length - 1
-                                        ].name
-                                    ),
-                                ].join(" ")}
-                            >
+                            <span className={[styles.status, getStatusClass(avlData.status[avlData.status.length - 1].name)].join(" ")}>
                                 {avlData.status[avlData.status.length - 1].name}
                             </span>
                         </Box>
                         <Box className={styles.route}>
-                            <img
-                                className={styles.routeLine}
-                                src={iconRouteLine}
-                            />
+                            <img className={styles.routeLine} src={iconRouteLine} />
                             <Box className={styles.depart}>
-                                <img
-                                    className={styles.routeImg}
-                                    src={iconDepart}
-                                    alt='departure-icon'
-                                />
-                                <span className={styles.locationText}>
-                                    {avlData.wardName}
-                                </span>
+                                <img className={styles.routeImg} src={iconDepart} alt="departure-icon" />
+                                <span className={styles.locationText}>{avlData.wardName}</span>
                             </Box>
                             <Box className={styles.arrive}>
-                                <img
-                                    className={styles.routeImg}
-                                    src={iconArrive}
-                                    alt='arrive-icon'
-                                />
+                                <img className={styles.routeImg} src={iconArrive} alt="arrive-icon" />
                                 <span className={styles.locationText}>
-                                    {avlData.path[0].destination === undefined
-                                        ? "목적지"
-                                        : avlData.path[0].destination}
+                                    {avlData.path[0].destination === undefined ? "목적지" : avlData.path[0].destination}
                                 </span>
                             </Box>
-                            <img
-                                className={styles.sirenImg}
-                                src={iconSiren}
-                                alt='siren-icon-img'
-                            />
+                            <img className={styles.sirenImg} src={iconSiren} alt="siren-icon-img" />
                         </Box>
                     </Box>
                 );
@@ -150,16 +93,14 @@ function AvlInfo({
             <Box className={styles.emergencyPop} onClick={onToggleDetail}>
                 <Box className={styles.popContent}>
                     <Box className={styles.popHeader}>
-                        <img src={iconEmergencyVehicle} alt='vehicle' />
+                        <img src={iconEmergencyVehicle} alt="vehicle" />
                         <span>긴급차량</span>
                     </Box>
                     <Box className={styles.popBody}>{list.length}건</Box>
                 </Box>
             </Box>
             <Collapse in={showDetail} className={styles.emergencyBoard}>
-                <section className={styles.boardTitle}>
-                    실시간 긴급차량 정보
-                </section>
+                <section className={styles.boardTitle}>실시간 긴급차량 정보</section>
                 {displayAvlInfo(list, selected)}
             </Collapse>
         </Box>

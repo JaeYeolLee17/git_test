@@ -43,21 +43,13 @@ const menuData: menuType[] = [
                 title: "교통현황",
                 link: `${Common.PAGE_DASHBOARD}`,
                 icon: "Menu01",
-                role: [
-                    Common.Authority.ROLE_ADMIN,
-                    Common.Authority.ROLE_MANAGER,
-                    Common.Authority.ROLE_USER,
-                ],
+                role: [Common.Authority.ROLE_ADMIN, Common.Authority.ROLE_MANAGER, Common.Authority.ROLE_USER],
             },
             {
                 title: "교통현황 데이터",
                 link: `${Common.PAGE_DASHBOARD_DETAIL}`,
                 icon: "Menu02",
-                role: [
-                    Common.Authority.ROLE_ADMIN,
-                    Common.Authority.ROLE_MANAGER,
-                    Common.Authority.ROLE_USER,
-                ],
+                role: [Common.Authority.ROLE_ADMIN, Common.Authority.ROLE_MANAGER, Common.Authority.ROLE_USER],
             },
         ],
     },
@@ -68,31 +60,19 @@ const menuData: menuType[] = [
                 title: "교통통계",
                 link: `${Common.PAGE_STAT_TRAFFIC}`,
                 icon: "Menu03",
-                role: [
-                    Common.Authority.ROLE_ADMIN,
-                    Common.Authority.ROLE_MANAGER,
-                    Common.Authority.ROLE_USER,
-                ],
+                role: [Common.Authority.ROLE_ADMIN, Common.Authority.ROLE_MANAGER, Common.Authority.ROLE_USER],
             },
             {
                 title: "교통통계 데이터",
                 link: `${Common.PAGE_STAT_TRAFFIC}`,
                 icon: "Menu04",
-                role: [
-                    Common.Authority.ROLE_ADMIN,
-                    Common.Authority.ROLE_MANAGER,
-                    Common.Authority.ROLE_USER,
-                ],
+                role: [Common.Authority.ROLE_ADMIN, Common.Authority.ROLE_MANAGER, Common.Authority.ROLE_USER],
             },
             {
                 title: "긴급차량 통계",
                 link: `${Common.PAGE_STAT_EMERGENCY}`,
                 icon: "Menu05",
-                role: [
-                    Common.Authority.ROLE_ADMIN,
-                    Common.Authority.ROLE_MANAGER,
-                    Common.Authority.ROLE_USER,
-                ],
+                role: [Common.Authority.ROLE_ADMIN, Common.Authority.ROLE_MANAGER, Common.Authority.ROLE_USER],
             },
         ],
     },
@@ -167,40 +147,27 @@ const Menu = () => {
     };
     const menuElements = menuData.map((group) => {
         const itemElements = group.items.map((item) => {
-            const checkRole =
-                userDetails?.user &&
-                item.role.includes(userDetails?.user.authority);
+            const checkRole = userDetails?.user && item.role.includes(userDetails?.user.authority);
 
             if (checkRole === false) return null;
 
             return (
-                <AccordionDetails
-                    key={item.title}
-                    className={styles.menuListItem}
-                    sx={{ marginBottom: "8px" }}
-                >
+                <AccordionDetails key={item.title} className={styles.menuListItem} sx={{ marginBottom: "8px" }}>
                     <NavLink
                         style={{ textDecoration: "none" }}
                         to={item.link}
                         className={({ isActive }) => {
-                            const names = isActive
-                                ? `${styles.menuLinkItem} ${styles.menuLinkItemActive}`
-                                : `${styles.menuLinkItem}`;
+                            const names = isActive ? `${styles.menuLinkItem} ${styles.menuLinkItemActive}` : `${styles.menuLinkItem}`;
                             return names;
                         }}
                     >
                         {({ isActive }) => {
-                            //console.log(isActive);
-                            const textClass = isActive
-                                ? `${styles.menuText} ${styles.menuTextActive}`
-                                : `${styles.menuText}`;
+                            const textClass = isActive ? `${styles.menuText} ${styles.menuTextActive}` : `${styles.menuText}`;
 
                             return (
                                 <span className={styles.menuListDiv}>
                                     {getImage(item.icon)}
-                                    <span className={textClass}>
-                                        {item.title}
-                                    </span>
+                                    <span className={textClass}>{item.title}</span>
                                 </span>
                             );
                         }}
@@ -212,12 +179,7 @@ const Menu = () => {
         if (itemElements.every((element) => element === null)) return null;
 
         return (
-            <Accordion
-                key={group.title}
-                defaultExpanded={true}
-                disableGutters={true}
-                sx={{ backgroundColor: "#262626", boxShadow: "none" }}
-            >
+            <Accordion key={group.title} defaultExpanded={true} disableGutters={true} sx={{ backgroundColor: "#262626", boxShadow: "none" }}>
                 <AccordionSummary
                     expandIcon={<img src={expandMinus} />}
                     sx={{

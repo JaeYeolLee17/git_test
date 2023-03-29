@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: challenge-data-collector
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: challenge-data-collector
@@ -46,7 +46,7 @@ metadata:
   name: challenge-data-collector
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.0.247
+  loadBalancerIP: 192.168.0.252
   selector:
     app: challenge-data-collector
   ports:

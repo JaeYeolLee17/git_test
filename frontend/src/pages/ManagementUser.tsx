@@ -7,25 +7,25 @@ import * as Request from "../commons/request";
 import * as Common from "../commons/common";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import editBtn from "../assets/images/btn_list_edit_n.svg"
-import deleteBtn from "../assets/images/btn_list_delete_n.svg"
+import editBtn from "../assets/images/btn_list_edit_n.svg";
+import deleteBtn from "../assets/images/btn_list_delete_n.svg";
 import AddIcon from "@mui/icons-material/Add";
 import styles from "./ManagementUser.module.css";
 
 import { useNavigate } from "react-router-dom";
 
 type rows = {
-    id: string,
-    username: string,
-    authority: string
-}
+    id: string;
+    username: string;
+    authority: string;
+};
 
-type columns ={
-    field: string,
-    headerName: string,
-    flex: number,
-    cellRenderer: any
-  }
+type columns = {
+    field: string;
+    headerName: string;
+    flex: number;
+    cellRenderer: any;
+};
 
 function ManagementUser() {
     const userDetails = useAuthState();
@@ -57,10 +57,10 @@ function ManagementUser() {
             field: "data",
             headerName: "",
             flex: 1,
-            cellRenderer: (params :any) => {
+            cellRenderer: (params: any) => {
                 return (
                     <>
-                        <Button 
+                        <Button
                             onClick={(e) => {
                                 navigate(Common.PAGE_MANAGEMENT_USER_DETAIL, {
                                     state: listUser.find(function (data) {
@@ -71,14 +71,18 @@ function ManagementUser() {
                         >
                             <img src={editBtn} width={20}></img>
                         </Button>
-                        <Button onClick={(e) => {requestDeleteUser(params.data.id)}}>
+                        <Button
+                            onClick={(e) => {
+                                requestDeleteUser(params.data.id);
+                            }}
+                        >
                             <img src={deleteBtn} width={20}></img>
                         </Button>
                     </>
-                )
-            }
-        }
-      ];
+                );
+            },
+        },
+    ];
 
     useEffect(() => {
         requestUsers();
@@ -88,33 +92,23 @@ function ManagementUser() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.USER_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.USER_LIST_URL);
 
         return response.data;
     };
 
-    const {
-        loading: loadingUsers,
-        error: errorUsers,
-        data: resultUsers,
-        execute: requestUsers,
-    } = useAsyncAxios(requestAxiosUsers);
+    const { loading: loadingUsers, error: errorUsers, data: resultUsers, execute: requestUsers } = useAsyncAxios(requestAxiosUsers);
 
     useEffect(() => {
         if (resultUsers === null) return;
-
         setListUser(resultUsers.users);
-
-        //console.log("resultUsers.users", resultUsers.users);
 
         resultUsers.users.map((result: any) => {
             setRows((rows) => [
                 ...rows,
                 {
                     id: result.username,
-                    username: result.nickname,
+                    username: result.username,
                     authority: result.authority,
                 },
             ]);
@@ -127,16 +121,14 @@ function ManagementUser() {
         console.log("errorUsers", errorUsers);
     }, [errorUsers]);
 
-    const requestAxiosDeleteUser = async(userId: string) => {
+    const requestAxiosDeleteUser = async (userId: string) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).delete(
-            Request.USER_URL + "/" + userId
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).delete(Request.USER_URL + "/" + userId);
 
         return response.data;
-    }
+    };
 
     const {
         loading: loadingDeleteUser,
@@ -147,8 +139,7 @@ function ManagementUser() {
 
     useEffect(() => {
         if (resultDeleteUser === null) return;
-        alert("삭제되었습니다.")
-
+        alert("삭제되었습니다.");
     }, [resultDeleteUser]);
 
     useEffect(() => {
@@ -165,21 +156,14 @@ function ManagementUser() {
         navigate(Common.PAGE_MANAGEMENT_USER_DETAIL, {
             state: null,
         });
-    }
+    };
 
     return (
-        <div style={{ position: "relative"}}>
-            <IconButton 
-                className={styles.imgButton}
-                onClick={(e) => onAddUserClick()}>
+        <div style={{ position: "relative" }}>
+            <IconButton className={styles.imgButton} onClick={(e) => onAddUserClick()}>
                 <AddIcon />
             </IconButton>
-            <TableManagement
-                columns={columns}
-                rows={rows}
-                selectedId={selectedUserId}
-                clickEvent={onRowClick}
-            />
+            <TableManagement columns={columns} rows={rows} selectedId={selectedUserId} clickEvent={onRowClick} />
         </div>
     );
 }

@@ -9,25 +9,16 @@ type StreamCameraType = {
 };
 
 function StreamCamera({ stream, className }: StreamCameraType) {
-    //console.log("stream", stream);
-
     useEffect(() => {
         const rtspWsUrl = process.env.REACT_APP_STREAM_WS_URI + stream.port;
 
         const jsmpeg = require("jsmpeg");
-        const canvas = document.getElementById(
-            "stream-canvas-" + stream.cameraId
-        );
+        const canvas = document.getElementById("stream-canvas-" + stream.cameraId);
         const client = new WebSocket(rtspWsUrl);
         const player = new jsmpeg(client, { canvas: canvas });
     }, []);
 
-    return (
-        <canvas
-            className={className}
-            id={`stream-canvas-${stream.cameraId}`}
-        ></canvas>
-    );
+    return <canvas className={className} id={`stream-canvas-${stream.cameraId}`}></canvas>;
 }
 
 export default StreamCamera;

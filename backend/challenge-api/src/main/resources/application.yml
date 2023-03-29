@@ -93,4 +93,4 @@ logging:
     web: DEBUG
     com.e4motion: DEBUG
     org.springframework.security: DEBUG
-    org.springframework.web.cors: INFO
+    org.springframework.web.cors: DEBUG

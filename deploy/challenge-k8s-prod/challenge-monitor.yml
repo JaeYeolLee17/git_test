@@ -21,7 +21,7 @@ spec:
         image: registry.emgglobal.co.kr:9443/challenge-monitor:2.0.0
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 8090
 #        resources:
 #          requests:
 #            memory: 512Mi
@@ -44,4 +44,4 @@ spec:
     app: challenge-monitor
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 8090

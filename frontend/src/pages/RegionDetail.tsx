@@ -11,7 +11,8 @@ import Box from "@mui/material/Box";
 import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
-import * as String from "../commons/string"
+import * as String from "../commons/string";
+import OsmMap from "../component/OsmMap";
 
 type regionDataType = {
     distance: number;
@@ -33,10 +34,7 @@ function RegionDetail() {
     }, [location.state]);
 
     const onSelectedRegion = (selectedRegion: any) => {
-        setSelectedRegionList((selectedRegionList) => [
-            ...selectedRegionList,
-            selectedRegion,
-        ]);
+        setSelectedRegionList((selectedRegionList) => [...selectedRegionList, selectedRegion]);
 
         setRegionData([
             {
@@ -55,20 +53,17 @@ function RegionDetail() {
             },
         ]);
     };
-    
+
     const title: Map<string, string> = new Map([
-        ["regionNo" , String.region_no],
-        ["regionName" , String.region_name]
-      ]);
+        ["regionNo", String.region_no],
+        ["regionName", String.region_name],
+    ]);
 
     const requestAxiosUpdateRegions = async (regionData: regionDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
-            Request.REGION_URL + "/" + selectedRegionList[0].regionNo,
-            regionData
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).put(Request.REGION_URL + "/" + selectedRegionList[0].regionNo, regionData);
 
         return response.data;
     };
@@ -93,11 +88,11 @@ function RegionDetail() {
         console.log("errorRegions", errorUpdateRegions);
     }, [errorUpdateRegions]);
 
-    const onClickEvent = (type:string, region: any) => {
+    const onClickEvent = (type: string, region: any) => {
         const updatdData = {
-            "regionNo": region.regionNo,
-            "regionName": region.regionName,
-          }
+            regionNo: region.regionNo,
+            regionName: region.regionName,
+        };
 
         requestUpdateRegions(updatdData);
     };
@@ -106,16 +101,11 @@ function RegionDetail() {
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={8}>
-                    <ManagementDetail
-                        type="edit"
-                        title={title}
-                        response={regionData}
-                        clickEvent={onClickEvent}
-                    />
+                    <ManagementDetail type="edit" title={title} response={regionData} clickEvent={onClickEvent} />
                 </Grid>
                 <Grid item xs={4}>
                     <Box className={styles.box}>
-                        <KakaoMap
+                        <OsmMap
                             style={{
                                 width: "100%",
                                 height: "calc(100vh - 80px)",
@@ -125,7 +115,7 @@ function RegionDetail() {
                                 current: {
                                     regionNo: selectedRegionList[0] !== undefined ? selectedRegionList[0].regionNo : null,
                                     regionName: selectedRegionList[0] !== undefined ? selectedRegionList[0].regionName : null,
-                                    gps: selectedRegionList[0] !== undefined ? selectedRegionList[0].gps : []
+                                    gps: selectedRegionList[0] !== undefined ? selectedRegionList[0].gps : [],
                                 },
                                 isShow: true,
                             }}

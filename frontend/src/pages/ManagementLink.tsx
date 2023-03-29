@@ -98,8 +98,6 @@ function ManagementLink() {
     useEffect(() => {
         if (resultLinks === null) return;
 
-        console.log("resultLinks", resultLinks);
-
         setListEditLink(resultLinks.links);
 
         resultLinks.links.map((result: any) => {

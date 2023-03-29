@@ -65,41 +65,27 @@ function DashboardMfd({
         const end = new Date(now.getTime() - offsetMinute * (60 * 1000));
         const endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
 
-        //console.log("startTime", startTime);
-        //console.log("endTime", endTime);
-
         const extraParam = getExtraParams();
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.STAT_MFD_URL,
-            {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.STAT_MFD_URL, {
+            params: {
+                startTime: startTime,
+                endTime: endTime,
+                ...extraParam,
+            },
+        });
 
         return response.data;
     };
 
-    const {
-        loading: loadingMfd,
-        error: errorMfd,
-        data: resultMfd,
-        execute: requestMfd,
-    } = useAsyncAxios(requestAxiosMfd);
+    const { loading: loadingMfd, error: errorMfd, data: resultMfd, execute: requestMfd } = useAsyncAxios(requestAxiosMfd);
 
     useEffect(() => {
         if (resultMfd === null) return;
         if (Utils.utilIsEmptyArray(resultMfd.stat) === true) return;
-
-        //console.log("resultMfd", JSON.stringify(resultMfd.stat[0]));
-        //console.log("resultMfd", resultMfd);
         setDataMfd(resultMfd.stat[0]);
     }, [resultMfd]);
 
@@ -119,15 +105,8 @@ function DashboardMfd({
     //     var end = new Date(now.getTime() - offsetMinute * (60 * 1000));
     //     let endTime = Utils.utilFormatDateYYYYMMDDHHmm00(end);
 
-    //     //console.log("startTime", startTime);
-    //     //console.log("endTime", endTime);
-
     //     let extraParam = getExtraParams();
-
-    //     //console.log("extraParam", extraParam);
-
     //     try {
-    //         //console.log(userDetails.token);
     //         const response = await Utils.utilAxiosWithAuth(
     //             userDetails.token
     //         ).get(Request.STAT_MFD_URL, {
@@ -138,7 +117,6 @@ function DashboardMfd({
     //             },
     //         });
 
-    //         //console.log(JSON.stringify(response?.data));
     //         setDataMfd(response?.data?.stat[0]);
     //     } catch (err) {
     //         console.log(err);
@@ -153,25 +131,18 @@ function DashboardMfd({
         const end = new Date(start);
         end.setDate(end.getDate() + 1);
         const endTime = Utils.utilFormatDateYYYYMMDD000000(end);
-
-        //console.log("startTime", startTime);
-        //console.log("endTime", endTime);
-
         const extraParam = getExtraParams();
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.STAT_MFD_URL,
-            {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.STAT_MFD_URL, {
+            params: {
+                startTime: startTime,
+                endTime: endTime,
+                ...extraParam,
+            },
+        });
 
         return response.data;
     };
@@ -187,10 +158,6 @@ function DashboardMfd({
         if (resultLastWeekMfd === null) return;
         if (Utils.utilIsEmptyArray(resultLastWeekMfd.stat) === true) return;
 
-        // console.log(
-        //     "resultLastWeekMfd",
-        //     JSON.stringify(resultLastWeekMfd.stat[0])
-        // );
         setDataLastWeekMfd(resultLastWeekMfd.stat[0]);
     }, [resultLastWeekMfd]);
 
@@ -209,15 +176,9 @@ function DashboardMfd({
     //     end.setDate(end.getDate() + 1);
     //     let endTime = Utils.utilFormatDateYYYYMMDD000000(end);
 
-    //     //console.log("startTime", startTime);
-    //     //console.log("endTime", endTime);
-
     //     let extraParam = getExtraParams();
 
-    //     //console.log("extraParam", extraParam);
-
     //     try {
-    //         //console.log(userDetails.token);
     //         const response = await Utils.utilAxiosWithAuth(
     //             userDetails.token
     //         ).get(Request.STAT_MFD_URL, {
@@ -227,8 +188,6 @@ function DashboardMfd({
     //                 ...extraParam,
     //             },
     //         });
-
-    //         //console.log(JSON.stringify(response?.data));
     //         setDataLastWeekMfd(response?.data?.stat[0]);
     //     } catch (err) {
     //         console.log(err);
@@ -246,27 +205,19 @@ function DashboardMfd({
         let dayOfWeek = end.getDay();
         if (dayOfWeek === 0) dayOfWeek = 7;
 
-        //console.log("startTime", startTime);
-        //console.log("endTime", endTime);
-
         const extraParam = getExtraParams();
-
-        //console.log("extraParam", extraParam);
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.STAT_MFD_URL,
-            {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    ...extraParam,
-                    dayOfWeek: dayOfWeek,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.STAT_MFD_URL, {
+            params: {
+                startTime: startTime,
+                endTime: endTime,
+                ...extraParam,
+                dayOfWeek: dayOfWeek,
+            },
+        });
 
         return response.data;
     };
@@ -305,16 +256,9 @@ function DashboardMfd({
 
     //     let dayOfWeek = end.getDay();
     //     if (dayOfWeek === 0) dayOfWeek = 7;
-
-    //     //console.log("startTime", startTime);
-    //     //console.log("endTime", endTime);
-
     //     let extraParam = getExtraParams();
 
-    //     //console.log("extraParam", extraParam);
-
     //     try {
-    //         //console.log(userDetails.token);
     //         const response = await Utils.utilAxiosWithAuth(
     //             userDetails.token
     //         ).get(Request.STAT_MFD_URL, {
@@ -326,7 +270,6 @@ function DashboardMfd({
     //             },
     //         });
 
-    //         //console.log(JSON.stringify(response?.data));
     //         setDataLastMonthAvgMfd(response?.data?.stat[0]);
     //     } catch (err) {
     //         console.log(err);
@@ -351,20 +294,13 @@ function DashboardMfd({
         }
 
         return (
-            <div
-                className={[styles.chartLoadingSpinnerOverlay, showClass].join(
-                    " "
-                )}
-            >
+            <div className={[styles.chartLoadingSpinnerOverlay, showClass].join(" ")}>
                 <div className={styles.chartLoadingSpinner}></div>
             </div>
         );
     };
 
     // TODO: loadingMfd || loadingLastWeekMfd || loadingLastMonthAvgMfd => loading image
-    // console.log("loadingMfd", loadingMfd);
-    // console.log("loadingLastWeekMfd", loadingLastWeekMfd);
-    // console.log("loadingLastMonthAvgMfd", loadingLastMonthAvgMfd);
     return (
         <div>
             <Box className={styles.chartTitle}>
@@ -382,36 +318,19 @@ function DashboardMfd({
             <Box className={styles.chartMiddle}>
                 <Box className={styles.chartMiddleWrapper}>
                     {showLoading()}
-                    <ChartMfd
-                        dataMfd={dataMfd}
-                        dataLastWeekMfd={dataLastWeekMfd}
-                        dataLastMonthAvgMfd={dataLastMonthAvgMfd}
-                    />
+                    <ChartMfd dataMfd={dataMfd} dataLastWeekMfd={dataLastWeekMfd} dataLastMonthAvgMfd={dataLastMonthAvgMfd} />
                 </Box>
             </Box>
             <Box className={styles.chartLabel}>
-                <span
-                    className={styles.chartLabelLegend}
-                    style={{ backgroundColor: "#00e025" }}
-                ></span>
+                <span className={styles.chartLabelLegend} style={{ backgroundColor: "#00e025" }}></span>
                 <span>원활(30km/h▲)</span>
-                <span
-                    className={styles.chartLabelLegend}
-                    style={{ backgroundColor: "#ff8800" }}
-                ></span>
+                <span className={styles.chartLabelLegend} style={{ backgroundColor: "#ff8800" }}></span>
                 <span>정체(25km/h▲)</span>
-                <span
-                    className={styles.chartLabelLegend}
-                    style={{ backgroundColor: "#df0900" }}
-                ></span>
+                <span className={styles.chartLabelLegend} style={{ backgroundColor: "#df0900" }}></span>
                 <span>혼잡(25km/h▼)</span>
             </Box>
             <Box className={styles.chartTableWapper}>
-                <TableMfd
-                    dataMfd={dataMfd}
-                    dataLastWeekMfd={dataLastWeekMfd}
-                    dataLastMonthAvgMfd={dataLastMonthAvgMfd}
-                />
+                <TableMfd dataMfd={dataMfd} dataLastWeekMfd={dataLastWeekMfd} dataLastMonthAvgMfd={dataLastMonthAvgMfd} />
             </Box>
         </div>
     );

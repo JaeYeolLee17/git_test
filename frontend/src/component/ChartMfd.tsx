@@ -9,20 +9,14 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
     const [chartOption, setChartOption] = useState<Record<string, any>>({});
 
     const makeDataTime = (data: any) => {
-        const dataTime =
-            Utils.utilLeadingZeros(data.hour, 2) +
-            ":" +
-            Utils.utilLeadingZeros(data.min, 2);
+        const dataTime = Utils.utilLeadingZeros(data.hour, 2) + ":" + Utils.utilLeadingZeros(data.min, 2);
         let endHour = data.hour;
         let endMinute = data.min + 15;
         if (endMinute === 60) {
             endHour += 1;
             endMinute = 0;
         }
-        const endDataTime =
-            Utils.utilLeadingZeros(endHour, 2) +
-            ":" +
-            Utils.utilLeadingZeros(endMinute, 2);
+        const endDataTime = Utils.utilLeadingZeros(endHour, 2) + ":" + Utils.utilLeadingZeros(endMinute, 2);
 
         const time = dataTime + " ~ " + endDataTime;
 
@@ -34,55 +28,36 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
         let maxXData = 0;
 
         if (dataMfd) {
-            const nameCurrent =
-                dataMfd.year + "-" + dataMfd.month + "-" + dataMfd.day;
-            const currentData: Common.ChartMfdElement[] = dataMfd.data.map(
-                (dataWithTime: any) => {
-                    const xData = Utils.utilConvertQtsrlu15Minute(
-                        dataWithTime.qtsrlu
-                    );
-                    const yData = Utils.utilConvertSrlu15Minute(
-                        dataWithTime.srlu
-                    );
+            const nameCurrent = dataMfd.year + "-" + dataMfd.month + "-" + dataMfd.day;
+            const currentData: Common.ChartMfdElement[] = dataMfd.data.map((dataWithTime: any) => {
+                const xData = Utils.utilConvertQtsrlu15Minute(dataWithTime.qtsrlu);
+                const yData = Utils.utilConvertSrlu15Minute(dataWithTime.srlu);
 
-                    if (xData > maxXData) maxXData = xData;
+                if (xData > maxXData) maxXData = xData;
 
-                    return {
-                        time: makeDataTime(dataWithTime),
-                        x: xData,
-                        y: yData,
-                    };
-                }
-            );
+                return {
+                    time: makeDataTime(dataWithTime),
+                    x: xData,
+                    y: yData,
+                };
+            });
 
-            const lastStatDataHour: number =
-                dataMfd.data[dataMfd.data.length - 1].hour;
-            const lastStatDataMinute: number =
-                dataMfd.data[dataMfd.data.length - 1].min;
-
-            //console.log("lastStatDataHour", lastStatDataHour);
-            //console.log("lastStatDataMinute", lastStatDataMinute);
+            const lastStatDataHour: number = dataMfd.data[dataMfd.data.length - 1].hour;
+            const lastStatDataMinute: number = dataMfd.data[dataMfd.data.length - 1].min;
 
             newSeries.push({ name: nameCurrent, data: currentData });
 
             if (dataLastWeekMfd) {
                 const lastWeekMfd = dataLastWeekMfd.data.filter((data: any) => {
-                    if (
-                        data.hour === lastStatDataHour &&
-                        data.min === lastStatDataMinute
-                    ) {
+                    if (data.hour === lastStatDataHour && data.min === lastStatDataMinute) {
                         return true;
                     }
                     return false;
                 });
 
                 if (lastWeekMfd) {
-                    const xData = Utils.utilConvertQtsrlu15Minute(
-                        lastWeekMfd[0].qtsrlu
-                    );
-                    const yData = Utils.utilConvertSrlu15Minute(
-                        lastWeekMfd[0].srlu
-                    );
+                    const xData = Utils.utilConvertQtsrlu15Minute(lastWeekMfd[0].qtsrlu);
+                    const yData = Utils.utilConvertSrlu15Minute(lastWeekMfd[0].srlu);
 
                     if (xData > maxXData) maxXData = xData;
 
@@ -97,26 +72,16 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
             }
 
             if (dataLastMonthAvgMfd) {
-                const lastMonthAvgMfd = dataLastMonthAvgMfd.data.filter(
-                    (data: any) => {
-                        if (
-                            data.hour === lastStatDataHour &&
-                            data.min === lastStatDataMinute
-                        ) {
-                            return true;
-                        }
-                        return false;
+                const lastMonthAvgMfd = dataLastMonthAvgMfd.data.filter((data: any) => {
+                    if (data.hour === lastStatDataHour && data.min === lastStatDataMinute) {
+                        return true;
                     }
-                );
+                    return false;
+                });
 
                 if (lastMonthAvgMfd) {
-                    const xData =
-                        Utils.utilConvertQtsrlu15Minute(
-                            lastMonthAvgMfd[0].qtsrlu
-                        ) / 4;
-                    const yData =
-                        Utils.utilConvertSrlu15Minute(lastMonthAvgMfd[0].srlu) /
-                        4;
+                    const xData = Utils.utilConvertQtsrlu15Minute(lastMonthAvgMfd[0].qtsrlu) / 4;
+                    const yData = Utils.utilConvertSrlu15Minute(lastMonthAvgMfd[0].srlu) / 4;
 
                     if (xData > maxXData) maxXData = xData;
 
@@ -224,9 +189,7 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                         fontFamily: "NotoSansCJKKR",
                     },
                     formatter: function (val: number, index: number) {
-                        return val
-                            .toFixed(0)
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     },
                 },
                 axisTicks: {
@@ -258,9 +221,7 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                         fontFamily: "NotoSansCJKKR",
                     },
                     formatter: function (val: number, index: number) {
-                        return val
-                            .toFixed(0)
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     },
                 },
             },
@@ -331,37 +292,18 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                             w: any;
                         }
                     ) {
-                        const xValue =
-                            w.config.series[seriesIndex].data[
-                                dataPointIndex
-                            ].x.toFixed(2);
-                        const yValue =
-                            w.config.series[seriesIndex].data[
-                                dataPointIndex
-                            ].y.toFixed(2);
-                        const time =
-                            w.config.series[seriesIndex].data[dataPointIndex]
-                                .time;
+                        const xValue = w.config.series[seriesIndex].data[dataPointIndex].x.toFixed(2);
+                        const yValue = w.config.series[seriesIndex].data[dataPointIndex].y.toFixed(2);
+                        const time = w.config.series[seriesIndex].data[dataPointIndex].time;
 
                         let title = null;
                         if (w.config.series[seriesIndex].name === "lastWeek") {
                             title = String.chart_lastweek;
-                        } else if (
-                            w.config.series[seriesIndex].name === "lastMonth"
-                        ) {
+                        } else if (w.config.series[seriesIndex].name === "lastMonth") {
                             title = String.chart_lastmonthavg;
                         }
 
-                        const info =
-                            time +
-                            "<br>" +
-                            String.stats_qtsrlu +
-                            " : " +
-                            xValue +
-                            "<br>" +
-                            String.stats_srlu +
-                            " : " +
-                            yValue;
+                        const info = time + "<br>" + String.stats_qtsrlu + " : " + xValue + "<br>" + String.stats_srlu + " : " + yValue;
 
                         if (title) {
                             return title + " : " + info;
@@ -403,11 +345,7 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                         w: any;
                     }
                 ) {
-                    //console.log("dataLabels : " + JSON.stringify(data));
-                    if (
-                        dataMfd !== undefined &&
-                        dataPointIndex === dataMfd.data.length - 1
-                    ) {
+                    if (dataMfd !== undefined && dataPointIndex === dataMfd.data.length - 1) {
                         let hour = dataMfd.data[dataPointIndex].hour;
                         let minute = dataMfd.data[dataPointIndex].min + 15;
                         if (minute === 60) {
@@ -415,12 +353,7 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                             minute = 0;
                         }
 
-                        const dataTime =
-                            Utils.utilLeadingZeros(hour, 2) +
-                            ":" +
-                            Utils.utilLeadingZeros(minute, 2);
-
-                        //console.log("dataLabels dataTime : " + dataTime);
+                        const dataTime = Utils.utilLeadingZeros(hour, 2) + ":" + Utils.utilLeadingZeros(minute, 2);
                         return dataTime;
                     }
 
@@ -428,30 +361,11 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
                 },
                 style: {
                     colors: [
-                        function ({
-                            seriesIndex,
-                            dataPointIndex,
-                            w,
-                        }: {
-                            seriesIndex: number;
-                            dataPointIndex: number;
-                            w: any;
-                        }) {
-                            if (
-                                w.config.series[seriesIndex].data[
-                                    dataPointIndex
-                                ] === undefined
-                            )
-                                return;
+                        function ({ seriesIndex, dataPointIndex, w }: { seriesIndex: number; dataPointIndex: number; w: any }) {
+                            if (w.config.series[seriesIndex].data[dataPointIndex] === undefined) return;
 
-                            const yValue =
-                                w.config.series[seriesIndex].data[
-                                    dataPointIndex
-                                ].y;
-                            const xValue =
-                                w.config.series[seriesIndex].data[
-                                    dataPointIndex
-                                ].x;
+                            const yValue = w.config.series[seriesIndex].data[dataPointIndex].y;
+                            const xValue = w.config.series[seriesIndex].data[dataPointIndex].x;
 
                             return Utils.utilGetSpeedColor(yValue / xValue);
 
@@ -472,15 +386,7 @@ function ChartMfd({ dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd }: any) {
         });
     }, [dataMfd, dataLastWeekMfd, dataLastMonthAvgMfd]);
 
-    return (
-        <Chart
-            options={chartOption}
-            series={chartSeries}
-            type='line'
-            width='100%'
-            height='100%'
-        ></Chart>
-    );
+    return <Chart options={chartOption} series={chartSeries} type="line" width="100%" height="100%"></Chart>;
 }
 
 export default ChartMfd;

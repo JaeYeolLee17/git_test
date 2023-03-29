@@ -19,50 +19,31 @@ function DashboardDetail() {
     const userDetails = useAuthState();
 
     const [selectedRegionNo, setSelectedRegionNo] = useState<string>("");
-    const [currentRegionInfo, setCurrentRegionInfo] =
-        useState<Common.RegionInfo>({ regionNo: "all" });
-    const [selectedIntersectionNo, setSelectedIntersectionNo] =
-        useState<string>("");
+    const [currentRegionInfo, setCurrentRegionInfo] = useState<Common.RegionInfo>({ regionNo: "all" });
+    const [selectedIntersectionNo, setSelectedIntersectionNo] = useState<string>("");
     const [listCamera, setListCamera] = useState<Array<any>>([]);
     const [listIntersections, setListIntersections] = useState<Array<any>>([]);
     const [searchDate, setSearchDate] = useState<string>("");
 
-    const [requestCarTypeNCamera, setRequestCarTypeNCamera] =
-        useState<boolean>(false);
+    const [requestCarTypeNCamera, setRequestCarTypeNCamera] = useState<boolean>(false);
 
-    const [seriesChartSrluCarType, setSeriesChartSrluCarType] = useState<
-        Array<Common.ChartData>
-    >([]);
-    const [seriesChartQtsrluCarType, setSeriesChartQtsrluCarType] = useState<
-        Array<Common.ChartData>
-    >([]);
-    const [seriesChartSrluCamera, setSeriesChartSrluCamera] = useState<
-        Array<Common.ChartData>
-    >([]);
-    const [seriesChartQtsrluCamera, setSeriesChartQtsrluCamera] = useState<
-        Array<Common.ChartData>
-    >([]);
-    const [seriesChartPerson, setSeriesChartPerson] = useState<
-        Array<Common.ChartData>
-    >([]);
+    const [seriesChartSrluCarType, setSeriesChartSrluCarType] = useState<Array<Common.ChartData>>([]);
+    const [seriesChartQtsrluCarType, setSeriesChartQtsrluCarType] = useState<Array<Common.ChartData>>([]);
+    const [seriesChartSrluCamera, setSeriesChartSrluCamera] = useState<Array<Common.ChartData>>([]);
+    const [seriesChartQtsrluCamera, setSeriesChartQtsrluCamera] = useState<Array<Common.ChartData>>([]);
+    const [seriesChartPerson, setSeriesChartPerson] = useState<Array<Common.ChartData>>([]);
 
     useEffect(() => {
         requestCameras();
     }, []);
 
     const onChangedCurrentRegion = (regionItem: Common.RegionInfo) => {
-        //console.log("regionItem", regionItem);
         setSelectedRegionNo(regionItem.regionNo);
-        // setSelectedRegionName(regionItem.regionName);
         setCurrentRegionInfo(regionItem);
     };
 
-    const onChangedCurrentIntersection = (
-        intersectionItem: Common.IntersectionInfo
-    ) => {
-        //console.log("intersectionItem", intersectionItem);
+    const onChangedCurrentIntersection = (intersectionItem: Common.IntersectionInfo) => {
         setSelectedIntersectionNo(intersectionItem.intersectionNo);
-        // setSelectedIntersectionName(intersectionItem.intersectionName);
     };
 
     const onChangedSearchDate = (date: string) => {
@@ -73,9 +54,7 @@ function DashboardDetail() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.CAMERA_LIST_URL);
         return response.data;
     };
 
@@ -122,24 +101,18 @@ function DashboardDetail() {
     };
 
     const requestAxiosStatCarType = async () => {
-        //console.log("startTime", startTime);
-        //console.log("endTime", endTime);
-
         const extraParam = getExtraParams();
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.STAT_DAILY_URL,
-            {
-                params: {
-                    date: searchDate,
-                    groupBy: "CAR_TYPE",
-                    ...extraParam,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.STAT_DAILY_URL, {
+            params: {
+                date: searchDate,
+                groupBy: "CAR_TYPE",
+                ...extraParam,
+            },
+        });
 
         return response.data;
     };
@@ -156,14 +129,8 @@ function DashboardDetail() {
         if (Utils.utilIsEmptyArray(resultStatCarType.stats) === true) return;
 
         const statData = resultStatCarType.stats[0];
-        //console.log("statData", JSON.stringify(statData));
 
-        const { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson } =
-            Utils.utilConvertChartSeriesCarType(statData);
-
-        // console.log("seriesChartSrlu", seriesChartSrlu);
-        // console.log("seriesChartQtsrlu", seriesChartQtsrlu);
-        // console.log("seriesChartPerson", seriesChartPerson);
+        const { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson } = Utils.utilConvertChartSeriesCarType(statData);
 
         setSeriesChartSrluCarType(seriesChartSrlu);
         setSeriesChartQtsrluCarType(seriesChartQtsrlu);
@@ -179,24 +146,18 @@ function DashboardDetail() {
     }, [errorStatCarType]);
 
     const requestAxiosStatCamera = async () => {
-        //console.log("startTime", startTime);
-        //console.log("endTime", endTime);
-
         const extraParam = getExtraParams();
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.STAT_DAILY_URL,
-            {
-                params: {
-                    date: searchDate,
-                    groupBy: "CAMERA",
-                    ...extraParam,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.STAT_DAILY_URL, {
+            params: {
+                date: searchDate,
+                groupBy: "CAMERA",
+                ...extraParam,
+            },
+        });
 
         return response.data;
     };
@@ -213,14 +174,7 @@ function DashboardDetail() {
         if (resultStatCamera.stats === null) return;
 
         const statData = resultStatCamera.stats;
-        //console.log("statData", JSON.stringify(statData));
-
-        const { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson } =
-            Utils.utilConvertChartSeriesCamera(statData, listCamera);
-
-        // console.log("seriesChartSrlu", seriesChartSrlu);
-        // console.log("seriesChartQtsrlu", seriesChartQtsrlu);
-        // console.log("seriesChartPerson", seriesChartPerson);
+        const { seriesChartSrlu, seriesChartQtsrlu, seriesChartPerson } = Utils.utilConvertChartSeriesCamera(statData, listCamera);
 
         setSeriesChartSrluCamera(seriesChartSrlu);
         setSeriesChartQtsrluCamera(seriesChartQtsrlu);
@@ -272,10 +226,7 @@ function DashboardDetail() {
             <Box className={styles.searchBar}>
                 <ul className={styles.searchBarUl}>
                     <li>
-                        <SelectorRegion
-                            selectedRegionNo={selectedRegionNo}
-                            onChangedCurrentRegion={onChangedCurrentRegion}
-                        />
+                        <SelectorRegion selectedRegionNo={selectedRegionNo} onChangedCurrentRegion={onChangedCurrentRegion} />
                     </li>
                     <li>
                         <SelectorIntersection
@@ -284,9 +235,7 @@ function DashboardDetail() {
                             onChangedIntersectionList={(list) => {
                                 setListIntersections(list);
                             }}
-                            onChangedCurrentIntersection={
-                                onChangedCurrentIntersection
-                            }
+                            onChangedCurrentIntersection={onChangedCurrentIntersection}
                         />
                     </li>
                     <li>
@@ -336,11 +285,7 @@ function DashboardDetail() {
                 ) : null}
                 <ChartStatWrapper
                     title={String.stats_title_person}
-                    loading={
-                        requestCarTypeNCamera
-                            ? loadingStatCarType || loadingStatCamera
-                            : loadingStatCarType
-                    }
+                    loading={requestCarTypeNCamera ? loadingStatCarType || loadingStatCamera : loadingStatCarType}
                     series={seriesChartPerson}
                     option={commonChartOption}
                 />

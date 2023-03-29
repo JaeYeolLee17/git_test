@@ -11,6 +11,9 @@ public interface RegionRepository extends JpaRepository<Region, Long> {
     @Transactional(readOnly = true)
     Optional<Region> findByRegionNo(String regionNo);
 
+    @Transactional(readOnly = true)
+    Optional<Region> findByRegionName(String regionName);
+
     @Transactional
     void deleteByRegionNo(String regionNo);
 

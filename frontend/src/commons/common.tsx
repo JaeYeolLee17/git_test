@@ -1,9 +1,10 @@
 export const CONTEXT_AUTH = "SCC-01";
-export const CONTEXT_SHOW_REGIONS = "SCC-02";
-export const CONTEXT_SHOW_CAMERAS = "SCC-03";
-export const CONTEXT_SHOW_LINKS = "SCC-04";
-export const CONTEXT_SHOW_TSI = "SCC-05";
-export const CONTEXT_SHOW_AVL = "SCC-06";
+export const CONTEXT_TABOPEN = "SCC-02";
+export const CONTEXT_SHOW_REGIONS = "SCC-03";
+export const CONTEXT_SHOW_CAMERAS = "SCC-04";
+export const CONTEXT_SHOW_LINKS = "SCC-05";
+export const CONTEXT_SHOW_TSI = "SCC-06";
+export const CONTEXT_SHOW_AVL = "SCC-07";
 
 export const trafficColorNormal = "#00e025";
 export const trafficColorSlowly = "#ff8800";

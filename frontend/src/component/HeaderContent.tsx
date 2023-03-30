@@ -5,6 +5,7 @@ import { getCurrentDateTime } from "../utils/utils";
 import { useAuthDispatch } from "../provider/AuthProvider";
 
 import * as Common from "../commons/common";
+import * as Utils from "../utils/utils";
 
 import styles from "./HeaderContent.module.css";
 import smartCityLogo from "../assets/images/logo_smartcitychallenge.png";
@@ -17,8 +18,6 @@ const HeaderContent = () => {
     const dispatch = useAuthDispatch();
 
     const handleLogout = () => {
-        //localStorage.removeItem("currentUser");
-
         if (dispatch !== null) dispatch({ type: "LOGOUT" });
 
         navigate("/login");
@@ -33,17 +32,9 @@ const HeaderContent = () => {
     return (
         <header className={styles.header}>
             <Link to={Common.PAGE_DASHBOARD} className={styles.logoSection}>
-                <img
-                    className={styles.challengeLogo}
-                    src={smartCityLogo}
-                    alt='logo for smart city'
-                />
+                <img className={styles.challengeLogo} src={smartCityLogo} alt="logo for smart city" />
                 <div className={styles.appTitle}>
-                    <img
-                        className={styles.daeguLogo}
-                        src={daeguLogo}
-                        alt='logo for smart city'
-                    />
+                    <img className={styles.daeguLogo} src={daeguLogo} alt="logo for smart city" />
                     <div>
                         <span className={styles.blue}>AI</span>
                         스마트교통관제플랫폼
@@ -82,15 +73,7 @@ const HeaderContent = () => {
                     </div>
                 </MediaQuery> */}
                 <div className={styles.userBox}>
-                    <div>
-                        안녕하세요{" "}
-                        {
-                            JSON.parse(
-                                localStorage.getItem("currentUser") || ""
-                            ).user.userId
-                        }
-                        님
-                    </div>
+                    <div>안녕하세요 {JSON.parse(Utils.getLocalStorage(Common.CONTEXT_AUTH) || "").user.userId}님</div>
                     <button className={styles.logoutBtn} onClick={handleLogout}>
                         Logout
                     </button>

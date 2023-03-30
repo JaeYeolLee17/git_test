@@ -273,19 +273,19 @@ function DashboardMap({
     // };
 
     const getLocalStorageData = () => {
-        setShowRegion(localStorage.showRegion === undefined || localStorage.showRegion === "true");
-        setShowCameras(localStorage.showCameras === undefined || localStorage.showCameras === "true");
-        setShowLinks(localStorage.showLinks === undefined || localStorage.showLinks === "true");
-        setShowTsi(localStorage.showTsi === undefined || localStorage.showTsi === "true");
-        setShowAvlDatas(localStorage.showAvlDatas === undefined || localStorage.showAvlDatas === "true");
+        setShowRegion(Utils.getLocalStorage(Common.CONTEXT_SHOW_REGIONS) !== "false");
+        setShowCameras(Utils.getLocalStorage(Common.CONTEXT_SHOW_CAMERAS) !== "false");
+        setShowLinks(Utils.getLocalStorage(Common.CONTEXT_SHOW_LINKS) !== "false");
+        setShowTsi(Utils.getLocalStorage(Common.CONTEXT_SHOW_TSI) !== "false");
+        setShowAvlDatas(Utils.getLocalStorage(Common.CONTEXT_SHOW_AVL) !== "false");
     };
 
     const setLocalStorageData = () => {
-        localStorage.showRegion = showRegion;
-        localStorage.showCameras = showCameras;
-        localStorage.showLinks = showLinks;
-        localStorage.showTsi = showTsi;
-        localStorage.showAvlDatas = showAvlDatas;
+        Utils.setLocalStorage(Common.CONTEXT_SHOW_REGIONS, showRegion.toString());
+        Utils.setLocalStorage(Common.CONTEXT_SHOW_CAMERAS, showCameras.toString());
+        Utils.setLocalStorage(Common.CONTEXT_SHOW_LINKS, showLinks.toString());
+        Utils.setLocalStorage(Common.CONTEXT_SHOW_TSI, showTsi.toString());
+        Utils.setLocalStorage(Common.CONTEXT_SHOW_AVL, showAvlDatas.toString());
     };
 
     useEffect(() => {

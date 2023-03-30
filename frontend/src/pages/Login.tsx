@@ -29,7 +29,7 @@ const Login = () => {
         if (userRef === null) return;
         if (userRef.current === undefined) return;
         userRef.current?.focus();
-        //localStorage.removeItem("currentUser");
+        //Utils.removeLocalStorage(Common.CONTEXT_AUTH);
         if (dispatch !== null) dispatch({ type: "LOGOUT" });
     }, []);
 
@@ -58,7 +58,7 @@ const Login = () => {
         const accessToken = resultLogin?.token;
         axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
-        localStorage.setItem("currentUser", JSON.stringify(resultLogin));
+        Utils.setLocalStorage(Common.CONTEXT_AUTH, JSON.stringify(resultLogin));
         navigate(Common.PAGE_DASHBOARD);
     }, [resultLogin]);
 
@@ -66,7 +66,7 @@ const Login = () => {
         if (errorLogin === null) return;
 
         if (dispatch !== null) dispatch({ type: "LOGIN_ERROR", error: "Login failed" });
-        //localStorage.removeItem("currentUser");
+        //Utils.removeLocalStorage(Common.CONTEXT_AUTH);
     }, [errorLogin]);
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e: React.FormEvent<HTMLFormElement>) => {

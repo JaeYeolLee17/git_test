@@ -1,4 +1,6 @@
 import React, { useContext, useReducer, Dispatch } from "react";
+import * as Common from "../commons/common";
+import * as Utils from "../utils/utils";
 
 type UserInfo = {
     [key: string]: any;
@@ -15,10 +17,7 @@ type LoginInfo = {
     token: string;
 };
 
-type AuthAction =
-    | { type: "LOGIN_SUCCESS"; payload: LoginInfo }
-    | { type: "LOGOUT" }
-    | { type: "LOGIN_ERROR"; error: string };
+type AuthAction = { type: "LOGIN_SUCCESS"; payload: LoginInfo } | { type: "LOGOUT" } | { type: "LOGIN_ERROR"; error: string };
 
 type AuthDispatch = Dispatch<AuthAction>;
 
@@ -48,19 +47,13 @@ export const AuthProvider = (props: any) => {
 
     return (
         <AuthStateContext.Provider value={user}>
-            <AuthDispatchContext.Provider value={dispatch}>
-                {props.children}
-            </AuthDispatchContext.Provider>
+            <AuthDispatchContext.Provider value={dispatch}>{props.children}</AuthDispatchContext.Provider>
         </AuthStateContext.Provider>
     );
 };
 
-const initUser = localStorage.getItem("currentUser")
-    ? JSON.parse(localStorage.getItem("currentUser") || "{}").user
-    : null;
-const initToken = localStorage.getItem("currentUser")
-    ? JSON.parse(localStorage.getItem("currentUser") || "{}").token
-    : null;
+const initUser = Utils.getLocalStorage(Common.CONTEXT_AUTH) ? JSON.parse(Utils.getLocalStorage(Common.CONTEXT_AUTH) || "{}").user : null;
+const initToken = Utils.getLocalStorage(Common.CONTEXT_AUTH) ? JSON.parse(Utils.getLocalStorage(Common.CONTEXT_AUTH) || "{}").token : null;
 
 export const initialState: AuthState = {
     user: null || initUser,
@@ -68,20 +61,17 @@ export const initialState: AuthState = {
     errorMessage: null,
 };
 
-export const AuthReducer = (
-    initialState: AuthState,
-    action: AuthAction
-): AuthState => {
+export const AuthReducer = (initialState: AuthState, action: AuthAction): AuthState => {
     switch (action.type) {
         case "LOGIN_SUCCESS":
-            localStorage.setItem("currentUser", JSON.stringify(action.payload));
+            Utils.setLocalStorage(Common.CONTEXT_AUTH, JSON.stringify(action.payload));
             return {
                 ...initialState,
                 user: action.payload.user,
                 token: action.payload.token,
             };
         case "LOGOUT":
-            localStorage.removeItem("currentUser");
+            Utils.removeLocalStorage(Common.CONTEXT_AUTH);
             return {
                 ...initialState,
                 user: null,
@@ -89,7 +79,7 @@ export const AuthReducer = (
             };
 
         case "LOGIN_ERROR":
-            localStorage.removeItem("currentUser");
+            Utils.removeLocalStorage(Common.CONTEXT_AUTH);
             return {
                 ...initialState,
                 errorMessage: action.error,

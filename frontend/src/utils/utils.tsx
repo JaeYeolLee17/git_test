@@ -1,8 +1,8 @@
-import * as Common from "../commons/common";
 import axios from "axios";
 import * as String from "../commons/string";
-
-//const { kakao } = window;
+import * as Utils from "../utils/utils";
+import * as Common from "../commons/common";
+import CryptoJS from "crypto-js";
 
 export const utilGetCamera = (listCamera: any[], cameraNo: string) => {
     const camera: any[] = listCamera.filter((element) => element.cameraNo === cameraNo);
@@ -178,7 +178,7 @@ export const utilConvertParallelLines = (map: kakao.maps.Map, level: number, lis
 };
 
 export const utilAxios = () => {
-    const token = JSON.parse(localStorage.getItem("currentUser") || "{}").token;
+    const token = JSON.parse(Utils.getLocalStorage(Common.CONTEXT_AUTH) || "{}").token;
     const instance = axios.create({
         headers: {
             "Content-Type": "application/json",
@@ -1022,4 +1022,29 @@ const imagesWeather: { [key: string]: any } = {
 
 export const getWeatherImageByKey = (key: string) => {
     return imagesWeather[key];
+};
+
+const secretPass = "SMART_CITY_CHALLENGE_2023";
+export const getLocalStorage = (key: string) => {
+    const item = localStorage.getItem(key);
+    if (item === undefined || item === null) return item;
+
+    const decrypted = CryptoJS.AES.decrypt(item, secretPass);
+
+    try {
+        const converted = decrypted.toString(CryptoJS.enc.Utf8);
+        return converted;
+    } catch (error) {
+        removeLocalStorage(key);
+        return undefined;
+    }
+};
+
+export const setLocalStorage = (key: string, value: string) => {
+    const encryped = CryptoJS.AES.encrypt(value, secretPass).toString();
+    return localStorage.setItem(key, encryped);
+};
+
+export const removeLocalStorage = (key: string) => {
+    return localStorage.removeItem(key);
 };

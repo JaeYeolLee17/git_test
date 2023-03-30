@@ -5,6 +5,10 @@ const getApiUrl = () => {
         return process.env.REACT_APP_DEV_API_URI;
     } else if (hostname.includes(process.env.REACT_APP_PROD_URI)) {
         return process.env.REACT_APP_PROD_API_URI;
+    } else if (hostname.includes(process.env.REACT_APP_PROD_PROXY_URI)) {
+        return process.env.REACT_APP_PROD_PROXY_API_URI;
+    } else if (hostname.includes(process.env.REACT_APP_PROD_INTERNAL_URI)) {
+        return process.env.REACT_APP_PROD_INTERNAL_API_URI;
     } else return process.env.REACT_APP_DEV_API_URI;
 };
 

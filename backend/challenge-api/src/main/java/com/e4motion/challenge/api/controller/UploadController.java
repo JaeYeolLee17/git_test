@@ -70,4 +70,14 @@ public class UploadController {
 
         return new Response();
     }
+
+    @Operation(summary = "교차로, 카메라 등록", description = "접근 권한 : 최고관리자, 운영자")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
+    @PostMapping(value = "/data/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadDataStats(@RequestPart("file") MultipartFile file) throws Exception {
+
+        uploadService.uploadData(file);
+
+        return new Response();
+    }
 }

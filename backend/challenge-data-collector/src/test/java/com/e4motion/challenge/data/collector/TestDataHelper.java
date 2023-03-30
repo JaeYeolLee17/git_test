@@ -14,13 +14,13 @@ public class TestDataHelper {
         List<LaneDataDto> ld = new ArrayList<>();
         ld.add(LaneDataDto.builder()
                 .ln(1)
-                .qml(5)
-                .qm(new Integer[5])
+                .qml(6)
+                .qm(new Integer[6])
                 .qal(6.3f)
-                .qa(new Float[5] )
-                .s(new Integer[5])
-                .l(new Integer[5])
-                .r(new Integer[5])
+                .qa(new Float[6] )
+                .s(new Integer[6])
+                .r(new Integer[6])
+                .l(new Integer[6])
                 .build());
 
         List<TrafficDataDto> td = new ArrayList<>();
@@ -28,7 +28,7 @@ public class TestDataHelper {
                 .st("2022-04-01 11:59:00")
                 .et("2022-04-01 12:00:00")
                 .p(1)
-                .u(new Integer[5])
+                .u(new Integer[6])
                 .ld(ld)
                 .build());
 

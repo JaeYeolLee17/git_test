@@ -182,7 +182,7 @@ class CameraDataDtoTest extends HBaseMockTest {
         td.setU(new Integer[4]);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        td.setU(new Integer[6]);
+        td.setU(new Integer[7]);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
     }
 
@@ -233,7 +233,7 @@ class CameraDataDtoTest extends HBaseMockTest {
         ld.setQm(new Integer[4]);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
-        ld.setQm(new Integer[6]);
+        ld.setQm(new Integer[7]);
         assertInsert(dataDto, HttpStatus.BAD_REQUEST, Response.FAIL, InvalidParamException.CODE, null);
 
         // qa

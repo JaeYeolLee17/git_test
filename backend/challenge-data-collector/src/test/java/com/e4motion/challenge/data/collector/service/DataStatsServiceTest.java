@@ -38,15 +38,18 @@ class DataStatsServiceTest extends HBaseMockTest {
     String expectedI = null;
     String expectedR = null;
     int expectedP = 0;
-    int[] expectedSr = {0, 0, 0, 0, 0};
-    int expectedQmsrLen = 0;
-    int[] expectedQmsr = {0, 0, 0, 0, 0};
-    int[] expectedQtsr = {0, 0, 0, 0, 0};
-    int[] expectedLu = {0, 0, 0, 0, 0};
-    int expectedQmluLen = 0;
-    int[] expectedQmlu = {0, 0, 0, 0, 0};
-    int[] expectedQtlu = {0, 0, 0, 0, 0};
+    int[] expectedSList = {0, 0, 0, 0, 0, 0};
+    int[] expectedRList = {0, 0, 0, 0, 0, 0};
+    int[] expectedLList = {0, 0, 0, 0, 0, 0};
+    int[] expectedUList = {0, 0, 0, 0, 0, 0};
+    int[] expectedQt = {0, 0, 0, 0, 0, 0};
     int expectedQtT = 0;
+    
+    //TODO: qm 관련 삭제 가능성
+    int expectedQmsrLen = 0;
+    int[] expectedQmsr = {0, 0, 0, 0, 0, 0};
+    int expectedQmluLen = 0;
+    int[] expectedQmlu = {0, 0, 0, 0, 0, 0};
 
     @BeforeEach
     void setUp() {
@@ -179,7 +182,7 @@ class DataStatsServiceTest extends HBaseMockTest {
                 .st("2022-07-13 12:29:40")
                 .et("2022-07-13 12:29:50")
                 .p(9)
-                .u(new Integer[]{8, 0, 0, 0, 0})
+                .u(new Integer[]{8, 0, 0, 0, 0, 0})
                 .ld(Stream.of(laneDataDtos).collect(Collectors.toList()))
                 .build();
     }
@@ -190,7 +193,7 @@ class DataStatsServiceTest extends HBaseMockTest {
                 .st("2022-07-13 12:29:50")
                 .et("2022-07-13 12:30:00")
                 .p(7)
-                .u(new Integer[]{6, 0, 0, 0, 0})
+                .u(new Integer[]{6, 0, 0, 0, 0, 0})
                 .ld(Stream.of(laneDataDtos).collect(Collectors.toList()))
                 .build();
     }
@@ -201,7 +204,7 @@ class DataStatsServiceTest extends HBaseMockTest {
                 .st("2022-07-13 12:30:00")
                 .et("2022-07-13 12:30:10")
                 .p(5)
-                .u(new Integer[]{4, 0, 0, 0, 0})
+                .u(new Integer[]{4, 0, 0, 0, 0, 0})
                 .ld(Stream.of(laneDataDtos).collect(Collectors.toList()))
                 .build();
     }
@@ -212,7 +215,7 @@ class DataStatsServiceTest extends HBaseMockTest {
                 .st("2022-07-13 12:30:10")
                 .et("2022-07-13 12:30:20")
                 .p(3)
-                .u(new Integer[]{2, 0, 0, 0, 0})
+                .u(new Integer[]{2, 0, 0, 0, 0, 0})
                 .ld(Stream.of(laneDataDtos).collect(Collectors.toList()))
                 .build();
     }
@@ -222,12 +225,12 @@ class DataStatsServiceTest extends HBaseMockTest {
         return LaneDataDto.builder()
                 .ln(1)
                 .qml(10)
-                .qm(new Integer[]{10, 20, 30, 40, 50})
+                .qm(new Integer[]{10, 20, 30, 40, 50, 0})
                 .qal(5.5F)
-                .qa(new Float[]{1.1F, 2.2F, 3.3F, 4.4F, 5.5F})
-                .s(new Integer[]{1, 2, 3, 4, 5})
-                .l(new Integer[]{2, 3, 4, 5, 6})
-                .r(new Integer[]{3, 4, 5, 6, 7})
+                .qa(new Float[]{1.1F, 2.2F, 3.3F, 4.4F, 5.5F, 0F})
+                .s(new Integer[]{1, 2, 3, 4, 5, 0})
+                .l(new Integer[]{2, 3, 4, 5, 6, 0})
+                .r(new Integer[]{3, 4, 5, 6, 7, 0})
                 .build();
     }
 
@@ -236,12 +239,12 @@ class DataStatsServiceTest extends HBaseMockTest {
         return LaneDataDto.builder()
                 .ln(2)
                 .qml(11)
-                .qm(new Integer[]{11, 21, 31, 41, 51})
+                .qm(new Integer[]{11, 21, 31, 41, 51, 0})
                 .qal(6.6F)
-                .qa(new Float[]{2.2F, 3.3F, 4.4F, 5.5F, 6.6F})
-                .s(new Integer[]{2, 3, 4, 5, 6})
-                .l(new Integer[]{3, 4, 5, 6, 7})
-                .r(new Integer[]{4, 5, 6, 7, 8})
+                .qa(new Float[]{2.2F, 3.3F, 4.4F, 5.5F, 6.6F, 0F})
+                .s(new Integer[]{2, 3, 4, 5, 6, 0})
+                .l(new Integer[]{3, 4, 5, 6, 7, 0})
+                .r(new Integer[]{4, 5, 6, 7, 8, 0})
                 .build();
     }
 
@@ -250,12 +253,12 @@ class DataStatsServiceTest extends HBaseMockTest {
         return LaneDataDto.builder()
                 .ln(1)
                 .qml(20)
-                .qm(new Integer[]{60, 70, 80, 90, 100})
+                .qm(new Integer[]{60, 70, 80, 90, 100, 0})
                 .qal(7.7F)
-                .qa(new Float[]{3.3F, 4.4F, 5.5F, 6.6F, 7.7F})
-                .s(new Integer[]{3, 4, 5, 6, 7})
-                .l(new Integer[]{4, 5, 6, 7, 8})
-                .r(new Integer[]{5, 6, 7, 8, 9})
+                .qa(new Float[]{3.3F, 4.4F, 5.5F, 6.6F, 7.7F, 0F})
+                .s(new Integer[]{3, 4, 5, 6, 7, 0})
+                .l(new Integer[]{4, 5, 6, 7, 8, 0})
+                .r(new Integer[]{5, 6, 7, 8, 9, 0})
                 .build();
     }
 
@@ -264,12 +267,12 @@ class DataStatsServiceTest extends HBaseMockTest {
         return LaneDataDto.builder()
                 .ln(2)
                 .qml(21)
-                .qm(new Integer[]{61, 71, 81, 91, 101})
+                .qm(new Integer[]{61, 71, 81, 91, 101, 0})
                 .qal(8.8F)
-                .qa(new Float[]{4.4F, 5.5F, 6.6F, 7.7F, 8.8F})
-                .s(new Integer[]{4, 5, 6, 7, 8})
-                .l(new Integer[]{5, 6, 7, 8, 9})
-                .r(new Integer[]{6, 7, 8, 9, 10})
+                .qa(new Float[]{4.4F, 5.5F, 6.6F, 7.7F, 8.8F, 0F})
+                .s(new Integer[]{4, 5, 6, 7, 8, 0})
+                .l(new Integer[]{5, 6, 7, 8, 9, 0})
+                .r(new Integer[]{6, 7, 8, 9, 10, 0})
                 .build();
     }
 
@@ -278,12 +281,12 @@ class DataStatsServiceTest extends HBaseMockTest {
         return LaneDataDto.builder()
                 .ln(1)
                 .qml(30)
-                .qm(new Integer[]{70, 80, 90, 100, 110})
+                .qm(new Integer[]{70, 80, 90, 100, 110, 0})
                 .qal(9.9F)
-                .qa(new Float[]{5.5F, 6.6F, 7.7F, 8.8F, 9.9F})
-                .s(new Integer[]{5, 6, 7, 8, 9})
-                .l(new Integer[]{6, 7, 8, 9, 0})
-                .r(new Integer[]{7, 8, 9, 0, 1})
+                .qa(new Float[]{5.5F, 6.6F, 7.7F, 8.8F, 9.9F, 0F})
+                .s(new Integer[]{5, 6, 7, 8, 9, 0})
+                .l(new Integer[]{6, 7, 8, 9, 0, 0})
+                .r(new Integer[]{7, 8, 9, 0, 1, 0})
                 .build();
     }
 
@@ -292,12 +295,12 @@ class DataStatsServiceTest extends HBaseMockTest {
         return LaneDataDto.builder()
                 .ln(1)
                 .qml(31)
-                .qm(new Integer[]{71, 81, 91, 101, 111})
+                .qm(new Integer[]{71, 81, 91, 101, 111, 0})
                 .qal(0.1F)
-                .qa(new Float[]{6.6F, 7.7F, 8.8F, 9.9F, 0.1F})
-                .s(new Integer[]{6, 7, 8, 9, 0})
-                .l(new Integer[]{7, 8, 9, 0, 1})
-                .r(new Integer[]{8, 9, 0, 1, 2})
+                .qa(new Float[]{6.6F, 7.7F, 8.8F, 9.9F, 0.1F, 0F})
+                .s(new Integer[]{6, 7, 8, 9, 0, 0})
+                .l(new Integer[]{7, 8, 9, 0, 1, 0})
+                .r(new Integer[]{8, 9, 0, 1, 2, 0})
                 .build();
     }
 
@@ -305,15 +308,16 @@ class DataStatsServiceTest extends HBaseMockTest {
         expectedI = null;
         expectedR = null;
         expectedP = 0;
-        Arrays.fill(expectedSr, 0);
+        Arrays.fill(expectedSList, 0);
+        Arrays.fill(expectedRList, 0);
+        Arrays.fill(expectedLList, 0);
+        Arrays.fill(expectedUList, 0);
+        Arrays.fill(expectedQt, 0);
+        expectedQtT = 0;
         expectedQmsrLen = 0;
         Arrays.fill(expectedQmsr, 0);
-        Arrays.fill(expectedQtsr, 0);
-        Arrays.fill(expectedLu, 0);
         expectedQmluLen = 0;
         Arrays.fill(expectedQmlu, 0);
-        Arrays.fill(expectedQtlu, 0);
-        expectedQtT = 0;
     }
 
     private void makeExpectedDataStats(CameraDataDto cameraDataDto, int index) throws ParseException {
@@ -341,8 +345,8 @@ class DataStatsServiceTest extends HBaseMockTest {
 
             expectedP += td.getP();
 
-            for (int i = 0; i < 5; i++ ) {
-                expectedLu[i] += td.getU()[i];
+            for (int i = 0; i < 6; i++ ) {
+                expectedUList[i] += td.getU()[i];
             }
 
             int qaT = (int)ChronoUnit.SECONDS.between(
@@ -350,30 +354,25 @@ class DataStatsServiceTest extends HBaseMockTest {
                     DateTimeHelper.parseLocalDateTime(td.getEt()));
 
             for (LaneDataDto ld : td.getLd()) {
-                for (int i = 0; i < 5; i++ ) {
-                    expectedSr[i] += (ld.getS()[i] + ld.getR()[i]);
-                    expectedLu[i] += ld.getL()[i];
+                for (int i = 0; i < 6; i++ ) {
+                    expectedSList[i] += (ld.getS()[i]);
+                    expectedRList[i] += (ld.getR()[i]);
+                    expectedLList[i] += ld.getL()[i];
+                    expectedQt[i] += (int)(ld.getQa()[i] * qaT);
                 }
-
                 if (ld.getLn() == 1 && td.getLd().size() > 1) {     // left, uturn
                     if (expectedQmluLen < ld.getQml()) {
                         expectedQmluLen = ld.getQml();
-                        for (int i = 0; i < 5; i++) {
+                        for (int i = 0; i < 6; i++) {
                             expectedQmlu[i] = ld.getQm()[i];
                         }
-                    }
-                    for (int i = 0; i < 5; i++) {
-                        expectedQtlu[i] += (int)(ld.getQa()[i] * qaT);
                     }
                 } else {    // straight, right
                     if (expectedQmsrLen < ld.getQml()) {
                         expectedQmsrLen = ld.getQml();
-                        for (int i = 0; i < 5; i++) {
+                        for (int i = 0; i < 6; i++) {
                             expectedQmsr[i] = ld.getQm()[i];
                         }
-                    }
-                    for (int i = 0; i < 5; i++) {
-                        expectedQtsr[i] += (int)(ld.getQa()[i] * qaT);
                     }
                 }
             }
@@ -388,17 +387,26 @@ class DataStatsServiceTest extends HBaseMockTest {
 
         assertThat(dataStats.getP()).isEqualTo(expectedP);
 
-        assertThat(dataStats.getSr0()).isEqualTo(expectedSr[0]);
-        assertThat(dataStats.getSr1()).isEqualTo(expectedSr[1]);
-        assertThat(dataStats.getSr2()).isEqualTo(expectedSr[2]);
-        assertThat(dataStats.getSr3()).isEqualTo(expectedSr[3]);
-        assertThat(dataStats.getSr4()).isEqualTo(expectedSr[4]);
+        assertThat(dataStats.getS0()).isEqualTo(expectedSList[0]);
+        assertThat(dataStats.getS1()).isEqualTo(expectedSList[1]);
+        assertThat(dataStats.getS2()).isEqualTo(expectedSList[2]);
+        assertThat(dataStats.getS3()).isEqualTo(expectedSList[3]);
+        assertThat(dataStats.getS4()).isEqualTo(expectedSList[4]);
+        assertThat(dataStats.getS5()).isEqualTo(expectedSList[5]);
 
-        assertThat(dataStats.getLu0()).isEqualTo(expectedLu[0]);
-        assertThat(dataStats.getLu1()).isEqualTo(expectedLu[1]);
-        assertThat(dataStats.getLu2()).isEqualTo(expectedLu[2]);
-        assertThat(dataStats.getLu3()).isEqualTo(expectedLu[3]);
-        assertThat(dataStats.getLu4()).isEqualTo(expectedLu[4]);
+        assertThat(dataStats.getR0()).isEqualTo(expectedRList[0]);
+        assertThat(dataStats.getR1()).isEqualTo(expectedRList[1]);
+        assertThat(dataStats.getR2()).isEqualTo(expectedRList[2]);
+        assertThat(dataStats.getR3()).isEqualTo(expectedRList[3]);
+        assertThat(dataStats.getR4()).isEqualTo(expectedRList[4]);
+        assertThat(dataStats.getR5()).isEqualTo(expectedRList[5]);
+
+        assertThat(dataStats.getL0()).isEqualTo(expectedLList[0]);
+        assertThat(dataStats.getL1()).isEqualTo(expectedLList[1]);
+        assertThat(dataStats.getL2()).isEqualTo(expectedLList[2]);
+        assertThat(dataStats.getL3()).isEqualTo(expectedLList[3]);
+        assertThat(dataStats.getL4()).isEqualTo(expectedLList[4]);
+        assertThat(dataStats.getL5()).isEqualTo(expectedLList[5]);
 
         assertThat(dataStats.getQmsrLen()).isEqualTo(expectedQmsrLen);
         assertThat(dataStats.getQmsr0()).isEqualTo(expectedQmsr[0]);
@@ -414,17 +422,12 @@ class DataStatsServiceTest extends HBaseMockTest {
         assertThat(dataStats.getQmlu3()).isEqualTo(expectedQmlu[3]);
         assertThat(dataStats.getQmlu4()).isEqualTo(expectedQmlu[4]);
 
-        assertThat(dataStats.getQtsr0()).isEqualTo(expectedQtsr[0]);
-        assertThat(dataStats.getQtsr1()).isEqualTo(expectedQtsr[1]);
-        assertThat(dataStats.getQtsr2()).isEqualTo(expectedQtsr[2]);
-        assertThat(dataStats.getQtsr3()).isEqualTo(expectedQtsr[3]);
-        assertThat(dataStats.getQtsr4()).isEqualTo(expectedQtsr[4]);
-
-        assertThat(dataStats.getQtlu0()).isEqualTo(expectedQtlu[0]);
-        assertThat(dataStats.getQtlu1()).isEqualTo(expectedQtlu[1]);
-        assertThat(dataStats.getQtlu2()).isEqualTo(expectedQtlu[2]);
-        assertThat(dataStats.getQtlu3()).isEqualTo(expectedQtlu[3]);
-        assertThat(dataStats.getQtlu4()).isEqualTo(expectedQtlu[4]);
+        assertThat(dataStats.getQt0()).isEqualTo(expectedQt[0]);
+        assertThat(dataStats.getQt1()).isEqualTo(expectedQt[1]);
+        assertThat(dataStats.getQt2()).isEqualTo(expectedQt[2]);
+        assertThat(dataStats.getQt3()).isEqualTo(expectedQt[3]);
+        assertThat(dataStats.getQt4()).isEqualTo(expectedQt[4]);
+        assertThat(dataStats.getQt4()).isEqualTo(expectedQt[4]);
 
         assertThat(dataStats.getQtT()).isEqualTo(expectedQtT);
     }

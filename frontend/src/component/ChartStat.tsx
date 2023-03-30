@@ -6,7 +6,6 @@ import * as Common from "../commons/common";
 import * as Utils from "../utils/utils";
 
 function ChartStat({ loading, series, option }: Common.ChartStatData) {
-    //console.log(name, loading);
     const [chartOption, setChartOption] = useState<Record<string, any>>({});
 
     // const drawYaxisLine = (chart) => {
@@ -37,7 +36,6 @@ function ChartStat({ loading, series, option }: Common.ChartStatData) {
     // };
 
     useEffect(() => {
-        // console.log("option", option);
         const chart_option = {
             ...option,
             chart: {
@@ -78,8 +76,7 @@ function ChartStat({ loading, series, option }: Common.ChartStatData) {
 
                 labels: {
                     formatter: function (val: number, index: number) {
-                        const formattedNumber =
-                            ("0" + val.toFixed(0)).slice(-2) + ":00";
+                        const formattedNumber = ("0" + val.toFixed(0)).slice(-2) + ":00";
                         return formattedNumber;
                     },
                 },
@@ -88,9 +85,7 @@ function ChartStat({ loading, series, option }: Common.ChartStatData) {
             yaxis: {
                 labels: {
                     formatter: function (val: number, index: number) {
-                        return val
-                            .toFixed(0)
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     },
                 },
                 ...option.yaxis,
@@ -126,19 +121,11 @@ function ChartStat({ loading, series, option }: Common.ChartStatData) {
         setChartOption(chart_option);
     }, [option]);
 
-    // console.log(name, chartOption);
-
     return (
         <div>
             {/* <h2>{name}</h2> */}
             {!Utils.utilIsEmptyObj(chartOption) && (
-                <Chart
-                    options={chartOption}
-                    series={series}
-                    type={option.chart.type}
-                    width='100%'
-                    height={option.chart.height}
-                ></Chart>
+                <Chart options={chartOption} series={series} type={option.chart.type} width="100%" height={option.chart.height}></Chart>
             )}
         </div>
     );

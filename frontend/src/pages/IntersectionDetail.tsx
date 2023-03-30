@@ -12,6 +12,7 @@ import * as Utils from "../utils/utils";
 import * as Request from "../commons/request";
 import * as Common from "../commons/common";
 import * as String from "../commons/string";
+import OsmMap from "../component/OsmMap";
 
 type intersectionDataType = {
     distance: number;
@@ -25,9 +26,7 @@ function IntersectionDetail() {
     const userDetails = useAuthState();
     const navigate = useNavigate();
 
-    const [selectedIntersectionList, setSelectedIntersectionList] = useState<
-        Array<any>
-    >([]);
+    const [selectedIntersectionList, setSelectedIntersectionList] = useState<Array<any>>([]);
     const [intersectionData, setIntersectionData] = useState<any[]>([]);
 
     const [centerGps, setCenterGps] = useState<any>(undefined);
@@ -37,10 +36,7 @@ function IntersectionDetail() {
     }, [location.state]);
 
     const onSelectedIntersection = (selectedIntersection: any) => {
-        setSelectedIntersectionList((selectedIntersectionList) => [
-            ...selectedIntersectionList,
-            selectedIntersection,
-        ]);
+        setSelectedIntersectionList((selectedIntersectionList) => [...selectedIntersectionList, selectedIntersection]);
 
         setCenterGps({ ...selectedIntersection.gps });
 
@@ -61,30 +57,21 @@ function IntersectionDetail() {
             },
             {
                 name: "regionName",
-                data:
-                    selectedIntersection.region === null
-                        ? ""
-                        : selectedIntersection.region.regionName,
+                data: selectedIntersection.region === null ? "" : selectedIntersection.region.regionName,
                 width: 12,
                 required: false,
                 disabled: true,
             },
             {
                 name: "gpsLat",
-                data:
-                    selectedIntersection.gps === null
-                        ? ""
-                        : selectedIntersection.gps.lat,
+                data: selectedIntersection.gps === null ? "" : selectedIntersection.gps.lat,
                 width: 12,
                 required: true,
                 disabled: true,
             },
             {
                 name: "gpsLng",
-                data:
-                    selectedIntersection.gps === null
-                        ? ""
-                        : selectedIntersection.gps.lng,
+                data: selectedIntersection.gps === null ? "" : selectedIntersection.gps.lng,
                 width: 12,
                 required: false,
                 disabled: true,
@@ -100,16 +87,12 @@ function IntersectionDetail() {
         ["gpsLng", String.gps_lng],
     ]);
 
-    const requestAxiosUpdateIntersections = async (
-        intersectionData: intersectionDataType
-    ) => {
+    const requestAxiosUpdateIntersections = async (intersectionData: intersectionDataType) => {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
         const response = await Utils.utilAxiosWithAuth(userDetails.token).put(
-            Request.INTERSECTION_URL +
-                "/" +
-                selectedIntersectionList[0].intersectionNo,
+            Request.INTERSECTION_URL + "/" + selectedIntersectionList[0].intersectionNo,
             intersectionData
         );
 
@@ -153,14 +136,11 @@ function IntersectionDetail() {
         requestUpdateIntersections(updateData);
     };
 
-    const handleClickMap = (
-        target: kakao.maps.Map,
-        mouseEvent: kakao.maps.event.MouseEvent
-    ) => {
+    const changeLocation = (lat: number, lng: number) => {
         setSelectedIntersectionList((prevState) => {
             const newState = prevState.map((obj) => {
-                obj.gps.lat = mouseEvent.latLng.getLat();
-                obj.gps.lng = mouseEvent.latLng.getLng();
+                obj.gps.lat = lat;
+                obj.gps.lng = lng;
                 return obj;
             });
 
@@ -170,9 +150,9 @@ function IntersectionDetail() {
         setIntersectionData((prevState) => {
             const newState = prevState.map((obj) => {
                 if (obj.name === "gpsLat") {
-                    return { ...obj, data: mouseEvent.latLng.getLat() };
+                    return { ...obj, data: lat };
                 } else if (obj.name === "gpsLng") {
-                    return { ...obj, data: mouseEvent.latLng.getLng() };
+                    return { ...obj, data: lng };
                 }
 
                 return obj;
@@ -186,16 +166,11 @@ function IntersectionDetail() {
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={5}>
-                    <ManagementDetail
-                        type='edit'
-                        title={title}
-                        response={intersectionData}
-                        clickEvent={onClickEvent}
-                    />
+                    <ManagementDetail type="edit" title={title} response={intersectionData} clickEvent={onClickEvent} />
                 </Grid>
                 <Grid item xs={7}>
                     <Box className={styles.box}>
-                        <KakaoMap
+                        <OsmMap
                             style={{
                                 width: "100%",
                                 height: "calc(100vh - 80px)",
@@ -207,14 +182,17 @@ function IntersectionDetail() {
                                 clickEvent: () => {
                                     undefined;
                                 },
+                                dragEvent: (lat, lng) => {
+                                    changeLocation(lat, lng);
+                                }, //OsmMap
                                 showEdge: true,
                             }}
-                            center={{
-                                lat: centerGps !== undefined && centerGps.lat,
-                                lng: centerGps !== undefined && centerGps.lng,
-                            }}
-                            zoomLevel={3}
-                            onClickMap={handleClickMap}
+                            //center={{
+                            //    lat: centerGps !== undefined && centerGps.lat,
+                            //    lng: centerGps !== undefined && centerGps.lng,
+                            //}}
+                            //zoomLevel={3}
+                            //onClickMap={changeLocation} //KakaoMap
                         />
                     </Box>
                 </Grid>

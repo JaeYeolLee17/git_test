@@ -1,3 +1,11 @@
+export const CONTEXT_AUTH = "SCC-01";
+export const CONTEXT_TABOPEN = "SCC-02";
+export const CONTEXT_SHOW_REGIONS = "SCC-03";
+export const CONTEXT_SHOW_CAMERAS = "SCC-04";
+export const CONTEXT_SHOW_LINKS = "SCC-05";
+export const CONTEXT_SHOW_TSI = "SCC-06";
+export const CONTEXT_SHOW_AVL = "SCC-07";
+
 export const trafficColorNormal = "#00e025";
 export const trafficColorSlowly = "#ff8800";
 export const trafficColorBusy = "#df0900";
@@ -62,9 +70,7 @@ export type SelectorIntersection = {
     currentRegionInfo: RegionInfo;
     selectedIntersectionNo: string;
     onChangedIntersectionList?: (listIntersections: any[]) => void;
-    onChangedCurrentIntersection?: (
-        currentIntersectionInfo: IntersectionInfo
-    ) => void;
+    onChangedCurrentIntersection?: (currentIntersectionInfo: IntersectionInfo) => void;
 };
 
 export type StreamInfo = {
@@ -90,8 +96,7 @@ export const PAGE_STAT_EMERGENCY = "/stats/emergency";
 export const PAGE_MANAGEMENT_CAMERA = "/management/camera";
 export const PAGE_MANAGEMENT_CAMERA_DETAIL = "/management/camera/detail";
 export const PAGE_MANAGEMENT_INTERSECTION = "/management/intersection";
-export const PAGE_MANAGEMENT_INTERSECTION_DETAIL =
-    "/management/intersection/detail";
+export const PAGE_MANAGEMENT_INTERSECTION_DETAIL = "/management/intersection/detail";
 export const PAGE_MANAGEMENT_REGION = "/management/region";
 export const PAGE_MANAGEMENT_REGION_DETAIL = "/management/region/detail";
 export const PAGE_MANAGEMENT_LINK = "/management/link";

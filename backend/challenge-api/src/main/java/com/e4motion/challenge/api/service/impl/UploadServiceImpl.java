@@ -122,7 +122,7 @@ public class UploadServiceImpl implements UploadService {
             intersection.setLat(getDouble(record, IntersectionHeaders.lat));
             intersection.setLng(getDouble(record, IntersectionHeaders.lng));
             intersection.setNationalId(getLong(record, IntersectionHeaders.national_no));
-            intersection.setRegion(getRegion(getString(record, IntersectionHeaders.region_no)));
+            intersection.setRegion(getRegionByRegionNo(getString(record, IntersectionHeaders.region_no)));
             intersection.setCameras(getCameraList(getString(record, IntersectionHeaders.region_no),
                     getString(record, IntersectionHeaders.intersection_no)));
 
@@ -317,6 +317,52 @@ public class UploadServiceImpl implements UploadService {
         }
     }
 
+    @Transactional
+    public void uploadData(MultipartFile file) throws IOException, ParseException {
+
+        Iterable<CSVRecord> records = parseCsv(file, DataHeaders.class);
+        if (records == null) {
+            return;
+        }
+
+        for (CSVRecord record : records) {
+
+            List<Camera> cameras = new ArrayList<>();
+
+            Intersection intersection = Intersection.builder()
+                    .region(getRegionByRegionName(getString(record, DataHeaders.region)))
+                    .intersectionNo(getString(record, DataHeaders.collection_number))
+                    .intersectionName(getString(record, DataHeaders.intersection_name))
+                    .lng(getDouble(record, DataHeaders.longitude))
+                    .lat(getDouble(record, DataHeaders.latitude))
+                    .build();
+            intersectionRepository.saveAndFlush(intersection);
+
+            int cameraNumber = getInteger(record, DataHeaders.camera_number) == null ? 0 : Objects.requireNonNull(getInteger(record, DataHeaders.camera_number));
+
+            for (int i = 1; i <= cameraNumber; i++) {
+
+                Camera camera = Camera.builder()
+                        .password(passwordEncoder.encode("camera12!@"))
+                        .intersection(intersection)
+                        .lng(getDouble(record, DataHeaders.longitude))
+                        .lat(getDouble(record, DataHeaders.latitude))
+                        .settingsUpdated(Boolean.TRUE)
+                        .build();
+                if (cameraNumber >= 10) {
+                    camera.setCameraNo(Objects.requireNonNull(getString(record, DataHeaders.collection_number)).concat(Integer.toString(i)));
+                } else {
+                    camera.setCameraNo(Objects.requireNonNull(getString(record, DataHeaders.collection_number)).concat("0").concat(Integer.toString(i)));
+                }
+
+                cameras.add(camera);
+                cameraRepository.save(camera);
+            }
+
+            intersection.setCameras(cameras);
+        }
+    }
+
     private Integer getInteger(CSVRecord record, Enum<?> header) {
         String s = record.get(header);
         if (s != null && s.length() > 0 && !s.equals("NULL")) {
@@ -349,11 +395,20 @@ public class UploadServiceImpl implements UploadService {
         return null;
     }
 
-    private Region getRegion(String regionNo) {
+    private Region getRegionByRegionNo(String regionNo) {
 
         if (regionNo != null) {
             return regionRepository.findByRegionNo(regionNo)
                     .orElseThrow(() -> new RegionNotFoundException(RegionNotFoundException.INVALID_REGION_NO));
+        }
+        return null;
+    }
+
+    private Region getRegionByRegionName(String regionName) {
+
+        if (regionName != null) {
+            return regionRepository.findByRegionName(regionName)
+                    .orElseThrow(() -> new RegionNotFoundException(RegionNotFoundException.INVALID_REGION_NAME));
         }
         return null;
     }
@@ -487,5 +542,18 @@ public class UploadServiceImpl implements UploadService {
         qtlu3,
         qtlu4,
         qt_time
+    }
+
+    private enum DataHeaders {
+        region,
+        collection_number,
+        construction_number,
+        install_time,
+        intersection_name,
+        longitude,
+        latitude,
+        camera_number,
+        priorty_area,
+        etc
     }
 }

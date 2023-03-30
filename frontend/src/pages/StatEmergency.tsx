@@ -44,15 +44,7 @@ function StatEmergency() {
             enabled: false,
         },
 
-        colors: [
-            "#3a9f00",
-            "#f0483e",
-            "#fb9a02",
-            "#4579bd",
-            "#8866ac",
-            "#fdb714",
-            "#43d795",
-        ],
+        colors: ["#3a9f00", "#f0483e", "#fb9a02", "#4579bd", "#8866ac", "#fdb714", "#43d795"],
 
         series: [
             {
@@ -238,46 +230,29 @@ function StatEmergency() {
         const startMonth = start.getMonth() + 1;
         const startDate = start.getDate();
         const startTime =
-            startYear +
-            "-" +
-            (startMonth < 10 ? "0" + startMonth : startMonth) +
-            "-" +
-            (startDate < 10 ? "0" + startDate : startDate) +
-            " 00:00:00";
+            startYear + "-" + (startMonth < 10 ? "0" + startMonth : startMonth) + "-" + (startDate < 10 ? "0" + startDate : startDate) + " 00:00:00";
 
         const endYear = end.getFullYear();
         const endMonth = end.getMonth() + 1;
         const endDate = end.getDate();
-        const endTime =
-            endYear +
-            "-" +
-            (endMonth < 10 ? "0" + endMonth : endMonth) +
-            "-" +
-            (endDate < 10 ? "0" + endDate : endDate) +
-            " 00:00:00";
+        const endTime = endYear + "-" + (endMonth < 10 ? "0" + endMonth : endMonth) + "-" + (endDate < 10 ? "0" + endDate : endDate) + " 00:00:00";
 
         return { startTime: startTime, endTime: endTime };
     };
 
     const requestAxiosStatEmergencyPeriod = async () => {
-        //console.log("startTime", startTime);
-        //console.log("endTime", endTime);
-
         const { startTime, endTime } = getStatDate(searchPeriod);
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.AVL_STAT_PERIOD_URL,
-            {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                    byPeriod: searchPeriod,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.AVL_STAT_PERIOD_URL, {
+            params: {
+                startTime: startTime,
+                endTime: endTime,
+                byPeriod: searchPeriod,
+            },
+        });
 
         return response.data;
     };
@@ -291,10 +266,8 @@ function StatEmergency() {
 
     useEffect(() => {
         if (resultStatEmergencyPeriod === null) return;
-        console.log(
-            "resultStatEmergencyPeriod",
-            JSON.stringify(resultStatEmergencyPeriod)
-        );
+
+        console.log("resultStatEmergencyPeriod", JSON.stringify(resultStatEmergencyPeriod));
     }, [resultStatEmergencyPeriod]);
 
     useEffect(() => {
@@ -304,23 +277,17 @@ function StatEmergency() {
     }, [errorStatEmergencyPeriod]);
 
     const requestAxiosStatEmergencyList = async () => {
-        //console.log("startTime", startTime);
-        //console.log("endTime", endTime);
-
         const { startTime, endTime } = getStatDate(searchPeriod);
 
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.AVL_STAT_LIST_URL,
-            {
-                params: {
-                    startTime: startTime,
-                    endTime: endTime,
-                },
-            }
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.AVL_STAT_LIST_URL, {
+            params: {
+                startTime: startTime,
+                endTime: endTime,
+            },
+        });
 
         return response.data;
     };
@@ -334,10 +301,7 @@ function StatEmergency() {
 
     useEffect(() => {
         if (resultStatEmergencyList === null) return;
-        console.log(
-            "resultStatEmergencyList",
-            JSON.stringify(resultStatEmergencyList)
-        );
+        console.log("resultStatEmergencyList", JSON.stringify(resultStatEmergencyList));
     }, [resultStatEmergencyList]);
 
     useEffect(() => {
@@ -354,37 +318,24 @@ function StatEmergency() {
     return (
         <>
             <Box className={styles.emergencyStatRow}>
-                <Grid
-                    item
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    sx={{ padding: 0, width: "100%" }}
-                >
+                <Grid item lg={12} md={12} sm={12} xs={12} sx={{ padding: 0, width: "100%" }}>
                     <Box className={styles.chartTitle}>
-                        <Box className={styles.chartTitleText}>
-                            긴급차량 평균소요시간 추이
-                        </Box>
+                        <Box className={styles.chartTitleText}>긴급차량 평균소요시간 추이</Box>
                         <Box className={styles.chartSearch}>
                             <Box sx={{ marginRight: "12px" }}>
-                                <SelectorPeriod
-                                    onChangedPeriod={onChangedPeriod}
-                                />
+                                <SelectorPeriod onChangedPeriod={onChangedPeriod} />
                             </Box>
                             <SearchButton onSearch={onSearch} />
                         </Box>
                     </Box>
                     <Box className={styles.statChartCard}>
                         <Box className={styles.statChart}>
-                            <LoadingChartSpinner
-                                loading={loadingStatEmergencyPeriod}
-                            />
+                            <LoadingChartSpinner loading={loadingStatEmergencyPeriod} />
                             <Chart
                                 options={chartOption}
                                 series={optionEmergency.series}
-                                type='line'
-                                width='100%'
+                                type="line"
+                                width="100%"
                                 height={optionEmergency.chart.height}
                             ></Chart>
                         </Box>
@@ -392,9 +343,7 @@ function StatEmergency() {
                 </Grid>
             </Box>
             <Box className={styles.recordTitle}>출동 기록 경로</Box>
-            <Box
-                className={[styles.emergencyStatRow, styles.record].join(" ")}
-            ></Box>
+            <Box className={[styles.emergencyStatRow, styles.record].join(" ")}></Box>
         </>
     );
 }

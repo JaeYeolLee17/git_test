@@ -1,0 +1,18 @@
+namespace: challenge
+
+resources:
+- namespace.yml
+- challenge-monitor.yml
+- challenge-api.yml
+- challenge-data-collector.yml
+- challenge-data-provider.yml
+
+images:
+- name: registry.emgglobal.co.kr:9443/challenge-api
+  newTag: 2.0.0
+- name: registry.emgglobal.co.kr:9443/challenge-data-collector
+  newTag: 2.0.0
+- name: registry.emgglobal.co.kr:9443/challenge-data-provider
+  newTag: 2.0.0
+- name: registry.emgglobal.co.kr:9443/challenge-monitor
+  newTag: 2.0.0

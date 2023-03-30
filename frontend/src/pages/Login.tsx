@@ -29,31 +29,22 @@ const Login = () => {
         if (userRef === null) return;
         if (userRef.current === undefined) return;
         userRef.current?.focus();
-        //localStorage.removeItem("currentUser");
+        //Utils.removeLocalStorage(Common.CONTEXT_AUTH);
         if (dispatch !== null) dispatch({ type: "LOGOUT" });
     }, []);
 
     const navigate = useNavigate();
 
-    const requestLogin = async (
-        url: string,
-        option: Record<string, string>
-    ) => {
+    const requestLogin = async (url: string, option: Record<string, string>) => {
         const response = await Utils.utilAxios().post(url, option);
         return response.data;
     };
 
-    const {
-        loading,
-        error: errorLogin,
-        data: resultLogin,
-        execute: login,
-    } = useAsyncAxios(requestLogin);
+    const { loading, error: errorLogin, data: resultLogin, execute: login } = useAsyncAxios(requestLogin);
 
     useEffect(() => {
         if (resultLogin === null) return;
 
-        console.log(JSON.stringify(resultLogin));
         if (dispatch !== null)
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -65,40 +56,29 @@ const Login = () => {
 
         // JWT
         const accessToken = resultLogin?.token;
-        axios.defaults.headers.common[
-            "Authorization"
-        ] = `Bearer ${accessToken}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
-        localStorage.setItem("currentUser", JSON.stringify(resultLogin));
+        Utils.setLocalStorage(Common.CONTEXT_AUTH, JSON.stringify(resultLogin));
         navigate(Common.PAGE_DASHBOARD);
     }, [resultLogin]);
 
     useEffect(() => {
         if (errorLogin === null) return;
 
-        if (dispatch !== null)
-            dispatch({ type: "LOGIN_ERROR", error: "Login failed" });
-        //localStorage.removeItem("currentUser");
+        if (dispatch !== null) dispatch({ type: "LOGIN_ERROR", error: "Login failed" });
+        //Utils.removeLocalStorage(Common.CONTEXT_AUTH);
     }, [errorLogin]);
 
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
-        e: React.FormEvent<HTMLFormElement>
-    ) => {
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const sha256 = require("sha256");
 
         let result;
         if (process.env.REACT_APP_NEXT_DEV === "false") {
-            result = await login(
-                Request.LOGIN_URL,
-                JSON.stringify({ userId: user, password: sha256(pwd) })
-            );
+            result = await login(Request.LOGIN_URL, JSON.stringify({ userId: user, password: sha256(pwd) }));
         } else {
-            result = await login(
-                Request.LOGIN_URL,
-                JSON.stringify({ username: user, password: pwd })
-            );
+            result = await login(Request.LOGIN_URL, JSON.stringify({ username: user, password: pwd }));
         }
 
         //console.log("result", result);

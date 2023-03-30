@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Map, MapMarker, Polygon, Circle, Polyline } from "react-kakao-maps-sdk";
 import * as Utils from "../utils/utils";
 import * as Common from "../commons/common";
@@ -22,6 +22,7 @@ export type KakaoMapIntersectionsType = {
     list: any[];
     selected: string | null;
     clickEvent: (intersectionNo: string) => void;
+    dragEvent?: (lat: number, lng: number) => void;
     showEdge?: boolean;
 };
 
@@ -30,6 +31,7 @@ export type KakaoMapCamerasType = {
     isShow: boolean;
     selected: string | null;
     clickEvent: (cameraNo: string, intersectionNo: string) => void;
+    dragEvent: (lat: number, lng: number) => void;
 };
 
 export type KakaoMapLinksType = {
@@ -62,14 +64,14 @@ export type KakaoMapEditLinksType = {
 export const displayRegion = (region: KakaoMapRegionType) => {
     if (region === undefined) return null;
     if (region.current.gps === undefined || region.current.gps === null) return null;
-    //console.log("displayRegion", JSON.stringify(region));
+
     if (Utils.utilIsEmptyObj(region.current) === false && Utils.utilIsEmptyArray(region.current.gps) === false) {
         return (
             <Polygon
                 path={region.current.gps}
                 strokeWeight={2} // 선의 두께입니다
-                strokeColor={"#ff00aa"} // 선의 색깔입니다
-                strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeColor={"#ff00aa"}
+                strokeOpacity={1}
                 fillColor={"#ff00aa"} // 채우기 색깔입니다
                 fillOpacity={0.05} // 채우기 불투명도 입니다
                 zIndex={1}
@@ -82,8 +84,6 @@ export const displayRegion = (region: KakaoMapRegionType) => {
 
 export const displayIntersection = (intersections: KakaoMapIntersectionsType | undefined) => {
     if (intersections === undefined) return null;
-
-    // console.log("intersections", JSON.stringify(intersections));
 
     if (Utils.utilIsEmptyArray(intersections.list) === false) {
         return intersections.list
@@ -113,8 +113,8 @@ export const displayIntersection = (intersections: KakaoMapIntersectionsType | u
                         center={intersection.gps}
                         radius={150}
                         strokeWeight={1} // 선의 두께입니다
-                        strokeColor={strokeColor} // 선의 색깔입니다
-                        strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                        strokeColor={strokeColor}
+                        strokeOpacity={1}
                         fillColor={fillColor} // 채우기 색깔입니다
                         fillOpacity={0.4} // 채우기 불투명도 입니다
                         zIndex={5}
@@ -129,30 +129,12 @@ export const displayIntersection = (intersections: KakaoMapIntersectionsType | u
     return null;
 };
 
-// const imagesCamera: { [key: string]: any } = {
-//     imgCamera_0_n: imgCamera_0_n,
-//     imgCamera_0_f: imgCamera_0_f,
-// };
-
-// const getImageCameraByKey = (key: string): any => {
-//     return imagesCamera[key];
-// };
-
 export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
     if (cameras === undefined) return null;
-
-    // console.log("cameras", JSON.stringify(cameras));
 
     return cameras.list?.map((camera) => {
         const normalState = true; // TODO
         const isSelected = camera.cameraNo === cameras.selected;
-        // const imageUrl =
-        //     "../assets/images/btn_map_cctv" +
-        //     (normalState ? "" : "_e") +
-        //     "_40_" +
-        //     (camera.degree ? camera.degree : "0") +
-        //     (isSelected ? "_f" : "_n") +
-        //     ".svg";
         const imageUrl = "imgCamera" + (normalState ? "" : "_e") + "_" + (camera.degree ? camera.degree : "0") + (isSelected ? "_f" : "_n");
 
         const imageData = Utils.getCameraImageByKey(imageUrl);
@@ -179,6 +161,10 @@ export const displayCamera = (cameras: KakaoMapCamerasType, level: number) => {
                 onClick={(marker: kakao.maps.Marker) => {
                     cameras.clickEvent(camera.cameraNo, camera.intersection.intersectionNo);
                 }}
+                onDragEnd={(marker: kakao.maps.Marker) => {
+                    cameras.dragEvent(marker.getPosition().getLat(), marker.getPosition().getLng());
+                }}
+                draggable={true}
             />
         );
     });
@@ -188,10 +174,7 @@ export const displayLinks = (links: KakaoMapLinksType, kakaoMap: kakao.maps.Map,
     if (links === undefined) return null;
     if (kakaoMap === undefined) return null;
 
-    // console.log("links", JSON.stringify(links));
-
     if (links.list) {
-        //console.log("links", links);
         if (level >= 5) {
             return links.list.map((link, index) => {
                 const qtsrlu = Utils.utilConvertQtsrlu15Minute(link.data[0].qtsrlu);
@@ -207,19 +190,19 @@ export const displayLinks = (links: KakaoMapLinksType, kakaoMap: kakao.maps.Map,
                     <div key={key}>
                         <Polyline
                             path={link.link.gps}
-                            strokeWeight={8} // 선의 두께 입니다
-                            strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-                            strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
+                            strokeWeight={8}
+                            strokeColor={Common.trafficColorBorder}
+                            strokeOpacity={1}
+                            strokeStyle={"solid"}
                             zIndex={2}
                         />
                         <Polyline
                             path={link.link.gps}
                             endArrow={true}
-                            strokeWeight={4} // 선의 두께 입니다
-                            strokeColor={color} // 선의 색깔입니다
-                            strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
+                            strokeWeight={4}
+                            strokeColor={color}
+                            strokeOpacity={0.9}
+                            strokeStyle={"solid"}
                             zIndex={3}
                         />
                     </div>
@@ -253,10 +236,10 @@ export const displayLinks = (links: KakaoMapLinksType, kakaoMap: kakao.maps.Map,
                         {luPath && (
                             <Polyline
                                 path={luPath}
-                                strokeWeight={8} // 선의 두께 입니다
-                                strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-                                strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                                strokeStyle={"solid"} // 선의 스타일입니다
+                                strokeWeight={8}
+                                strokeColor={Common.trafficColorBorder}
+                                strokeOpacity={1}
+                                strokeStyle={"solid"}
                                 zIndex={2}
                             />
                         )}
@@ -264,29 +247,29 @@ export const displayLinks = (links: KakaoMapLinksType, kakaoMap: kakao.maps.Map,
                             <Polyline
                                 path={luPath}
                                 endArrow={true}
-                                strokeWeight={4} // 선의 두께 입니다
-                                strokeColor={luColor} // 선의 색깔입니다
-                                strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                                strokeStyle={"solid"} // 선의 스타일입니다
+                                strokeWeight={4}
+                                strokeColor={luColor}
+                                strokeOpacity={0.9}
+                                strokeStyle={"solid"}
                                 zIndex={3}
                             />
                         )}
 
                         <Polyline
                             path={link.link.gps}
-                            strokeWeight={8} // 선의 두께 입니다
-                            strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-                            strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
+                            strokeWeight={8}
+                            strokeColor={Common.trafficColorBorder}
+                            strokeOpacity={1}
+                            strokeStyle={"solid"}
                             zIndex={2}
                         />
                         <Polyline
                             path={link.link.gps}
                             endArrow={true}
-                            strokeWeight={4} // 선의 두께 입니다
-                            strokeColor={srColor} // 선의 색깔입니다
-                            strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                            strokeStyle={"solid"} // 선의 스타일입니다
+                            strokeWeight={4}
+                            strokeColor={srColor}
+                            strokeOpacity={0.9}
+                            strokeStyle={"solid"}
                             zIndex={3}
                         />
                     </div>
@@ -381,7 +364,6 @@ export const displayEditLinks = (editLinks: KakaoMapEditLinksType) => {
     if (editLinks === undefined) return null;
 
     if (editLinks.list) {
-        //console.log("links", links);
         return editLinks.list.map((link, index) => {
             return (
                 <div key={link.linkId}>
@@ -389,19 +371,19 @@ export const displayEditLinks = (editLinks: KakaoMapEditLinksType) => {
                         <>
                             <Polyline
                                 path={editLinks.selected.gps}
-                                strokeWeight={8} // 선의 두께 입니다
-                                strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-                                strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                                strokeStyle={"solid"} // 선의 스타일입니다
+                                strokeWeight={8}
+                                strokeColor={Common.trafficColorBorder}
+                                strokeOpacity={1}
+                                strokeStyle={"solid"}
                                 zIndex={2}
                             />
                             <Polyline
                                 path={editLinks.selected.gps}
                                 endArrow={true}
-                                strokeWeight={4} // 선의 두께 입니다
-                                strokeColor={Common.trafficColorBusy} // 선의 색깔입니다
-                                strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                                strokeStyle={"solid"} // 선의 스타일입니다
+                                strokeWeight={4}
+                                strokeColor={Common.trafficColorBusy}
+                                strokeOpacity={0.9}
+                                strokeStyle={"solid"}
                                 zIndex={3}
                             />
                         </>
@@ -409,19 +391,19 @@ export const displayEditLinks = (editLinks: KakaoMapEditLinksType) => {
                         <>
                             <Polyline
                                 path={link.gps}
-                                strokeWeight={8} // 선의 두께 입니다
-                                strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-                                strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                                strokeStyle={"solid"} // 선의 스타일입니다
+                                strokeWeight={8}
+                                strokeColor={Common.trafficColorBorder}
+                                strokeOpacity={1}
+                                strokeStyle={"solid"}
                                 zIndex={2}
                             />
                             <Polyline
                                 path={link.gps}
                                 endArrow={true}
-                                strokeWeight={4} // 선의 두께 입니다
-                                strokeColor={Common.trafficColorNormal} // 선의 색깔입니다
-                                strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                                strokeStyle={"solid"} // 선의 스타일입니다
+                                strokeWeight={4}
+                                strokeColor={Common.trafficColorNormal}
+                                strokeOpacity={0.9}
+                                strokeStyle={"solid"}
                                 zIndex={3}
                             />
                         </>
@@ -453,18 +435,11 @@ export const displayTsi = (tsi: KakaoMapTsiType) => {
 
             signalType = "d"; // TODO: Code for Demo
 
-            // if (tsiData.nodeId === "1570190800") {
-            //     console.log("tsiData", tsiData);
-            // }
-
             if (tsiData.nodeId === 2222) {
                 return null;
             }
 
-            //console.log("tsiData", tsiData);
-
             const datas = tsiData.tsiSignals.map((signalData: any) => {
-                //console.log("signalData", signalData);
                 if (signalType !== "e") {
                     signalType = getTrafficSignalType(tsi, signalData);
                 }
@@ -520,21 +495,15 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
 
     if (Utils.utilIsEmptyArray(avl.list) === false) {
         return avl.list.map((avlData) => {
-            //console.log("avlData", avlData);
-
             const naviPath = avlData.path.slice(-1)[0].gps;
-            //console.log("naviPath", naviPath);
 
             let currPosition = null;
             if (Utils.utilIsEmptyArray(avlData.track) === false) {
                 currPosition = avlData.track[0].gps;
             }
-            //console.log("currPosition", currPosition);
 
             const destPosition = avlData.gps;
-            //console.log("destPosition", destPosition);
             const status = avlData.status.slice(-1)[0].name;
-            //console.log("status", status);
 
             const statusInfo: { [key: string]: string } = {
                 출동: "r",
@@ -543,36 +512,20 @@ export const displayAvl = (avl: KakaoMapAvlType) => {
                 병원도착: "g",
             };
 
-            // const vehicleImageUrl =
-            //     "/images/btn_map_emergency_" +
-            //     statusInfo[status] +
-            //     (avlData.carNo === avl.selected ? "_p" : "_n") +
-            //     ".svg";
-
             const vehicleImageUrl = "imgEmergencyVehicle_" + statusInfo[status] + (avlData.carNo === avl.selected ? "_p" : "_n");
-
             const vehicleImageData = Utils.getEmergencyVehicleImageByKey(vehicleImageUrl);
-
-            //console.log(vehicleImageUrl);
 
             return (
                 <div key={avlData.carNo}>
                     <Polyline
                         path={naviPath}
-                        strokeWeight={8} // 선의 두께 입니다
-                        strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-                        strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                        strokeStyle={"solid"} // 선의 스타일입니다
+                        strokeWeight={8}
+                        strokeColor={Common.trafficColorBorder}
+                        strokeOpacity={1}
+                        strokeStyle={"solid"}
                         zIndex={8}
                     />
-                    <Polyline
-                        path={naviPath}
-                        strokeWeight={4} // 선의 두께 입니다
-                        strokeColor={"#306fd9"} // 선의 색깔입니다
-                        strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                        strokeStyle={"shortdot"} // 선의 스타일입니다
-                        zIndex={8}
-                    />
+                    <Polyline path={naviPath} strokeWeight={4} strokeColor={"#306fd9"} strokeOpacity={0.9} strokeStyle={"shortdot"} zIndex={8} />
                     <MapMarker
                         position={destPosition}
                         image={{
@@ -644,7 +597,7 @@ function KakaoMap({
     center?: kakaoMapCenterType | undefined;
     zoomLevel?: number | undefined;
     onChangedZoomLevel?: (level: number) => void;
-    onClickMap?: (target: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => void;
+    onClickMap?: (lat: number, lng: number) => void;
 }) {
     const [kakaoMap, setKakaoMap] = useState<kakao.maps.Map>();
     const [level, setLevel] = useState<number>(7);
@@ -653,11 +606,9 @@ function KakaoMap({
 
     useEffect(() => {
         if (transitionState === "entering" || transitionState === "exiting") {
-            //console.log(transitionState, kakaoMap?.getCenter());
             setTempCenter(kakaoMap?.getCenter());
         } else if (transitionState === "entered" || transitionState === "exited") {
             if (tempCenter != undefined) {
-                //console.log(transitionState, tempCenter);
                 kakaoMap?.relayout();
                 kakaoMap?.setCenter(tempCenter);
             }
@@ -667,511 +618,6 @@ function KakaoMap({
     useEffect(() => {
         if (zoomLevel !== undefined) setLevel(zoomLevel);
     }, [zoomLevel]);
-
-    // const displayRegion = () => {
-    //     if (region === undefined) return null;
-    //     //console.log("displayRegion", JSON.stringify(region));
-    //     if (
-    //         Utils.utilIsEmptyObj(region.current) === false &&
-    //         Utils.utilIsEmptyArray(region.current.gps) === false
-    //     ) {
-    //         return (
-    //             <Polygon
-    //                 path={region.current.gps}
-    //                 strokeWeight={2} // 선의 두께입니다
-    //                 strokeColor={"#ff00aa"} // 선의 색깔입니다
-    //                 strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                 fillColor={"#ff00aa"} // 채우기 색깔입니다
-    //                 fillOpacity={0.05} // 채우기 불투명도 입니다
-    //                 zIndex={1}
-    //             />
-    //         );
-    //     }
-
-    //     return null;
-    // };
-
-    // const displayIntersection = () => {
-    //     if (intersections === undefined) return null;
-    //     //console.log("displayIntersection");
-    //     if (Utils.utilIsEmptyArray(intersections.list) === false) {
-    //         return intersections.list
-    //             .filter(
-    //                 (intersection) =>
-    //                     intersections.showEdge || intersection.region !== null
-    //             )
-    //             .map((intersection) => {
-    //                 let strokeColor;
-    //                 let fillColor;
-
-    //                 if (
-    //                     intersection.intersectionId === intersections.selected
-    //                 ) {
-    //                     strokeColor = "#ff8000";
-    //                     fillColor = "#ff9900";
-    //                 } else {
-    //                     if (intersection.region !== null) {
-    //                         strokeColor = "#ffff00";
-    //                         fillColor = "#ffee00";
-    //                     } else {
-    //                         strokeColor = "#ffff00";
-    //                         fillColor = "#707070";
-    //                     }
-    //                 }
-
-    //                 return (
-    //                     <Circle
-    //                         key={intersection.intersectionId}
-    //                         center={intersection.gps}
-    //                         radius={150}
-    //                         strokeWeight={1} // 선의 두께입니다
-    //                         strokeColor={strokeColor} // 선의 색깔입니다
-    //                         strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                         fillColor={fillColor} // 채우기 색깔입니다
-    //                         fillOpacity={0.4} // 채우기 불투명도 입니다
-    //                         zIndex={5}
-    //                         onClick={(marker) => {
-    //                             intersections.clickEvent(
-    //                                 intersection.intersectionId
-    //                             );
-    //                         }}
-    //                     />
-    //                 );
-    //             });
-    //     }
-
-    //     return null;
-    // };
-
-    // const displayCamera = () => {
-    //     if (cameras === undefined) return null;
-    //     //console.log("displayCamera");
-    //     return cameras.list?.map((camera) => {
-    //         let normalState = true; // TODO
-    //         let isSelected = camera.cameraId === cameras.selected;
-    //         let imageUrl =
-    //             "/images/btn_map_cctv" +
-    //             (normalState ? "" : "_e") +
-    //             "_40_" +
-    //             (camera.degree ? camera.degree : "0") +
-    //             (isSelected ? "_f" : "_n") +
-    //             ".svg";
-
-    //         return (
-    //             <MapMarker
-    //                 key={camera.cameraId}
-    //                 position={camera.gps}
-    //                 image={{
-    //                     src: `${imageUrl}`,
-    //                     size: {
-    //                         widht: level < 4 ? 40 : 30,
-    //                         height: level < 4 ? 40 : 30,
-    //                     },
-    //                     options: {
-    //                         offset: {
-    //                             x: level < 4 ? 20 : 15,
-    //                             y: level < 4 ? 20 : 15,
-    //                         },
-    //                     },
-    //                 }}
-    //                 onClick={(marker) => {
-    //                     cameras.clickEvent(
-    //                         camera.cameraId,
-    //                         camera.intersection.intersectionId
-    //                     );
-    //                 }}
-    //             />
-    //         );
-    //     });
-    // };
-
-    // const displayLinks = () => {
-    //     if (links === undefined) return null;
-    //     //console.log("displayLinks");
-    //     if (links.list) {
-    //         //console.log("links", links);
-    //         if (level >= 5) {
-    //             return links.list.map((link, index) => {
-    //                 let qtsrlu = Utils.utilConvertQtsrlu15Minute(
-    //                     link.data[0].qtsrlu
-    //                 );
-    //                 let srlu = Utils.utilConvertSrlu15Minute(link.data[0].srlu);
-
-    //                 let speed = (srlu / qtsrlu).toFixed(2);
-    //                 let color = Utils.utilGetSpeedColor(speed);
-
-    //                 let key = link.link.startId + "_" + link.link.endId;
-
-    //                 return (
-    //                     <div key={key}>
-    //                         <Polyline
-    //                             path={link.link.gps}
-    //                             strokeWeight={8} // 선의 두께 입니다
-    //                             strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-    //                             strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                             strokeStyle={"solid"} // 선의 스타일입니다
-    //                             zIndex={2}
-    //                         />
-    //                         <Polyline
-    //                             path={link.link.gps}
-    //                             endArrow={true}
-    //                             strokeWeight={4} // 선의 두께 입니다
-    //                             strokeColor={color} // 선의 색깔입니다
-    //                             strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                             strokeStyle={"solid"} // 선의 스타일입니다
-    //                             zIndex={3}
-    //                         />
-    //                     </div>
-    //                 );
-    //             });
-    //         } else {
-    //             return links.list.map((link, index) => {
-    //                 // let qtsr = (link.data[0].qtsr * 4) / 3600;
-    //                 // let sr = (link.data[0].sr * 100 * 4) / 1000;
-    //                 let qtsr = Utils.utilConvertQtsrlu15Minute(
-    //                     link.data[0].qtsr
-    //                 );
-    //                 let sr = Utils.utilConvertSrlu15Minute(link.data[0].sr);
-    //                 // let qtlu = (link.data[0].qtlu * 4) / 3600;
-    //                 // let lu = (link.data[0].lu * 100 * 4) / 1000;
-    //                 let qtlu = Utils.utilConvertQtsrlu15Minute(
-    //                     link.data[0].qtlu
-    //                 );
-    //                 let lu = Utils.utilConvertSrlu15Minute(link.data[0].lu);
-
-    //                 let srSpeed = (sr / qtsr).toFixed(2);
-    //                 let luSpeed = (lu / qtlu).toFixed(2);
-
-    //                 let srColor = Utils.utilGetSpeedColor(srSpeed);
-    //                 let luColor = Utils.utilGetSpeedColor(luSpeed);
-
-    //                 let luPath = Utils.utilConvertParallelLines(
-    //                     kakaoMap,
-    //                     level,
-    //                     link.link.gps
-    //                 );
-
-    //                 let key = link.link.startId + "_" + link.link.endId;
-
-    //                 return (
-    //                     <div key={key}>
-    //                         <Polyline
-    //                             path={luPath}
-    //                             strokeWeight={8} // 선의 두께 입니다
-    //                             strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-    //                             strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                             strokeStyle={"solid"} // 선의 스타일입니다
-    //                             zIndex={2}
-    //                         />
-    //                         <Polyline
-    //                             path={luPath}
-    //                             endArrow={true}
-    //                             strokeWeight={4} // 선의 두께 입니다
-    //                             strokeColor={luColor} // 선의 색깔입니다
-    //                             strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                             strokeStyle={"solid"} // 선의 스타일입니다
-    //                             zIndex={3}
-    //                         />
-
-    //                         <Polyline
-    //                             path={link.link.gps}
-    //                             strokeWeight={8} // 선의 두께 입니다
-    //                             strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-    //                             strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                             strokeStyle={"solid"} // 선의 스타일입니다
-    //                             zIndex={2}
-    //                         />
-    //                         <Polyline
-    //                             path={link.link.gps}
-    //                             endArrow={true}
-    //                             strokeWeight={4} // 선의 두께 입니다
-    //                             strokeColor={srColor} // 선의 색깔입니다
-    //                             strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                             strokeStyle={"solid"} // 선의 스타일입니다
-    //                             zIndex={3}
-    //                         />
-    //                     </div>
-    //                 );
-    //             });
-    //         }
-    //     }
-
-    //     return null;
-    // };
-
-    // const getTrafficSignalType = (signalDatas) => {
-    //     let signalType = "d";
-
-    //     signalDatas.signalInfo.forEach((signalInfo) => {
-    //         if (signalInfo.info === 1 || signalInfo.info === 2) {
-    //             switch (signalInfo.status) {
-    //                 case 0:
-    //                     break;
-    //                 case 1:
-    //                     if (signalType === "d" || signalType === "y") {
-    //                         signalType = "r";
-    //                     }
-    //                     break;
-    //                 case 2:
-    //                     if (signalType === "d") {
-    //                         signalType = "y";
-    //                     }
-    //                     break;
-    //                 case 3:
-    //                 case 6:
-    //                     if (signalType === "s" || signalType === "l") {
-    //                         signalType = "sl";
-    //                     } else {
-    //                         if (signalInfo.info === 1) {
-    //                             signalType = "s";
-    //                         } else if (signalInfo.info === 2) {
-    //                             signalType = "l";
-    //                         }
-    //                     }
-    //                     break;
-
-    //                 case 4:
-    //                     if (trafficLights.blink === true) {
-    //                         signalType = "r";
-    //                     } else {
-    //                         signalType = "d";
-    //                     }
-    //                     break;
-
-    //                 case 5:
-    //                     if (trafficLights.blink === true) {
-    //                         signalType = "y";
-    //                     } else {
-    //                         signalType = "d";
-    //                     }
-    //                     break;
-
-    //                 default:
-    //                     signalType = "d";
-    //                     break;
-    //             }
-    //         }
-    //     });
-
-    //     return signalType;
-    // };
-
-    // const toRad = (brng) => {
-    //     return (brng * Math.PI) / 180;
-    // };
-
-    // const toDeg = (brng) => {
-    //     return (brng * 180) / Math.PI;
-    // };
-
-    // const getMoveGPSPosition = (gps, bearing, distance) => {
-    //     var originalLat = gps.lat;
-    //     var originalLng = gps.lng;
-
-    //     distance = distance / 6371;
-    //     bearing = toRad(bearing);
-
-    //     originalLat = toRad(originalLat);
-    //     originalLng = toRad(originalLng);
-
-    //     var tranlateLat = Math.asin(
-    //         Math.sin(originalLat) * Math.cos(distance) +
-    //             Math.cos(originalLat) * Math.sin(distance) * Math.cos(bearing)
-    //     );
-
-    //     var tranlateLng =
-    //         originalLng +
-    //         Math.atan2(
-    //             Math.sin(bearing) * Math.sin(distance) * Math.cos(originalLat),
-    //             Math.cos(distance) -
-    //                 Math.sin(originalLat) * Math.sin(tranlateLat)
-    //         );
-
-    //     if (isNaN(tranlateLat) || isNaN(tranlateLng)) return null;
-
-    //     return { lat: toDeg(tranlateLat), lng: toDeg(tranlateLng) };
-    // };
-
-    // const displayTrafficLights = () => {
-    //     if (trafficLights === undefined) return null;
-
-    //     const defaultTrafficeIntervalTime = 1000 * 60 * 1;
-    //     //console.log("displayTrafficLights");
-    //     if (Utils.utilIsEmptyArray(trafficLights.list) === false) {
-    //         return trafficLights.list.map((tsiData) => {
-    //             let currentDateTime = new Date();
-    //             let lastSignalDateTime = new Date(tsiData.time);
-    //             let signalDateInterval =
-    //                 currentDateTime.getTime() - lastSignalDateTime.getTime();
-
-    //             var signalType = "d";
-    //             if (tsiData.error !== 0) {
-    //                 signalType = "e";
-    //             } else if (
-    //                 signalDateInterval > defaultTrafficeIntervalTime ||
-    //                 tsiData.time === undefined
-    //             ) {
-    //                 signalType = "e";
-    //             }
-
-    //             signalType = "d"; // TODO: Code for Demo
-
-    //             // if (tsiData.nodeId === "1570190800") {
-    //             //     console.log("tsiData", tsiData);
-    //             // }
-
-    //             let datas = tsiData.signal.map((signalData) => {
-    //                 if (signalType !== "e") {
-    //                     signalType = getTrafficSignalType(signalData);
-    //                 }
-
-    //                 let imageUrl = "/images/ico_map_signal_lamp_";
-    //                 let signalDirectionType = signalData.direction / 45;
-    //                 let imageType = 4;
-    //                 if (
-    //                     signalType === "s" ||
-    //                     signalType === "l" ||
-    //                     signalType === "sl"
-    //                 ) {
-    //                     if (signalDirectionType < 4)
-    //                         imageType = signalDirectionType + 4;
-    //                     else imageType = signalDirectionType - 4;
-    //                 } else {
-    //                     imageType = signalDirectionType % 2;
-    //                 }
-    //                 imageUrl += String(imageType) + "_" + signalType + ".svg";
-
-    //                 let position = getMoveGPSPosition(
-    //                     tsiData.gps,
-    //                     signalData.direction,
-    //                     0.05
-    //                 );
-
-    //                 return (
-    //                     <MapMarker
-    //                         // key={tsiData.nodeId + "_" + signalData.direction}
-    //                         position={position}
-    //                         image={{
-    //                             src: imageUrl,
-    //                             size: {
-    //                                 widht: 40,
-    //                                 height: 40,
-    //                             },
-    //                             options: {
-    //                                 offset: {
-    //                                     x: 20,
-    //                                     y: 20,
-    //                                 },
-    //                             },
-    //                         }}
-    //                     />
-    //                 );
-    //             });
-
-    //             return <div key={tsiData.nodeId}>{datas}</div>;
-    //         });
-    //     }
-
-    //     return null;
-    // };
-
-    // const displayAvl = () => {
-    //     if (avl === undefined) return null;
-
-    //     if (Utils.utilIsEmptyArray(avl.list) === false) {
-    //         return avl.list.map((avlData) => {
-    //             //console.log("avlData", avlData);
-
-    //             let naviPath = avlData.path.slice(-1)[0].gps;
-    //             //console.log("naviPath", naviPath);
-
-    //             let currPosition = null;
-    //             if (Utils.utilIsEmptyArray(avlData.track) === false) {
-    //                 currPosition = avlData.track[0].gps;
-    //             }
-    //             //console.log("currPosition", currPosition);
-
-    //             let destPosition = avlData.gps;
-    //             //console.log("destPosition", destPosition);
-    //             let status = avlData.status.slice(-1)[0].name;
-    //             //console.log("status", status);
-
-    //             let statusInfo = {
-    //                 출동: "r",
-    //                 현장도착: "y",
-    //                 현장출발: "b",
-    //                 병원도착: "g",
-    //             };
-
-    //             let vehicleImageUrl =
-    //                 "/images/btn_map_emergency_" +
-    //                 statusInfo[status] +
-    //                 (avlData.carNo === avl.selected ? "_p" : "_n") +
-    //                 ".svg";
-
-    //             //console.log(vehicleImageUrl);
-
-    //             return (
-    //                 <div key={avlData.carNo}>
-    //                     <Polyline
-    //                         path={naviPath}
-    //                         strokeWeight={8} // 선의 두께 입니다
-    //                         strokeColor={Common.trafficColorBorder} // 선의 색깔입니다
-    //                         strokeOpacity={1} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                         strokeStyle={"solid"} // 선의 스타일입니다
-    //                         zIndex={8}
-    //                     />
-    //                     <Polyline
-    //                         path={naviPath}
-    //                         strokeWeight={4} // 선의 두께 입니다
-    //                         strokeColor={"#306fd9"} // 선의 색깔입니다
-    //                         strokeOpacity={0.9} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    //                         strokeStyle={"shortdot"} // 선의 스타일입니다
-    //                         zIndex={8}
-    //                     />
-    //                     <MapMarker
-    //                         position={destPosition}
-    //                         image={{
-    //                             src: "/images/ico_map_emergency_vehicle_pin.png",
-    //                             size: {
-    //                                 widht: 40,
-    //                                 height: 40,
-    //                             },
-    //                             options: {
-    //                                 offset: {
-    //                                     x: 20,
-    //                                     y: 20,
-    //                                 },
-    //                             },
-    //                         }}
-    //                         zIndex={8}
-    //                     />
-    //                     {currPosition && (
-    //                         <MapMarker
-    //                             position={currPosition}
-    //                             image={{
-    //                                 src: vehicleImageUrl,
-    //                                 size: {
-    //                                     widht: 67,
-    //                                     height: 89,
-    //                                 },
-    //                                 options: {
-    //                                     offset: {
-    //                                         x: 34,
-    //                                         y: 81,
-    //                                     },
-    //                                 },
-    //                             }}
-    //                             zIndex={9}
-    //                         />
-    //                     )}
-    //                 </div>
-    //             );
-    //         });
-    //     }
-
-    //     return null;
-    // };
 
     const handleMap = (map: kakao.maps.Map) => {
         setKakaoMap(map);
@@ -1184,11 +630,12 @@ function KakaoMap({
     };
 
     const handleClick = (target: kakao.maps.Map, mouseEvent: kakao.maps.event.MouseEvent) => {
-        if (onClickMap !== undefined) onClickMap(target, mouseEvent);
+        if (onClickMap !== undefined) onClickMap(mouseEvent.latLng.getLat(), mouseEvent.latLng.getLng());
     };
 
     return (
         <Map
+            id="map"
             center={
                 center === undefined || ""
                     ? {

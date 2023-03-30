@@ -13,6 +13,7 @@ import editBtn from "../assets/images/btn_list_edit_n.svg";
 
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import OsmMap from "../component/OsmMap";
 
 type rows = {
     id: string;
@@ -91,19 +92,12 @@ function ManagementCamera() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.CAMERA_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.CAMERA_LIST_URL);
 
         return response.data;
     };
 
-    const {
-        loading: loadingCameras,
-        error: errorCameras,
-        data: resultCameras,
-        execute: requestCameras,
-    } = useAsyncAxios(requestAxiosCameras);
+    const { loading: loadingCameras, error: errorCameras, data: resultCameras, execute: requestCameras } = useAsyncAxios(requestAxiosCameras);
 
     useEffect(() => {
         if (resultCameras === null) return;
@@ -143,16 +137,11 @@ function ManagementCamera() {
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item md={7}>
-                    <TableManagement
-                        columns={columns}
-                        rows={rows}
-                        selectedId={selectedCameraNo}
-                        clickEvent={onRowClick}
-                    />
+                    <TableManagement columns={columns} rows={rows} selectedId={selectedCameraNo} clickEvent={onRowClick} />
                 </Grid>
                 <Grid item md={5}>
                     <Box className={styles.box}>
-                        <KakaoMap
+                        <OsmMap
                             style={{
                                 width: "100%",
                                 height: "100%",
@@ -169,9 +158,7 @@ function ManagementCamera() {
                                 selectedCameraNo === ""
                                     ? undefined
                                     : listCamera.find(function (data) {
-                                          return (
-                                              data.cameraNo === selectedCameraNo
-                                          );
+                                          return data.cameraNo === selectedCameraNo;
                                       }).gps
                             }
                         />

@@ -11,20 +11,20 @@ pipeline {
             credentialsId: 'b07620dd-74f5-486d-bba7-c671cfbb3825'
       }
     }
+    stage ('backend build') {
+      steps {
+        sh 'cd deploy/ && chmod +x challenge-build-backend.sh && ./challenge-build-backend.sh'
+      }
+    }
     stage ('frontend build') {
       tools { nodejs "NodeJS16" }
       steps {
-        sh 'cd frontend && rm -rf build && npm install && npm run build:nextdev'
-      }
-    }
-    stage ('backend build') {
-      steps {
-        sh 'cd backend && ./gradlew clean build'
+        sh 'cd deploy/ && chmod +x challenge-build-frontend.sh && ./challenge-build-frontend.sh'
       }
     }
     stage('docker build and push'){
       steps {
-        sh 'cd deploy && ./challenge-docker-build-push.sh'
+        sh 'cd deploy/ && chmod +x challenge-docker-build-push.sh && ./challenge-docker-build-push.sh'
       }
     }
     stage('kubernetes deploy over ssh') {
@@ -34,16 +34,14 @@ pipeline {
           failOnError: true,
           publishers: [
             sshPublisherDesc(
-              configName: 'DevRt40',
+              configName: 'DevChallenge03',
               verbose: true,
               transfers: [
                 sshTransfer(
-                    sourceFiles: 'deploy/challenge-k8s-deploy/*',
-                    removePrefix: 'deploy/challenge-k8s-deploy/',
+                    sourceFiles: 'deploy/deploy-dev/*',
+                    removePrefix: 'deploy/deploy-dev/',
                     remoteDirectory: 'smart-city-challenge/deploy',
-                    execCommand: 'export KUBECONFIG=/etc/kubernetes/admin.conf; \
-                                  chown $(id -u):$(id -g) /etc/kubernetes/admin.conf; \
-                                  cd smart-city-challenge/deploy && chmod 755 *.sh; \
+                    execCommand: 'cd smart-city-challenge/deploy && chmod 755 *.sh; \
                                   ./challenge-stop.sh; \
                                   ./challenge-start.sh;'
                 )

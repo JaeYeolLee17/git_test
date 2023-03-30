@@ -1,0 +1,7 @@
+.darkMap {
+    background-color: black;
+}
+
+.darkMap > div > div > div {
+    filter: brightness(2) invert(0) contrast(0.9) saturate(0);
+}

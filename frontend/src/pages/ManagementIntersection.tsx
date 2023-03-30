@@ -9,23 +9,24 @@ import styles from "../pages/ManagementIntersection.module.css";
 import * as Common from "../commons/common";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import editBtn from "../assets/images/btn_list_edit_n.svg"
+import editBtn from "../assets/images/btn_list_edit_n.svg";
 
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import OsmMap from "../component/OsmMap";
 
 type rows = {
-    id: string,
-    name: string,
-    region: string
-}
+    id: string;
+    name: string;
+    region: string;
+};
 
-type columns ={
-    field: string,
-    headerName: string,
-    flex: number,
-    cellRenderer: any
-  }
+type columns = {
+    field: string;
+    headerName: string;
+    flex: number;
+    cellRenderer: any;
+};
 
 function ManagementIntersection() {
     const userDetails = useAuthState();
@@ -39,47 +40,41 @@ function ManagementIntersection() {
             field: "id",
             headerName: "교차로 No.",
             flex: 2,
-            cellRenderer: undefined
+            cellRenderer: undefined,
         },
         {
             field: "name",
             headerName: "교차로 이름",
             flex: 3,
-            cellRenderer: undefined
+            cellRenderer: undefined,
         },
         {
             field: "region",
             headerName: "구역",
             flex: 3,
-            cellRenderer: undefined
+            cellRenderer: undefined,
         },
         {
             field: "data",
             headerName: "",
             flex: 1,
-            cellRenderer: (params :any) => {
+            cellRenderer: (params: any) => {
                 return (
-                    <Button onClick={(e) => {
-                        navigate(
-                            Common.PAGE_MANAGEMENT_INTERSECTION_DETAIL,
-                            {
-                                state: listIntersection.find(function (
-                                    data
-                                ) {
-                                    return (
-                                        data.intersectionNo === params.data.id
-                                    );
+                    <Button
+                        onClick={(e) => {
+                            navigate(Common.PAGE_MANAGEMENT_INTERSECTION_DETAIL, {
+                                state: listIntersection.find(function (data) {
+                                    return data.intersectionNo === params.data.id;
                                 }),
-                            }
-                        );
-                    }}
-                >
-                        <img src={editBtn} width={20}/>
+                            });
+                        }}
+                    >
+                        <img src={editBtn} width={20} />
                     </Button>
-                )
-            }
-        }
-      ];
+                );
+            },
+        },
+    ];
 
     useEffect(() => {
         requestIntersections();
@@ -89,9 +84,7 @@ function ManagementIntersection() {
         if (userDetails === null) return null;
         if (userDetails?.token === null) return null;
 
-        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(
-            Request.INTERSECTION_LIST_URL
-        );
+        const response = await Utils.utilAxiosWithAuth(userDetails.token).get(Request.INTERSECTION_LIST_URL);
 
         return response.data;
     };
@@ -114,8 +107,7 @@ function ManagementIntersection() {
                 {
                     id: result.intersectionNo,
                     name: result.intersectionName,
-                    region:
-                        result.region === null ? "-" : result.region.regionName,
+                    region: result.region === null ? "-" : result.region.regionName,
                 },
             ]);
         });
@@ -139,33 +131,28 @@ function ManagementIntersection() {
         <div className={styles.wrapper}>
             <Grid container spacing={2}>
                 <Grid item xs={7}>
-                    <TableManagement 
-                        columns={columns} 
-                        rows={rows}
-                        selectedId={selectedintersectionNo}
-                        clickEvent={onRowClick}
-                    />
+                    <TableManagement columns={columns} rows={rows} selectedId={selectedintersectionNo} clickEvent={onRowClick} />
                 </Grid>
                 <Grid item xs={5}>
                     <Box className={styles.box}>
-                    <KakaoMap
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            zIndex: "0",
-                        }}
-                        intersections={{
-                            list: listIntersection,
-                            selected: selectedintersectionNo,
-                            clickEvent: handleClickIntersection,
-                            showEdge: true,
-                        }}
-                        zoomLevel={6}
-                        center={{
-                            lat: 35.8795650131115,
-                            lng: 128.571339656397
-                        }}
-                    />
+                        <OsmMap
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                zIndex: "0",
+                            }}
+                            intersections={{
+                                list: listIntersection,
+                                selected: selectedintersectionNo,
+                                clickEvent: handleClickIntersection,
+                                showEdge: true,
+                            }}
+                            zoomLevel={6}
+                            center={{
+                                lat: 35.8795650131115,
+                                lng: 128.571339656397,
+                            }}
+                        />
                     </Box>
                 </Grid>
             </Grid>

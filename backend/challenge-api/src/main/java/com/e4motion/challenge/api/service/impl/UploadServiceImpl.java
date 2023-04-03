@@ -34,6 +34,7 @@ public class UploadServiceImpl implements UploadService {
 
     private final static String TEXT_CSV = "text/csv";
     private final RegionRepository regionRepository;
+    private final RegionGpsRepository regionGpsRepository;
     private final IntersectionRepository intersectionRepository;
     private final LinkRepository linkRepository;
     private final CameraRepository cameraRepository;
@@ -48,7 +49,7 @@ public class UploadServiceImpl implements UploadService {
             return;
         }
 
-        ArrayList<RegionGps> regionGps = new ArrayList<>();
+        List<RegionGps> regionGps = new ArrayList<>();
         AtomicInteger gpsOrder = new AtomicInteger(0);
         Region region;
 
@@ -80,19 +81,19 @@ public class UploadServiceImpl implements UploadService {
 
             region.setRegionNo(regionNo);
             region.setRegionName(regionName);
-            region.setIntersections(getIntersectionList(regionNo));
 
             if (!Objects.equals(lastRegionNo, regionNo)) {
                 gpsOrder = new AtomicInteger(0);
             }
 
-            region.getGps().add(RegionGps.builder()
+            RegionGps regionGps1 = RegionGps.builder()
                     .region(region)
                     .lat(getDouble(record, RegionHeaders.lat))
                     .lng(getDouble(record, RegionHeaders.lng))
                     .gpsOrder(gpsOrder.incrementAndGet())
-                    .build());
+                    .build();
 
+            regionGpsRepository.save(regionGps1);
             regionRepository.save(region);
 
             lastRegionNo = regionNo;

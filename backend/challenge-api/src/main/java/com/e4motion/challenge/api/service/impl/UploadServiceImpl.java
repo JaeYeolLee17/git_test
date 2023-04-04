@@ -346,6 +346,7 @@ public class UploadServiceImpl implements UploadService {
                 Camera camera = Camera.builder()
                         .password(passwordEncoder.encode("camera12!@"))
                         .intersection(intersection)
+                        .direction(intersection)
                         .lng(getDouble(record, DataHeaders.longitude))
                         .lat(getDouble(record, DataHeaders.latitude))
                         .settingsUpdated(Boolean.TRUE)

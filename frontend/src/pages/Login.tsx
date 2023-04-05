@@ -16,7 +16,6 @@ import "../assets/font/font.css";
 import styles from "./Login.module.css";
 import loginIcon from "../assets/images/login_ico.png";
 import daeguLogo from "../assets/images/logo_daegu.png";
-import emgLogo from "../assets/images/logo_emg.png";
 
 const Login = () => {
     const dispatch = useAuthDispatch();
@@ -92,13 +91,11 @@ const Login = () => {
             <section className={styles.left}>
                 <div className={styles.appNameWrapper}>
                     <div className={styles.appName}>
-                        대구광역시 <br />
-                        AI 스마트교통관제플랫폼
+                        대구광역시 교통모니터링 시스템
                     </div>
                 </div>
                 <div className={styles.logos}>
                     <img src={daeguLogo} alt="daegu" />
-                    <img src={emgLogo} alt="emg" />
                 </div>
             </section>
 
